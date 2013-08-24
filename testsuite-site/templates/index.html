@@ -20,7 +20,7 @@
     {% for score in scores %}
     {% if score.scores != None %}
         <tr>
-            <td><a href="rs/{{score.reading_system.id}}">{{ score.reading_system.name }} {{score.reading_system.version}}</a>
+            <td><a href="rs/{{score.reading_system.id}}/">{{ score.reading_system.name }} {{score.reading_system.version}}</a>
                 {% if score.reading_system.operating_system != None %}
                 <br/>
                 <span class="rs-details">{{ score.reading_system.operating_system }}</span>

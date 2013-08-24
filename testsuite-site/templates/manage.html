@@ -64,7 +64,7 @@
                 <ul class="plain">
                     <li><a href="/new_evaluation?rs={{ r.id }}">Add Evaluation</a></li>
                     {% if r.has_summary %}
-                    <li><a href="/rs/{{ r.id }}">View Summary</a></li>
+                    <li><a href="/rs/{{ r.id }}/">View Summary</a></li>
                     {% endif %}
                     <li><a href="/confirm_delete_rs?rs={{ r.id }}">Delete Reading System</a></li>
                     {% if r.has_summary == False %}
