@@ -3,6 +3,7 @@
 from models import *
 from django.utils.timezone import utc
 from datetime import datetime
+from decimal import *
 
 # get the most recent scores for each reading system
 def get_scores(categories):
@@ -247,7 +248,7 @@ def calculate_and_save_scores(evaluation):
 
 # to accomodate python 2.6
 # http://docs.python.org/release/2.6.7/library/decimal.html#decimal-faq
-def float_to_decimal(f):
+def float_to_decimal1(f):
     "Convert a floating point number to a Decimal with no loss of information"
     n, d = f.as_integer_ratio()
     numerator, denominator = Decimal(n), Decimal(d)
@@ -258,4 +259,8 @@ def float_to_decimal(f):
         ctx.prec *= 2
         result = ctx.divide(numerator, denominator)
     return result
+
+def float_to_decimal(f):
+    s = str(f)
+    return Decimal(s)
 
