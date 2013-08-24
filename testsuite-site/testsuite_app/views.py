@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, View
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.edit import FormView
 
@@ -187,7 +187,17 @@ class EditReadingSystemView(TemplateView):
             messages.add_message(request, messages.INFO, 'Please complete name and version fields.')
             return redirect("/edit_rs/{0}/".format(rsid))
 
+class CreateNewEvaluationView(View):
 
+    def get(self, request, *args, **kwargs):
+        rs_id = request.GET.get('rs', '0')
+        testsuite = web_db_helper.get_most_recent_testsuite()
+        rs = ReadingSystem.objects.get(id = rs_id)
+        new_eval = web_db_helper.create_new_evaluation(testsuite, "1", rs, request.user)
+        if new_eval is not None:
+            return redirect("/edit_evaluation/{0}/".format(new_eval.id))
+        else:
+            return redirect("/manage/")
 
 ################################################
 # helper functions
