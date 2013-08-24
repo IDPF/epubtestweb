@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load testsuite_extras %}
+{% block title %}:: Edit Evaluation{% endblock %}
+{% block content %}
+
+<h1>Evaluation</h1>
+
+<form action="/edit_evaluation/{{ eval_form.instance.id }}/" method="post">{% csrf_token %}
+{{ eval_form.as_p }}
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="{{eval_form.instance.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{eval_form.instance.percent_complete}}%; height: 100%">
+    <span style="font-style: italic; {%if eval_form.instance.percent_complete < 20 %} color: black;{%endif%}">
+                    {{eval_form.instance.percent_complete}}% Completed</span>
+  </div>
+</div>
+
+<div class="results">
+{% for cat in data %}
+    {% category cat True%}
+{% endfor %}
+</div>
+
+{{ results_form.management_form }}
+<input type="submit" value="Submit" style="margin-top: 30px" />
+</form>
+
+<script>
+$( ".category-accordion" ).accordion({ collapsible: true, heightStyle: "content", active: false });
+// make the first accordion open
+$($(".category-accordion")[0]).accordion("option", "active", 0);
+</script>
+{% endblock %}

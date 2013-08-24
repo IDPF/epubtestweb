@@ -1,0 +1,65 @@
+{% load testsuite_extras %}
+<!doctype html>
+<html lang="en">
+<head>
+    <title>EPUBTest {% block title %}{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/media/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <!-- custom css -->
+    <link href="/media/css/custom.css" rel="stylesheet" media="screen">
+
+     <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/media/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+    <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+    <script src="/media/js/respond.min.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+
+    {%block script %}
+    {% endblock %}
+
+    {%block style %}
+    {% endblock %}
+
+</head>
+
+<body>
+    {% alerts messages %}
+
+    <div class="container">
+        <div class="navbar">
+            <a class="navbar-brand" href="/">EPUBTest</a>
+            <ul class="nav navbar-nav pull-right">
+                <li><a href="/about">About</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="/manage">Manage</a></li>
+                <li><a href="/logout">Logout</a></li>
+                {% else %}
+                <li><a href="/login">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+
+<div class="container">
+
+        <div id="contents" class="">
+        {% block content %}
+            <p>CONTENTS GO HERE</p>
+        {% endblock %}
+        </div>
+
+        <footer>Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</footer>
+    </div>
+</body>
+</html>

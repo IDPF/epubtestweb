@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}:: Add Reading System{% endblock %}
+
+<h1>Add Reading System</h1>
+
+{% block content %}
+<div class="add-rs">
+<form action="{{ action_url }}" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+</div>
+{% endblock %}

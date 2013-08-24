@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}:: {{ rs.name }}{% endblock %}
+
+{% load testsuite_extras %}
+
+{% block content %}
+
+<div class="reading-system-info panel panel-default">
+    <div class="panel-heading">
+        <h1>{{rs.name}}</h1>
+    </div>
+
+    <dl class="panel-left">
+      <dt>Version</dt>
+      <dd>{{ rs.version }}</dd>
+
+        {% if rs.operating_system|length > 0 %}
+        <dt>Operating system</dt>
+        <dd>{{ rs.operating_system }}</dd>
+        {% endif %}
+
+        {% if rs.locale|length > 0 %}
+        <dt>Locale</dt>
+        <dd>{{ rs.locale}}</dd>
+        {% endif %}
+
+        {% if rs.sdk_version|length > 0 %}
+        <dt>SDK Version</dt>
+        <dd>{{ rs.sdk_version }}</dd>
+        {% endif %}
+
+        <dt>Evaluated</dt>
+        <dd> {{ eval_date }}</dd>
+    </dl>
+
+    <dl class="panel-right">
+        {% for cat in data %}
+        <dt><a href="#c{{cat.item.id}}">{{cat.item.name}}</a></dt>
+        <dd>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{cat.item.category_score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{cat.item.category_score}}%; height: 100%">
+                <span style="font-style: italic; {%if cat.item.category_score < 10 %} color: black;{%endif%}">
+                    {{cat.item.category_score}}%</span>
+                </div>
+                </div>
+
+        </dd>
+        {%endfor%}
+    </dl>
+</div>
+
+<div class="results category-accordion">
+{% for cat in data %}
+    {% category cat False %}
+{% endfor %}
+</div>
+
+<script>
+$( ".category-accordion").accordion({ collapsible: true, heightStyle: "content", active: false });
+</script>
+
+{% endblock %}

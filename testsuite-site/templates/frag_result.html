@@ -1,0 +1,31 @@
+<tr class="result
+    {%if is_form %}
+        {%if result.result == None %} warning {%endif%}
+    {% else %}
+        {%if result.result == '1' %} success
+        {%elif result.result == '2' %} danger
+        {%endif%}
+    {%endif%}'">
+    <td class='results-test'>{{ result.test.testid }}</td>
+    <td class='results-desc'>{{ result.test.description }}</td>
+    <td class='results-req'>
+        {% if result.test.required == True %}
+            Required
+        {% else %}
+            Optional
+        {% endif %}
+    </td>
+    <td class="results-result">
+        {% if is_form %}
+            {{ result.form.as_p }}
+        {% else %}
+            {% if result.result == '1' %}
+            PASS
+            {% elif result.result == '2' %}
+            FAIL
+            {% elif result.result == '3' %}
+            N/A
+            {% endif %}
+        {% endif %}
+    </td>
+</tr>

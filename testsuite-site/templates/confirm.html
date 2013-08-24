@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}:: Confirm Action{% endblock %}
+
+{% block content %}
+
+<h1>{{ heading }}</h1>
+<p class="confirm-warning">{{ warning }}</p>
+
+<p>
+  <a href="{{ confirm_url }}"><button class="btn btn-small btn-primary" type="button">Yes</button></a>
+  <a href="{{ cancel_url }}"><button class="btn btn-small" type="button">No</button></a>
+</p>
+
+
+{% endblock %}

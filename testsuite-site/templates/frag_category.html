@@ -1,0 +1,56 @@
+{% load testsuite_extras %}
+
+
+{% if category.depth == 0 %}
+{% if is_form == True %}
+<div class="category-accordion">
+{% endif %}
+<h1 id="c{{category.item.id}}">{{ category.item.name }}
+    {% if is_form == False %}
+    <span class="pull-right">{{ category.item.category_score}}%</span>
+    {%endif%}
+</h1>
+<div>
+
+{% elif category.depth == 1 %}
+<h2 id="c{{category.item.id}}">{{ category.item.name }}</h2>
+{% elif category.depth == 2 %}
+<h3 id="c{{category.item.id}}">{{ category.item.name }}</h3>
+{% elif category.depth == 3 %}
+<h4 id="c{{category.item.id}}">{{ category.item.name }}</h4>
+{% elif category.depth == 4 %}
+<h5 id="c{{category.item.id}}">{{ category.item.name }}</h5>
+{% else %}
+<h6 id="c{{category.item.id}}">{{ category.item.name }}</h6>
+{% endif %}
+
+
+{% if category.results|length > 0 %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th aria-hidden="false" hidden='true'>ID</th>
+            <th aria-hidden="false" hidden='true'>Description</th>
+            <th aria-hidden="false" hidden='true'>Required</th>
+            <th aria-hidden="false" hidden='true'>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in category.results %}
+            {% result r is_form %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% for subcat in category.subcategories %}
+    {% category subcat is_form %}
+{% endfor %}
+
+{% if category.depth == 0 %}
+</div>
+{% if is_form == True %}
+</div>
+{%endif%}
+{%endif%}
+

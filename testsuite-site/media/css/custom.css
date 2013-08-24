@@ -1,0 +1,92 @@
+
+footer {
+        padding-top: 40px;
+        padding-bottom: 30px;
+        margin-top: 100px;
+}
+
+
+h1 {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: x-large;
+}
+
+.add-rs label {
+    display: block;
+}
+
+.confirm-warning {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.eval-list-header, .pct-complete, .rs-details {
+    font-style: italic;
+    font-size: smaller;
+    margin-bottom: 0px;
+}
+
+/* TODO find out a programmatic way to disable this widget label */
+.results-result label {
+    display: none;
+}
+
+
+.results-test {
+    width: 10%;
+}
+
+.results-desc {
+    width: 75%;
+}
+
+.results-req {
+    width: 10%;
+}
+
+.results-result {
+    width: 20%;
+}
+
+.results h1 {
+    font-size: x-large;
+}
+
+.results h2 {
+    font-size: large;
+}
+
+.results h3 {
+    font-size: medium;
+}
+
+.results h4 {
+    font-size: medium;
+}
+
+.results h5, .results h6 {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.panel-left, .panel-right {
+    display: table-cell;
+}
+
+.panel-left {
+    width: 70%;
+}
+
+.panel-right {
+    width: 25%;
+}
+
+.panel-right a {
+    color: black;
+}
+
+
+
+
+

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>EPUB3 Readers</h1>
+
+<p style="margin-bottom: 20px">These results are based on evaluations of reading system capabilities as described in the <a target="_blank" href="https://github.com/mgylling/epub-testsuite">EPUB Testsuite</a>.</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Reading System</th>
+            {% for cat in categories %}
+            <th>{{cat.name}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    {% if scores|length != 0 %}
+    {% for score in scores %}
+    {% if score.scores != None %}
+        <tr>
+            <td><a href="rs/{{score.reading_system.id}}">{{ score.reading_system.name }} {{score.reading_system.version}}</a>
+                {% if score.reading_system.operating_system != None %}
+                <br/>
+                <span class="rs-details">{{ score.reading_system.operating_system }}</span>
+                {% endif %}
+                {% if score.reading_system.locale != None %}
+                <br/>
+                <span class="rs-details">Locale: {{ score.reading_system.locale }}</span>
+                {% endif %}
+
+            </td>
+            {% for value in score.scores %}
+            <td class="text-center">{{ value }}%</td>
+            {% endfor %}
+        </tr>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+        <tr colspan="100"><td>No data available</td></tr>
+    {% endif %}
+    </tbody>
+</table>
+{% endblock %}

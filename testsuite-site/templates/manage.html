@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}:: Manage{% endblock %}
+
+{% block content %}
+
+<p>You are logged in as {{ user.first_name }} {{ user.last_name }}</p>
+
+<h1 style="font-size: medium">Reading Systems</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Version</th>
+            <th>Locale</th>
+            <th>OS</th>
+            <th>Evaluations</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reading_systems %}
+        <tr>
+            <td>{{ r.name }} <br/>(<a href="/edit_rs/{{ r.id }}/">Edit</a>)</td>
+            <td>{{ r.version }}</td>
+            <td>{{ r.locale }} </td>
+            <td>{{ r.operating_system }} </td>
+            <td>
+                {% if r.public_evals|length > 0 %}
+                <p class="eval-list-header">Public:</p>
+                <ul class="list-unstyled">
+                    {% for ev in r.public_evals %}
+                    <li>
+                        <span title="Owned by {%if ev.user = user %}you {%else%}{{ev.user.username}}{%endif%}">{{ev.timestamp}}</span>
+                        {% if ev.user = user %}
+                        (<a href="/edit_evaluation/{{ev.id}}/" title="Edit evaluation">Edit</a> |
+                        <a href="/confirm_delete_ev?evalid={{ev.id}}" title="Delete evaluation">Delete</a>)
+                        {% endif %}
+                        <br/>
+                        <span class="pct-complete">Status: {{ ev.percent_complete }}% complete</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                {% if r.internal_evals|length > 0 %}
+                <p class="eval-list-header">Internal:</p>
+                <ul class="list-unstyled">
+                    {% for ev in r.internal_evals %}
+                    <li>
+                        <span title="Owned by {%if ev.user = user %} you {%else%} {{ev.user.username}}{%endif%}">{{ev.timestamp}}</span>
+                        {% if ev.user = user %}
+                        (<a href="/edit_evaluation/{{ev.id}}/" title="Edit evaluation">Edit</a> |
+                        <a href="/confirm_delete_ev?evalid={{ev.id}}" title="Delete evaluation">Delete</a>)
+                        {% endif %}
+                        <br/>
+                        <span class="pct-complete">({{ ev.percent_complete }}% complete)</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </td>
+            <td>
+                <ul class="plain">
+                    <li><a href="/new_evaluation?rs={{ r.id }}">Add Evaluation</a></li>
+                    {% if r.has_summary %}
+                    <li><a href="/rs/{{ r.id }}">View Summary</a></li>
+                    {% endif %}
+                    <li><a href="/confirm_delete_rs?rs={{ r.id }}">Delete Reading System</a></li>
+                    {% if r.has_summary == False %}
+                    <li>No summary available (no completed public evaluations).</li>
+                    {% endif %}
+                </ul>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="/new_rs/">Add Reading System</a></p>
+
+
+{% endblock %}
