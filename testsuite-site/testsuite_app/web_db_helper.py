@@ -45,7 +45,7 @@ def create_new_evaluation(testsuite, eval_type, reading_system, user):
         user = user,
         testsuite = testsuite,
         timestamp = generate_timestamp(),
-        percent_complete = 0.00
+        percent_complete = 0
     )
     evaluation.save()
 
@@ -59,7 +59,7 @@ def create_new_evaluation(testsuite, eval_type, reading_system, user):
     for cat in categories:
         score = Score(
             category = cat,
-            percent_passed = 0.00,
+            percent_passed = 0,
             evaluation = evaluation
         )
         score.save()
