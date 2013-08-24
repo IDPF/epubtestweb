@@ -1,4 +1,4 @@
-epubtest
+epubtestweb
 ========
 
 EPUB testsuite website
