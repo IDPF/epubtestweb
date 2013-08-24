@@ -104,7 +104,7 @@ class EditEvaluationView(UpdateView):
         if formset.is_valid():
             formset.save()
         web_db_helper.calculate_and_save_scores(evaluation)
-        evaluation.percent_complete = web_db_helper.get_pct_complete(evaluation)
+        evaluation.percent_complete = web_db_helper.float_to_decimal(web_db_helper.get_pct_complete(evaluation))
         evaluation.save()
         messages.add_message(request, messages.INFO, 'Evaluation saved.')
         return redirect('/manage/')

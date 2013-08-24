@@ -242,7 +242,20 @@ def calculate_and_save_scores(evaluation):
     categories = Category.objects.filter(testsuite = evaluation.testsuite)
     for cat in categories:
         score = Score.objects.get(evaluation = evaluation, category = cat)
-        score.percent_passed = get_category_score(evaluation, cat)
+        score.percent_passed = float_to_decimal(get_category_score(evaluation, cat))
         score.save()
 
+# to accomodate python 2.6
+# http://docs.python.org/release/2.6.7/library/decimal.html#decimal-faq
+def float_to_decimal(f):
+    "Convert a floating point number to a Decimal with no loss of information"
+    n, d = f.as_integer_ratio()
+    numerator, denominator = Decimal(n), Decimal(d)
+    ctx = Context(prec=60)
+    result = ctx.divide(numerator, denominator)
+    while ctx.flags[Inexact]:
+        ctx.flags[Inexact] = False
+        ctx.prec *= 2
+        result = ctx.divide(numerator, denominator)
+    return result
 
