@@ -1,9 +1,9 @@
 # Django settings for testsuite project.
 
-DEVELOPMENT_MODE = True
-#DEVELOPMENT_MODE = False
+#DEVELOPMENT_MODE = True
+DEVELOPMENT_MODE = False
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = False
 db_file = '/home/djangoweb/epubtestweb-db/testsuite.db'
 media_root = '/home/djangoweb/epubtestweb/testsuite-site/media'
@@ -182,5 +182,5 @@ LOGGING = {
 AUTH_USER_MODEL = 'testsuite_app.UserProfile'
 LOGIN_REDIRECT_URL = '/manage/'
 
-APPEND_SLASH = False
+APPEND_SLASH = True
 
