@@ -34,7 +34,7 @@
                         <span title="Owned by {%if ev.user = user %}you {%else%}{{ev.user.username}}{%endif%}">{{ev.timestamp}}</span>
                         {% if ev.user = user %}
                         (<a href="/edit_evaluation/{{ev.id}}/" title="Edit evaluation">Edit</a> |
-                        <a href="/confirm_delete_ev?evalid={{ev.id}}" title="Delete evaluation">Delete</a>)
+                        <a href="/confirm_delete_ev/?evalid={{ev.id}}" title="Delete evaluation">Delete</a>)
                         {% endif %}
                         <br/>
                         <span class="pct-complete">Status: {{ ev.percent_complete }}% complete</span>
@@ -51,7 +51,7 @@
                         <span title="Owned by {%if ev.user = user %} you {%else%} {{ev.user.username}}{%endif%}">{{ev.timestamp}}</span>
                         {% if ev.user = user %}
                         (<a href="/edit_evaluation/{{ev.id}}/" title="Edit evaluation">Edit</a> |
-                        <a href="/confirm_delete_ev?evalid={{ev.id}}" title="Delete evaluation">Delete</a>)
+                        <a href="/confirm_delete_ev/?evalid={{ev.id}}" title="Delete evaluation">Delete</a>)
                         {% endif %}
                         <br/>
                         <span class="pct-complete">({{ ev.percent_complete }}% complete)</span>
@@ -62,11 +62,11 @@
             </td>
             <td>
                 <ul class="plain">
-                    <li><a href="/new_evaluation?rs={{ r.id }}">Add Evaluation</a></li>
+                    <li><a href="/new_evaluation/?rs={{ r.id }}">Add Evaluation</a></li>
                     {% if r.has_summary %}
                     <li><a href="/rs/{{ r.id }}/">View Summary</a></li>
                     {% endif %}
-                    <li><a href="/confirm_delete_rs?rs={{ r.id }}">Delete Reading System</a></li>
+                    <li><a href="/confirm_delete_rs/?rs={{ r.id }}">Delete Reading System</a></li>
                     {% if r.has_summary == False %}
                     <li>No summary available (no completed public evaluations).</li>
                     {% endif %}

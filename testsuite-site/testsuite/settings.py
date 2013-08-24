@@ -1,11 +1,11 @@
 # Django settings for testsuite project.
 
-#DEVELOPMENT_MODE = True
-DEVELOPMENT_MODE = False
+DEVELOPMENT_MODE = True
+#DEVELOPMENT_MODE = False
 
 DEBUG = False
 TEMPLATE_DEBUG = False
-db_file = '/home/djangoweb/epubtestweb/testsuite-site/testsuite.db'
+db_file = '/home/djangoweb/epubtestweb-db/testsuite.db'
 media_root = '/home/djangoweb/epubtestweb/testsuite-site/media'
 media_url = '/media/'
 template_dir = '/home/djangoweb/epubtestweb/testsuite-site/templates'
@@ -16,11 +16,11 @@ static_root = '/home/djangoweb/epubtestweb/testsuite-site/static'
 if DEVELOPMENT_MODE == True:
     DEBUG = True
     TEMPLATE_DEBUG = DEBUG
-    db_file = '/Users/marisa/Projects/epubtestweb/testsuite-site/testsuite.db'
+    db_file = '/Users/marisa/Projects/epubtestweb-db/testsuite.db'
     media_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/media'
     media_url = '/media/'
     template_dir = '/Users/marisa/Projects/epubtestweb/testsuite-site/templates'
-    static_root = ''
+    static_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/static'
     static_url = '/static/'
 
 
