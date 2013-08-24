@@ -1,16 +1,16 @@
 # Django settings for testsuite project.
 
-DEVELOPMENT_MODE = True
-# DEVELOPMENT_MODE = False
+#DEVELOPMENT_MODE = True
+DEVELOPMENT_MODE = False
 
 DEBUG = False
 TEMPLATE_DEBUG = False
-db_file = 'TODO'
-media_root = 'TODO'
+db_file = '/home/djangoweb/epubtestweb/testsuite-site/testsuite.db'
+media_root = '/home/djangoweb/epubtestweb/testsuite-site/media'
 media_url = '/media/'
-template_dir = 'TODO'
+template_dir = '/home/djangoweb/epubtestweb/testsuite-site/templates'
 static_url = '/static/'
-static_root = 'TODO'
+static_root = '/home/djangoweb/epubtestweb/testsuite-site/static'
 
 # development mode overrides
 if DEVELOPMENT_MODE == True:
@@ -44,13 +44,13 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['54.221.241.178']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Los_Angeles'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -182,4 +182,5 @@ LOGGING = {
 AUTH_USER_MODEL = 'testsuite_app.UserProfile'
 LOGIN_REDIRECT_URL = '/manage/'
 
+APPEND_SLASH = False
 
