@@ -119,7 +119,7 @@ class ConfirmDeleteRSView(TemplateView):
         return render(request, self.template_name,
             {"header": 'Confirm delete',
             "warning": "You are about to delete '{0}', which also deletes all its evaluations. Proceed?".format(rs_desc),
-            "confirm_url": "/delete_rs?rs={0}".format(rs_id),
+            "confirm_url": "/delete_rs/?rs={0}".format(rs_id),
             "cancel_url": "/manage/"
             })
 
@@ -134,7 +134,7 @@ class ConfirmDeleteEvalView(TemplateView):
         return render(request, self.template_name,
             {"heading": 'Confirm delete',
             "warning": warning,
-            "confirm_url": "/delete_ev?evalid={0}".format(eval_id),
+            "confirm_url": "/delete_ev/?evalid={0}".format(eval_id),
             "cancel_url": "/manage/".format(eval_id)
             })
 
