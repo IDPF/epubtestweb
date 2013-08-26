@@ -246,7 +246,7 @@ def calculate_and_save_scores(evaluation):
         score.percent_passed = float_to_decimal(get_category_score(evaluation, cat))
         score.save()
 
-# to accomodate python 2.6
+# this is the "right way"...
 # http://docs.python.org/release/2.6.7/library/decimal.html#decimal-faq
 def float_to_decimal1(f):
     "Convert a floating point number to a Decimal with no loss of information"
@@ -260,6 +260,10 @@ def float_to_decimal1(f):
         result = ctx.divide(numerator, denominator)
     return result
 
+# and this is the way that works in practice
+# note that the problem solved by either function is permanently solved in python 2.7+
+# also note we are just calculating an approximate percentage (e.g. percent of form completed),
+# and can live with a rounding error past 2 decimal places
 def float_to_decimal(f):
     s = str(f)
     return Decimal(s)
