@@ -3,7 +3,7 @@
 #DEVELOPMENT_MODE = True
 DEVELOPMENT_MODE = False
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = False
 db_file = '/home/djangoweb/epubtestweb-db/testsuite.db'
 media_root = '/home/djangoweb/epubtestweb/testsuite-site/media'
