@@ -1,4 +1,5 @@
 from django.contrib import admin
+#from models import UserProfile
 from models import UserProfile
 
 from django.contrib.auth import get_user_model

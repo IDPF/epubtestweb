@@ -1,45 +1,32 @@
-from django.views.generic import TemplateView, ListView, View
-from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.edit import FormView
-
-from django.shortcuts import render
-from django.utils import timezone
-
-from django.http import HttpResponseRedirect
-
-import web_db_helper
-from models import *
-from forms import *
-
-from django.core.context_processors import csrf
-from django.shortcuts import render_to_response, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.auth import logout
-from django.contrib import messages
 from datetime import datetime
 from urllib import urlencode
 
+from django.views.generic import TemplateView, View
+from django.views.generic.edit import UpdateView
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
-from django.forms.models import inlineformset_factory
+from models import *
+from forms import *
+import helper_functions
 
-# home page
 class IndexView(TemplateView):
+    "Home page"
     template_name = "index.html"
 
     def get(self, request, *args, **kwargs):
-        ts = web_db_helper.get_most_recent_testsuite()
-        cats = web_db_helper.get_top_level_categories(ts)
-        scores = web_db_helper.get_scores(cats)
+        ts = helper_functions.get_most_recent_testsuite()
+        cats = ts.get_top_level_categories()
+        scores = helper_functions.get_scores(cats)
         return render(request, self.template_name, {'categories': cats, 'scores': scores})
 
-# simple about page
 class AboutView(TemplateView):
+    "About page"
     template_name = "about.html"
 
-# details for a single reading system
 class ReadingSystemView(TemplateView):
+    "Details for a single reading system"
     template_name = "reading_system.html"
 
     def get(self, request, *args, **kwargs):
@@ -66,22 +53,22 @@ class ReadingSystemView(TemplateView):
         return render(request, self.template_name, {'rs': rs, 'data': data, 'eval_date': eval_date,
             'first_half': first_half, 'second_half': second_half})
 
-# my account
 class ManageView(TemplateView):
+    "Manage page"
     template_name = "manage.html"
 
     def get(self, request, *args, **kwargs):
         reading_systems = ReadingSystem.objects.all()
         for r in reading_systems:
-            r.public_evals = web_db_helper.get_public_evaluations(r)
-            r.internal_evals = web_db_helper.get_internal_evaluations(r)
-            r.has_summary = web_db_helper.get_most_recent_evaluation(r) != None
+            r.public_evals = r.get_public_evaluations()
+            r.internal_evals = r.get_internal_evaluations()
+            r.has_summary = r.get_most_recent_evaluation() != None
 
         return render(request, self.template_name,
             {'reading_systems': reading_systems})
 
-# edit an evaluation
 class EditEvaluationView(UpdateView):
+    "Edit evaluation page"
     template_name = "edit_evaluation.html"
 
     def get(self, request, *args, **kwargs):
@@ -94,19 +81,18 @@ class EditEvaluationView(UpdateView):
         eval_form = EvaluationForm(instance = evaluation)
         results_form = ResultFormSet(instance = evaluation)
 
-        data = web_db_helper.get_reading_system_evaluation_as_nested_categories(evaluation)
+        data = evaluation.get_evaluation_as_nested_categories()
         integrated_data = []
         for d in data:
-            tmp = web_db_helper.mash_summary_data_with_form_data(d, results_form)
+            helper_functions.mash_summary_data_with_form_data(d, results_form)
             integrated_data.append(d)
-
 
         return render(request, self.template_name,
             {'eval_form': eval_form, 'results_form': results_form, 'data': integrated_data})
 
     def post(self, request, *args, **kwargs):
         evaluation = Evaluation.objects.get(id=kwargs['pk'])
-        evaluation.timestamp = web_db_helper.generate_timestamp()
+        evaluation.timestamp = helper_functions.generate_timestamp()
 
         form = EvaluationForm(request.POST, instance=evaluation)
         if form.is_valid():
@@ -115,8 +101,8 @@ class EditEvaluationView(UpdateView):
         formset = ResultFormSet(request.POST, instance=evaluation)
         if formset.is_valid():
             formset.save()
-        web_db_helper.calculate_and_save_scores(evaluation)
-        evaluation.percent_complete = web_db_helper.float_to_decimal(web_db_helper.get_pct_complete(evaluation))
+        evaluation.calculate_and_save_scores()
+        evaluation.percent_complete = evaluation.get_pct_complete()
         evaluation.save()
         messages.add_message(request, messages.INFO, 'Evaluation saved.')
         return redirect('/manage/')
@@ -203,9 +189,9 @@ class CreateNewEvaluationView(View):
 
     def get(self, request, *args, **kwargs):
         rs_id = request.GET.get('rs', '0')
-        testsuite = web_db_helper.get_most_recent_testsuite()
+        testsuite = helper_functions.get_most_recent_testsuite()
         rs = ReadingSystem.objects.get(id = rs_id)
-        new_eval = web_db_helper.create_new_evaluation(testsuite, "1", rs, request.user)
+        new_eval = rs.create_new_evaluation(testsuite, "1", request.user)
         if new_eval is not None:
             return redirect("/edit_evaluation/{0}/".format(new_eval.id))
         else:
@@ -214,17 +200,6 @@ class CreateNewEvaluationView(View):
 ################################################
 # helper functions
 ################################################
-
-def create_new_evaluation(request, onsuccess='/edit_evaluation/', onfail='/manage/'):
-    rs_id = request.GET.get('rs', '0')
-    testsuite = web_db_helper.get_most_recent_testsuite()
-    rs = ReadingSystem.objects.get(id = rs_id)
-    new_eval = web_db_helper.create_new_evaluation(testsuite, "1", rs, request.user)
-
-    if new_eval is not None:
-        return redirect(onsuccess + str(new_eval.id) + "/")
-    else:
-        return redirect(onfail)
 
 def auth_and_login(request, onfail='/login/'):
     if request.POST:

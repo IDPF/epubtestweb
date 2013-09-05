@@ -2,7 +2,7 @@
 
 from testsuite_app import models
 from random import randrange
-from testsuite_app import web_db_helper
+from testsuite_app import util, evaluation_helper, scoring
 
 
 def add_data():
@@ -57,8 +57,8 @@ def add_reading_system():
     return (rs1, rs2)
 
 def add_evaluation(user, rs):
-    ts = web_db_helper.get_most_recent_testsuite()
-    evaluation = web_db_helper.create_new_evaluation(
+    ts = util.get_most_recent_testsuite()
+    evaluation = evaluation_helper.create_new_evaluation(
         ts,
         "2",
         rs,
@@ -69,10 +69,10 @@ def add_evaluation(user, rs):
     for r in results:
         r.result = str(randrange(1, 4))
         r.save()
-    evaluation.percent_complete = web_db_helper.get_pct_complete(evaluation)
+    evaluation.percent_complete = evaluation_helper.get_pct_complete(evaluation)
 
     # save the scores for the top-level categories
-    web_db_helper.calculate_and_save_scores(evaluation)
+    scoring.calculate_and_save_scores(evaluation)
 
     evaluation.save()
     return evaluation

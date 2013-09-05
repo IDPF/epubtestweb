@@ -82,5 +82,5 @@ def print_item(item):
     if type(item) == Test:
         prefix = "Test: "
 
-    depth = get_depth(item)
+    depth = util.get_depth(item)
     print "{0}{1}{2}".format("\t" * depth, prefix, item.description.encode('utf-8'))

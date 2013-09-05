@@ -1,11 +1,11 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from testsuite_app.views import *
+from django.contrib.auth.decorators import login_required
 
 admin.autodiscover()
-
 
 urlpatterns = patterns('',
     (r'^$', IndexView.as_view()),

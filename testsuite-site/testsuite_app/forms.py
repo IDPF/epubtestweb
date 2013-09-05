@@ -25,7 +25,7 @@ class EvaluationForm(ModelForm):
         fields = ['evaluation_type', 'reading_system']
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user','')
+        #user = kwargs.pop('user','')
         super(EvaluationForm, self).__init__(*args, **kwargs)
         self.fields['reading_system'] = ReadingSystemChoiceField(queryset=ReadingSystem.objects.all())
 
