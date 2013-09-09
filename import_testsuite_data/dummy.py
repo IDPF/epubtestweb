@@ -9,12 +9,12 @@ def add_data():
     user = add_user()
     print "Added user: "
     print user.username
-    rs = add_reading_system()
+    rs1, rs2 = add_reading_system()
     print "\nAdded reading system: "
-    print rs.name
-    add_evaluation(user, rs)
+    add_evaluation(user, rs1)
+    add_evaluation(user, rs2)
 
-    print "\nAdded 1 evaluation."
+    print "\nAdded 2 evaluations."
 
 
 def clear_data():
@@ -45,7 +45,16 @@ def add_reading_system():
     )
     rs1.save()
 
-    return rs1
+    rs2 = models.ReadingSystem(
+        locale = "US",
+        name = "FasterReader",
+        operating_system = "OSX",
+        sdk_version = "N/A",
+        version = "2.0"
+    )
+    rs2.save()
+
+    return (rs1, rs2)
 
 def add_evaluation(user, rs):
     ts = web_db_helper.get_most_recent_testsuite()

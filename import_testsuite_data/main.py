@@ -34,6 +34,8 @@ def import_testsuite(args):
                 # this will add a new testsuite
                 epub_parser = parser.EpubParser()
                 epub_parser.parse(fullpath, new_category, testsuite, cat['CategoryDisplayDepthLimit'])
+            else:
+                print "Not a directory: {0}".format(fullpath)
 
     # TODO: look for any tests that haven't changed since the last import
     # and copy reading system results over
@@ -56,9 +58,17 @@ def add_eval(args):
         print "No user; could not create evaluation."
         return
 
-    rs = dummy.add_reading_system()
-    dummy.add_evaluation(user, rs)
+    rs1, rs2 = dummy.add_reading_system()
+    dummy.add_evaluation(user, rs1)
+    dummy.add_evaluation(user, rs2)
     print "Data added."
+
+# settings.py must contain a definition for the 'previous' database in order for this to work
+def copy_users(args):
+    users = models.UserProfile.objects.using('previous').all()
+    for u in users:
+        u.save(using='default')
+    print "Copied users from old database."
 
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
@@ -88,6 +98,8 @@ def main():
     add_eval_parser = subparsers.add_parser('add-evaluation', help="Add a new evaluation")
     add_eval_parser.set_defaults(func = add_eval)
 
+    copy_users_parser = subparsers.add_parser('copy-users', help="Copy all users")
+    copy_users_parser.set_defaults(func = copy_users)
 
     args = argparser.parse_args()
     args.func(args)

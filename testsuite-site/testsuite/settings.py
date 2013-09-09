@@ -1,7 +1,7 @@
 # Django settings for testsuite project.
 
-#DEVELOPMENT_MODE = True
-DEVELOPMENT_MODE = False
+DEVELOPMENT_MODE = True
+#DEVELOPMENT_MODE = False
 
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -34,6 +34,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': db_file,                      # Or path to database file if using sqlite3.
+        # The following settings are not used with sqlite3:
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                      # Set to empty string for default.
+    },
+
+    'previous': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '/Users/marisa/Projects/epubtestweb-db/testsuite.db.v1',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',

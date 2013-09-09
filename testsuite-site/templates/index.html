@@ -6,12 +6,12 @@
 
 <p style="margin-bottom: 20px">These results are based on evaluations of reading system capabilities as described in the <a target="_blank" href="https://github.com/mgylling/epub-testsuite">EPUB Testsuite</a>.</p>
 
-<table class="table table-striped">
+<table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>Reading System</th>
+            <th class="text-center">Reading System</th>
             {% for cat in categories %}
-            <th>{{cat.name}}</th>
+            <th class="text-center">{{cat.name}}</th>
             {% endfor %}
         </tr>
     </thead>

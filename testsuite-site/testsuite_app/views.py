@@ -52,7 +52,19 @@ class ReadingSystemView(TemplateView):
         data = web_db_helper.get_reading_system_evaluation_as_nested_categories(evaluation)
         print 'end calculations .. {0}'.format(web_db_helper.generate_timestamp())
         eval_date = web_db_helper.get_most_recent_evaluation(rs).timestamp
-        return render(request, self.template_name, {'rs': rs, 'data': data, 'eval_date': eval_date})
+
+        # split the data across 2 lists to make it easy to consume for the reading system view
+        # TODO replace this with a multicolumn definition list
+        first_half = []
+        second_half = []
+        for n in range(0, len(data)):
+            if n < len(data)/2:
+                first_half.append(data[n])
+            else:
+                second_half.append(data[n])
+
+        return render(request, self.template_name, {'rs': rs, 'data': data, 'eval_date': eval_date,
+            'first_half': first_half, 'second_half': second_half})
 
 # my account
 class ManageView(TemplateView):

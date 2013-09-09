@@ -1,24 +1,40 @@
 Categories:
     -
-        Name: XHTML, SVG, Scripting, Styling and Layout
+        Name: Content Documents
         CategoryDisplayDepthLimit: Internal
         Files:
             - epub30-test-0100
-            - epub30-test-0200
-
+    -
+        Name: Styling
+        CategoryDisplayDepthLimit: Internal
+        Files:
+            - epub30-test-0101
+    -
+        Name: Scripting
+        CategoryDisplayDepthLimit: Internal
+        Files:
+            - epub30-test-0102
+    -
+        Name: Font Embedding and Obfuscation
+        CategoryDisplayDepthLimit: Internal
+        Files:
+            - epub30-test-0103
+    -
+        Name: Text-to-Speech
+        CategoryDisplayDepthLimit: Internal
+        Files:
+            - epub30-test-0104
     -
         Name: Media Overlays
         CategoryDisplayDepthLimit: Epub
         Files:
             - epub30-test-0120
             - epub30-test-0220
-
     -
         Name: Global Language Support
         CategoryDisplayDepthLimit: Internal
         Files:
             - epub30-test-0130
-
     -
         Name: Content Fragment Identifiers
         CategoryDisplayDepthLimit: Internal
@@ -26,21 +42,31 @@ Categories:
             - epub30-test-0140
 
     -
-        Name: Orientation and Spread
-        CategoryDisplayDepthLimit: External
+        Name: Navigation
+        CategoryDisplayDepthLimit: Internal
         Files:
-            - epub30-test-0200-fixed-format-wt-orientation=auto-and-spread=auto
-            - epub30-test-0200-fixed-format-wt-orientation=auto-and-spread=both
-            - epub30-test-0200-fixed-format-wt-orientation=auto-and-spread=landscape
-            - epub30-test-0200-fixed-format-wt-orientation=auto-and-spread=none
-            - epub30-test-0200-fixed-format-wt-orientation=auto-and-spread=portrait
-            - epub30-test-0200-fixed-format-wt-orientation=landscape-and-spread=auto
-            - epub30-test-0200-fixed-format-wt-orientation=landscape-and-spread=both
-            - epub30-test-0200-fixed-format-wt-orientation=landscape-and-spread=landscape
-            - epub30-test-0200-fixed-format-wt-orientation=landscape-and-spread=none
-            - epub30-test-0200-fixed-format-wt-orientation=landscape-and-spread=portrait
-            - epub30-test-0200-fixed-format-wt-orientation=portrait-and-spread=auto
-            - epub30-test-0200-fixed-format-wt-orientation=portrait-and-spread=both
-            - epub30-test-0200-fixed-format-wt-orientation=portrait-and-spread=landscape
-            - epub30-test-0200-fixed-format-wt-orientation=portrait-and-spread=none
-            - epub30-test-0200-fixed-format-wt-orientation=portrait-and-spread=portrait
+            - epub30-test-0150
+    -
+        Name: Fixed Layout
+        CategoryDisplayDepthLimit: Epub
+        Files:
+            - epub30-test-0201
+            - epub30-test-0202
+            - epub30-test-0203
+            - epub30-test-0204
+            - epub30-test-0205
+            - epub30-test-0206
+            - epub30-test-0207
+            - epub30-test-0208
+            - epub30-test-0209
+            - epub30-test-0210
+            - epub30-test-0211
+            - epub30-test-0212
+            - epub30-test-0213
+            - epub30-test-0214
+            - epub30-test-0215
+            - epub30-test-0216
+            - epub30-test-0217
+            - epub30-test-0218
+            - epub30-test-0219
+

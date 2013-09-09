@@ -33,20 +33,35 @@
         <dd> {{ eval_date }}</dd>
     </dl>
 
-    <dl class="panel-right">
-        {% for cat in data %}
+
+    <dl class="scores panel-right">
+        {% for cat in first_half %}
         <dt><a href="#c{{cat.item.id}}">{{cat.item.name}}</a></dt>
         <dd>
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="{{cat.item.category_score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{cat.item.category_score}}%; height: 100%">
-                <span style="font-style: italic; {%if cat.item.category_score < 10 %} color: black;{%endif%}">
-                    {{cat.item.category_score}}%</span>
+                    <span style="font-style: italic; {%if cat.item.category_score < 10 %} color: black;{%endif%}">
+                        {{cat.item.category_score}}%</span>
                 </div>
-                </div>
-
+            </div>
         </dd>
         {%endfor%}
     </dl>
+
+    <dl class="scores panel-right">
+        {% for cat in second_half %}
+        <dt><a href="#c{{cat.item.id}}">{{cat.item.name}}</a></dt>
+        <dd>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{cat.item.category_score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{cat.item.category_score}}%; height: 100%">
+                    <span style="font-style: italic; {%if cat.item.category_score < 10 %} color: black;{%endif%}">
+                        {{cat.item.category_score}}%</span>
+                </div>
+            </div>
+        </dd>
+        {%endfor%}
+    </dl>
+
 </div>
 
 <div class="results category-accordion">

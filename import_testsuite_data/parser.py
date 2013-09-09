@@ -37,7 +37,7 @@ class EpubParser:
         opfpath = self.parse_container()
         navpath = self.parse_opf(opfpath)
         if self.restriction >= 2:
-            self.epub_category = import_db_helper.add_category('2', self.description, parent_category, testsuite)
+            self.epub_category = import_db_helper.add_category('2', self.title, parent_category, testsuite)
         else:
             self.epub_category = parent_category
         self.parse_nav(navpath)
@@ -59,6 +59,7 @@ class EpubParser:
         return navpath
 
     def parse_nav(self, navpath):
+        print "Processing {0}".format(navpath)
         self.dirname = os.path.dirname(navpath)
         navdoc = parse_xml(navpath)
         toc_elm = navdoc.xpath("//xhtml:nav[@epub:type='toc']/xhtml:ol", namespaces = NSMAP)[0]
@@ -75,18 +76,21 @@ class EpubParser:
     def process_toc(self, elm, parent_category):
         for c in elm.xpath("xhtml:li", namespaces = NSMAP):
             # Test or Category?
-            href = c.xpath("xhtml:a/@href", namespaces = NSMAP)[0]
-            uri = urlparse(os.path.join(self.dirname, href))
-            test_section = self.get_test(uri)
-            if test_section != None:
-                xhtml = etree.tostring(test_section).strip() # trim whitespace
-                name = self.get_label(c)
-                desc = self.get_desc(test_section)
-                testid = uri.fragment
-                required = test_section.attrib['class'].find('ctest') != -1
-                import_db_helper.add_test(name, desc, parent_category, required, testid, self.testsuite, xhtml)
+            xpathres = c.xpath("xhtml:a/@href", namespaces = NSMAP)
+            test_section = None
+            if len(xpathres) != 0:
+                href = xpathres[0]
+                uri = urlparse(os.path.join(self.dirname, href))
+                test_section = self.get_test(uri)
+                if test_section != None:
+                    xhtml = etree.tostring(test_section).strip() # trim whitespace
+                    name = self.get_label(c)
+                    desc = self.get_desc(test_section)
+                    testid = uri.fragment
+                    required = test_section.attrib['class'].find('ctest') != -1
+                    import_db_helper.add_test(name, desc, parent_category, required, testid, self.testsuite, xhtml)
 
-            else:
+            if test_section == None:
                 # does this container eventually contain a test? otherwise we won't include it.
                 if self.test_for_tests(c):
                     desc = self.get_label(c)
@@ -115,10 +119,14 @@ class EpubParser:
     # note: uri is absolute
     def get_test(self, uri):
         if uri.fragment == "":
-            #print "Not a test... {0}".format(uri.path)
+            #print "Not a test: {0}".format(uri.path)
             return None
         doc = parse_xml(uri.path)
-        elm = doc.xpath("//*[@id='{0}']".format(uri.fragment))[0]
+        xpathres = doc.xpath("//*[@id='{0}']".format(uri.fragment))
+        if len(xpathres) == 0:
+            print "Not found: {0}".format(uri.fragment)
+            return None
+        elm = xpathres[0]
         if elm.attrib.has_key('class') == False:
             return None
 
@@ -141,7 +149,7 @@ class EpubParser:
     # elm is a section
     # return the contents of the child element with @class='desc'
     def get_desc(self, elm):
-        desc_elm = elm.xpath("descendant::xhtml:*[@class = 'desc']", namespaces = NSMAP)[0]
+        desc_elm = elm.xpath("descendant::*[@class = 'desc']", namespaces = NSMAP)[0]
         stringify = etree.XPath("string()")
         desc = stringify(desc_elm)
         return desc
