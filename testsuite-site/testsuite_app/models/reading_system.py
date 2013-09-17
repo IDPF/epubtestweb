@@ -1,7 +1,7 @@
 from django.db import models
 from common import *
-from evaluation import *
 
+# note: from evaluation import Evaluation was not working here
 
 class ReadingSystem(models.Model):
     class Meta:
@@ -10,6 +10,7 @@ class ReadingSystem(models.Model):
 
 
     locale = models.CharField(max_length = SHORT_STRING, null = True, blank = True)
+    evaluation = models.OneToOneField('Evaluation')
     name = models.CharField(max_length = LONG_STRING, blank = False, null = False)
     operating_system = models.CharField(max_length = SHORT_STRING, null = True, blank = True)
     sdk_version = models.CharField(max_length = SHORT_STRING, null = True, blank = True)
@@ -17,7 +18,12 @@ class ReadingSystem(models.Model):
 
     def create_new_evaluation(self, testsuite, evaluation_type, user):
         "Create and return a new evaluation, along with an initialized set of result objects."
-
+        from evaluation import Evaluation
+        from test import Test
+        from score import Score
+        from result import Result
+        from testsuite_app.helper_functions import generate_timestamp
+        from category import Category
         tests = Test.objects.filter(testsuite = testsuite)
         # is this check necessary?
         if len(tests) == 0:
@@ -53,6 +59,7 @@ class ReadingSystem(models.Model):
 
     def get_most_recent_evaluation(self):
         "Get the most recent public complete evaluation"
+        from evaluation import Evaluation
         evaluations = Evaluation.objects.filter(reading_system = self, evaluation_type = "2").order_by("-timestamp")
         for e in evaluations:
             if e.is_evaluation_complete():
@@ -61,6 +68,7 @@ class ReadingSystem(models.Model):
 
     def get_complete_evaluations(self):
         "Return all complete evaluations, most recent first."
+        from evaluation import Evaluation
         evals = Evaluation.objects.filter(reading_system = self).order_by("-timestamp")
         retval = []
         for e in evals:
@@ -69,6 +77,7 @@ class ReadingSystem(models.Model):
         return retval
 
     def get_incomplete_evaluations(self):
+        from evaluation import Evaluation
         "Return all incomplete evaluations for the given reading system, most recent first."
         evals = Evaluation.objects.filter(reading_system = self).order_by("-timestamp")
         retval = []
@@ -78,6 +87,7 @@ class ReadingSystem(models.Model):
         return retval
 
     def get_public_evaluations(self):
+        from evaluation import Evaluation
         "Return all public evaluations for the given reading system, most recent first."
         evals = Evaluation.objects.filter(reading_system = self, evaluation_type = "2").order_by("-timestamp")
         retval = []
@@ -86,6 +96,7 @@ class ReadingSystem(models.Model):
         return retval
 
     def get_internal_evaluations(self):
+        from evaluation import Evaluation
         "Return all internal evaluations for the given reading system, most recent first."
         evals = Evaluation.objects.filter(reading_system = self, evaluation_type = "1").order_by("-timestamp")
         retval = []

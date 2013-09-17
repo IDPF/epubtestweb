@@ -25,4 +25,4 @@ class ItemMixin():
         if self.parent_category == None:
             return 0
         else:
-            return self.get_depth(self.parent_category) + 1
+            return self.parent_category.get_depth() + 1

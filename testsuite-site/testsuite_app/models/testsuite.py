@@ -1,6 +1,5 @@
 from django.db import models
 from common import *
-from category import *
 
 class TestSuite(models.Model):
     class Meta:
@@ -12,5 +11,6 @@ class TestSuite(models.Model):
     version_revision = models.IntegerField()
 
     def get_top_level_categories(self):
+        from category import Category
         return Category.objects.filter(testsuite = self, parent_category = None)
 

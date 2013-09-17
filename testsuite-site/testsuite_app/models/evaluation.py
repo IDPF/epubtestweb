@@ -1,9 +1,6 @@
 from django.db import models
-from reading_system import *
-from user_profile import *
-from testsuite import *
 from common import *
-from result import *
+from decimal import *
 
 class Evaluation(models.Model):
     class Meta:
@@ -11,28 +8,31 @@ class Evaluation(models.Model):
         app_label= 'testsuite_app'
 
     evaluation_type = models.CharField(max_length = 1, choices = EVALUATION_TYPE)
-    reading_system = models.ForeignKey(ReadingSystem)
     user = models.ForeignKey('UserProfile') # workaround in quotes
-    testsuite = models.ForeignKey(TestSuite)
+    testsuite = models.ForeignKey('TestSuite')
     timestamp = models.DateTimeField()
     percent_complete = models.DecimalField(decimal_places = 2, max_digits = 5)
 
 
     def is_evaluation_complete(self):
         "Test if the evaluation is complete (all results must have a value != None)"
+        from result import Result
         incomplete_results = Result.objects.filter(evaluation = self, result = None)
         return incomplete_results.count() == 0
 
     def get_evaluation_as_nested_categories(self):
         "Return a web template-friendly array of dicts describing an evaluation and its categories."
-        top_level_categories = self.testsuite.get_top_level_categories(self.testsuite)
+        top_level_categories = self.testsuite.get_top_level_categories()
         summary = []
         for c in top_level_categories:
-            summary.append(summarize(c, self))
+            summary.append(self.summarize(c))
         return summary
 
     def summarize(self, item):
         "Return a nested structure of categories and tests. item is a category or test."
+        from category import Category
+        from score import Score
+        from result import Result
         if type(item) == Category:
             score = Score.objects.get(evaluation = self, category = item)
             # append the score as a category property
@@ -41,7 +41,7 @@ class Evaluation(models.Model):
             subcats = Category.objects.filter(parent_category = item)
             subcat_summaries = []
             for c in subcats:
-                subcat_summaries.append(summarize(c, self))
+                subcat_summaries.append(self.summarize(c))
             results = Result.objects.filter(test__parent_category = item, evaluation = self)
             return {"item": item, "depth": item.get_depth(), "subcategories": subcat_summaries, "results": results}
 
@@ -58,12 +58,14 @@ class Evaluation(models.Model):
 
     def get_pct_complete(self):
         "Calculate the percent complete."
+        from result import Result
         all_results = Result.objects.filter(evaluation = self)
         complete_results = Result.objects.filter(evaluation = self).exclude(result = None)
         pct_complete = (complete_results.count() * 1.0) / (all_results.count() * 1.0) * 100.0
         return self.float_to_decimal(pct_complete)
 
     def get_results(self, category):
+        from result import Result
         tests = category.get_tests()
         results = []
         for t in tests:
@@ -73,6 +75,7 @@ class Evaluation(models.Model):
 
     # return a dict {category: score, category: score, ...}
     def get_top_level_category_scores(self):
+        from category import Category
         top_level_categories = Category.objects.filter(testsuite = self.testsuite, parent_category = None)
         retval = {}
         for cat in top_level_categories:
@@ -120,6 +123,8 @@ class Evaluation(models.Model):
             return 0
 
     def calculate_and_save_scores(self):
+        from category import Category
+        from score import Score
         categories = Category.objects.filter(testsuite = self.testsuite)
         for cat in categories:
             score = Score.objects.get(evaluation = self, category = cat)

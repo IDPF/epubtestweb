@@ -20,7 +20,7 @@ class Category(models.Model, ItemMixin):
         retval = []
         for t in tests:
             retval.append(t)
-        subcats = self.objects.filter(parent_category = self)
+        subcats = Category.objects.filter(parent_category = self)
         for cat in subcats:
-            retval.extend(get_tests(cat))
+            retval.extend(cat.get_tests())
         return retval

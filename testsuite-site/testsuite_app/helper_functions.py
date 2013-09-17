@@ -1,4 +1,5 @@
-from models import *
+from datetime import datetime
+from django.utils.timezone import utc
 
 def find_form_for_object(obj, formset):
     for f in formset.forms:
@@ -16,6 +17,7 @@ def mash_summary_data_with_form_data(summary_data, form_data):
 
 # get the most recent scores for each reading system
 def get_scores(categories):
+    from models import ReadingSystem
     retval = []
     reading_systems = ReadingSystem.objects.all()
     for rs in reading_systems:
@@ -32,6 +34,7 @@ def get_scores(categories):
     return retval
 
 def get_most_recent_testsuite():
+    from models import TestSuite
     return TestSuite.objects.order_by("-version_date").order_by("-version_revision")[0]
 
 def generate_timestamp():

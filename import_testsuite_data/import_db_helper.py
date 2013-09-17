@@ -3,6 +3,7 @@
 from testsuite_app.models import *
 from testsuite_app.web_db_helper import *
 from datetime import datetime
+from testsuite_app.models.common import *
 
 def generate_version_info():
     todays_date = datetime.today()
@@ -45,7 +46,7 @@ def add_test(name, description, parent_category, required, testid, testsuite, xh
 
 def add_category_restriction(category, limit):
     limit_ = '1'
-    for option in Category.CATEGORY_TYPE:
+    for option in CATEGORY_TYPE:
         if option[1] == limit:
             limit_ = option[0]
             break
@@ -57,7 +58,7 @@ def add_category_restriction(category, limit):
     return db_category_restriction
 
 def category_restriction_to_int(restriction):
-    for option in Category.CATEGORY_TYPE:
+    for option in CATEGORY_TYPE:
         if restriction == option[1]:
             return int(option[0])
     return 3 #the most relaxed restriction
