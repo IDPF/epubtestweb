@@ -14,12 +14,6 @@ class Evaluation(models.Model):
     percent_complete = models.DecimalField(decimal_places = 2, max_digits = 5)
 
 
-    def is_evaluation_complete(self):
-        "Test if the evaluation is complete (all results must have a value != None)"
-        from result import Result
-        incomplete_results = Result.objects.filter(evaluation = self, result = None)
-        return incomplete_results.count() == 0
-
     def get_evaluation_as_nested_categories(self):
         "Return a web template-friendly array of dicts describing an evaluation and its categories."
         top_level_categories = self.testsuite.get_top_level_categories()
