@@ -14,9 +14,9 @@ def generate_version_info():
         version_revision = same_date[0].version_revision + 1
     return (version_date, version_revision)
 
-def add_testsuite():
+def create_testsuite():
     version_date, version_revision = generate_version_info()
-    print "Adding TestSuite version {0}-{1}".format(version_date, version_revision)
+    print "Creating TestSuite version {0}-{1}".format(version_date, version_revision)
     ts = TestSuite(version_date = version_date, version_revision = version_revision)
     ts.save()
     return ts
@@ -63,6 +63,37 @@ def category_restriction_to_int(restriction):
             return int(option[0])
     return 3 #the most relaxed restriction
 
+def migrate_data(previous_testsuite):
+    "look for any tests that haven't changed since the last import and copy reading system results over"
+    reading_systems = ReadingSystem.objects.all()
+    for rs in reading_systems:
+        old_evaluation = rs.get_evaluation_for_testsuite(previous_testsuite)
+        new_evaluation = Evaluation.objects.create_evaluation(rs)
+
+        print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
+        results = new_evaluation.get_all_results()
+        print "Processing {0} results".format(len(results))
+        flag = False
+        for result in results:
+            try:
+                old_test_version = Test.objects.get(testsuite = old_evaluation.testsuite, testid = result.test.testid)
+            except Test.DoesNotExist:
+                # the test may be new
+                print "No previous version of test {0} was found".format(result.test.testid)
+                flag = True
+                continue
+
+            # if the ID (checked above) and xhtml for the test matches, then copy over the old result
+            if result.test.xhtml == old_test_version.xhtml:
+                print "Copying previous result for {0}".format(old_test_version.testid)
+                result.result = old_evaluation.get_result_by_testid(result.test.testid).result
+                result.save()
+            else:
+                print "Test {0} has changed from the previous test suite".format(result.test.testid)
+                flag = True
+        new_evaluation.evaluation_type = old_evaluation.evaluation_type
+        new_evaluation.flagged_for_review = flag
+        new_evaluation.save()
 
 
 # debug functions

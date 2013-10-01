@@ -2,15 +2,40 @@
 
 {% block title %}:: Confirm Action{% endblock %}
 
+{%block script %}
+<script>
+function delete_rs() {
+    $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+            // Send the token to same-origin, relative URLs only.
+            // Send the token only if the method warrants CSRF protection
+            // Using the CSRFToken value acquired earlier
+            xhr.setRequestHeader("X-CSRFToken", '{{csrf_token}}');
+    }
+});
+    $.ajax({
+        url: '{{ confirm_url }}',
+        type: 'DELETE',
+        success: function(){
+            window.location.href = "/manage/";
+        }
+    });
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 <h1>{{ heading }}</h1>
+
 <p class="confirm-warning">{{ warning }}</p>
 
-<p>
-  <a href="{{ confirm_url }}"><button class="btn btn-small btn-primary" type="button">Yes</button></a>
-  <a href="{{ cancel_url }}"><button class="btn btn-small" type="button">No</button></a>
-</p>
+<a onclick="delete_rs()" style="text-decoration: None">
+    <button class="btn btn-small" type="button">Yes</button>
+</a>
 
+<a href="/manage/" style="text-decoration: None">
+    <button class="btn btn-small" type="button">No</button>
+</a>
 
 {% endblock %}

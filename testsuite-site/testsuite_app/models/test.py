@@ -1,6 +1,5 @@
 from django.db import models
-from testsuite import *
-from common import *
+from common import LONG_STRING, SHORT_STRING, ItemMixin
 
 class Test(models.Model, ItemMixin):
     class Meta:
@@ -12,5 +11,5 @@ class Test(models.Model, ItemMixin):
     parent_category = models.ForeignKey('Category')
     required = models.BooleanField()
     testid = models.CharField(max_length = SHORT_STRING)
-    testsuite = models.ForeignKey(TestSuite)
+    testsuite = models.ForeignKey('TestSuite')
     xhtml =  models.TextField()

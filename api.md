@@ -1,41 +1,38 @@
+Site URIs
+========
+
+Manage
+/manage
+
+Reading System
+/rs/$ID
+
+Edit Reading System
+/rs/$ID/edit
+
+New Reading System
+/rs/new/
+
+Delete Reading System
+/rs/$ID/delete
+
 Web API
 =======
 
-Create evaluation
-POST /evaluations/
-
-Edit evaluation
-UPDATE /evaluations/$ID/
-
-DELETE /evaluations/$ID/
-
-GET /evaluations/$ID/
-
-GET /evaluations/
-
-Get partial evaluation
-GET /evaluations/$ID/category/$ID/
-
-Edit partial evaluation
-UPDATE /evaluations/$ID/category/$ID/
-
-
-Add reading system
-POST /reading-systems/
+Create reading system
+POST /rs/
 
 Edit reading system
-UPDATE /reading-systems/$ID/
+UPDATE /rs/$ID/
 
-DELETE /reading-systems/$ID/
-GET /reading-systems/$ID/
+DELETE /rs/$ID/
 
+GET /rs/$ID/
 
-Process
-========
-Create and populate evaluation
-POST /evaluations/
-GET /evaluation/$ID/
-UPDATE /evaluation/$ID/
+GET (all) /rs/
+
+Get partial evaluation
+GET /rs/$ID/category/$ID/
 
 
 XML Formats

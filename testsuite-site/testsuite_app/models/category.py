@@ -10,7 +10,6 @@ class Category(models.Model, ItemMixin):
 
     category_type = models.CharField(max_length = 1, choices = CATEGORY_TYPE)
     name = models.TextField()
-    # Declare dependencies with string value instead of classname as workaround
     parent_category = models.ForeignKey('Category', null = True, blank = True)
     testsuite = models.ForeignKey(TestSuite)
 

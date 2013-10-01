@@ -1,7 +1,5 @@
 from django.db import models
-from evaluation import *
-from test import *
-from common import *
+from common import RESULT_TYPE
 
 class Result(models.Model):
     class Meta:
@@ -10,5 +8,5 @@ class Result(models.Model):
 
     evaluation = models.ForeignKey('Evaluation')
     result = models.CharField(max_length = 1, choices = RESULT_TYPE, null = True, blank = True)
-    test = models.ForeignKey(Test)
+    test = models.ForeignKey('Test')
 

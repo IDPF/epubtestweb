@@ -4,7 +4,6 @@ LONG_STRING = 255
 EVALUATION_TYPE = (
     ("1", "Internal"),
     ("2", "Public"),
-    # TODO consider a third type "Temporary"
 )
 
 CATEGORY_TYPE = (

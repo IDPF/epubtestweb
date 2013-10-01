@@ -10,40 +10,24 @@ class LoginForm(forms.Form):
     def is_valid(self):
         return len(self.username) > 0 and len(self.password) > 0
 
-class ReadingSystemChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):
-        l = "{0} {1}".format(obj.name, obj.version)
-        if len(obj.operating_system) > 0:
-            l += " ({0})".format(obj.operating_system)
-        if len(obj.locale) > 0:
-            l += " ({0})".format(obj.locale)
-        return l
-
 class EvaluationForm(ModelForm):
     class Meta:
         model = Evaluation
-        fields = ['evaluation_type', 'reading_system']
+        fields = ['evaluation_type']
 
     def __init__(self, *args, **kwargs):
         #user = kwargs.pop('user','')
         super(EvaluationForm, self).__init__(*args, **kwargs)
-        self.fields['reading_system'] = ReadingSystemChoiceField(queryset=ReadingSystem.objects.all())
+        #self.fields['reading_system'] = ReadingSystemChoiceField(queryset=ReadingSystem.objects.all())
 
 
 class ReadingSystemForm(ModelForm):
+    error_css_class = 'error'
+    required_css_class = 'required'
+
     class Meta:
         model = ReadingSystem
-
-    def __init__(self, *args, **kw):
-        super(ModelForm, self).__init__(*args, **kw)
-        self.fields.keyOrder = [
-            'name',
-            'version',
-            'locale',
-            'operating_system',
-            'sdk_version',
-        ]
-
+        fields = ('name', 'version', 'operating_system', 'locale', 'sdk_version')
 
 
 

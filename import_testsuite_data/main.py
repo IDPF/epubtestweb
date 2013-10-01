@@ -1,67 +1,71 @@
 import argparse
 import os
 import yaml
-import parser
-import import_db_helper
-import dummy
-from testsuite_app import web_db_helper, models
-
-def add_dummy_data(args):
-    dummy.add_data()
-
-def clear_dummy_data(args):
-    dummy.clear_data()
+import epub_parser
+import import_testsuite
+from testsuite_app import models
+from testsuite_app import helper_functions
+from random import randrange
 
 def print_testsuite(args):
-    #import_db_helper.print_db(None)
     rs = models.ReadingSystem.objects.get(id=1)
-    web_db_helper.get_reading_system_performance_summary(rs)
+    res = helper_functions.get_results_as_nested_categories(rs)
+    for r in res:
+        helper_functions.print_item_summary(r)
+
+def clear_data(args):
+    models.UserProfile.objects.all().delete()
+    models.ReadingSystem.objects.all().delete()
 
 # look at each referenced epub in the categories.yaml file
 # parse it and put the data under a category header
-def import_testsuite(args):
+def add_testsuite(args):
     print "Processing {0}".format(args.source)
-    testsuite = import_db_helper.add_testsuite()
-
+    old_testsuite = models.TestSuite.objects.get_most_recent_testsuite()
+    testsuite = import_testsuite.create_testsuite()
     yaml_categories = yaml.load(open("categories.yaml").read())['Categories']
 
     for cat in yaml_categories:
-        new_category = import_db_helper.add_category('1', cat['Name'], None, testsuite)
-        #import_db_helper.add_category_restriction(new_category, cat['CategoryDisplayDepthLimit'])
+        new_category = import_testsuite.add_category('1', cat['Name'], None, testsuite)
         for epub in cat['Files']:
             fullpath = os.path.join(args.source, epub)
             if os.path.isdir(fullpath):
                 # this will add a new testsuite
-                epub_parser = parser.EpubParser()
-                epub_parser.parse(fullpath, new_category, testsuite, cat['CategoryDisplayDepthLimit'])
+                epubparser = epub_parser.EpubParser()
+                epubparser.parse(fullpath, new_category, testsuite, cat['CategoryDisplayDepthLimit'])
             else:
                 print "Not a directory: {0}".format(fullpath)
 
-    # TODO: look for any tests that haven't changed since the last import
-    # and copy reading system results over
-    # the reason we re-import the tests at all is because the category structure may have changed
+    import_testsuite.migrate_data(old_testsuite)
 
 def add_user(args):
     user = models.UserProfile.objects.create_user(args.username, args.email, args.password)
     user.first_name = args.firstname
     user.last_name = args.lastname
     user.is_superuser = False
-    user.default_evaluation_type = "1"
-    user.organization = args.organization
     user.save()
+    return user
 
-    return (user)
-
-def add_eval(args):
+def add_rs(args):
     user = models.UserProfile.objects.all()[0]
-    if user == None:
-        print "No user; could not create evaluation."
-        return
-
-    rs1, rs2 = dummy.add_reading_system()
-    dummy.add_evaluation(user, rs1)
-    dummy.add_evaluation(user, rs2)
-    print "Data added."
+    rs = models.ReadingSystem(
+        locale = "US",
+        name = "SuperReader",
+        operating_system = "OSX",
+        sdk_version = "N/A",
+        version = "1.0",
+        user = user,
+    )
+    rs.save() # save now to generate an initial evaluation
+    evaluation = rs.get_current_evaluation()
+    evaluation.evaluation_type = "2" # public
+    # generate result data
+    results = evaluation.get_all_results()
+    for r in results:
+        r.result = str(randrange(1, 4))
+        r.save()
+    evaluation.save()
+    return rs
 
 # settings.py must contain a definition for the 'previous' database in order for this to work
 def copy_users(args):
@@ -70,21 +74,26 @@ def copy_users(args):
         u.save(using='default')
     print "Copied users from old database."
 
+def rollback(args):
+    "roll back to the previous testsuite version, or just remove eval data if there is no previous version"
+    ts = models.TestSuite.objects.get_most_recent_testsuite()
+    evals = models.Evaluation.objects.filter(testsuite = ts)
+    for e in evals:
+        e.delete()
+    ts.delete()
+
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
     subparsers = argparser.add_subparsers(help='commands')
     import_parser = subparsers.add_parser('import', help='Import a testsuite into the database')
     import_parser.add_argument("source", action="store", help="Folder containing EPUBs")
-    import_parser.set_defaults(func = import_testsuite)
+    import_parser.set_defaults(func = add_testsuite)
 
     print_parser = subparsers.add_parser('print', help="Print (some) contents of the database")
     print_parser.set_defaults(func = print_testsuite)
 
-    add_dummy_parser = subparsers.add_parser('dummy', help="Add dummy data to the database")
-    add_dummy_parser.set_defaults(func = add_dummy_data)
-
-    clear_dummy_parser = subparsers.add_parser('clear', help="Clear dummy data from the database")
-    clear_dummy_parser.set_defaults(func = clear_dummy_data)
+    clear_data_parser = subparsers.add_parser('clear', help="Clear user and reading system data from the database")
+    clear_data_parser.set_defaults(func = clear_data)
 
     add_user_parser = subparsers.add_parser('add-user', help="Add a new user")
     add_user_parser.add_argument('username', action="store", help="username")
@@ -92,14 +101,16 @@ def main():
     add_user_parser.add_argument('email', action="store", help="email")
     add_user_parser.add_argument('--firstname', action="store", help="first name", default="")
     add_user_parser.add_argument('--lastname', action="store", help="last name", default="")
-    add_user_parser.add_argument('--organization', action="store", help="organization", default="")
     add_user_parser.set_defaults(func = add_user)
 
-    add_eval_parser = subparsers.add_parser('add-evaluation', help="Add a new evaluation")
-    add_eval_parser.set_defaults(func = add_eval)
+    add_rs_parser = subparsers.add_parser('add-rs', help="Add a new reading system")
+    add_rs_parser.set_defaults(func = add_rs)
 
     copy_users_parser = subparsers.add_parser('copy-users', help="Copy all users")
     copy_users_parser.set_defaults(func = copy_users)
+
+    rollback_parser = subparsers.add_parser('rollback', help="Roll back to the previous testsuite")
+    rollback_parser.set_defaults(func = rollback)
 
     args = argparser.parse_args()
     args.func(args)

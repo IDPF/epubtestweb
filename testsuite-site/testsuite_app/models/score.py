@@ -1,7 +1,4 @@
 from django.db import models
-from category import *
-from evaluation import *
-from common import *
 
 class Score(models.Model):
     class Meta:
@@ -9,5 +6,5 @@ class Score(models.Model):
         app_label= 'testsuite_app'
 
     percent_passed = models.DecimalField(decimal_places = 2, max_digits = 5)
-    evaluation = models.ForeignKey(Evaluation)
-    category = models.ForeignKey(Category)
+    evaluation = models.ForeignKey('Evaluation')
+    category = models.ForeignKey('Category')

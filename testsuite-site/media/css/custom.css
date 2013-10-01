@@ -12,7 +12,7 @@ h1 {
     font-size: x-large;
 }
 
-.add-rs label {
+.edit-rs label {
     display: block;
 }
 
@@ -86,7 +86,16 @@ h1 {
     color: black;
 }
 
+.required *:before {
+    content: "*";
+    color: red;
+}
 
+.error *{
+    border: thin red solid;
+}
 
-
+dt:after {
+    content: ":";
+}
 
