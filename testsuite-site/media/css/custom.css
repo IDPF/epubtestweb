@@ -99,3 +99,9 @@ dt:after {
     content: ":";
 }
 
+span.new-test, span.changed-test {
+    font-size: small;
+    font-variant: small-caps;
+}
+
+

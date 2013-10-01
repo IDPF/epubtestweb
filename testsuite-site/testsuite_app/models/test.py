@@ -13,3 +13,5 @@ class Test(models.Model, ItemMixin):
     testid = models.CharField(max_length = SHORT_STRING)
     testsuite = models.ForeignKey('TestSuite')
     xhtml =  models.TextField()
+    flagged_as_new = models.BooleanField(default = False)
+    flagged_as_changed = models.BooleanField(default = False)

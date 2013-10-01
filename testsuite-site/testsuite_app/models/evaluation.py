@@ -39,6 +39,12 @@ class EvaluationManager(models.Manager):
 
         return evaluation
 
+    def delete_associated(self, reading_system):
+        evaluations = Evaluation.objects.filter(reading_system = reading_system)
+        for evaluation in evaluations:
+            evaluation.delete()
+    
+
 class Evaluation(models.Model):
     class Meta:
         db_table = 'testsuite_app_evaluation'

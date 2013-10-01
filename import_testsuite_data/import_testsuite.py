@@ -73,14 +73,16 @@ def migrate_data(previous_testsuite):
         print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
         results = new_evaluation.get_all_results()
         print "Processing {0} results".format(len(results))
-        flag = False
+        flag_evaluation = False
         for result in results:
             try:
                 old_test_version = Test.objects.get(testsuite = old_evaluation.testsuite, testid = result.test.testid)
             except Test.DoesNotExist:
                 # the test may be new
                 print "No previous version of test {0} was found".format(result.test.testid)
-                flag = True
+                result.test.flagged_as_new = True
+                result.test.save()
+                new_evaluation.flagged_for_review = True
                 continue
 
             # if the ID (checked above) and xhtml for the test matches, then copy over the old result
@@ -90,9 +92,10 @@ def migrate_data(previous_testsuite):
                 result.save()
             else:
                 print "Test {0} has changed from the previous test suite".format(result.test.testid)
-                flag = True
+                result.test.flagged_as_changed = True
+                result.test.save()
+                new_evaluation.flagged_for_review = True
         new_evaluation.evaluation_type = old_evaluation.evaluation_type
-        new_evaluation.flagged_for_review = flag
         new_evaluation.save()
 
 

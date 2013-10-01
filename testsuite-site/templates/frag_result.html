@@ -5,7 +5,18 @@
         {%if result.result == '1' %} success
         {%elif result.result == '2' %} danger
         {%endif%}
-    {%endif%}'">
+    {% endif %}
+    
+    ">
+    <td class="results-status ">
+    {% if is_form %}
+        {%if result.test.flagged_as_new == True %}
+        <span class="new-test text-danger">New</span>
+        {% elif result.test.flagged_as_changed == True %}
+        <span class="changed-test text-danger">Updated</span>
+        {% endif %}
+    {% endif %}
+    </td>
     <td class='results-test'>{{ result.test.testid }}</td>
     <td class='results-desc'>{{ result.test.description }}</td>
     <td class='results-req'>

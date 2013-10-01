@@ -7,7 +7,7 @@
 {% endif %}
 <h1 id="c{{category.item.id}}">{{ category.item.name }}
     {% if is_form == False %}
-    <span class="pull-right">{{ category.category_score}}%</span>
+    <span class="pull-right">Score: {{ category.category_score}}%</span>
     {%endif%}
 </h1>
 <div>
@@ -29,6 +29,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th aria-hidden="false" hidden='true'>Status</th>
             <th aria-hidden="false" hidden='true'>ID</th>
             <th aria-hidden="false" hidden='true'>Description</th>
             <th aria-hidden="false" hidden='true'>Required</th>

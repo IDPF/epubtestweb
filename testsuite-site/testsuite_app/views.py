@@ -69,6 +69,7 @@ class ReadingSystemView(TemplateView):
             rs = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
+        Evaluation.objects.delete_associated(rs)
         rs.delete()
         messages.add_message(request, messages.INFO, "Reading system deleted")
         return HttpResponse(status=204)
