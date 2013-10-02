@@ -5,6 +5,7 @@ import epub_parser
 import import_testsuite
 from testsuite_app import models
 from testsuite_app import helper_functions
+from testsuite_app import export_data
 from random import randrange
 
 def print_testsuite(args):
@@ -82,6 +83,11 @@ def rollback(args):
         e.delete()
     ts.delete()
 
+def export(args):
+    xmldoc = export_data.export_all_current_evaluations()
+    xmldoc.write(args.file)
+    print "Data exported to {0}".format(args.file)
+
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
     subparsers = argparser.add_subparsers(help='commands')
@@ -111,6 +117,10 @@ def main():
 
     rollback_parser = subparsers.add_parser('rollback', help="Roll back to the previous testsuite")
     rollback_parser.set_defaults(func = rollback)
+
+    export_parser = subparsers.add_parser('export', help="Export evaluation data for all reading systems")
+    export_parser.add_argument("file", action="store", help="store the xml file here")
+    export_parser.set_defaults(func = export)
 
     args = argparser.parse_args()
     args.func(args)
