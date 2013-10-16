@@ -21,6 +21,9 @@ class EvaluationManager(models.Manager):
             reading_system = reading_system
         )
         evaluation.save()
+        
+        total_score = Score(category = None, evaluation = evaluation)
+        total_score.save()
 
         # create results for this evaluation
         for t in tests:
@@ -32,7 +35,6 @@ class EvaluationManager(models.Manager):
         for cat in categories:
             score = Score(
                 category = cat,
-                percent_passed = 0,
                 evaluation = evaluation
             )
             score.save()
@@ -65,6 +67,7 @@ class Evaluation(models.Model):
         self.flagged_for_review = False
         self.last_updated = generate_timestamp()
         self.save_scores()
+        self.update_percent_complete()
         # call 'save' on the base class
         super(Evaluation, self).save(*args, **kwargs)
         
@@ -74,16 +77,23 @@ class Evaluation(models.Model):
         from result import Result
         category_scores = Score.objects.filter(evaluation = self)
         for score in category_scores:
-            score.percent_passed = float_to_decimal(self.calculate_category_score(score.category))
-            score.save()
+            results = None
+            if score.category != None:
+                results = self.get_category_results(score.category)
+            else:
+                results = self.get_all_results()
+            score.update(results)
 
-        # calculate pct complete
+    def update_percent_complete(self):
+        from result import Result
         all_results = self.get_all_results()
         # note that we don't use all_results.count() because get_results() returns an array, not a queryset
         if len(all_results) != 0:
             completed_results = Result.objects.filter(evaluation = self).exclude(result = None)
             pct_complete = (completed_results.count() * 1.0) / (len(all_results) * 1.0) * 100.0
             self.percent_complete = float_to_decimal(pct_complete)
+        else:
+            self.percent_complete = 0
 
     def get_reading_system(self):
         from reading_system import ReadingSystem
@@ -119,7 +129,8 @@ class Evaluation(models.Model):
         "get the result for a test with the given ID"
         from result import Result
         try:
-            return Result.objects.get(evaluation = self, test__testid = testid)
+            result_obj = Result.objects.get(evaluation = self, test__testid = testid)
+            return result_obj
         except Result.DoesNotExist:
             return None
 
@@ -136,9 +147,21 @@ class Evaluation(models.Model):
         top_level_categories = self.testsuite.get_top_level_categories()
         retval = {}
         for cat in top_level_categories:
-            score = Score.objects.get(evaluation = self, category = cat)
-            retval[cat] = score.percent_passed
+            try:
+                score = Score.objects.get(evaluation = self, category = cat)
+                retval[cat] = score
+            except Score.DoesNotExist:
+                retval[cat] = None
         return retval
+
+    def get_total_score(self):
+        from score import Score
+        # total score is the score where category = None
+        try:
+            score = Score.objects.get(evaluation = self, category = None)
+            return score
+        except Score.DoesNotExist:
+            return None
 
     def is_category_complete(self, category):
         results = self.get_category_results(category)
@@ -147,45 +170,15 @@ class Evaluation(models.Model):
                 return False
         return True
 
-    def calculate_category_score(self, category):
-        "return the score for a category as a percentage of applicable tests passed vs total tests"
-        # if the category is incomplete, the score is 0
-        #if self.is_category_complete(category) == False:
-        #    return 0
-
-        results = self.get_category_results(category)
-        # aside: can a test be both required and not applicable?
-        required = {"pass": 0, "fail": 0, "na": 0}
-        optional = {"pass": 0, "fail": 0, "na": 0}
-
-        for r in results:
-            # "1" = Pass, "2" = Fail, "3" = NA
-            if r.test.required == True:
-                if r.result == "1":
-                    required['pass'] += 1
-                elif r.result == "2":
-                    required['fail'] += 1
-                elif r.result == "3" or r.result == None:
-                    required['na'] += 1
-            else:
-                if r.result == "1":
-                    optional['pass'] += 1
-                elif r.result == "2":
-                    optional['fail'] += 1
-                elif r.result == "3" or r.result == None:
-                    optional['na'] += 1
-
-        total_applicable = required['pass'] + required['fail'] + optional['pass'] + optional['fail']
-        total_passed = required['pass'] + optional['pass']
-
-        # the total score is based on the number of applicable tests that passed
-        if total_applicable != 0:
-            total_score = (total_passed * 1.0) / (total_applicable * 1.0) * 100
-            total_score = round(total_score, 1)
-            return total_score
-        else:
-            return 0
-
+    def get_category_score(self, category):
+        "return the score for a single category"
+        from score import Score
+        try:
+            score = Score.objects.get(evaluation = self, category = category)
+            return score
+        except Score.DoesNotExist:
+            return None
+            
 # this is the "right way"...
 # http://docs.python.org/release/2.6.7/library/decimal.html#decimal-faq
 # and this is the way that works in practice (in this case, we can live with rounding error past 2 decimal places)

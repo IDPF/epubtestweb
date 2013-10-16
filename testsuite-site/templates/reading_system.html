@@ -5,43 +5,24 @@
 
 {% block content %}
 
+{% get_current_evaluation rs as evaluation %}
+
 <div class="reading-system-info panel panel-default">
     {% reading_system rs %}
 
     <dl class="scores panel-right">
-        {% for cat in first_half %}
-        <dt><a href="#c{{cat.item.id}}">{{cat.item.name}}</a></dt>
-        <dd>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{cat.category_score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{cat.category_score}}%; height: 100%">
-                    <span style="font-style: italic; {%if cat.category_score < 10 %} color: black;{%endif%}">
-                        {{cat.category_score}}%</span>
-                </div>
-            </div>
-        </dd>
-        {%endfor%}
+        {% category_scores_as_dl_items first_half evaluation %}
     </dl>
 
     <dl class="scores panel-right">
-        {% for cat in second_half %}
-        <dt><a href="#c{{cat.item.id}}">{{cat.item.name}}</a></dt>
-        <dd>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{cat.category_score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{cat.category_score}}%; height: 100%">
-                    <span style="font-style: italic; {%if cat.category_score < 10 %} color: black;{%endif%}">
-                        {{cat.category_score}}%</span>
-                </div>
-            </div>
-        </dd>
-        {%endfor%}
+        {% category_scores_as_dl_items second_half evaluation %}
     </dl>
-
 </div>
 
 <div class="results category-accordion">
-{% for cat in data %}
-    {% category cat False %}
-{% endfor %}
+    {% for cat in data %}
+        {% category cat evaluation False results_form %}
+    {% endfor %}
 </div>
 
 <script>

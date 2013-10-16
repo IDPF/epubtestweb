@@ -63,7 +63,7 @@ def add_rs(args):
     # generate result data
     results = evaluation.get_all_results()
     for r in results:
-        r.result = str(randrange(1, 4))
+        r.result = str(randrange(1, 3))
         r.save()
     evaluation.save()
     return rs

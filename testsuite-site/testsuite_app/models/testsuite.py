@@ -3,7 +3,11 @@ from common import SHORT_STRING
 
 class TestSuiteManager(models.Manager):
     def get_most_recent_testsuite(self):
-        return TestSuite.objects.order_by("-version_date").order_by("-version_revision")[0]
+        recent = TestSuite.objects.order_by("-version_date").order_by("-version_revision")
+        if recent.count() == 0:
+            return None
+        else:
+            return recent[0]
 
 class TestSuite(models.Model):
     class Meta:

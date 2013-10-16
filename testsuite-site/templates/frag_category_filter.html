@@ -1,0 +1,61 @@
+{% load testsuite_extras %}
+
+
+{% if category.results|length > 0 %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th aria-hidden="false" hidden='true'>Selected</th>
+            <th aria-hidden="false" hidden='true'>ID</th>
+            <th aria-hidden="false" hidden='true'>Description</th>
+            <th aria-hidden="false" hidden='true'>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="category">
+            <td class="filter-checkbox"><input type="checkbox" name="c{{category.item.id}}" value=""/></td>
+            <td colspan="3">
+            {% if category.depth == 0 %}
+            <h1 id="c{{category.item.id}}">{{ category.item.name }}</h1>
+            <div>
+            {% elif category.depth == 1 %}
+            <h2 id="c{{category.item.id}}">{{ category.item.name }}</h2>
+            {% elif category.depth == 2 %}
+            <h3 id="c{{category.item.id}}">{{ category.item.name }}</h3>
+            {% elif category.depth == 3 %}
+            <h4 id="c{{category.item.id}}">{{ category.item.name }}</h4>
+            {% elif category.depth == 4 %}
+            <h5 id="c{{category.item.id}}">{{ category.item.name }}</h5>
+            {% else %}
+            <h6 id="c{{category.item.id}}">{{ category.item.name }}</h6>
+            {% endif %}
+            </td>
+
+        </tr>
+
+        {% for t in category.tests %}
+            <tr>
+                <td class="filter-checkbox"><input type="checkbox" name="t{{t.id}}" value=""/></td>
+                <td class="filter-testid">{{t.testid}}</td>
+                <td class="filter-desc">{{t.description}}</td>
+                <td class="filter-req">
+                {% if t.required == True %}
+                    Required
+                {% else %}
+                    Optional
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% for subcat in category.subcategories %}
+    {% category_filter subcat %}
+{% endfor %}
+
+{% if category.depth == 0 %}
+</div>
+{%endif%}
+

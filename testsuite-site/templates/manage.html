@@ -33,7 +33,7 @@
             <td>{{ r.locale }} </td>
             <td>{{ r.sdk_version }} </td>
             <td style="font-style: italic"><p>{{ r|get_status }}</p>
-                {% current_evaluation r as eval%}
+                {% get_current_evaluation r as eval%}
                 {% if eval.flagged_for_review == True %}
                 <p class="text-warning"><a href="/rs/{{ r.id }}/eval/">Please review this evaluation.</a></p>
                 {% endif %}

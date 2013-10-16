@@ -1,0 +1,15 @@
+{% load testsuite_extras %}
+
+{% for category in categories %}
+	{% get_category_score category.item evaluation as score%}
+
+	<dt><a href="#c{{category.item.id}}">{{category.item.name}}</a></dt>
+	<dd>
+	<div class="progress">
+	    <div class="progress-bar" role="progressbar" aria-valuenow="{{score.pct_total_passed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{score.pct_total_passed}}%; height: 100%">
+	        <span style="font-style: italic; {%if score.pct_total_passed < 10 %} color: black;{%endif%}">
+	            {{score.pct_total_passed}}%</span>
+	    </div>
+	</div>
+	</dd>
+{% endfor %}

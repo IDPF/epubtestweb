@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load testsuite_extras %}
+
+{% block title %}:: Filter{% endblock %}
+
+{% block content %}
+<h1>Filter Results</h1>
+
+<p>Select one or more tests from the list to see reading system performance specifics.</p>
+
+<form action="{{ action_url }}" method="post" id="rsform">{% csrf_token %}
+
+<div class="results">
+{% for cat in data %}
+    {% category_filter cat %}
+{% endfor %}
+</div>
+
+<input type="submit" value="Filter" style="margin-top: 30px" />
+</form>
+
+{% endblock %}

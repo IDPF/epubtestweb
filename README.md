@@ -1,6 +1,9 @@
 epubtestweb
 ========
 
+For end-users
+==============
+
 Instructions for evaluating reading systems
 ------------------------------------
 
@@ -24,3 +27,19 @@ Notes about using the website
 3. You don't have to complete the whole evaluation at once.
 4. When an evaluation is marked "Public", it appears on the public homepage for the testing website.
 5. The testsuite changes from time to time, and the forms on the website are correspondingly updated. If you login and see on the "Manage" page that an evaluation requires review, it means that some tests have been added or changed and that you should re-evaluate your reading system for those tests. Be sure to update your local copy of the testsuite EPUBs before re-evaluating the reading system.
+
+
+For admins
+==========
+
+Initializing the DB for the first time
+---------------------------------
+
+
+Adding users
+------------
+
+
+Updating the test suite
+---------------
+

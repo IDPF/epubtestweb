@@ -19,13 +19,29 @@ class IndexView(TemplateView):
     def get(self, request, *args, **kwargs):
         testsuite = TestSuite.objects.get_most_recent_testsuite()
         categories = testsuite.get_top_level_categories()
-        scores = helper_functions.get_public_scores(categories)
-        return render(request, self.template_name, {'categories': categories, 'scores': scores,
-            "testsuite_date": testsuite.version_date})
+        rs_scores = helper_functions.get_public_scores(categories)
+        view_option = request.GET.get('view', 'simple')
+        return render(request, self.template_name, {'categories': categories, 'rs_scores': rs_scores,
+            "testsuite_date": testsuite.version_date, 'view_option': view_option})
 
 class AboutView(TemplateView):
     "About page"
     template_name = "about.html"
+
+
+class FilterResultsView(TemplateView):
+    "Filter results page"
+    template_name = "filter.html"
+    
+    def get(self, request, *args, **kwargs):
+        testsuite = TestSuite.objects.get_most_recent_testsuite()
+        data = helper_functions.testsuite_to_dict(testsuite)
+        action_url = "/filter/"
+        return render(request, self.template_name, 
+            {"data": data, "action_url": action_url})
+
+    def post(self, request, *args, **kwargs):
+        pass
 
 class ManageView(TemplateView):
     "Manage page"
@@ -51,7 +67,9 @@ class ReadingSystemView(TemplateView):
             rs = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
-        data = helper_functions.get_results_as_nested_categories(rs)
+
+        testsuite = TestSuite.objects.get_most_recent_testsuite()
+        data = helper_functions.testsuite_to_dict(testsuite)
         # split the data across 2 lists to make it easy to consume for the reading system view
         # TODO replace this with a multicolumn definition list
         first_half = []
@@ -87,24 +105,20 @@ class EditEvaluationView(UpdateView):
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
-        action_url = "/rs/{0}/edit/".format(rs.id)
+        action_url = "/rs/{0}/eval/".format(rs.id)
         evaluation = rs.get_current_evaluation()
         eval_form = EvaluationForm(instance = evaluation)
         results_form = ResultFormSet(instance = evaluation)
-
-        nested_data = helper_functions.get_results_as_nested_categories(rs)
-        data = []
-        for d in nested_data:
-            helper_functions.mash_summary_data_with_form_data(d, results_form)
-            data.append(d)
-
+        testsuite = TestSuite.objects.get_most_recent_testsuite()
+        data = helper_functions.testsuite_to_dict(testsuite)
+        
         if request.user != rs.user:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit that reading system.')
             return redirect("/manage/")
 
         return render(request, self.template_name,
             {'eval_form': eval_form, 'results_form': results_form, 'data': data,
-            'rs': rs, "action_url": "/rs/{0}/eval/".format(rs.id)})
+            'rs': rs, "action_url": action_url})
 
     def post(self, request, *args, **kwargs):
         try:

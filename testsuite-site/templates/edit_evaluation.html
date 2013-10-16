@@ -68,7 +68,7 @@ function autosave() {
 
 <div class="results">
 {% for cat in data %}
-    {% category cat True%}
+    {% category cat eval_form.instance True results_form%}
 {% endfor %}
 </div>
 

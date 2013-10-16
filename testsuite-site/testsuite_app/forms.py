@@ -30,6 +30,4 @@ class ReadingSystemForm(ModelForm):
         fields = ('name', 'version', 'operating_system', 'locale', 'sdk_version')
 
 
-
-ResultFormSet = inlineformset_factory(Evaluation, Result, extra=0, can_delete=False, fields = ['result'])
-
+ResultFormSet = inlineformset_factory(Evaluation, Result, extra=0, can_delete=False, fields = ['result', 'notes'])

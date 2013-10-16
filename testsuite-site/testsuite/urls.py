@@ -10,6 +10,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', IndexView.as_view()),
     (r'^about/$', AboutView.as_view()),
+    (r'^filter/$', FilterResultsView.as_view()),
     (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     (r'^auth/$', auth_and_login),
     (r'^logout/$', logout_user),

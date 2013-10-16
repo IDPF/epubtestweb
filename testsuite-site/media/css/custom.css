@@ -31,7 +31,6 @@ h1 {
     display: none;
 }
 
-
 .results-test {
     width: 10%;
 }
@@ -95,6 +94,19 @@ h1 {
     border: thin red solid;
 }
 
+ul.scores li {
+    font-size: smaller;
+    font-style: italic;
+    text-align: left;
+    white-space: nowrap;
+    line-height: 30px;
+}
+
+ul.scores li.total {
+    font-weight: bolder;
+}
+
+
 dt:after {
     content: ":";
 }
@@ -104,4 +116,26 @@ span.new-test, span.changed-test {
     font-variant: small-caps;
 }
 
+.filter-checkbox {
+    width: 10%;
+}
 
+.filter-testid {
+    width: 10%;
+}
+
+.filter-desc {
+    width: 70%;
+}
+
+.filter-req {
+    width: 10%;
+}
+
+.category {
+    padding: 0;
+}
+.category h1, .category h2 {
+    margin-top: 10px;
+    margin-bottom: 0;
+}

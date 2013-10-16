@@ -13,9 +13,8 @@ CATEGORY_TYPE = (
 )
 
 RESULT_TYPE = (
-    ("1", "Pass"),
-    ("2", "Fail"),
-    ("3", "NA")
+    ("1", "Supported"),
+    ("2", "Not Supported"),
 )
 
 class ItemMixin():
