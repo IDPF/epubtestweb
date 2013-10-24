@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load testsuite_extras %}
+
+{% block content %}
+
+<h1>TODO: Problem Report</h1>
+
+<p>The following tests were reported as <code>Not Supported</code> for the given reading system.</p>
+
+<p class="text-muted" style="font-style: italic">Tests referenced in this report are based on the version of the test suite that was available on {{testsuite_date}}.</p>
+
+{% reading_system rs %}
+
+{% for result in results %}
+
+{% endfor %}
+
+
+<br/>
+<br/>
+
+<ul>
+<li>List</li>
+<li>Of</li>
+<li>Problems</li>
+<li>With</li>
+<li>Links</li>
+<li>To</li>
+<li>Testsuite</li>
+<li>Goes</li>
+<li>Here</li>
+</ul>
+
+{% endblock %}

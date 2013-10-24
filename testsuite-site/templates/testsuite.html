@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}:: Testsuite{% endblock %}
+
+{% block content %}
+<h1>Testsuite</h1>
+
+<p>A freely available collection of material created specifically for the purpose of testing reading systems is provided here. The source from which these downloadable publications are built can be found <a href="https://github.com/mgylling/epub-testsuite">on github</a>.</p>
+
+<h2>Instructions for testers</h2>
+
+<ul>
+<li>Download all the files below.</li>
+<li>Open each publication in your reading system. You'll see a series of tests.</li>
+<li>Follow the instructions for each test.</li>
+<li>Record the result using the test ID (something like <code>style-020</code>) to identify the test.</li>
+<li>If you are a logged-in user of this website, use the form provided for reading system evaluations (under "Manage"). If the test passes, record the result as <code>Supported</code>. Otherwise, put down <code>Not Supported</code>.</li>
+<li>If you are using a different method to record results, be sure to make note of the test ID (as mentioned above).</li>
+</ul>
+
+<h2>Testsuite files</h2>
+<ul>
+{% for download in downloads %}
+<li><a href="{{download.link}}">{{download.label}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

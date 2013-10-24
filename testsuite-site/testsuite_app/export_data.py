@@ -27,10 +27,11 @@ def export_all_current_evaluations():
 
 
 def rs_to_xml(rs):
-	data = helper_functions.get_results_as_nested_categories(rs)
+	testsuite = TestSuite.objects.get_most_recent_testsuite()
+	data = helper_functions.testsuite_to_dict(testsuite)
 	results_elm = RESULTS()
 	for item in data:
-		top_level_category_elm = category_to_xml(item)
+		top_level_category_elm = category_to_xml(item, rs)
 		results_elm.append(top_level_category_elm)
 
 	evaluation = rs.get_current_evaluation()
@@ -41,15 +42,17 @@ def rs_to_xml(rs):
 	)
 	return eval_elm
 
-def category_to_xml(category):
-	category_elm = CATEGORY(name=category['item'].name, score=str(category['category_score']))
-	
-	for r in category['results']:
-		result_elm = result_to_xml(r)
+def category_to_xml(category, rs):
+	evaluation = rs.get_current_evaluation()
+	category_score = evaluation.get_category_score(category['item'])
+	category_elm = CATEGORY(name=category['item'].name, score=str(category_score.pct_total_passed))
+	for t in category['tests']:
+		result = evaluation.get_result(t)
+		result_elm = result_to_xml(result)
 		category_elm.append(result_elm)
 
 	for subcat in category['subcategories']:
-		subcat_elm = category_to_xml(subcat)
+		subcat_elm = category_to_xml(subcat, rs)
 		category_elm.append(subcat_elm)
 
 	return category_elm
@@ -65,9 +68,8 @@ def result_to_string(result):
 	if result.result == None:
 		return "incomplete"
 	elif result.result == "1":
-		return "pass"
+		return "supported"
 	elif result.result == "2":
-		return "fail"
-	else:
-		return "na"
+		return "not_supported"
+	
 

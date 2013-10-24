@@ -10,7 +10,7 @@ def get_public_scores(categories):
     reading_systems = ReadingSystem.objects.all()
     for rs in reading_systems:
         if rs.get_current_evaluation().evaluation_type == "1": #'internal'
-            retval.append({"reading_system": rs, "scores": None})
+            retval.append({"reading_system": rs, "total_score": 0, "category_scores": None})
         else:
             evaluation = rs.get_current_evaluation()
             scores = evaluation.get_top_level_category_scores()
@@ -22,7 +22,7 @@ def get_public_scores(categories):
                 "category_scores": ordered_scores})
     return retval
 
-def testsuite_to_dict(testsuite):
+def testsuite_to_dict(testsuite, test_filter_ids = []):
     "return a web template-friendly array of dicts describing categories and tests"
     top_level_categories = testsuite.get_top_level_categories()
     summary = []
@@ -30,13 +30,19 @@ def testsuite_to_dict(testsuite):
         summary.append(category_to_dict(c))
     return summary
 
-def category_to_dict(item):
+def category_to_dict(item, test_filter_ids = []):
     "return a nested structure of categories and tests."
     subcats = Category.objects.filter(parent_category = item)
     subcat_summaries = []
     for c in subcats:
         subcat_summaries.append(category_to_dict(c))
-    tests = Test.objects.filter(parent_category = item)
+    tests = None
+    # if we are filtering for specific test IDs, then just include those
+    if len(test_filter_ids) != 0:
+        tests = Test.objects.filter(parent_category = item, pk__in=test_filter_ids)
+    else:
+        tests = Test.objects.filter(parent_category = item)
+
     return {"item": item, "depth": item.get_depth(), "subcategories": subcat_summaries,
         "tests": tests}
 

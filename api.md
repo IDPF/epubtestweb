@@ -86,7 +86,7 @@ For data export
                     <ts:category score="100" name="Content Documents">
                         <ts:category score="100" name="EPUB 3.0 Test Suite: Document 0100">
                             <ts:category score="100" name="XHTML Content Documents">
-                                <ts:result result="pass">
+                                <ts:result result="supported">
                                     <ts:test name="Inline Frames" testid="iframe-010"/>
                                 </ts:result>
                                 ...

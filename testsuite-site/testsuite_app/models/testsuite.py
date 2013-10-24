@@ -23,3 +23,4 @@ class TestSuite(models.Model):
     def get_top_level_categories(self):
         from category import Category
         return Category.objects.filter(testsuite = self, parent_category = None)
+

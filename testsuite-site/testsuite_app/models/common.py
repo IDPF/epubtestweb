@@ -24,3 +24,11 @@ class ItemMixin():
             return 0
         else:
             return self.parent_category.get_depth() + 1
+
+    def get_parents(self):
+        if self.parent_category == None:
+            return []
+        else:
+            parents = [self.parent_category]
+            parents.extend(self.parent_category.get_parents())
+            return parents

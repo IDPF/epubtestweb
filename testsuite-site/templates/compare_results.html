@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load testsuite_extras %}
+
+{% block title %}:: Results{% endblock %}
+
+{% block style %}
+<style>
+.results td.result {
+	padding: 5px;
+}
+.header-row td {
+	font-weight: bold;
+}
+
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+	set_test_descriptions_hidden();
+});
+
+function toggle_test_descriptions() {
+	elm = $(".test_descriptions");
+	if (elm.is(":visible")) {
+		set_test_descriptions_hidden();
+	}
+	else {
+		set_test_descriptions_visible();
+	}
+}
+function set_test_descriptions_visible() {
+	elm = $(".test_descriptions");
+	elm.show();
+	$("#showhide").text("Hide");
+}
+function set_test_descriptions_hidden() {
+	elm = $(".test_descriptions");
+	elm.hide();
+	$("#showhide").text("Show");
+}
+	
+</script>
+{% endblock %}
+
+
+{% block content %}
+<h1>Compare Results</h1>
+
+<p><a href="#" onclick="toggle_test_descriptions()"><span id="showhide">Show</span> test descriptions</a></p>
+
+{% for tests in test_arrays %}
+<div class="results">
+<table class="table table-striped">
+    <thead>
+        <tr class="header-row">
+        	<td>Reading System</td>
+            {% for test in tests %}
+    		<td title="{{test.description}}">{{test.testid}}</td>
+    		{% endfor %}
+        </tr>
+        <tr class="test_descriptions">
+        	<td></td>
+        	{% for test in tests %}
+        	<td>{{test.description}}</td>
+        	{% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    	{% for reading_system in reading_systems %}
+
+    	{% has_public_evaluation reading_system as is_public %}
+    	{% if is_public == True %}
+    	<tr>
+    		<td><a href="/rs/{{reading_system.id}}">{{reading_system.name}} {{reading_system.version}}</a>
+            <br/>
+            {{reading_system.operating_system}}, {{reading_system.locale}}
+        </td>
+    	{% for test in tests %}
+    		{% is_test_supported reading_system test as result%}
+    		{% if result == True %}
+    			<td class="result success">Supported</td>
+    		{% else %}
+    			<td class="result danger">Not Supported</td>
+    		{% endif %}
+    	{% endfor %}
+    	</tr>
+    	{% endif %}
+    	{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endfor %}
+
+{% endblock %}

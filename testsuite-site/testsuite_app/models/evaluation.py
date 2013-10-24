@@ -124,7 +124,15 @@ class Evaluation(models.Model):
                 continue
             results.append(result)
         return results
-
+    
+    def get_result(self, test):
+        from result import Result
+        try:
+            result = Result.objects.get(test = test, evaluation = self)
+            return result
+        except Result.DoesNotExist:
+            return None
+    
     def get_result_by_testid(self, testid):
         "get the result for a test with the given ID"
         from result import Result

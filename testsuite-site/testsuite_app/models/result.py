@@ -1,5 +1,6 @@
 from django.db import models
 from common import RESULT_TYPE
+from django.core.validators import MaxLengthValidator
 
 class Result(models.Model):
     class Meta:
@@ -8,6 +9,6 @@ class Result(models.Model):
 
     evaluation = models.ForeignKey('Evaluation')
     result = models.CharField(max_length = 1, choices = RESULT_TYPE, null = True, blank = True)
-    notes = models.TextField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True, validators=[MaxLengthValidator(200)])
     test = models.ForeignKey('Test')
 

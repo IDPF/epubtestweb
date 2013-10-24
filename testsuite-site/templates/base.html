@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>EPUBTest {% block title %}{% endblock %}</title>
+    <title>BISG Grid {% block title %}{% endblock %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -29,6 +29,17 @@
     {% endblock %}
 
     {%block style %}
+    <style>
+        footer div {
+            /*display: table-row;*/
+        }
+        footer div p, footer div img {
+            /*display: table-cell;*/
+        }
+        footer img {
+
+        }
+    </style>
     {% endblock %}
 
 </head>
@@ -37,17 +48,22 @@
     {% alerts messages %}
 
     <div class="container">
+        
+        
         <div class="navbar">
-            <a class="navbar-brand" href="/">EPUBTest</a>
+            <a class="navbar-brand" href="/">BISG Grid</a>
             <ul class="nav navbar-nav pull-right">
-                <li><a href="/about/">About</a></li>
+                <li><a href="/compare/">Compare</a></li>
+                <li><a href="/testsuite/">Testsuite</a></li>
                 {% if user.is_authenticated %}
                 <li><a href="/manage/">Manage</a></li>
                 <li><a href="/logout/">Logout</a></li>
                 {% else %}
                 <li><a href="/login/">Login</a></li>
                 {% endif %}
+                <li><a href="/about/">About</a></li>
             </ul>
+            
         </div>
 
 
@@ -59,7 +75,17 @@
         {% endblock %}
         </div>
 
-        <footer>Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</footer>
+        <footer>
+            <p><a href="http://bisg.org" target="_blank"><img src="/media/img/bisg_logo.gif" height="50px"/></a>
+            <a href="http://idpf.org" target="_blank"><img src="/media/img/idpf_logo.jpg"/></a>
+            <a href="http://daisy.org" target="_blank"><img src="/media/img/daisy_logo.png"/></a>
+            </p>
+
+            <p>BISG Grid development is sponsored by the <a target="_blank" href="http://daisy.org">DAISY Consortium</a>. Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</p>
+            
+        
+        </footer>
     </div>
+
 </body>
 </html>

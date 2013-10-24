@@ -7,9 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
-
-from models import ReadingSystem, Evaluation, TestSuite
+import os
+from models import ReadingSystem, Evaluation, TestSuite, Test
 from forms import ReadingSystemForm, ResultFormSet, EvaluationForm
+from testsuite import settings
 import helper_functions
 
 class IndexView(TemplateView):
@@ -28,20 +29,66 @@ class AboutView(TemplateView):
     "About page"
     template_name = "about.html"
 
+class TestsuiteView(TemplateView):
+    "Testsuite download page"
+    template_name = "testsuite.html"
 
-class FilterResultsView(TemplateView):
-    "Filter results page"
-    template_name = "filter.html"
+    def get(self, request, *args, **kwargs):
+        files = os.listdir(settings.EPUB_ROOT)
+        downloads = []
+        for f in files:
+            if os.path.splitext(f)[1] == '.epub':
+                # the download link is going to be EPUB_URL + filename
+                filename = os.path.basename(f)
+                link = "{0}{1}".format(settings.EPUB_URL, filename)
+                # assuming the filenames are all like:
+                # epub30-test-0220-20131016.epub
+                # chop off the first 12 and the last 14 to get the number, e.g. 0220.
+                # this matches what is usually in the publication title and what is shown to the user in the test form
+                doc_number = f[12:len(f)-14]
+                dl = {"label": "Document {0}".format(doc_number), "link": link}
+                downloads.append(dl)
+        return render(request, self.template_name, {'downloads': downloads})
+
+
+class CompareResultsView(TemplateView):
+    "Compare results form page"
+    template_name = "compare_form.html"
     
     def get(self, request, *args, **kwargs):
         testsuite = TestSuite.objects.get_most_recent_testsuite()
         data = helper_functions.testsuite_to_dict(testsuite)
-        action_url = "/filter/"
+        action_url = "/compare/"
         return render(request, self.template_name, 
             {"data": data, "action_url": action_url})
 
     def post(self, request, *args, **kwargs):
-        pass
+        view_option = request.GET.get('view', 'simple')
+        test_ids = request.POST.getlist('test-selected', []) #getlist is a method of django's QueryDict object
+        tests = Test.objects.filter(pk__in = test_ids)
+        reading_systems = ReadingSystem.objects.all()
+        test_arrays = []
+        list_max = 13
+        # split the tests up into arrays of 13 for display purposes
+        if tests.count() <= list_max:
+            test_arrays.append(tests)
+        else:
+            start = 0
+            end = list_max
+            for n in range(0, tests.count() / list_max):
+                arr = tests[start:end]
+                start += list_max
+                end += list_max
+                test_arrays.append(arr)
+
+            if tests.count() % list_max != 0:
+                mod = (tests.count() % list_max)
+                start = tests.count()-mod
+                arr = tests[start:tests.count()]
+                test_arrays.append(arr)
+
+        return render(request, "compare_results.html", 
+            {'test_arrays': test_arrays, 'reading_systems': reading_systems, "view_option": view_option})
 
 class ManageView(TemplateView):
     "Manage page"
@@ -57,6 +104,7 @@ class ManageView(TemplateView):
         return render(request, self.template_name,
             {'reading_systems': reading_systems, 'display_name': display_name,
             "testsuite_date": testsuite.version_date})
+
 
 class ReadingSystemView(TemplateView):
     "Details for a single reading system"
@@ -92,8 +140,6 @@ class ReadingSystemView(TemplateView):
         rs.delete()
         messages.add_message(request, messages.INFO, "Reading system deleted")
         return HttpResponse(status=204)
-
-
 
 class EditEvaluationView(UpdateView):
     "Edit reading system evaluation"
@@ -135,7 +181,6 @@ class EditEvaluationView(UpdateView):
 
         formset.save()
         eval_form.save()
-        
         
         # if we are auto-saving, don't redirect
         if not request.POST.has_key('auto') or request.POST['auto'] == "false":
@@ -212,6 +257,19 @@ class EditReadingSystemView(TemplateView):
                 clean_data = form.clean()
                 qstr = urlencode(clean_data)
                 return redirect("/rs/new/?{0}".format(qstr))
+
+class ProblemReportView(TemplateView):
+    template_name = "report.html"
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.has_key('pk'):
+            try:
+                rs = ReadingSystem.objects.get(id=kwargs['pk'])
+                return render(request, self.template_name, {"rs": rs, "results": []})
+            except Evaluation.DoesNotExist:
+                return render(request, "404.html", {})
+        
+ 
 
 ################################################
 # helper functions

@@ -37,11 +37,13 @@
                 {% if eval.flagged_for_review == True %}
                 <p class="text-warning"><a href="/rs/{{ r.id }}/eval/">Please review this evaluation.</a></p>
                 {% endif %}
+                <p>Owned by user {{r.user.username}}</p>
             </td>
             <td>
                 <ul class="list-unstyled">
                     <li><a href="/rs/{{ r.id }}/">View</a></li>
                     <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
+                    <li><a href="/rs/{{ r.id }}/report/">Problem report</a></li>
                     <li><a href="/rs/{{ r.id }}/edit/">Edit Details</a></li>
                     <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
                 </ul>

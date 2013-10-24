@@ -56,6 +56,25 @@ def get_form_for_result(result, result_forms):
 			return f
 	return None
 
+@register.assignment_tag
+def has_public_evaluation(reading_system):
+	evaluation = reading_system.get_current_evaluation()
+	if evaluation.evaluation_type == "2": #public
+		return True
+	else:
+		return False
+
+@register.assignment_tag
+def is_test_supported(reading_system, test):
+	evaluation = reading_system.get_current_evaluation()
+	result = evaluation.get_result(test)
+	if result == None:
+		return False
+	if result.result == "1":
+		return True
+	else:
+		return False
+
 @register.filter
 def get_status(rs):
 	eval_type = ""
@@ -67,3 +86,12 @@ def get_status(rs):
 
 	return "{0}, {1}% complete.".format(eval_type, evaluation.percent_complete)
 
+@register.filter
+def get_parent_ids(item):
+	"get a space-separated list of parent category IDs. item is a category or test."
+	idarr = []
+	parents = item.get_parents()
+	for p in parents:
+		idarr.append("id-{0}".format(str(p.id)))
+
+	return " ".join(idarr)

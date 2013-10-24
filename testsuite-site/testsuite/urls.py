@@ -10,7 +10,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', IndexView.as_view()),
     (r'^about/$', AboutView.as_view()),
-    (r'^filter/$', FilterResultsView.as_view()),
+    (r'^testsuite/$', TestsuiteView.as_view()),
+    (r'^compare/$', CompareResultsView.as_view()),
     (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     (r'^auth/$', auth_and_login),
     (r'^logout/$', logout_user),
@@ -20,6 +21,7 @@ urlpatterns = patterns('',
     (r'^rs/(?P<pk>\d+)/edit/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/eval/$', login_required(function=EditEvaluationView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteRSView.as_view(), login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/report/$', login_required(function=ProblemReportView.as_view(), login_url='/login/')),
     (r'^rs/new/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
     (r'^admin/', include(admin.site.urls)),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.EPUB_URL, document_root = settings.EPUB_ROOT)
