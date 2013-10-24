@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load testsuite_extras %}
+
+{% block title %}:: Compare{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+	$("#testsuite_form .category").change(function(){
+        thisid = $(this).attr('value');
+        
+        if (thisid != null) {
+        	checked = $(this).prop('checked')
+            // the class names id-* identify the parent categories
+            children = $("#testsuite_form .id-" + thisid)
+            $(children).prop('checked', checked);
+        }
+    });
+})
+	
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Compare Results</h1>
+
+<p>Select one or more tests from the list to see a comparison of all reading systems' performances.</p>
+
+<form action="{{ action_url }}" method="post" id="testsuite_form">{% csrf_token %}
+
+<div class="results">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th aria-hidden="false" hidden='true'>Selected</th>
+            <th aria-hidden="false" hidden='true'>ID</th>
+            <th aria-hidden="false" hidden='true'>Description</th>
+            <th aria-hidden="false" hidden='true'>Required</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for cat in data %}
+    {% category_filter cat %}
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+<input type="submit" value="Compare" style="margin-top: 30px" />
+</form>
+
+{% endblock %}

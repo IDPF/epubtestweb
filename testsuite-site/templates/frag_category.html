@@ -1,34 +1,36 @@
 {% load testsuite_extras %}
 
+{% get_category_depth category.item as depth %}
+{% get_category_score category.item evaluation as score %}
 
-{% if category.depth == 0 %}
+{% if depth == 0 %}
 {% if is_form == True %}
 <div class="category-accordion">
 {% endif %}
 <h1 id="c{{category.item.id}}">{{ category.item.name }}
     {% if is_form == False %}
-    <span class="pull-right">{{ category.item.category_score}}%</span>
+    <span class="pull-right">Score: {{ score.pct_total_passed}}%</span>
     {%endif%}
 </h1>
 <div>
-
-{% elif category.depth == 1 %}
+{% elif depth == 1 %}
 <h2 id="c{{category.item.id}}">{{ category.item.name }}</h2>
-{% elif category.depth == 2 %}
+{% elif depth == 2 %}
 <h3 id="c{{category.item.id}}">{{ category.item.name }}</h3>
-{% elif category.depth == 3 %}
+{% elif depth == 3 %}
 <h4 id="c{{category.item.id}}">{{ category.item.name }}</h4>
-{% elif category.depth == 4 %}
+{% elif depth == 4 %}
 <h5 id="c{{category.item.id}}">{{ category.item.name }}</h5>
 {% else %}
 <h6 id="c{{category.item.id}}">{{ category.item.name }}</h6>
 {% endif %}
 
 
-{% if category.results|length > 0 %}
+{% if category.tests|length > 0 %}
 <table class="table table-striped">
     <thead>
         <tr>
+            <th aria-hidden="false" hidden='true'>Status</th>
             <th aria-hidden="false" hidden='true'>ID</th>
             <th aria-hidden="false" hidden='true'>Description</th>
             <th aria-hidden="false" hidden='true'>Required</th>
@@ -36,15 +38,21 @@
         </tr>
     </thead>
     <tbody>
-        {% for r in category.results %}
-            {% result r is_form %}
+        {% for t in category.tests %}
+            {% get_result t evaluation as r %}
+            {% if is_form == True %}
+                {% get_form_for_result r results_form as f %}
+                {% result r is_form f %}
+            {% else %}
+                {% result r is_form None %}
+            {% endif %}
         {% endfor %}
     </tbody>
 </table>
 {% endif %}
 
 {% for subcat in category.subcategories %}
-    {% category subcat is_form %}
+    {% category subcat evaluation is_form results_form %}
 {% endfor %}
 
 {% if category.depth == 0 %}

@@ -8,7 +8,13 @@ then
     # uncomment to add dummy data to the database
     #./run.sh dummy
 
-    echo "Database re-initialized. Suggest using ./run.sh add-user and ./run.sh add-evaluation to add a user and a test evaluation."
+    echo "Database re-initialized with testsuite data."
+    read -p "Add sample user and evaluation data? " -n 1 -r
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        ./run.sh add-user test test test
+        ./run.sh add-rs
+    fi
 fi
 
 

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}:: {{title}}{% endblock %}
+
+
+
+{% block content %}
+<h1>{{title}}</h1>
+<div class="edit-rs">
+<form action="{{action_url}}" method="post">{% csrf_token %}
+{{ rs_form.as_p }}
+<input type="submit" value="Save" />
+</form>
+</div>
+{% endblock %}

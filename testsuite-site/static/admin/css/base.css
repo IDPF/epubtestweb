@@ -89,14 +89,6 @@ ul li {
     padding: 1px 0;
 }
 
-ul.plainlist {
-    margin-left: 0 !important;
-}
-
-ul.plainlist li {
-    list-style-type: none;
-}
-
 li ul {
     margin-bottom: 0;
 }

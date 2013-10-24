@@ -11,6 +11,8 @@ media_url = '/media/'
 template_dir = '/home/djangoweb/epubtestweb/testsuite-site/templates'
 static_url = '/static/'
 static_root = '/home/djangoweb/epubtestweb/testsuite-site/static'
+epub_downloads_root = '/home/djangoweb/epub-testsuite/build'
+epub_downloads_url = '/epubs/' #symlinked to epub_downloads_root
 
 # development mode overrides
 if DEVELOPMENT_MODE == True:
@@ -22,7 +24,7 @@ if DEVELOPMENT_MODE == True:
     template_dir = '/Users/marisa/Projects/epubtestweb/testsuite-site/templates'
     static_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/static'
     static_url = '/static/'
-
+    epub_downloads_root = '/Users/marisa/Projects/epub-testsuite/build'
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -97,6 +99,9 @@ STATIC_ROOT = static_root
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = static_url
+
+EPUB_ROOT = epub_downloads_root
+EPUB_URL = epub_downloads_url
 
 # Additional locations of static files
 STATICFILES_DIRS = (

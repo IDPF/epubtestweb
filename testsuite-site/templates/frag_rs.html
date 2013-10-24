@@ -1,0 +1,29 @@
+{% load testsuite_extras %}
+
+    <dl class="panel-left">
+        <dt>Name</dt>
+        <dd>{{ rs.name }}</dd>
+
+        <dt>Version</dt>
+        <dd>{{ rs.version }}</dd>
+
+        {% if rs.operating_system|length > 0 %}
+        <dt>Operating system</dt>
+        <dd>{{ rs.operating_system }}</dd>
+        {% endif %}
+
+        {% if rs.locale|length > 0 %}
+        <dt>Locale</dt>
+        <dd>{{ rs.locale}}</dd>
+        {% endif %}
+
+        {% if rs.sdk_version|length > 0 %}
+        <dt>SDK Version</dt>
+        <dd>{{ rs.sdk_version }}</dd>
+        {% endif %}
+
+        <dt>Evaluated</dt>
+        <dd> 
+        {% get_current_evaluation rs as eval%}
+        {{eval.last_updated }}</dd>
+    </dl>

@@ -1,28 +1,81 @@
 {% extends 'base.html' %}
 {% load testsuite_extras %}
 {% block title %}:: Edit Evaluation{% endblock %}
+{% block script %}
+<script>
+
+value_changed = false;
+
+// autosave: every 30 seconds
+$(document).ready(function() {
+    // note when something has changed
+    $('#rsform :input').change(function(){
+        value_changed = true;
+    });
+    timer_id = setInterval(autosave, 30000);
+});
+
+function autosave() {
+    if (value_changed == false) {
+        return;
+    }
+    var frm = $('#rsform');
+    $.ajax({
+        type: frm.attr('method'),
+        url: frm.attr('action') + "?auto=true",
+        data: frm.serialize(),
+        success: function (data) {
+            value_changed = false;
+            console.log("Autosave success");
+        },
+        error: function(data) {
+            console.log("Autosave error");
+        }
+    });
+}
+</script>
+{% endblock %}
 {% block content %}
 
-<h1>Evaluation</h1>
+<h1>Edit Evaluation</h1>
 
-<form action="/edit_evaluation/{{ eval_form.instance.id }}/" method="post">{% csrf_token %}
-{{ eval_form.as_p }}
+<form action="{{ action_url }}" method="post" id="rsform">{% csrf_token %}
+        
+<div style="margin-bottom: 40px;">
+    {% reading_system rs %}
+    <dl class="panel-right">
+        {{ eval_form.as_p }}
 
-<div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="{{eval_form.instance.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{eval_form.instance.percent_complete}}%; height: 100%">
-    <span style="font-style: italic; {%if eval_form.instance.percent_complete < 20 %} color: black;{%endif%}">
-                    {{eval_form.instance.percent_complete}}% Completed</span>
+        <p style="font-weight: bold">Percent complete:</p>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{eval_form.instance.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{eval_form.instance.percent_complete}}%; height: 100%">
+            <span style="font-style: italic; {%if eval_form.instance.percent_complete < 20 %} color: black;{%endif%}">
+                            {{eval_form.instance.percent_complete}}% Completed</span>
+          </div>
+        </div>
+
+    </dl>
+</div>
+
+{% if eval_form.instance.flagged_for_review == True %}
+<div class="panel panel-warning">
+<div class="panel-heading">Alert</div>
+  <div class="panel-body">
+    The test suite for this evaluation may have been upgraded. Please review items requiring attention, highlighted below in yellow.
   </div>
 </div>
+{% endif %}
 
 <div class="results">
 {% for cat in data %}
-    {% category cat True%}
+    {% category cat eval_form.instance True results_form%}
 {% endfor %}
 </div>
 
 {{ results_form.management_form }}
-<input type="submit" value="Submit" style="margin-top: 30px" />
+
+
+<input type="submit" value="Save" style="margin-top: 30px" />
 </form>
 
 <script>
