@@ -1,5 +1,6 @@
 from django.db import models
 from common import EVALUATION_TYPE
+import helper_functions
 
 class EvaluationManager(models.Manager):
     def create_evaluation(self, reading_system):
@@ -91,7 +92,7 @@ class Evaluation(models.Model):
         if len(all_results) != 0:
             completed_results = Result.objects.filter(evaluation = self).exclude(result = None)
             pct_complete = (completed_results.count() * 1.0) / (len(all_results) * 1.0) * 100.0
-            self.percent_complete = float_to_decimal(pct_complete)
+            self.percent_complete = helper_functions.float_to_decimal(pct_complete)
         else:
             self.percent_complete = 0
 
@@ -187,14 +188,6 @@ class Evaluation(models.Model):
         except Score.DoesNotExist:
             return None
             
-# this is the "right way"...
-# http://docs.python.org/release/2.6.7/library/decimal.html#decimal-faq
-# and this is the way that works in practice (in this case, we can live with rounding error past 2 decimal places)
-def float_to_decimal(f):
-    from decimal import Decimal
-    s = str(f)
-    return Decimal(s)
-
 def generate_timestamp():
     from datetime import datetime
     from django.utils.timezone import utc
