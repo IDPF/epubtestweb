@@ -74,12 +74,3 @@ def calculate_source(dirname):
 			return dl
 	print "not found {0}".format(dirname)
 	return None
-
-# this is the "right way"...
-# http://docs.python.org/release/2.6.7/library/decimal.html#decimal-faq
-# and this is the way that works in practice (in this case, we can live with rounding error past 2 decimal places)
-def float_to_decimal(f):
-    from decimal import Decimal
-    s = str(f)
-    return Decimal(s)
-

@@ -1,6 +1,5 @@
 from django.db import models
 from common import EVALUATION_TYPE
-import helper_functions
 
 class EvaluationManager(models.Manager):
     def create_evaluation(self, reading_system):
@@ -48,7 +47,7 @@ class EvaluationManager(models.Manager):
             evaluation.delete()
     
 
-class Evaluation(models.Model):
+class Evaluation(models.Model, FloatToDecimalMixin):
     class Meta:
         db_table = 'testsuite_app_evaluation'
         app_label= 'testsuite_app'
