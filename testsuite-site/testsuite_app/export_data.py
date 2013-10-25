@@ -62,6 +62,9 @@ def result_to_xml(r):
 	result_elm = RESULT(
 		test_elm,
 		result = result_to_string(r),)
+	if len(r.note) > 0:
+		note_elm = NOTE(r.note)
+		result_elm.append(note_elm)
 	return result_elm
 
 def result_to_string(result):

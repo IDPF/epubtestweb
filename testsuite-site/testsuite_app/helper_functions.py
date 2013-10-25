@@ -3,6 +3,8 @@ from models.score import Score
 from models.result import Result
 from models.reading_system import ReadingSystem
 from models.test import Test
+import os
+from testsuite import settings
 
 def get_public_scores(categories):
     "get the public evaluation scores for each reading system"
@@ -57,4 +59,19 @@ def print_item_dict(summary):
     for r in summary['tests']:
         print "{0}TEST {1}".format(prefix+"\t", r.test.name.encode('utf-8'))
 
+def calculate_source(dirname):
+	# given the directory name of the source epub, get the filename in the build directory
+	files = os.listdir(settings.EPUB_ROOT)
+
+	for f in sorted(files):
+
+		if f.find(dirname) != -1:
+			filename = os.path.basename(f)
+			# TODO duplicate code from views.py TestsuiteView
+			link = "{0}{1}".format(settings.EPUB_URL, filename)
+			doc_number = f[12:len(f)-14]
+			dl = {"label": "Document {0}".format(doc_number), "link": link}
+			return dl
+	print "not found {0}".format(dirname)
+	return None
 

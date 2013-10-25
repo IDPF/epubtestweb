@@ -6,14 +6,14 @@ then
     python ../testsuite-site/manage.py syncdb
     ./run.sh import ~/Projects/epub-testsuite/content/30
     # uncomment to add dummy data to the database
-    #./run.sh dummy
+    #./runmain.sh dummy
 
     echo "Database re-initialized with testsuite data."
     read -p "Add sample user and evaluation data? " -n 1 -r
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        ./run.sh add-user test test test
-        ./run.sh add-rs
+        ./runmain.sh add-user test test test
+        ./runmain.sh add-rs
     fi
 fi
 

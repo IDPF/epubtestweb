@@ -13,6 +13,7 @@ static_url = '/static/'
 static_root = '/home/djangoweb/epubtestweb/testsuite-site/static'
 epub_downloads_root = '/home/djangoweb/epub-testsuite/build'
 epub_downloads_url = '/epubs/' #symlinked to epub_downloads_root
+previous_db = '/home/djangoweb/epubtestweb-db/testsuite.db.last'
 
 # development mode overrides
 if DEVELOPMENT_MODE == True:
@@ -25,6 +26,7 @@ if DEVELOPMENT_MODE == True:
     static_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/static'
     static_url = '/static/'
     epub_downloads_root = '/Users/marisa/Projects/epub-testsuite/build'
+    previous_db = '/Users/marisa/Projects/epubtestweb-db/testsuite.db.last'
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -45,7 +47,7 @@ DATABASES = {
 
     'previous': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/Users/marisa/Projects/epubtestweb-db/testsuite.db.v1',                      # Or path to database file if using sqlite3.
+        'NAME': previous_db,                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -56,7 +58,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['54.221.241.178']
+ALLOWED_HOSTS = ['epubtest.org', '54.221.241.178']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

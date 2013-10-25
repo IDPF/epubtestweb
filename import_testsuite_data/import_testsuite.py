@@ -21,17 +21,18 @@ def create_testsuite():
     ts.save()
     return ts
 
-def add_category(category_type, name, parent_category, testsuite):
+def add_category(category_type, name, parent_category, testsuite, source):
     db_category = Category(
         category_type = category_type,
         name = name,
         parent_category = parent_category,
-        testsuite = testsuite
+        testsuite = testsuite,
+        source = source
     )
     db_category.save()
     return db_category
 
-def add_test(name, description, parent_category, required, testid, testsuite, xhtml):
+def add_test(name, description, parent_category, required, testid, testsuite, xhtml, source):
     db_test = Test(
         name = name,
         description = description,
@@ -39,7 +40,8 @@ def add_test(name, description, parent_category, required, testid, testsuite, xh
         required = required,
         testid = testid,
         testsuite = testsuite,
-        xhtml = xhtml
+        xhtml = xhtml,
+        source = source
     )
     db_test.save()
     return db_test
@@ -65,6 +67,7 @@ def category_restriction_to_int(restriction):
 
 def migrate_data(previous_testsuite):
     "look for any tests that haven't changed since the last import and copy reading system results over"
+    print "Looking for data to migrate"
     reading_systems = ReadingSystem.objects.all()
     for rs in reading_systems:
         old_evaluation = rs.get_evaluation_for_testsuite(previous_testsuite)

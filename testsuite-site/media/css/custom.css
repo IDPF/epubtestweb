@@ -139,3 +139,12 @@ span.new-test, span.changed-test {
     margin-top: 10px;
     margin-bottom: 0;
 }
+
+span.warn {
+	color: #c09853;
+	background-color: #fcf8e3;
+}
+
+.header-row td {
+	font-weight: bold;
+}

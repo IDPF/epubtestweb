@@ -20,11 +20,6 @@ Categories:
         Files:
             - epub30-test-0103
     -
-        Name: Text-to-Speech
-        CategoryDisplayDepthLimit: Internal
-        Files:
-            - epub30-test-0104
-    -
         Name: Media Overlays
         CategoryDisplayDepthLimit: Epub
         Files:
@@ -61,12 +56,5 @@ Categories:
             - epub30-test-0209
             - epub30-test-0210
             - epub30-test-0211
-            - epub30-test-0212
-            - epub30-test-0213
-            - epub30-test-0214
-            - epub30-test-0215
-            - epub30-test-0216
-            - epub30-test-0217
-            - epub30-test-0218
-            - epub30-test-0219
+            
 

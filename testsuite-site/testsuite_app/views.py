@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from models import ReadingSystem, Evaluation, TestSuite, Test
+from models import ReadingSystem, Evaluation, TestSuite, Test, Result
 from forms import ReadingSystemForm, ResultFormSet, EvaluationForm
 from testsuite import settings
 import helper_functions
@@ -36,7 +36,8 @@ class TestsuiteView(TemplateView):
     def get(self, request, *args, **kwargs):
         files = os.listdir(settings.EPUB_ROOT)
         downloads = []
-        for f in files:
+
+        for f in sorted(files):
             if os.path.splitext(f)[1] == '.epub':
                 # the download link is going to be EPUB_URL + filename
                 filename = os.path.basename(f)
@@ -265,12 +266,23 @@ class ProblemReportView(TemplateView):
         if kwargs.has_key('pk'):
             try:
                 rs = ReadingSystem.objects.get(id=kwargs['pk'])
-                return render(request, self.template_name, {"rs": rs, "results": []})
+                evaluation = rs.get_current_evaluation()
+                date = evaluation.testsuite.version_date
+                results = Result.objects.filter(evaluation = evaluation, result = "2") #not supported
+                result_dict_list = []
+                for r in results:
+                	source = helper_functions.calculate_source(r.test.source)
+                	result_dict = {"result": r, "source": source}
+                	result_dict_list.append(result_dict)
+                # sort the list according to what epub they reference
+                sorted_results = sorted(result_dict_list, key=lambda k: k['source']['link']) 
+                return render(request, self.template_name, {"rs": rs, "results": sorted_results, "testsuite_date": date})
             except Evaluation.DoesNotExist:
                 return render(request, "404.html", {})
+
+
         
  
-
 ################################################
 # helper functions
 ################################################

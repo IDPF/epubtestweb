@@ -12,6 +12,7 @@ class Category(models.Model, ItemMixin):
     name = models.TextField()
     parent_category = models.ForeignKey('Category', null = True, blank = True)
     testsuite = models.ForeignKey(TestSuite)
+    source = models.CharField(max_length = LONG_STRING, null=True, blank=True) # what epub the test or category came from
 
     # get all the tests in the given category (drill down through subcategories too)
     def get_tests(self):

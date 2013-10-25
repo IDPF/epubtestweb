@@ -27,7 +27,7 @@ def add_testsuite(args):
     yaml_categories = yaml.load(open("categories.yaml").read())['Categories']
 
     for cat in yaml_categories:
-        new_category = import_testsuite.add_category('1', cat['Name'], None, testsuite)
+        new_category = import_testsuite.add_category('1', cat['Name'], None, testsuite, None)
         for epub in cat['Files']:
             fullpath = os.path.join(args.source, epub)
             if os.path.isdir(fullpath):
@@ -38,6 +38,7 @@ def add_testsuite(args):
                 print "Not a directory: {0}".format(fullpath)
 
     import_testsuite.migrate_data(old_testsuite)
+    print "Done importing testsuite."
 
 def add_user(args):
     user = models.UserProfile.objects.create_user(args.username, args.email, args.password)
@@ -51,7 +52,7 @@ def add_rs(args):
     user = models.UserProfile.objects.all()[0]
     rs = models.ReadingSystem(
         locale = "US",
-        name = "SuperReader",
+        name = args.name,
         operating_system = "OSX",
         sdk_version = "N/A",
         version = "1.0",
@@ -110,6 +111,7 @@ def main():
     add_user_parser.set_defaults(func = add_user)
 
     add_rs_parser = subparsers.add_parser('add-rs', help="Add a new reading system")
+    add_rs_parser.add_argument('name', action="store", help="reading system name")
     add_rs_parser.set_defaults(func = add_rs)
 
     copy_users_parser = subparsers.add_parser('copy-users', help="Copy all users")

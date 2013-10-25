@@ -1,3 +1,5 @@
+from django.db import models
+
 SHORT_STRING = 50
 LONG_STRING = 255
 
@@ -18,17 +20,17 @@ RESULT_TYPE = (
 )
 
 class ItemMixin():
-    # TODO change to a static property
-    def get_depth(self):
-        if self.parent_category == None:
-            return 0
-        else:
-            return self.parent_category.get_depth() + 1
+	# TODO change to a static property
+	def get_depth(self):
+		if self.parent_category == None:
+			return 0
+		else:
+			return self.parent_category.get_depth() + 1
 
-    def get_parents(self):
-        if self.parent_category == None:
-            return []
-        else:
-            parents = [self.parent_category]
-            parents.extend(self.parent_category.get_parents())
-            return parents
+	def get_parents(self):
+		if self.parent_category == None:
+			return []
+		else:
+			parents = [self.parent_category]
+			parents.extend(self.parent_category.get_parents())
+			return parents

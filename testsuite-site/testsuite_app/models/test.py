@@ -23,6 +23,7 @@ class Test(models.Model, ItemMixin):
     xhtml =  models.TextField()
     flagged_as_new = models.BooleanField(default = False)
     flagged_as_changed = models.BooleanField(default = False)
+    source = models.CharField(max_length = LONG_STRING, null=True, blank=True) # what epub the test or category came from
 
     def save(self, *args, **kwargs):
         "custom save routine"
@@ -32,3 +33,9 @@ class Test(models.Model, ItemMixin):
             # call 'save' on the base class
             super(Test, self).save(*args, **kwargs)
 
+    def get_epub_parent_category(self):
+    	parents = self.get_parents()
+    	for p in parents:
+    		if p.category_type == "2": # 'epub'
+    			return p
+    	return None
