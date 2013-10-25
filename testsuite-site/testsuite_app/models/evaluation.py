@@ -1,5 +1,5 @@
 from django.db import models
-from common import EVALUATION_TYPE
+from common import *
 
 class EvaluationManager(models.Manager):
     def create_evaluation(self, reading_system):
@@ -91,7 +91,7 @@ class Evaluation(models.Model, FloatToDecimalMixin):
         if len(all_results) != 0:
             completed_results = Result.objects.filter(evaluation = self).exclude(result = None)
             pct_complete = (completed_results.count() * 1.0) / (len(all_results) * 1.0) * 100.0
-            self.percent_complete = helper_functions.float_to_decimal(pct_complete)
+            self.percent_complete = self.float_to_decimal(pct_complete)
         else:
             self.percent_complete = 0
 

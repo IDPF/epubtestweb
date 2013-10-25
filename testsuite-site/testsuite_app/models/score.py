@@ -1,4 +1,5 @@
 from django.db import models
+from common import *
 
 class Score(models.Model, FloatToDecimalMixin):
     class Meta:
