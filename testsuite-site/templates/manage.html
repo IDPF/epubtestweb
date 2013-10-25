@@ -50,7 +50,14 @@
                     {% endif %}
                     </li>
                     <li><a href="/rs/{{ r.id }}/report/">Problem report</a></li>
-                    <li><a href="/rs/{{ r.id }}/edit/">Edit Details</a></li>
+
+                    <li>
+                    {% if user == r.user %}
+                    	<a href="/rs/{{ r.id }}/edit/">Edit details</a>
+                    {% else %}
+                    	<span class="text-muted" style="font-style: italic" title="Only the owner can edit.">Edit details</span>
+                    {% endif %}
+                    </li>
                     <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
                 </ul>
 
