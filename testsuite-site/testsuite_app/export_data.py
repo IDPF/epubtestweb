@@ -13,6 +13,7 @@ RESULT = E.result
 CATEGORY = E.category
 RESULTS = E.results
 TEST = E.test
+NOTES = E.notes
 
 def export_all_current_evaluations():
 	reading_systems = ReadingSystem.objects.all()
@@ -62,9 +63,9 @@ def result_to_xml(r):
 	result_elm = RESULT(
 		test_elm,
 		result = result_to_string(r),)
-	if len(r.note) > 0:
-		note_elm = NOTE(r.note)
-		result_elm.append(note_elm)
+	if r.notes != None and len(r.notes) > 0:
+		notes_elm = NOTES(r.notes)
+		result_elm.append(notes_elm)
 	return result_elm
 
 def result_to_string(result):
