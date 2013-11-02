@@ -98,7 +98,6 @@ def migrate_data(previous_testsuite):
                 result.test.flagged_as_changed = True
                 result.test.save()
                 new_evaluation.flagged_for_review = True
-        new_evaluation.evaluation_type = old_evaluation.evaluation_type
         new_evaluation.save()
 
 

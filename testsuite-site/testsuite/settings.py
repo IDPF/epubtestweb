@@ -1,7 +1,7 @@
 # Django settings for testsuite project.
 
-#DEVELOPMENT_MODE = True
-DEVELOPMENT_MODE = False
+DEVELOPMENT_MODE = True
+#DEVELOPMENT_MODE = False
 
 DEBUG = False
 TEMPLATE_DEBUG = False

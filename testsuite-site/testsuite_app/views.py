@@ -9,9 +9,10 @@ from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
 from models import ReadingSystem, Evaluation, TestSuite, Test, Result
-from forms import ReadingSystemForm, ResultFormSet, EvaluationForm
+from forms import ReadingSystemForm, ResultFormSet
 from testsuite import settings
 import helper_functions
+import permissions
 
 class IndexView(TemplateView):
     "Home page"
@@ -96,15 +97,13 @@ class ManageView(TemplateView):
     template_name = "manage.html"
 
     def get(self, request, *args, **kwargs):
-        display_name = request.user.username
         testsuite = TestSuite.objects.get_most_recent_testsuite()
         if len(request.user.first_name) > 0 or len(request.user.last_name) > 0:
             display_name = "{0} {1}".format(request.user.first_name, request.user.last_name)
             display_name = display_name.strip()
         reading_systems = ReadingSystem.objects.all()
         return render(request, self.template_name,
-            {'reading_systems': reading_systems, 'display_name': display_name,
-            "testsuite_date": testsuite.version_date})
+            {'reading_systems': reading_systems, "testsuite_date": testsuite.version_date})
 
 
 class ReadingSystemView(TemplateView):
@@ -137,6 +136,11 @@ class ReadingSystemView(TemplateView):
             rs = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
+
+        if request.user != rs.user:
+            messages.add_message(request, messages.INFO, 'You do not have permission to delete that reading system.')
+            return redirect("/manage/")
+        
         Evaluation.objects.delete_associated(rs)
         rs.delete()
         messages.add_message(request, messages.INFO, "Reading system deleted")
@@ -154,7 +158,6 @@ class EditEvaluationView(UpdateView):
 
         action_url = "/rs/{0}/eval/".format(rs.id)
         evaluation = rs.get_current_evaluation()
-        eval_form = EvaluationForm(instance = evaluation)
         results_form = ResultFormSet(instance = evaluation)
         testsuite = TestSuite.objects.get_most_recent_testsuite()
         data = helper_functions.testsuite_to_dict(testsuite)
@@ -164,7 +167,7 @@ class EditEvaluationView(UpdateView):
             return redirect("/manage/")
 
         return render(request, self.template_name,
-            {'eval_form': eval_form, 'results_form': results_form, 'data': data,
+            {'evaluation': evaluation, 'results_form': results_form, 'data': data,
             'rs': rs, "action_url": action_url})
 
     def post(self, request, *args, **kwargs):
@@ -177,11 +180,9 @@ class EditEvaluationView(UpdateView):
             messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
             return redirect("/manage/")
         evaluation = rs.get_current_evaluation()
-        eval_form = EvaluationForm(request.POST, instance=evaluation)
         formset = ResultFormSet(request.POST, instance=evaluation)
 
         formset.save()
-        eval_form.save()
         
         # if we are auto-saving, don't redirect
         if not request.POST.has_key('auto') or request.POST['auto'] == "false":
@@ -195,6 +196,11 @@ class ConfirmDeleteRSView(TemplateView):
             rs = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
+
+        if request.user != rs.user:
+            messages.add_message(request, messages.INFO, 'You do not have permission to delete that reading system.')
+            return redirect("/manage/")
+        
         rs_desc = "{0} {1} {2} {3}".format(rs.name, rs.version, rs.locale, rs.operating_system)
         return render(request, self.template_name,
             {"header": 'Confirm delete',
@@ -311,4 +317,27 @@ def export_data(request):
     response['Content-Disposition'] = 'attachment; filename="export.xml"'
     response.write(xmldoc_str)
     return response
+
+def set_visibility(request, *args, **kwargs):
+    try:
+        rs = ReadingSystem.objects.get(id=kwargs['pk'])
+    except ReadingSystem.DoesNotExist:
+        return render(request, "404.html", {})
+
+    visibility = request.GET.get('set', '1')
+    if visibility != "1" and visibility != "2" and visibility != "3":
+        messages.add_message(request, messages.WARNING, 'Visibility option {0} not recognized.'.format(visibility))
+        return redirect('/manage/')
+
+    can_set_vis = permissions.user_can_change_visibility(request.user, rs, visibility)
+
+    if can_set_vis == True:
+        rs.visibility = visibility
+        rs.save()
+        #messages.add_message(request, messages.INFO, "Visibility changed")
+    else:
+        messages.add_message(request, messages.WARNING, "You don't have permission to change the visibility for this item.")    
+
+    return redirect("/manage/")
+
 

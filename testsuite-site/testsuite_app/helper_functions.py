@@ -11,7 +11,7 @@ def get_public_scores(categories):
     retval = []
     reading_systems = ReadingSystem.objects.all()
     for rs in reading_systems:
-        if rs.get_current_evaluation().evaluation_type == "1": #'internal'
+        if rs.visibility != "2": #'public'
             retval.append({"reading_system": rs, "total_score": 0, "category_scores": None})
         else:
             evaluation = rs.get_current_evaluation()

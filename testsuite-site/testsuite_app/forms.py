@@ -10,16 +10,6 @@ class LoginForm(forms.Form):
     def is_valid(self):
         return len(self.username) > 0 and len(self.password) > 0
 
-class EvaluationForm(ModelForm):
-    class Meta:
-        model = Evaluation
-        fields = ['evaluation_type']
-
-    def __init__(self, *args, **kwargs):
-        #user = kwargs.pop('user','')
-        super(EvaluationForm, self).__init__(*args, **kwargs)
-        #self.fields['reading_system'] = ReadingSystemChoiceField(queryset=ReadingSystem.objects.all())
-
 
 class ReadingSystemForm(ModelForm):
     error_css_class = 'error'

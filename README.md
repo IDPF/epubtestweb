@@ -33,12 +33,41 @@ For admins
 
 Initializing the DB for the first time
 ---------------------------------
+If you already have a file `testsuite.db`, this will ERASE any existing data! Backup accordingly.
+
+Run these commands from `import_testsuite_data/`:
+
+`./newdb.sh`
+`./runmain.sh import PATH/TO/epub-testsuite/content/30`
+
+If you have a previous database with users that you want to copy over, be sure to configure it in settings.py under the entry `previous`. Then run this command:
+
+`./runmain.sh copy-users`
+
+If you want to add a sample reading system and random evaluation results for it, run this command:
+
+`./runmain.sh add-rs ReadingSystemName`
 
 
 Adding users
 ------------
+Once you have [added an administrative user](https://docs.djangoproject.com/en/dev/ref/django-admin/#createsuperuser), use the built-in django admin site to add additional users:
+`http://your-url.com/admin`
 
 
 Updating the test suite
 ---------------
+When there is a new version of the testsuite available, just run the import command again:
+`./runmain.sh import PATH/TO/epub-testsuite/content/30`
+
+All current evaluations will get ported over.
+
+Overview of user permissions
+-------------
+Django's default users system has the following types of users (roughly speaking):
+
+* superusers: the highest level of permissions. Superusers may add new users and have total control over reading systems and evaluations.
+* staff users: these are regular users with access to the /admin backend site. Once in that site, these users may change their own password but  nothing more.
+* regular users: these users can add reading systems and create internal evaluations.
+
 

@@ -14,7 +14,6 @@ class EvaluationManager(models.Manager):
         tests = Test.objects.filter(testsuite = testsuite)
 
         evaluation = self.create(
-            evaluation_type = "1", # internal
             testsuite = testsuite,
             last_updated = generate_timestamp(),
             percent_complete = 0.00,
@@ -30,6 +29,9 @@ class EvaluationManager(models.Manager):
             result = Result(test = t, evaluation = evaluation, result = None) # 4 = no value yet
             result.save()
 
+        # update the score once results have been created
+        total_score.update(evaluation.get_all_results())
+
         # create category score entries for this evaluation
         categories = Category.objects.filter(testsuite = evaluation.testsuite)
         for cat in categories:
@@ -37,6 +39,7 @@ class EvaluationManager(models.Manager):
                 category = cat,
                 evaluation = evaluation
             )
+            score.update(evaluation.get_category_results(cat))
             score.save()
 
         return evaluation
@@ -53,8 +56,7 @@ class Evaluation(models.Model, FloatToDecimalMixin):
         app_label= 'testsuite_app'
 
     objects = EvaluationManager()
-
-    evaluation_type = models.CharField(max_length = 1, choices = EVALUATION_TYPE)
+    
     testsuite = models.ForeignKey('TestSuite')
     last_updated = models.DateTimeField()
     percent_complete = models.DecimalField(decimal_places = 2, max_digits = 5)

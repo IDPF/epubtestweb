@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uid">
+	<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:identifier id="uid">com.github.epubtestweb.test-epub-rev1</dc:identifier>
+		<dc:description>EPUB to test the import feature of epubtest.org</dc:description>
+		<dc:title id="title">EPUBTEST.ORG test content</dc:title>
+		<meta refines="title" property="title-type">main</meta>
+		<dc:creator id="creator1">Marisa DeMeglio</dc:creator>
+		<dc:language>en</dc:language>
+		<meta property="dcterms:modified">2013-10-28T13:00:00Z</meta>
+	</metadata>
+	<manifest>
+		<item href="xhtml/test.xhtml" id="test" media-type="application/xhtml+xml"/>
+		<item href="xhtml/nav.xhtml" id="nav" media-type="application/xhtml+xml" properties="nav"/>
+	</manifest>
+	<spine>
+		<itemref idref="test"/>
+		<itemref idref="nav" linear="no"/>
+	</spine>
+</package>

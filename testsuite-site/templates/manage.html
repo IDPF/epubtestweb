@@ -5,8 +5,7 @@
 
 {% block content %}
 
-
-<p>You are logged in as {{ display_name }}.</p>
+<p style="font-style: italic">You are logged in as {{ user|get_display_name }}.</p>
 
 <h1 style="font-size: medium">Reading Systems</h1>
 
@@ -22,10 +21,19 @@
             <th>SDK Version</th>
             <th>Evaluation Status</th>
             <th>Actions</th>
+            <th>Visibility</th>
         </tr>
     </thead>
     <tbody>
         {% for r in reading_systems %}
+        
+        {% user_can_view user r 'manage' as can_view %}
+        {% user_can_edit user r as can_edit %}
+        {% user_can_change_visibility user r '1' as can_make_members_only %}
+        {% user_can_change_visibility user r '2' as can_make_public %}
+        {% user_can_change_visibility user r '3' as can_make_owner_only %}
+        
+        {% if can_view %}
         <tr>
             <td>{{ r.name }} </td>
             <td>{{ r.version }}</td>
@@ -37,38 +45,49 @@
                 {% if eval.flagged_for_review == True %}
                 <p class="text-warning"><a href="/rs/{{ r.id }}/eval/">Please review this evaluation.</a></p>
                 {% endif %}
-                <p>Owned by user {{r.user.username}}</p>
+                <p>
+                    Added by {{ r.user|get_display_name }}
+                    {% if r.user == user %} (you) {% endif %}
+                </p>
             </td>
             <td>
                 <ul class="list-unstyled">
-                    <li><a href="/rs/{{ r.id }}/">View</a></li>
-                    <li>
-                    {% if user == r.user %}
-                    	<a href="/rs/{{ r.id }}/eval/">Evaluate</a>
-                    {% else %}
-                    	<span class="text-muted" style="font-style: italic" title="Only the owner can evaluate.">Evaluate</span>
-                    {% endif %}
-                    </li>
-                    <li><a href="/rs/{{ r.id }}/report/">Problem report</a></li>
-
-                    <li>
-                    {% if user == r.user %}
-                    	<a href="/rs/{{ r.id }}/edit/">Edit details</a>
-                    {% else %}
-                    	<span class="text-muted" style="font-style: italic" title="Only the owner can edit.">Edit details</span>
-                    {% endif %}
-                    </li>
+                    <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
+                    <li><a href="/rs/{{ r.id }}/report/">View Issue Report</a></li>
+                    {% if can_edit == True %}
+                    <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
+                    <li><a href="/rs/{{ r.id }}/edit/">Edit details</a></li>
                     <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
+                    {% endif %}
                 </ul>
+            </td>
+            <td>
+                <span style="font-style: italic">Currently: {{ r|get_visibility }}</span>
+                <ul class="list-unstyled">
+                    {% if can_make_public %}
+                    <li><a href="/rs/{{ r.id }}/visibility?set=2">Change to public</a></li>
+                    {% endif %}
 
+                    {% if can_make_members_only %}
+                    <li><a href="/rs/{{ r.id }}/visibility?set=1">Change to members-only</a></li>
+                    {% endif %}
+
+                    {% if can_make_owner_only %}
+                    <li><a href="/rs/{{ r.id }}/visibility?set=3">Change to owner-only</a></li>
+                    {% endif %}  
+
+                    {% if can_make_public == False and can_make_members_only == False and can_make_owner_only == False %}              
+                    <li style="font-style: italic" class="text-muted">You do not have permission to change visibility.</li>
+                    {% endif %}
+                </ul>
             </td>
         </tr>
+        {% endif %}
         {% endfor %}
     </tbody>
 </table>
 
 <p><a href="/rs/new">Add Reading System</a></p>
 <p><a href="/export/">Download evaluation data</a></p>
-
 
 {% endblock %}

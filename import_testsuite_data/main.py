@@ -8,28 +8,28 @@ from testsuite_app import helper_functions
 from testsuite_app import export_data
 from random import randrange
 
-def print_testsuite(args):
+def print_testsuite():
     rs = models.ReadingSystem.objects.get(id=1)
     res = helper_functions.get_results_as_nested_categories(rs)
     for r in res:
         helper_functions.print_item_summary(r)
 
-def clear_data(args):
+def clear_data():
     models.UserProfile.objects.all().delete()
     models.ReadingSystem.objects.all().delete()
 
 # look at each referenced epub in the categories.yaml file
 # parse it and put the data under a category header
-def add_testsuite(args):
-    print "Processing {0}".format(args.source)
+def add_testsuite(sourcedir, config_file):
+    print "Processing {0} (config = {1})".format(sourcedir, config_file)
     old_testsuite = models.TestSuite.objects.get_most_recent_testsuite()
     testsuite = import_testsuite.create_testsuite()
-    yaml_categories = yaml.load(open("categories.yaml").read())['Categories']
+    yaml_categories = yaml.load(open(config_file).read())['Categories']
 
     for cat in yaml_categories:
         new_category = import_testsuite.add_category('1', cat['Name'], None, testsuite, None)
         for epub in cat['Files']:
-            fullpath = os.path.join(args.source, epub)
+            fullpath = os.path.join(sourcedir, epub)
             if os.path.isdir(fullpath):
                 # this will add a new testsuite
                 epubparser = epub_parser.EpubParser()
@@ -40,27 +40,28 @@ def add_testsuite(args):
     import_testsuite.migrate_data(old_testsuite)
     print "Done importing testsuite."
 
-def add_user(args):
-    user = models.UserProfile.objects.create_user(args.username, args.email, args.password)
-    user.first_name = args.firstname
-    user.last_name = args.lastname
+def add_user(username, email, password, firstname, lastname):
+    user = models.UserProfile.objects.create_user(username, email, password)
+    user.first_name = firstname
+    user.last_name = lastname
     user.is_superuser = False
     user.save()
     return user
 
-def add_rs(args):
+def add_rs(name):
     user = models.UserProfile.objects.all()[0]
     rs = models.ReadingSystem(
         locale = "US",
-        name = args.name,
+        name = name,
         operating_system = "OSX",
         sdk_version = "N/A",
         version = "1.0",
         user = user,
+        visibility = "2", # public
     )
     rs.save() # save now to generate an initial evaluation
     evaluation = rs.get_current_evaluation()
-    evaluation.evaluation_type = "2" # public
+    
     # generate result data
     results = evaluation.get_all_results()
     for r in results:
@@ -70,13 +71,13 @@ def add_rs(args):
     return rs
 
 # settings.py must contain a definition for the 'previous' database in order for this to work
-def copy_users(args):
+def copy_users():
     users = models.UserProfile.objects.using('previous').all()
     for u in users:
         u.save(using='default')
     print "Copied users from old database."
 
-def rollback(args):
+def rollback():
     "roll back to the previous testsuite version, or just remove eval data if there is no previous version"
     ts = models.TestSuite.objects.get_most_recent_testsuite()
     evals = models.Evaluation.objects.filter(testsuite = ts)
@@ -84,23 +85,24 @@ def rollback(args):
         e.delete()
     ts.delete()
 
-def export(args):
+def export(outfile):
     xmldoc = export_data.export_all_current_evaluations()
-    xmldoc.write(args.file)
-    print "Data exported to {0}".format(args.file)
+    xmldoc.write(outfile)
+    print "Data exported to {0}".format(outfile)
 
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
     subparsers = argparser.add_subparsers(help='commands')
     import_parser = subparsers.add_parser('import', help='Import a testsuite into the database')
     import_parser.add_argument("source", action="store", help="Folder containing EPUBs")
-    import_parser.set_defaults(func = add_testsuite)
+    import_parser.add_argument("config", action="store", default="categories.yaml", help="categories config file")
+    import_parser.set_defaults(func = lambda(args): add_testsuite(args.source, args.config))
 
     print_parser = subparsers.add_parser('print', help="Print (some) contents of the database")
-    print_parser.set_defaults(func = print_testsuite)
+    print_parser.set_defaults(func = lambda(args): print_testsuite())
 
     clear_data_parser = subparsers.add_parser('clear', help="Clear user and reading system data from the database")
-    clear_data_parser.set_defaults(func = clear_data)
+    clear_data_parser.set_defaults(func = lambda(args): clear_data())
 
     add_user_parser = subparsers.add_parser('add-user', help="Add a new user")
     add_user_parser.add_argument('username', action="store", help="username")
@@ -108,21 +110,21 @@ def main():
     add_user_parser.add_argument('email', action="store", help="email")
     add_user_parser.add_argument('--firstname', action="store", help="first name", default="")
     add_user_parser.add_argument('--lastname', action="store", help="last name", default="")
-    add_user_parser.set_defaults(func = add_user)
+    add_user_parser.set_defaults(func = lambda(args): add_user(args.username, args.email, args.password, args.firstname, args.lastname))
 
     add_rs_parser = subparsers.add_parser('add-rs', help="Add a new reading system")
     add_rs_parser.add_argument('name', action="store", help="reading system name")
-    add_rs_parser.set_defaults(func = add_rs)
+    add_rs_parser.set_defaults(func = lambda(args): add_rs(args.name))
 
     copy_users_parser = subparsers.add_parser('copy-users', help="Copy all users")
-    copy_users_parser.set_defaults(func = copy_users)
+    copy_users_parser.set_defaults(func = lambda(args): copy_users())
 
     rollback_parser = subparsers.add_parser('rollback', help="Roll back to the previous testsuite")
-    rollback_parser.set_defaults(func = rollback)
+    rollback_parser.set_defaults(func = lambda(args): rollback())
 
     export_parser = subparsers.add_parser('export', help="Export evaluation data for all reading systems")
     export_parser.add_argument("file", action="store", help="store the xml file here")
-    export_parser.set_defaults(func = export)
+    export_parser.set_defaults(func = lambda(args): export(args.file))
 
     args = argparser.parse_args()
     args.func(args)

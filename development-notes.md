@@ -20,9 +20,10 @@ If there are results for which no answer has been given, for whatever reason (co
 Permissions
 ======
 Each user can add a reading system and evaluate it.
-Users can view all entries but may only edit their own.
+Reading systems have visibility states: public, owner-only, and members-only
+Admin users can access anything.
+Admins are the only ones who can set public visibility.
 
-TODO: Do we need 'admin' users, who can edit everything?
 
 Autosaving
 =====

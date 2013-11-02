@@ -26,15 +26,16 @@
     <tbody>
     {% if rs_scores|length != 0 %}
     {% for rs_score in rs_scores %}
-    {% if rs_score.category_scores != None %}
+    {# only show public reading systems #}
+    {% if rs_score.reading_system.visibility == "2" and rs_score.category_scores != None %}
     {% get_current_evaluation rs_score.reading_system as eval%}
         <tr>
             <td><a href="rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
-                {% if rs_score.reading_system.operating_system != None %}
+                {% if rs_score.reading_system.operating_system != "" %}
                 <br/>
                 <span class="rs-details">{{ rs_score.reading_system.operating_system }}</span>
                 {% endif %}
-                {% if rs_score.reading_system.locale != None %}
+                {% if rs_score.reading_system.locale != "" %}
                 <br/>
                 <span class="rs-details">Locale: {{ rs_score.reading_system.locale }}</span>
                 {% endif %}
@@ -42,17 +43,18 @@
                 <br/>
                 <span class="warn">This evaluation may not be current.</span>
                 {% endif %}
-
+                <br/>
+                <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
             </td>
             <td class="text-center">
                 <ul class="list-unstyled scores">
                     <li class="total">Total: {{ rs_score.total_score.pct_total_passed }}%</li>
-                {% if rs_score.total_score.num_required_tests = 0 %}
+                {% if rs_score.total_score.num_required_tests == 0 %}
                     <li>Required: N/A</li>
                 {% else %}
                     <li>Required: {{ rs_score.total_score.pct_required_passed }}%</li>
                 {% endif %}
-                {% if rs_score.total_score.num_optional_tests = 0 %}
+                {% if rs_score.total_score.num_optional_tests == 0 %}
                     <li>Optional: N/A</li>
                 {% else %}
                     <li>Optional: {{ rs_score.total_score.pct_optional_passed }}%</li>
@@ -64,12 +66,12 @@
             <td class="text-center">
                 <ul class="list-unstyled scores">
                     <li class="total">Total: {{ category_score.pct_total_passed }}%</li>
-                {% if category_score.num_required_tests = 0 %}
+                {% if category_score.num_required_tests == 0 %}
                     <li>Required: N/A</li>
                 {% else %}
                     <li>Required: {{ category_score.pct_required_passed }}%</li>
                 {% endif %}
-                {% if category_score.num_optional_tests = 0 %}
+                {% if category_score.num_optional_tests == 0 %}
                     <li>Optional: N/A</li>
                 {% else %}
                     <li>Optional: {{ category_score.pct_optional_passed }}%</li>
@@ -99,15 +101,17 @@
     <tbody>
     {% if rs_scores|length != 0 %}
         {% for rs_score in rs_scores %}
+        {# only show public reading systems #}
+        {% if rs_score.reading_system.visibility == "2" %}
         {% get_current_evaluation rs_score.reading_system as eval%}
         <tr>
             <td>
                 <a href="rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
-                {% if rs_score.reading_system.operating_system != None %}
+                {% if rs_score.reading_system.operating_system != "" %}
                 <br/>
                 <span class="rs-details">{{ rs_score.reading_system.operating_system }}</span>
                 {% endif %}
-                {% if rs_score.reading_system.locale != None %}
+                {% if rs_score.reading_system.locale != "" %}
                 <br/>
                 <span class="rs-details">Locale: {{ rs_score.reading_system.locale }}</span>
                 {% endif %}
@@ -115,25 +119,28 @@
                 <br/>
                 <span class="warn">This evaluation may not be current.</span>
                 {% endif %}
+                <br/>
+                <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
             </td>
             <td class="text-center">
                 <span class="total">{{ rs_score.total_score.pct_total_passed }}%</span>
             </td>
             <td class="text-center">
-                {% if rs_score.total_score.num_required_tests = 0 %}
+                {% if rs_score.total_score.num_required_tests == 0 %}
                     <span>N/A</span>
                 {% else %}
                     <span>{{ rs_score.total_score.pct_required_passed }}%</span>
                 {% endif %}
             </td>
             <td class="text-center">
-                {% if rs_score.total_score.num_optional_tests = 0 %}
+                {% if rs_score.total_score.num_optional_tests == 0 %}
                     <span>N/A</span>
                 {% else %}
                     <span>{{ rs_score.total_score.pct_optional_passed }}%</span>
                 {% endif %}
             </td>
         </tr>
+        {% endif %}
         {% endfor %}
         {% endif %}
     </tbody>

@@ -23,5 +23,6 @@ urlpatterns = patterns('',
     (r'^rs/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteRSView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/report/$', login_required(function=ProblemReportView.as_view(), login_url='/login/')),
     (r'^rs/new/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/visibility/$', login_required(function=set_visibility, login_url='/login/')),
     (r'^admin/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.EPUB_URL, document_root = settings.EPUB_ROOT)

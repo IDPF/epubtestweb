@@ -5,7 +5,13 @@ LONG_STRING = 255
 
 EVALUATION_TYPE = (
     ("1", "Internal"),
+    ("2", "Other"),
+)
+
+VISIBILITY_TYPE = (
+    ("1", "Members only"),
     ("2", "Public"),
+    ("3", "Owner only")
 )
 
 CATEGORY_TYPE = (

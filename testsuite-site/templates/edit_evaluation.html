@@ -48,20 +48,19 @@ function autosave() {
 <div style="margin-bottom: 40px;">
     {% reading_system rs %}
     <dl class="panel-right">
-        {{ eval_form.as_p }}
-
+        
         <p style="font-weight: bold">Percent complete:</p>
         <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="{{eval_form.instance.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{eval_form.instance.percent_complete}}%; height: 100%">
-            <span style="font-style: italic; {%if eval_form.instance.percent_complete < 20 %} color: black;{%endif%}">
-                            {{eval_form.instance.percent_complete}}% Completed</span>
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{evaluation.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{evaluation.percent_complete}}%; height: 100%">
+            <span style="font-style: italic; {%if evaluation.percent_complete < 20 %} color: black;{%endif%}">
+                            {{evaluation.percent_complete}}% Completed</span>
           </div>
         </div>
 
     </dl>
 </div>
 
-{% if eval_form.instance.flagged_for_review == True %}
+{% if evaluation.flagged_for_review == True %}
 <div class="panel panel-warning">
 <div class="panel-heading">Alert</div>
   <div class="panel-body">
@@ -72,7 +71,7 @@ function autosave() {
 
 <div class="results">
 {% for cat in data %}
-    {% category cat eval_form.instance True results_form%}
+    {% category cat evaluation True results_form%}
 {% endfor %}
 </div>
 

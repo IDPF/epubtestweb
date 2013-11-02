@@ -1,4 +1,5 @@
 from django import template
+from testsuite_app import permissions
 
 register = template.Library()
 
@@ -58,8 +59,7 @@ def get_form_for_result(result, result_forms):
 
 @register.assignment_tag
 def has_public_evaluation(reading_system):
-	evaluation = reading_system.get_current_evaluation()
-	if evaluation.evaluation_type == "2": #public
+	if reading_system.visibility == "2": #public
 		return True
 	else:
 		return False
@@ -75,16 +75,41 @@ def is_test_supported(reading_system, test):
 	else:
 		return False
 
+@register.assignment_tag
+def user_can_edit(user, reading_system):
+    return permissions.user_can_edit_reading_system(user, reading_system)
+
+@register.assignment_tag
+def user_can_view(user, reading_system, context):
+	return permissions.user_can_view_reading_system(user, reading_system, context)
+
+@register.assignment_tag
+def user_can_change_visibility(user, reading_system, new_visibility):
+	return permissions.user_can_change_visibility(user, reading_system, new_visibility)
+
+@register.filter
+def get_display_name(user):
+    if (user.first_name != None and user.first_name != "") or \
+        (user.last_name != None and user.last_name != ""):
+        return "{0} {1}".format(user.first_name, user.last_name)
+    else:
+        return user.username
+
 @register.filter
 def get_status(rs):
-	eval_type = ""
 	evaluation = rs.get_current_evaluation()
-	if evaluation.evaluation_type == "1":
-		eval_type = "Internal"
-	else:
-		eval_type = "Public"
+	#eval_type = get_visibility(rs)
+	return "{0}% complete.".format(evaluation.percent_complete)
 
-	return "{0}, {1}% complete.".format(eval_type, evaluation.percent_complete)
+@register.filter
+def get_visibility(rs):
+	if rs.visibility == "1":
+		eval_type = "members-only"
+	elif rs.visibility == "2":
+		eval_type = "public"
+	else:
+		eval_type = "owner-only"
+	return eval_type
 
 @register.filter
 def get_parent_ids(item):

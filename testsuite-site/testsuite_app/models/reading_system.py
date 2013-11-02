@@ -1,5 +1,5 @@
 from django.db import models
-from common import SHORT_STRING, LONG_STRING
+from common import SHORT_STRING, LONG_STRING, VISIBILITY_TYPE
 
 class ReadingSystem(models.Model):
     class Meta:
@@ -12,6 +12,7 @@ class ReadingSystem(models.Model):
     sdk_version = models.CharField(max_length = SHORT_STRING, null = True, blank = True)
     version = models.CharField(max_length = SHORT_STRING, blank = False, null = False)
     user = models.ForeignKey('UserProfile')
+    visibility = models.CharField(max_length = 1, choices = VISIBILITY_TYPE, default="1") # members-only
 
     def save(self, *args, **kwargs):
         "custom save routine"
