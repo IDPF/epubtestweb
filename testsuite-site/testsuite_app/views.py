@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from models import ReadingSystem, Evaluation, TestSuite, Test, Result
+from models import ReadingSystem, Evaluation, TestSuite, Test, Result, common
 from forms import ReadingSystemForm, ResultFormSet
 from testsuite import settings
 import helper_functions
@@ -68,7 +68,7 @@ class CompareResultsView(TemplateView):
         view_option = request.GET.get('view', 'simple')
         test_ids = request.POST.getlist('test-selected', []) #getlist is a method of django's QueryDict object
         tests = Test.objects.filter(pk__in = test_ids)
-        reading_systems = ReadingSystem.objects.all()
+        reading_systems = ReadingSystem.objects.filter(visibility = common.VISIBILITY_PUBLIC)
         test_arrays = []
         list_max = 13
         # split the tests up into arrays of 13 for display purposes
@@ -115,6 +115,11 @@ class ReadingSystemView(TemplateView):
             rs = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
+
+        can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
+        if can_view == False:
+            messages.add_message(request, messages.INFO, 'You do not have permission to delete that reading system.')
+            return redirect("/")
 
         testsuite = TestSuite.objects.get_most_recent_testsuite()
         data = helper_functions.testsuite_to_dict(testsuite)
@@ -324,8 +329,10 @@ def set_visibility(request, *args, **kwargs):
     except ReadingSystem.DoesNotExist:
         return render(request, "404.html", {})
 
-    visibility = request.GET.get('set', '1')
-    if visibility != "1" and visibility != "2" and visibility != "3":
+    visibility = request.GET.get('set', common.VISIBILITY_MEMBERS_ONLY)
+    if visibility != common.VISIBILITY_MEMBERS_ONLY and \
+        visibility != common.VISIBILITY_PUBLIC and \
+        visibility != common.VISIBILITY_OWNER_ONLY:
         messages.add_message(request, messages.WARNING, 'Visibility option {0} not recognized.'.format(visibility))
         return redirect('/manage/')
 
@@ -334,7 +341,6 @@ def set_visibility(request, *args, **kwargs):
     if can_set_vis == True:
         rs.visibility = visibility
         rs.save()
-        #messages.add_message(request, messages.INFO, "Visibility changed")
     else:
         messages.add_message(request, messages.WARNING, "You don't have permission to change the visibility for this item.")    
 

@@ -9,84 +9,89 @@
 
 <h1 style="font-size: medium">Reading Systems</h1>
 
+
+{% if reading_systems|length == 0 %}
+    <p class="well">No data available. You can start by adding a reading system.</p>
+{% else %}
 <p>Reading Systems tests are based on the version of the test suite that was available on {{testsuite_date}}.</p>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Version</th>
-            <th>OS</th>
-            <th>Locale</th>
-            <th>SDK Version</th>
-            <th>Evaluation Status</th>
-            <th>Actions</th>
-            <th>Visibility</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for r in reading_systems %}
-        
-        {% user_can_view user r 'manage' as can_view %}
-        {% user_can_edit user r as can_edit %}
-        {% user_can_change_visibility user r '1' as can_make_members_only %}
-        {% user_can_change_visibility user r '2' as can_make_public %}
-        {% user_can_change_visibility user r '3' as can_make_owner_only %}
-        
-        {% if can_view %}
-        <tr>
-            <td>{{ r.name }} </td>
-            <td>{{ r.version }}</td>
-            <td>{{ r.operating_system }} </td>
-            <td>{{ r.locale }} </td>
-            <td>{{ r.sdk_version }} </td>
-            <td style="font-style: italic"><p>{{ r|get_status }}</p>
-                {% get_current_evaluation r as eval%}
-                {% if eval.flagged_for_review == True %}
-                <p class="text-warning"><a href="/rs/{{ r.id }}/eval/">Please review this evaluation.</a></p>
-                {% endif %}
-                <p>
-                    Added by {{ r.user|get_display_name }}
-                    {% if r.user == user %} (you) {% endif %}
-                </p>
-            </td>
-            <td>
-                <ul class="list-unstyled">
-                    <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
-                    <li><a href="/rs/{{ r.id }}/report/">View Issue Report</a></li>
-                    {% if can_edit == True %}
-                    <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
-                    <li><a href="/rs/{{ r.id }}/edit/">Edit details</a></li>
-                    <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Version</th>
+                <th>OS</th>
+                <th>Locale</th>
+                <th>SDK Version</th>
+                <th>Evaluation Status</th>
+                <th>Actions</th>
+                <th>Visibility</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in reading_systems %}
+            
+            {% user_can_view user r 'manage' as can_view %}
+            {% user_can_edit user r as can_edit %}
+            {% user_can_change_visibility user r '1' as can_make_members_only %}
+            {% user_can_change_visibility user r '2' as can_make_public %}
+            {% user_can_change_visibility user r '3' as can_make_owner_only %}
+            
+            {% if can_view %}
+            <tr>
+                <td>{{ r.name }} </td>
+                <td>{{ r.version }}</td>
+                <td>{{ r.operating_system }} </td>
+                <td>{{ r.locale }} </td>
+                <td>{{ r.sdk_version }} </td>
+                <td style="font-style: italic">
+                    {% get_current_evaluation r as eval%}
+                    <p>{{ eval.percent_complete }}% complete.</p>
+                    {% if eval.flagged_for_review == True %}
+                    <p class="text-warning"><a href="/rs/{{ r.id }}/eval/">Please review this evaluation.</a></p>
                     {% endif %}
-                </ul>
-            </td>
-            <td>
-                <span style="font-style: italic">Currently: {{ r|get_visibility }}</span>
-                <ul class="list-unstyled">
-                    {% if can_make_public %}
-                    <li><a href="/rs/{{ r.id }}/visibility?set=2">Change to public</a></li>
-                    {% endif %}
+                    <p>
+                        Added by {{ r.user|get_display_name }}
+                        {% if r.user == user %} (you) {% endif %}
+                    </p>
+                </td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
+                        <li><a href="/rs/{{ r.id }}/report/">View Issue Report</a></li>
+                        {% if can_edit == True %}
+                        <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
+                        <li><a href="/rs/{{ r.id }}/edit/">Edit details</a></li>
+                        <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
+                        {% endif %}
+                    </ul>
+                </td>
+                <td>
+                    <span style="font-style: italic">Currently: {{ r|get_visibility }}</span>
+                    <ul class="list-unstyled">
+                        {% if can_make_public %}
+                        <li><a href="/rs/{{ r.id }}/visibility?set=2">Change to public</a></li>
+                        {% endif %}
 
-                    {% if can_make_members_only %}
-                    <li><a href="/rs/{{ r.id }}/visibility?set=1">Change to members-only</a></li>
-                    {% endif %}
+                        {% if can_make_members_only %}
+                        <li><a href="/rs/{{ r.id }}/visibility?set=1">Change to members-only</a></li>
+                        {% endif %}
 
-                    {% if can_make_owner_only %}
-                    <li><a href="/rs/{{ r.id }}/visibility?set=3">Change to owner-only</a></li>
-                    {% endif %}  
+                        {% if can_make_owner_only %}
+                        <li><a href="/rs/{{ r.id }}/visibility?set=3">Change to owner-only</a></li>
+                        {% endif %}  
 
-                    {% if can_make_public == False and can_make_members_only == False and can_make_owner_only == False %}              
-                    <li style="font-style: italic" class="text-muted">You do not have permission to change visibility.</li>
-                    {% endif %}
-                </ul>
-            </td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
-
+                        {% if can_make_public == False and can_make_members_only == False and can_make_owner_only == False %}              
+                        <li style="font-style: italic" class="text-muted">You do not have permission to change visibility.</li>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
 <p><a href="/rs/new">Add Reading System</a></p>
 <p><a href="/export/">Download evaluation data</a></p>
 

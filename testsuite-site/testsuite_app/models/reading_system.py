@@ -1,18 +1,18 @@
 from django.db import models
-from common import SHORT_STRING, LONG_STRING, VISIBILITY_TYPE
+import common
 
 class ReadingSystem(models.Model):
     class Meta:
         db_table = 'testsuite_app_readingsystem'
         app_label= 'testsuite_app'
 
-    locale = models.CharField(max_length = SHORT_STRING, null = True, blank = True)
-    name = models.CharField(max_length = LONG_STRING, blank = False, null = False)
-    operating_system = models.CharField(max_length = SHORT_STRING, blank = False, null = False)
-    sdk_version = models.CharField(max_length = SHORT_STRING, null = True, blank = True)
-    version = models.CharField(max_length = SHORT_STRING, blank = False, null = False)
+    locale = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
+    name = models.CharField(max_length = common.LONG_STRING, blank = False, null = False)
+    operating_system = models.CharField(max_length = common.SHORT_STRING, blank = False, null = False)
+    sdk_version = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
+    version = models.CharField(max_length = common.SHORT_STRING, blank = False, null = False)
     user = models.ForeignKey('UserProfile')
-    visibility = models.CharField(max_length = 1, choices = VISIBILITY_TYPE, default="1") # members-only
+    visibility = models.CharField(max_length = 1, choices = common.VISIBILITY_TYPE, default=common.VISIBILITY_MEMBERS_ONLY)
 
     def save(self, *args, **kwargs):
         "custom save routine"

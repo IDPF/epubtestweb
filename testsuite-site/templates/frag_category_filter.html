@@ -7,21 +7,9 @@
                 <input type="checkbox" name="category-selected" value="{{category.item.id}}" class="category {{ category.item|get_parent_ids }}"/>
             </td>
             <td colspan="3">
-            {% if category.depth == 0 %}
-            <h1 id="c{{category.item.id}}">{{ category.item.name }}</h1>
-            {% elif category.depth == 1 %}
-            <h2 id="c{{category.item.id}}">{{ category.item.name }}</h2>
-            {% elif category.depth == 2 %}
-            <h3 id="c{{category.item.id}}">{{ category.item.name }}</h3>
-            {% elif category.depth == 3 %}
-            <h4 id="c{{category.item.id}}">{{ category.item.name }}</h4>
-            {% elif category.depth == 4 %}
-            <h5 id="c{{category.item.id}}">{{ category.item.name }}</h5>
-            {% else %}
-            <h6 id="c{{category.item.id}}">{{ category.item.name }}</h6>
-            {% endif %}
+            {% get_category_heading category.item as heading_tag %}
+            <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}</{{heading_tag}}>
             </td>
-
         </tr>
 
         {% for t in category.tests %}

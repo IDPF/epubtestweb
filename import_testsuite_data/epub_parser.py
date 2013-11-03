@@ -38,7 +38,8 @@ class EpubParser:
         navpath = self.parse_opf(opfpath)
         if self.restriction >= 2:
         	foldername = os.path.basename(self.folder)
-        	self.epub_category = import_testsuite.add_category('2', self.title, parent_category, testsuite, foldername)
+        	self.epub_category = import_testsuite.add_category(common.CATEGORY_EPUB, \
+                self.title, parent_category, testsuite, foldername)
         else:
             self.epub_category = parent_category
         self.parse_nav(navpath)
@@ -98,7 +99,8 @@ class EpubParser:
                     desc = self.get_label(c)
                     if self.restriction >= 3:
                     	foldername = os.path.basename(self.folder)
-                        new_category = import_testsuite.add_category('3', desc, parent_category, self.testsuite, foldername)
+                        new_category = import_testsuite.add_category(common.CATEGORY_INTERNAL, \
+                            desc, parent_category, self.testsuite, foldername)
                     else:
                         new_category = parent_category
                     # if this element has a nested list

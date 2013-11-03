@@ -47,7 +47,7 @@ class ImportTestSuite(TestCase):
         top_level_cat = Category.objects.get(parent_category = None)
         self.assertNotEqual(top_level_cat, None)
         self.assertEqual(top_level_cat.name, "Top-level category")
-        self.assertEqual(top_level_cat.category_type, "1") # external CATEGORY_TYPE
+        self.assertEqual(top_level_cat.category_type, common.CATEGORY_EXTERNAL) 
         self.assertEqual(top_level_cat.testsuite, ts)
         self.assertEqual(top_level_cat.source, None)
 
@@ -55,7 +55,7 @@ class ImportTestSuite(TestCase):
         epub_cat = Category.objects.get(parent_category = top_level_cat)
         self.assertNotEqual(epub_cat, None)
         self.assertEqual(epub_cat.name, "EPUBTEST.ORG test content")
-        self.assertEqual(epub_cat.category_type, "2") # epub CATEGORY_TYPE
+        self.assertEqual(epub_cat.category_type, common.CATEGORY_EPUB)
         self.assertEqual(epub_cat.testsuite, ts)
         self.assertEqual(epub_cat.source, get_testsuite_v1_path())
 
@@ -65,11 +65,11 @@ class ImportTestSuite(TestCase):
         self.assertEqual(nav_cats[0].parent_category, epub_cat)
         self.assertEqual(nav_cats[1].parent_category, nav_cats[0])
         self.assertEqual(nav_cats[0].name, "Test Category")
-        self.assertEqual(nav_cats[0].category_type, "3") #internal CATEGORY_TYPE
+        self.assertEqual(nav_cats[0].category_type, common.CATEGORY_INTERNAL)
         self.assertEqual(nav_cats[0].testsuite, ts)
         self.assertEqual(nav_cats[0].source, get_testsuite_v1_path())
         self.assertEqual(nav_cats[1].name, "Test Sub-Category")
-        self.assertEqual(nav_cats[1].category_type, "3") #internal CATEGORY_TYPE
+        self.assertEqual(nav_cats[1].category_type, common.CATEGORY_INTERNAL)
         self.assertEqual(nav_cats[1].testsuite, ts)
         self.assertEqual(nav_cats[1].source, get_testsuite_v1_path())
         

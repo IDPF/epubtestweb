@@ -5,15 +5,14 @@ from models.reading_system import ReadingSystem
 from models.test import Test
 import os
 from testsuite import settings
+from models import common
 
 def get_public_scores(categories):
     "get the public evaluation scores for each reading system"
     retval = []
     reading_systems = ReadingSystem.objects.all()
     for rs in reading_systems:
-        if rs.visibility != "2": #'public'
-            retval.append({"reading_system": rs, "total_score": 0, "category_scores": None})
-        else:
+        if rs.visibility == common.VISIBILITY_PUBLIC:
             evaluation = rs.get_current_evaluation()
             scores = evaluation.get_top_level_category_scores()
             # make sure scores have the same order as the categories
@@ -45,12 +44,11 @@ def category_to_dict(item, test_filter_ids = []):
     else:
         tests = Test.objects.filter(parent_category = item)
 
-    return {"item": item, "depth": item.get_depth(), "subcategories": subcat_summaries,
-        "tests": tests}
+    return {"item": item, "subcategories": subcat_summaries, "tests": tests}
 
 def print_item_dict(summary):
     "Debug-print the summary data generated above."
-    prefix = "\t" * summary['item'].get_depth()
+    prefix = "\t" * summary['item'].depth
     print "{0}{1}".format(prefix, summary['item'].name.encode('utf-8'))
 
     for s in summary['subcategories']:

@@ -46,6 +46,10 @@ function set_test_descriptions_hidden() {
 {% block content %}
 <h1>Compare Results</h1>
 
+{% if reading_systems|length == 0 %}
+<p class="well">No data available</p>
+{% else %}
+
 <p><a href="#" onclick="toggle_test_descriptions()"><span id="showhide">Show</span> test descriptions</a></p>
 
 {% for tests in test_arrays %}
@@ -67,28 +71,27 @@ function set_test_descriptions_hidden() {
     </thead>
     <tbody>
     	{% for reading_system in reading_systems %}
-
-    	{% has_public_evaluation reading_system as is_public %}
-    	{% if is_public == True %}
-    	<tr>
-    		<td><a href="/rs/{{reading_system.id}}">{{reading_system.name}} {{reading_system.version}}</a>
-            <br/>
-            {{reading_system.operating_system}}, {{reading_system.locale}}
-        </td>
-    	{% for test in tests %}
-    		{% is_test_supported reading_system test as result%}
-    		{% if result == True %}
-    			<td class="result success">Supported</td>
-    		{% else %}
-    			<td class="result danger">Not Supported</td>
-    		{% endif %}
-    	{% endfor %}
-    	</tr>
-    	{% endif %}
+        	<tr>
+        		<td>
+                    <a href="/rs/{{reading_system.id}}">
+                        {{reading_system.name}} {{reading_system.version}}
+                    </a>
+                    <br/>
+                    {{reading_system.operating_system}}, {{reading_system.locale}}
+                </td>
+            	{% for test in tests %}
+            		{% is_test_supported reading_system test as result%}
+            		{% if result == True %}
+            			<td class="result success">Supported</td>
+            		{% else %}
+            			<td class="result danger">Not Supported</td>
+            		{% endif %}
+            	{% endfor %}
+        	</tr>
     	{% endfor %}
 	</tbody>
 </table>
 </div>
 {% endfor %}
-
+{% endif %}
 {% endblock %}

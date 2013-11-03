@@ -3,35 +3,46 @@ from django.db import models
 SHORT_STRING = 50
 LONG_STRING = 255
 
-EVALUATION_TYPE = (
-    ("1", "Internal"),
-    ("2", "Other"),
-)
+VISIBILITY_MEMBERS_ONLY = "1"
+VISIBILITY_PUBLIC = "2"
+VISIBILITY_OWNER_ONLY = "3"
 
 VISIBILITY_TYPE = (
-    ("1", "Members only"),
-    ("2", "Public"),
-    ("3", "Owner only")
+    (VISIBILITY_MEMBERS_ONLY, "Members only"),
+    (VISIBILITY_PUBLIC, "Public"),
+    (VISIBILITY_OWNER_ONLY, "Owner only")
 )
+
+CATEGORY_EXTERNAL = "1"
+CATEGORY_EPUB = "2"
+CATEGORY_INTERNAL = "3"
 
 CATEGORY_TYPE = (
-    ("1", "External"),
-    ("2", "Epub"),
-    ("3", "Internal"),
+    (CATEGORY_EXTERNAL, "External"),
+    (CATEGORY_EPUB, "Epub"),
+    (CATEGORY_INTERNAL, "Internal"),
 )
+
+RESULT_SUPPORTED = "1"
+RESULT_NOT_SUPPORTED = "2"
+RESULT_NOT_ANSWERED = None
 
 RESULT_TYPE = (
-    ("1", "Supported"),
-    ("2", "Not Supported"),
+    (RESULT_SUPPORTED, "Supported"),
+    (RESULT_NOT_SUPPORTED, "Not Supported"),
 )
 
+CONTEXT_INDEX = "index"
+CONTEXT_MANAGE = "manage"
+CONTEXT_RS = "rs"
+
 class ItemMixin():
-	# TODO change to a static property
-	def get_depth(self):
+    # convenience function to calculate depth; used only while saving
+	def calculate_depth(self):
 		if self.parent_category == None:
 			return 0
 		else:
-			return self.parent_category.get_depth() + 1
+			return self.parent_category.calculate_depth() + 1
 
 	def get_parents(self):
 		if self.parent_category == None:

@@ -1,3 +1,5 @@
+from models import common
+
 def user_can_edit_reading_system(user, rs):
     "Edit RS: change details and evaluation"
     return user.is_superuser or user == rs.user
@@ -14,20 +16,20 @@ def user_can_change_visibility(user, rs, new_visibility):
     if user.is_superuser: # superusers can do anything
         return True
 
-    if user == rs.user and new_visibility != "2": # public
+    if user == rs.user and new_visibility != common.VISIBILITY_PUBLIC:
         return True
 
 def user_can_view_reading_system(user, rs, context):
     """Can view: user can see that this RS exists and can view data entered for it.
     context indicates the page that we're viewing on (i.e. 'manage' or 'index') """
-    if context == 'index':
-        return rs.visibility == '2' #public
-    elif context == 'manage':
+    if context == common.CONTEXT_INDEX:
+        return rs.visibility == common.VISIBILITY_PUBLIC
+    elif context == common.CONTEXT_MANAGE or context == common.CONTEXT_RS:
         # all logged-in users can see members-only or public reading systems
-        if rs.visibility == "1" or rs.visibility == "2":
+        if rs.visibility == common.VISIBILITY_MEMBERS_ONLY or rs.visibility == common.VISIBILITY_PUBLIC:
             return True
-        else: #if r.visibility == "3", then only the owner can view
-            return user == rs.user
+        else: #if r.visibility == common.VISIBILITY_OWNER_ONLY
+            return user == rs.user or user.is_superuser
     else:
         return False
 

@@ -1,7 +1,7 @@
 from django.db import models
-from common import *
+import common
 
-class Score(models.Model, FloatToDecimalMixin):
+class Score(models.Model, common.FloatToDecimalMixin):
     class Meta:
         db_table = 'testsuite_app_score'
         app_label= 'testsuite_app'
@@ -29,14 +29,13 @@ class Score(models.Model, FloatToDecimalMixin):
         self.pct_total_passed = 0
 
         for r in results:
-            # "1" = Pass, "2" = Fail
             if r.test.required == True:
                 self.num_required_tests += 1
-                if r.result == "1":
+                if r.result == common.RESULT_SUPPORTED:
                     self.num_required_passed += 1
             elif r.test.required == False:
                 self.num_optional_tests += 1
-                if r.result == "1":
+                if r.result == common.RESULT_SUPPORTED:
                     self.num_optional_passed += 1
 
         if self.num_required_tests > 0:

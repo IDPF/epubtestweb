@@ -1,5 +1,6 @@
 from django import template
 from testsuite_app import permissions
+from testsuite_app.models import common
 
 register = template.Library()
 
@@ -47,10 +48,6 @@ def get_current_evaluation(reading_system):
 	return reading_system.get_current_evaluation()
 
 @register.assignment_tag
-def get_category_depth(category):
-	return category.get_depth()
-
-@register.assignment_tag
 def get_form_for_result(result, result_forms):
 	for f in result_forms.forms:
 		if f.instance == result:
@@ -58,19 +55,12 @@ def get_form_for_result(result, result_forms):
 	return None
 
 @register.assignment_tag
-def has_public_evaluation(reading_system):
-	if reading_system.visibility == "2": #public
-		return True
-	else:
-		return False
-
-@register.assignment_tag
 def is_test_supported(reading_system, test):
 	evaluation = reading_system.get_current_evaluation()
 	result = evaluation.get_result(test)
 	if result == None:
 		return False
-	if result.result == "1":
+	if result.result == common.RESULT_SUPPORTED:
 		return True
 	else:
 		return False
@@ -87,6 +77,14 @@ def user_can_view(user, reading_system, context):
 def user_can_change_visibility(user, reading_system, new_visibility):
 	return permissions.user_can_change_visibility(user, reading_system, new_visibility)
 
+@register.assignment_tag
+def get_category_heading(category):
+    "get the heading tag to use with this category"
+    if category.depth >= 0 and category.depth <=4:
+        return "h{0}".format(category.depth + 1)
+    else:
+        return "h6"
+
 @register.filter
 def get_display_name(user):
     if (user.first_name != None and user.first_name != "") or \
@@ -96,20 +94,15 @@ def get_display_name(user):
         return user.username
 
 @register.filter
-def get_status(rs):
-	evaluation = rs.get_current_evaluation()
-	#eval_type = get_visibility(rs)
-	return "{0}% complete.".format(evaluation.percent_complete)
-
-@register.filter
 def get_visibility(rs):
-	if rs.visibility == "1":
-		eval_type = "members-only"
-	elif rs.visibility == "2":
-		eval_type = "public"
+	if rs.visibility == common.VISIBILITY_MEMBERS_ONLY:
+		return "members-only"
+	elif rs.visibility == common.VISIBILITY_PUBLIC:
+		return "public"
+	elif rs.visibility == common.VISIBILITY_OWNER_ONLY:
+		return "owner-only"
 	else:
-		eval_type = "owner-only"
-	return eval_type
+		return "not recognized"
 
 @register.filter
 def get_parent_ids(item):
@@ -120,3 +113,24 @@ def get_parent_ids(item):
 		idarr.append("id-{0}".format(str(p.id)))
 
 	return " ".join(idarr)
+
+@register.filter
+def get_result_description(result):
+    if result.result == common.RESULT_SUPPORTED:
+        return "Supported"
+    elif result.result == common.RESULT_NOT_SUPPORTED:
+        return "Not Supported"
+    else:
+        return "-"
+
+@register.filter
+def get_result_class(result, is_form):
+    if is_form:
+        if result.result == common.RESULT_NOT_ANSWERED:
+            return "warning"
+    else:
+        if result.result == common.RESULT_SUPPORTED:
+            return "success"
+        elif result.result == common.RESULT_NOT_SUPPORTED:
+            return "danger"
+    return "" # default

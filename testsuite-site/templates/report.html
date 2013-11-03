@@ -31,11 +31,11 @@ table {
 <tr>
 <td style="font-weight: bold">{{result.result.test.testid}}</td>
 <td><p style="font-weight: bold">{{result.result.test.name}}</p><p>{{result.result.test.description}}</p></td>
-<td>
+<td style="width: 25%">
 {% if result.result.notes != None %}
 {{result.result.notes}}
 {% endif %}</td>
-<td>
+<td style="width: 15%">
 <a href="{{result.source.link}}">{{result.source.label}}</a>
 </td>
 </tr>

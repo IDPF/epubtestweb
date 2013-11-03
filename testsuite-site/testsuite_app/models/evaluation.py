@@ -26,7 +26,7 @@ class EvaluationManager(models.Manager):
 
         # create results for this evaluation
         for t in tests:
-            result = Result(test = t, evaluation = evaluation, result = None) # 4 = no value yet
+            result = Result(test = t, evaluation = evaluation, result = RESULT_NOT_ANSWERED)
             result.save()
 
         # update the score once results have been created
@@ -91,7 +91,7 @@ class Evaluation(models.Model, FloatToDecimalMixin):
         all_results = self.get_all_results()
         # note that we don't use all_results.count() because get_results() returns an array, not a queryset
         if len(all_results) != 0:
-            completed_results = Result.objects.filter(evaluation = self).exclude(result = None)
+            completed_results = Result.objects.filter(evaluation = self).exclude(result = RESULT_NOT_ANSWERED)
             pct_complete = (completed_results.count() * 1.0) / (len(all_results) * 1.0) * 100.0
             self.percent_complete = self.float_to_decimal(pct_complete)
         else:

@@ -1,11 +1,6 @@
+{% load testsuite_extras %}
 <tr class="result
-    {%if is_form %}
-        {%if result.result == None %} warning {%endif%}
-    {% else %}
-        {%if result.result == '1' %} success
-        {%elif result.result == '2' %} danger
-        {%endif%}
-    {% endif %}
+    {{result | get_result_class:is_form}}
     ">
     <td class="results-status ">
     {% if is_form %}
@@ -29,13 +24,7 @@
         {% if is_form %}
             {{ result_form.as_p }}
         {% else %}
-            {% if result.result == '1' %}
-            Supported
-            {% elif result.result == '2' %}
-            Not Supported
-            {% else %}
-            -
-            {% endif %}
+            {{result|get_result_description}}
         {% endif %}
     </td>
 </tr>

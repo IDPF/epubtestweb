@@ -2,6 +2,7 @@ from testsuite_app.models import ReadingSystem, Evaluation, Test, Result, Catego
 from lxml.builder import ElementMaker
 from lxml import etree
 from testsuite_app import helper_functions
+from testsuite_app.models import common
 
 E = ElementMaker(namespace="http://idpf.org/ns/testsuite",
 		nsmap={'ts' : "http://idpf.org/ns/testsuite"})
@@ -69,11 +70,11 @@ def result_to_xml(r):
 	return result_elm
 
 def result_to_string(result):
-	if result.result == None:
+	if result.result == common.RESULT_NOT_ANSWERED:
 		return "incomplete"
-	elif result.result == "1":
+	elif result.result == common.RESULT_SUPPORTED:
 		return "supported"
-	elif result.result == "2":
+	elif result.result == common.RESULT_NOT_SUPPORTED:
 		return "not_supported"
 	
 

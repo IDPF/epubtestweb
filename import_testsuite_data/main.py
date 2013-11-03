@@ -4,6 +4,7 @@ import yaml
 import epub_parser
 import import_testsuite
 from testsuite_app import models
+from testsuite_app.models import common
 from testsuite_app import helper_functions
 from testsuite_app import export_data
 from random import randrange
@@ -57,17 +58,12 @@ def add_rs(name):
         sdk_version = "N/A",
         version = "1.0",
         user = user,
-        visibility = "2", # public
+        visibility = common.VISIBILITY_PUBLIC,
     )
     rs.save() # save now to generate an initial evaluation
-    evaluation = rs.get_current_evaluation()
     
-    # generate result data
-    results = evaluation.get_all_results()
-    for r in results:
-        r.result = str(randrange(1, 3))
-        r.save()
-    evaluation.save()
+    geneval(rs.pk)
+
     return rs
 
 # settings.py must contain a definition for the 'previous' database in order for this to work
@@ -89,6 +85,24 @@ def export(outfile):
     xmldoc = export_data.export_all_current_evaluations()
     xmldoc.write(outfile)
     print "Data exported to {0}".format(outfile)
+
+def listrs():
+    rses = models.ReadingSystem.objects.all()
+    for rs in rses:
+        print "{0}: {1}".format(rs.name, rs.pk)
+
+def geneval(rspk):
+    try:
+        rs = models.ReadingSystem.objects.get(id=rspk)
+    except models.ReadingSystem.DoesNotExist:
+        return
+    evaluation = rs.get_current_evaluation()
+    # generate result data
+    results = evaluation.get_all_results()
+    for r in results:
+        r.result = str(randrange(1, 3))
+        r.save()
+    evaluation.save()
 
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
@@ -125,6 +139,13 @@ def main():
     export_parser = subparsers.add_parser('export', help="Export evaluation data for all reading systems")
     export_parser.add_argument("file", action="store", help="store the xml file here")
     export_parser.set_defaults(func = lambda(args): export(args.file))
+
+    geneval_parser = subparsers.add_parser('geneval', help="Generate random evaluation data for the given reading system")
+    geneval_parser.add_argument("rs", action="store", help="reading system ID")
+    geneval_parser.set_defaults(func = lambda(args): geneval(args.rs))
+
+    listrs_parser = subparsers.add_parser('listrs', help="List all reading systems and their IDs")
+    listrs_parser.set_defaults(func = lambda(args): listrs())
 
     args = argparser.parse_args()
     args.func(args)

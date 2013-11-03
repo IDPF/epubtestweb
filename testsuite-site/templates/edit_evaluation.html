@@ -71,12 +71,11 @@ function autosave() {
 
 <div class="results">
 {% for cat in data %}
-    {% category cat evaluation True results_form%}
+    {% category cat evaluation True results_form %}
 {% endfor %}
 </div>
 
 {{ results_form.management_form }}
-
 
 <input type="submit" value="Save" style="margin-top: 30px" />
 </form>
