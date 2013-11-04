@@ -316,7 +316,7 @@ def logout_user(request):
 def export_data(request):
     import export_data
     from lxml import etree
-    xmldoc = export_data.export_all_current_evaluations()
+    xmldoc = export_data.export_all_current_evaluations(request.user)
     xmldoc_str = etree.tostring(xmldoc, pretty_print=True)
     response = HttpResponse(mimetype='application/xml')
     response['Content-Disposition'] = 'attachment; filename="export.xml"'

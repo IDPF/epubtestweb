@@ -82,7 +82,7 @@ def rollback():
     ts.delete()
 
 def export(outfile):
-    xmldoc = export_data.export_all_current_evaluations()
+    xmldoc = export_data.export_all_current_evaluations(None)
     xmldoc.write(outfile)
     print "Data exported to {0}".format(outfile)
 

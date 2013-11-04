@@ -3,6 +3,7 @@ from lxml.builder import ElementMaker
 from lxml import etree
 from testsuite_app import helper_functions
 from testsuite_app.models import common
+import permissions
 
 E = ElementMaker(namespace="http://idpf.org/ns/testsuite",
 		nsmap={'ts' : "http://idpf.org/ns/testsuite"})
@@ -16,14 +17,16 @@ RESULTS = E.results
 TEST = E.test
 NOTES = E.notes
 
-def export_all_current_evaluations():
+def export_all_current_evaluations(user):
 	reading_systems = ReadingSystem.objects.all()
 	testsuite = TestSuite.objects.get_most_recent_testsuite()
 	xmldoc = DOC(testsuite="{0}-{1}".format(testsuite.version_date, testsuite.version_revision))
 
 	for rs in reading_systems:
-		rs_elm = rs_to_xml(rs)
-		xmldoc.append(rs_elm)
+		if permissions.user_can_view_reading_system(user, rs, 'manage') or \
+		user == None: #None means we are running the CLI
+			rs_elm = rs_to_xml(rs)
+    		xmldoc.append(rs_elm)
 	tree = etree.ElementTree(xmldoc)
 	return tree
 
