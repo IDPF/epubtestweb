@@ -1,7 +1,6 @@
 # Django settings for testsuite project.
 
 DEVELOPMENT_MODE = True
-#DEVELOPMENT_MODE = False
 
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -53,7 +52,7 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
-    }
+    },
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -200,4 +199,9 @@ AUTH_USER_MODEL = 'testsuite_app.UserProfile'
 LOGIN_REDIRECT_URL = '/manage/'
 
 APPEND_SLASH = True
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
 

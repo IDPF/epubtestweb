@@ -28,12 +28,9 @@ class Test(models.Model, common.ItemMixin):
 
     def save(self, *args, **kwargs):
         "custom save routine"
-        if Test.objects.already_exists(self.testid) == True:
-            print "WARNING! Test with ID {0} already exists. Cannot save.".format(self.testid)
-        else:
-            # call 'save' on the base class
-            self.depth = self.calculate_depth()
-            super(Test, self).save(*args, **kwargs)
+        # call 'save' on the base class
+        self.depth = self.calculate_depth()
+        super(Test, self).save(*args, **kwargs)
 
     def get_epub_parent_category(self):
     	parents = self.get_parents()

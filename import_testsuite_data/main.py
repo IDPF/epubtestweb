@@ -22,15 +22,17 @@ def clear_data():
 # look at each referenced epub in the categories.yaml file
 # parse it and put the data under a category header
 def add_testsuite(sourcedir, config_file):
-    print "Processing {0} (config = {1})".format(sourcedir, config_file)
+    norm_sourcedir = os.path.normpath(sourcedir)
+    norm_config_file = os.path.normpath(config_file)
+    print "\nProcessing {0} (config = {1})".format(norm_sourcedir, norm_config_file)
     old_testsuite = models.TestSuite.objects.get_most_recent_testsuite()
     testsuite = import_testsuite.create_testsuite()
-    yaml_categories = yaml.load(open(config_file).read())['Categories']
+    yaml_categories = yaml.load(open(norm_config_file).read())['Categories']
 
     for cat in yaml_categories:
         new_category = import_testsuite.add_category('1', cat['Name'], None, testsuite, None)
         for epub in cat['Files']:
-            fullpath = os.path.join(sourcedir, epub)
+            fullpath = os.path.join(norm_sourcedir, epub)
             if os.path.isdir(fullpath):
                 # this will add a new testsuite
                 epubparser = epub_parser.EpubParser()

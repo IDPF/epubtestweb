@@ -3,5 +3,5 @@ Categories:
         Name: Top-level category
         CategoryDisplayDepthLimit: Internal
         Files:
-            - test_epub
+            - epub
     

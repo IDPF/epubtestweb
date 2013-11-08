@@ -98,7 +98,7 @@ class EpubParser:
                 if self.test_for_tests(c):
                     desc = self.get_label(c)
                     if self.restriction >= 3:
-                    	foldername = os.path.basename(self.folder)
+                        foldername = os.path.basename(self.folder)
                         new_category = import_testsuite.add_category(common.CATEGORY_INTERNAL, \
                             desc, parent_category, self.testsuite, foldername)
                     else:

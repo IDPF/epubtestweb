@@ -50,9 +50,12 @@ class Score(models.Model, common.FloatToDecimalMixin):
 
         num_passed = self.num_required_passed + self.num_optional_passed
         num_total = self.num_required_tests + self.num_optional_tests
-        self.pct_total_passed = (num_passed * 1.0) / (num_total * 1.0) * 100
-        self.pct_total_passed = round(self.pct_total_passed, 1)
-        self.pct_total_passed = self.float_to_decimal(self.pct_total_passed)
+        if num_total > 0:
+            self.pct_total_passed = (num_passed * 1.0) / (num_total * 1.0) * 100
+            self.pct_total_passed = round(self.pct_total_passed, 1)
+            self.pct_total_passed = self.float_to_decimal(self.pct_total_passed)
+        else:
+            print "Warning: no tests."
         
         self.save()
 
