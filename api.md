@@ -22,6 +22,10 @@ Delete Reading System
 Data export
 /export/
 
+Reading system issue report
+/rs/$ID/report/
+
+
 
 Proposed Web API (not implemented yet)
 =======
@@ -42,10 +46,10 @@ Get partial evaluation
 GET /rs/$ID/category/$ID/
 
 
-XML Formats 
+Proposed XML Formats (partially implemented)
 =======
 
-For POST/Get
+For POST/Get (not implemented yet)
 ------------
 
         <evaluationRequest
@@ -76,7 +80,7 @@ For POST/Get
         </evaluation>
 
 
-For data export
+For data export (implemented; see 'download evaluation data' link on epubtest.org/manage)
 -------------
 
         <ts:evaluations xmlns:ts="http://idpf.org/ns/testsuite" testsuite="2013-10-01-2">
