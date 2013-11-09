@@ -41,13 +41,3 @@ Category types are as follows:
 A category restriction says to what depth to show categories. For some tests, it would be too verbose to show all their categories, so we can restrict them by saying show the tests under only their "External" category or "Epub"-level category.
 
 
-Etc
-===
-
-Annoying inline imports everywhere in Model functions:
-
-    def get_top_level_categories(self):
-        from category import Category
-
-Why? Not sure. Doesn't work when they are just declared at the top of the file.
-
