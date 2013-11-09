@@ -58,6 +58,7 @@ def fill_out_evaluation():
     r1 = results[1]
     r2 = results[2]
     r0.result = common.RESULT_SUPPORTED
+    r0.notes = "Test note"
     r1.result = common.RESULT_NOT_SUPPORTED
     r2.result = common.RESULT_SUPPORTED
     r0.save()
@@ -379,6 +380,13 @@ class UpgradeTestSuite(TestCase):
 
         #one test stayed the same, one changed, and one is new
         self.assertEqual(evaluation.percent_complete, Decimal('33.33'))
+
+        # test-001 did not change and should have a result
+        r001 = evaluation.get_result_by_testid("test-001")
+        self.assertEqual(r001.result, common.RESULT_SUPPORTED)
+        self.assertEqual(r001.test.flagged_as_changed, False)
+        self.assertEqual(r001.test.flagged_as_new, False)
+        self.assertEqual(r001.notes, "Test note")
 
         # test-002 changed and has no result
         r002 = evaluation.get_result_by_testid("test-002")

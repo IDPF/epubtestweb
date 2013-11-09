@@ -40,4 +40,14 @@ Category types are as follows:
 
 A category restriction says to what depth to show categories. For some tests, it would be too verbose to show all their categories, so we can restrict them by saying show the tests under only their "External" category or "Epub"-level category.
 
+Testing
+======
+Do the following to run the supplied unit tests:
+
+`$export PYTHONPATH=${PYTHONPATH}:$PWD/../testsuite-site/:$PWD/../`
+
+edit settings.py and comment-out `django_evolution` from the `INSTALLED_APPS` list
+
+`$cd testsuite-site/`
+`$python manage.py test`
 

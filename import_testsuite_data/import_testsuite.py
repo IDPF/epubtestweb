@@ -91,7 +91,9 @@ def migrate_data(previous_testsuite):
             # if the ID (checked above) and xhtml for the test matches, then copy over the old result
             if result.test.xhtml == old_test_version.xhtml:
                 print "Copying previous result for {0}".format(old_test_version.testid)
-                result.result = old_evaluation.get_result_by_testid(result.test.testid).result
+                previous_result = old_evaluation.get_result_by_testid(result.test.testid)
+                result.result = previous_result.result
+                result.notes = previous_result.notes
                 result.save()
             else:
                 print "Test {0} has changed from the previous test suite".format(result.test.testid)
