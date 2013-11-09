@@ -1,7 +1,6 @@
 # Django settings for testsuite project.
 
-DEVELOPMENT_MODE = True
-
+# all locally-overridable stuff goes here
 DEBUG = False
 TEMPLATE_DEBUG = False
 db_file = '/home/djangoweb/epubtestweb-db/testsuite.db'
@@ -13,19 +12,13 @@ static_root = '/home/djangoweb/epubtestweb/testsuite-site/static'
 epub_downloads_root = '/home/djangoweb/epub-testsuite/build'
 epub_downloads_url = '/epubs/' #symlinked to epub_downloads_root
 previous_db = '/home/djangoweb/epubtestweb-db/testsuite.db.last'
+secret_key = 'utq699x(arx2auy=fnmotm^_7g2d^fa4n+kefz%fev1)noiv1e' # change or override this
+# end of overrides
 
-# development mode overrides
-if DEVELOPMENT_MODE == True:
-    DEBUG = True
-    TEMPLATE_DEBUG = DEBUG
-    db_file = '/Users/marisa/Projects/epubtestweb-db/testsuite.db'
-    media_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/media'
-    media_url = '/media/'
-    template_dir = '/Users/marisa/Projects/epubtestweb/testsuite-site/templates'
-    static_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/static'
-    static_url = '/static/'
-    epub_downloads_root = '/Users/marisa/Projects/epub-testsuite/build'
-    previous_db = '/Users/marisa/Projects/epubtestweb-db/testsuite.db.last'
+try:
+    from local_settings import *
+except ImportError:
+    pass
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -120,7 +113,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'utq699x(arx2auy=fnmotm^_7g2d^fa4n+kefz%fev1)noiv1e'
+SECRET_KEY = secret_key
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -200,8 +193,5 @@ LOGIN_REDIRECT_URL = '/manage/'
 
 APPEND_SLASH = True
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
+
 

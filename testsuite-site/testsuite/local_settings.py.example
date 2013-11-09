@@ -1,0 +1,18 @@
+# copy this file and name it "local_settings.py"
+# change the paths for your local dev environment
+
+# use this to generate something suitable: www.miniwebtool.com/django-secret-key-generator/
+secret_key = 'PICK SOMETHING GOOD!'
+
+# example of local overrides
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+db_file = '/Users/marisa/Projects/epubtestweb-db/testsuite.db'
+media_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/media'
+media_url = '/media/'
+template_dir = '/Users/marisa/Projects/epubtestweb/testsuite-site/templates'
+static_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/static'
+static_url = '/static/'
+epub_downloads_root = '/Users/marisa/Projects/epub-testsuite/build'
+previous_db = '/Users/marisa/Projects/epubtestweb-db/testsuite.db.last'
+
