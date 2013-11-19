@@ -1,7 +1,6 @@
 # useful database functions related to importing the testsuite
 
 from testsuite_app.models import *
-from testsuite_app.web_db_helper import *
 from datetime import datetime
 from testsuite_app.models import common
 

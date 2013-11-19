@@ -65,7 +65,6 @@ class Evaluation(models.Model, FloatToDecimalMixin):
 
     def save(self, *args, **kwargs):
         "custom save routine"
-        # clear the "please review" flag
         self.last_updated = generate_timestamp()
         self.save_scores()
         self.update_percent_complete()
