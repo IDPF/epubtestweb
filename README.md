@@ -7,16 +7,7 @@ For end-users
 Instructions for evaluating reading systems
 ------------------------------------
 
-1. Download all of the [testsuite publications](http://epubtest.org/testsuite/)
-2. Start your reading system application
-3. Login to the website
-4. From the "Manage" page, add a new reading system, if yours isn't already listed
-5. Enter all relevant details
-6. From the "Manage" page, choose "Evaluate"
-7. The evaluation form is divided into categories, such as "Content Documents", "Styling", "Scripting", etc. Each category refers to one or more EPUBs.
-8. Go back to your reading system and open the first EPUB referenced by the evaluation form.
-9. Each EPUB contains a series of tests, marked by identifiers such as "iframe-010", "img-010", "img-020", etc. Follow the instructions in the EPUB for each test to determine if it is supported or not. 
-10. Record the result in the evaluation form, using the dropdown box to the right of each test description.
+See the instructions here [testsuite publications](http://epubtest.org/testsuite/)
 
 Notes about using the website
 -----------------------------
@@ -30,6 +21,16 @@ Notes about using the website
 
 For admins
 ==========
+
+Installing the website
+----------------
+Requirements: Python 2.7, Django 1.5 or 1.6, lxml, pyyaml
+
+These are good instructions for getting it running on AWS:
+http://pragmaticstartup.wordpress.com/2011/04/02/non-techie-guide-to-setting-up-django-apache-mysql-on-amazon-ec2/
+
+After setup, remember to run collectstatic to move Django's admin interface files to the right place.
+
 
 Initializing the DB for the first time
 ---------------------------------

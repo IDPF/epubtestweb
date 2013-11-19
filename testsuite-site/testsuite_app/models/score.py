@@ -1,7 +1,7 @@
 from django.db import models
 import common
 
-class Score(models.Model, common.FloatToDecimalMixin):
+class Score(models.Model):
     class Meta:
         db_table = 'testsuite_app_score'
         app_label= 'testsuite_app'
@@ -41,19 +41,16 @@ class Score(models.Model, common.FloatToDecimalMixin):
         if self.num_required_tests > 0:
             self.pct_required_passed = (self.num_required_passed * 1.0) / (self.num_required_tests * 1.0) * 100
             self.pct_required_passed = round(self.pct_required_passed, 1)
-            self.pct_required_passed = self.float_to_decimal(self.pct_required_passed)
 
         if self.num_optional_tests > 0:
             self.pct_optional_passed = (self.num_optional_passed * 1.0) / (self.num_optional_tests * 1.0) * 100
             self.pct_optional_passed = round(self.pct_optional_passed, 1)
-            self.pct_optional_passed = self.float_to_decimal(self.pct_optional_passed)
 
         num_passed = self.num_required_passed + self.num_optional_passed
         num_total = self.num_required_tests + self.num_optional_tests
         if num_total > 0:
             self.pct_total_passed = (num_passed * 1.0) / (num_total * 1.0) * 100
             self.pct_total_passed = round(self.pct_total_passed, 1)
-            self.pct_total_passed = self.float_to_decimal(self.pct_total_passed)
         else:
             print "Warning: no tests."
         
