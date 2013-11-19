@@ -142,7 +142,8 @@ class ReadingSystemView(TemplateView):
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
-        if request.user != rs.user:
+        can_delete = permissions.user_can_delete_reading_system(request.user, rs)
+        if can_delete == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to delete that reading system.')
             return redirect("/manage/")
         
@@ -167,8 +168,9 @@ class EditEvaluationView(UpdateView):
         testsuite = TestSuite.objects.get_most_recent_testsuite()
         data = helper_functions.testsuite_to_dict(testsuite)
         
-        if request.user != rs.user:
-            messages.add_message(request, messages.INFO, 'You do not have permission to edit that reading system.')
+        can_edit = permissions.user_can_edit_reading_system(request.user, rs)
+        if can_edit == False:
+            messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
             return redirect("/manage/")
 
         return render(request, self.template_name,
@@ -181,7 +183,8 @@ class EditEvaluationView(UpdateView):
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
-        if request.user != rs.user:
+        can_edit = permissions.user_can_edit_reading_system(request.user, rs)
+        if can_edit == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
             return redirect("/manage/")
         evaluation = rs.get_current_evaluation()
@@ -206,7 +209,8 @@ class ConfirmDeleteRSView(TemplateView):
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
-        if request.user != rs.user:
+        can_delete = permissions.user_can_delete_reading_system(request.user, rs)
+        if can_delete == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to delete that reading system.')
             return redirect("/manage/")
         
@@ -230,7 +234,8 @@ class EditReadingSystemView(TemplateView):
                 rs = ReadingSystem.objects.get(id=kwargs['pk'])
             except:
                 return render(request, "404.html", {})
-            if request.user != rs.user:
+            can_edit = permissions.user_can_edit_reading_system(request.user, rs)
+            if can_edit == False:
                 messages.add_message(request, messages.INFO, 'You do not have permission to edit that reading system.')
                 return redirect("/manage/")
             form = ReadingSystemForm(instance = rs)
