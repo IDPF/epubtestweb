@@ -458,3 +458,33 @@ class UpgradeTestSuite(TestCase):
         self.assertEqual(nav_subcat_score.pct_optional_passed, 0.0)
         self.assertEqual(nav_subcat_score.pct_total_passed, 0.0)  
 
+class CheckPercentComplete(TestCase):
+    def setUp(self):
+        print "Check Percent Complete"
+        add_ts_v1()
+        add_user()
+        add_rs()
+        fill_out_evaluation()
+        self.make_incomplete()
+
+    def test_percent_complete(self):
+        "test that the percent complete is less than 100"
+        rses = ReadingSystem.objects.all()
+        evaluation = rses[0].get_current_evaluation()
+
+        # some_pct = (268 * 1.0)/(269 * 1.0) * 100.0
+        # print "PCT: {0}".format(some_pct)
+        self.assertNotEqual(evaluation.pct_complete, 100.0)
+
+        evaluation.save()
+
+    
+
+    def make_incomplete(self):
+        rses = ReadingSystem.objects.all()
+        evaluation = rses[0].get_current_evaluation()
+        results = Result.objects.filter(evaluation = evaluation)
+        r0 = results[0]
+        r0.result = None
+        r0.save()
+        evaluation.save()
