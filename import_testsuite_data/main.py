@@ -112,8 +112,8 @@ def getemails():
     # luckily this is an isolated case with a small dataset, and one where we can afford to be a little slow
     distinct_emails = []
     for u in users:
-        if u.email not in distinct_emails:
-            distinct_emails.append(u.email)
+        if u.email.lower() not in distinct_emails:
+            distinct_emails.append(u.email.lower())
     emails = ", ".join(distinct_emails)
     print emails
 
