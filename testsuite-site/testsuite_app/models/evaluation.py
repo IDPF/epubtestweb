@@ -50,7 +50,7 @@ class EvaluationManager(models.Manager):
             evaluation.delete()
     
 
-class Evaluation(models.Model):
+class Evaluation(models.Model, FloatToDecimalMixin):
     class Meta:
         db_table = 'testsuite_app_evaluation'
         app_label= 'testsuite_app'
@@ -90,7 +90,9 @@ class Evaluation(models.Model):
         # note that we don't use all_results.count() because get_results() returns an array, not a queryset
         if len(all_results) != 0:
             completed_results = Result.objects.filter(evaluation = self).exclude(result = RESULT_NOT_ANSWERED)
-            self.percent_complete = (completed_results.count() * 1.0) / (len(all_results) * 1.0) * 100.0
+            pct_complete = (completed_results.count() * 1.0) / (len(all_results) * 1.0) * 100.0
+            self.percent_complete = self.float_to_decimal(pct_complete)
+            #self.percent_complete = (completed_results.count() * 1.0) / (len(all_results) * 1.0) * 100.0
         else:
             self.percent_complete = 0
 
