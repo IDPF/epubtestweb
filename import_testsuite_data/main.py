@@ -106,6 +106,12 @@ def geneval(rspk):
         r.save()
     evaluation.save()
 
+def getemails():
+    users = models.UserProfile.objects.all()
+    emails = ""
+    emails = ", ".join([user.email for user in users])
+    print emails
+
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
     subparsers = argparser.add_subparsers(help='commands')
@@ -148,6 +154,9 @@ def main():
 
     listrs_parser = subparsers.add_parser('listrs', help="List all reading systems and their IDs")
     listrs_parser.set_defaults(func = lambda(args): listrs())
+
+    emails_parser = subparsers.add_parser('emails', help="List user emails")
+    emails_parser.set_defaults(func = lambda(args): getemails())
 
     args = argparser.parse_args()
     args.func(args)
