@@ -108,8 +108,13 @@ def geneval(rspk):
 
 def getemails():
     users = models.UserProfile.objects.all()
-    emails = ""
-    emails = ", ".join([user.email for user in users])
+    # SELECT DISTINCT on fields not supported by SQLite backend so we have to do it manually
+    # luckily this is an isolated case with a small dataset, and one where we can afford to be a little slow
+    distinct_emails = []
+    for u in users:
+        if u.email not in distinct_emails:
+            distinct_emails.append(u.email)
+    emails = ", ".join(distinct_emails)
     print emails
 
 def main():
