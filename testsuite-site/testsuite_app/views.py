@@ -39,16 +39,23 @@ class TestsuiteView(TemplateView):
         downloads = []
 
         for f in sorted(files):
-            if os.path.splitext(f)[1] == '.epub':
+            ext = os.path.splitext(f)[1]
+            if ext == '.epub' or ext == '.zip':
                 # the download link is going to be EPUB_URL + filename
                 filename = os.path.basename(f)
                 link = "{0}{1}".format(settings.EPUB_URL, filename)
-                # assuming the filenames are all like:
-                # epub30-test-0220-20131016.epub
-                # chop off the first 12 and the last 14 to get the number, e.g. 0220.
-                # this matches what is usually in the publication title and what is shown to the user in the test form
-                doc_number = f[12:len(f)-14]
-                dl = {"label": "Document {0}".format(doc_number), "link": link}
+                
+                label = ""
+                if ext == '.epub':
+                    # assuming the filenames are all like:
+                    # epub30-test-0220-20131016.epub
+                    # chop off the first 12 and the last 14 to get the number, e.g. 0220.
+                    # this matches what is usually in the publication title and what is shown to the user in the test form
+                    label = "Document {0}".format(f[12:len(f)-14])
+                else:
+                    label = "All Testsuite Documents (zip)"
+
+                dl = {"label": label, "link": link}
                 downloads.append(dl)
         return render(request, self.template_name, {'downloads': downloads})
 
