@@ -7,7 +7,7 @@ For end-users
 Instructions for evaluating reading systems
 ------------------------------------
 
-See the instructions here [testsuite publications](http://epubtest.org/testsuite/)
+See the instructions [here](http://epubtest.org/testsuite/)
 
 Notes about using the website
 -----------------------------
