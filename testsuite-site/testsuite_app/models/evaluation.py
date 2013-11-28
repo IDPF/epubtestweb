@@ -75,7 +75,9 @@ class Evaluation(models.Model, FloatToDecimalMixin):
         # update the score
         from score import Score
         from result import Result
+        from category import Category
         category_scores = Score.objects.filter(evaluation = self)
+        print category_scores
         for score in category_scores:
             results = None
             if score.category != None:

@@ -36,7 +36,7 @@ Initializing the DB for the first time
 ---------------------------------
 If you already have a file `testsuite.db`, this will ERASE any existing data! Backup accordingly.
 
-Run these commands from `import_testsuite_data/`:
+Run these commands from `scripts/`:
 
 `./newdb.sh`
 `./runmain.sh import PATH/TO/epub-testsuite/content/30`

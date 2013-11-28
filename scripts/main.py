@@ -117,6 +117,109 @@ def getemails():
     emails = ", ".join(distinct_emails)
     print emails
 
+def integrity_check():
+    "make sure that all RS evals have the right number of tests and score entries"
+    report = {} 
+    rses = models.ReadingSystem.objects.all()
+    for rs in rses:
+        report[rs] = {"results": "ok", "scores": "ok"}
+        print "Checking Reading System: {0} (ID = {1})".format(rs.name, rs.pk)
+        evaluations = models.Evaluation.objects.filter(reading_system = rs)
+        for evaluation in evaluations:
+            print "Checking evaluation from {0} (ID = {1})".format(evaluation.last_updated, evaluation.pk)
+            
+            # check that each testsuite test has a result
+            print "Checking results"
+            tests = models.Test.objects.filter(testsuite = evaluation.testsuite)
+            for test in tests:
+                try:
+                    result = models.Result.objects.get(evaluation = evaluation, test = test)
+                except models.Result.DoesNotExist:
+                    print "Result missing for {0}".format(test.testid)
+                    report[rs]['results'] = "Missing result record(s)"
+            
+            print "Checking scores"
+            categories = models.Category.objects.filter(testsuite = evaluation.testsuite)
+            for category in categories:
+                try:
+                    score = models.Score.objects.get(evaluation = evaluation, category = category)
+                except models.Score.DoesNotExist:
+                    print "Score missing for {0}".format(category.name.encode('utf-8'))
+                    report[rs]['scores'] = "Missing score record(s)"
+
+            try:
+                total_score = models.Score.objects.get(evaluation = evaluation, category = None)
+            except models.Score.DoesNotExist:
+                print "Total score missing for {0}".format(rs.name)
+
+def repair(evalpk):
+    "repair an evaluation"
+    repair_scores(evalpk)
+    repair_results(evalpk)
+
+def repair_scores(evalpk):
+    "repair scores for the given evaluation"
+    try:
+        evaluation = models.Evaluation.objects.get(id=evalpk)
+    except models.Evaluation.DoesNotExist:
+        return
+    found_error = False
+    
+    print "Repairing scores for {0} (evaluation ID = {1})".format(evaluation.reading_system.name, evaluation.pk)
+    categories = models.Category.objects.filter(testsuite = evaluation.testsuite)
+    for category in categories:
+        try:
+            score = models.Score.objects.get(evaluation = evaluation, category = category)
+        except models.Score.DoesNotExist:
+            found_error = True
+            print "Adding score record for {0}".format(category.name.encode('utf-8'))
+            score = models.Score(
+                category = category,
+                evaluation = evaluation
+            )
+            score.update(evaluation.get_category_results(category))
+            score.save()
+    try:
+        total_score = models.Score.objects.get(evaluation = evaluation, category = None)
+    except models.Score.DoesNotExist:
+        found_error = True
+        print "Adding total score for {0}".format(evaluation.reading_system.name)    
+        score = models.Score(
+            category = None,
+            evaluation = evaluation
+        )
+        score.update(evaluation.get_all_results())  
+        score.save()
+
+    if found_error:
+        print "Repaired scores for {0}".format(evaluation.reading_system.name)
+    else:
+        print "No errors found in scores"
+
+def repair_results(evalpk):
+    "repair results for the given evaluation"
+    try:
+        evaluation = models.Evaluation.objects.get(id=evalpk)
+    except models.Evaluation.DoesNotExist:
+        return
+    found_error = False
+    print "Repairing results for {0} (evaluation ID = {1})".format(evaluation.reading_system.name, evaluation.pk)
+    tests = models.Test.objects.filter(testsuite = evaluation.testsuite)
+    for test in tests:
+        try:
+            result = models.Result.objects.get(evaluation = evaluation, test = test)
+        except models.Result.DoesNotExist:
+            found_error = True
+            print "Adding result record for {0}".format(test.testid)
+            result = models.Result(test = test, evaluation = evaluation, result = common.RESULT_NOT_ANSWERED)
+            result.save()
+
+    if found_error:
+        print "Repaired results for {0}".format(evaluation.reading_system.name)
+    else:
+        print "No errors found in results"
+
+
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
     subparsers = argparser.add_subparsers(help='commands')
@@ -162,6 +265,13 @@ def main():
 
     emails_parser = subparsers.add_parser('emails', help="List user emails")
     emails_parser.set_defaults(func = lambda(args): getemails())
+
+    integrity_parser = subparsers.add_parser('integrity', help="check db integrity")
+    integrity_parser.set_defaults(func = lambda(args): integrity_check())
+
+    repair_scores_parser = subparsers.add_parser('repair', help="repair an evaluation")
+    repair_scores_parser.add_argument("eval", action="store", help="evaluation ID")
+    repair_scores_parser.set_defaults(func = lambda(args): repair(args.eval))
 
     args = argparser.parse_args()
     args.func(args)

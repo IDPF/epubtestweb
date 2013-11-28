@@ -1,7 +1,7 @@
 from django.test import TestCase
 from testsuite_app.models import Category, Evaluation, ReadingSystem, Result, Score, Test, TestSuite, UserProfile
 from testsuite_app.models.evaluation import generate_timestamp
-from import_testsuite_data import main
+from scripts import main
 import os
 from testsuite_app.models import common
 from datetime import datetime
