@@ -5,7 +5,6 @@ footer {
         margin-top: 100px;
 }
 
-
 h1 {
     margin-top: 40px;
     margin-bottom: 40px;
@@ -26,9 +25,11 @@ h1 {
     font-size: smaller;
     margin-bottom: 0px;
 }
-/* TODO find out a programmatic way to disable this widget label */
+
 .results-result label {
-    display: none;
+    font-size: small;
+    font-weight: normal;
+    font-style: italic;
 }
 
 .results-test {
@@ -36,7 +37,7 @@ h1 {
 }
 
 .results-desc {
-    width: 65%;
+    width: 50%;
 }
 
 .results-req {
@@ -44,7 +45,12 @@ h1 {
 }
 
 .results-result {
-    width: 30%;
+    width: 15%;
+}
+
+.results-notes {
+    font-style: italic;
+    font-size: smaller;
 }
 
 .results h1 {

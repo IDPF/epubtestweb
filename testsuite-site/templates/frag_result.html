@@ -2,15 +2,16 @@
 <tr class="result
     {{result | get_result_class:is_form}}
     ">
-    <td class="results-status ">
     {% if is_form %}
+    <td class="results-status ">
+    
         {%if result.test.flagged_as_new == True %}
         <span class="new-test text-danger">New</span>
         {% elif result.test.flagged_as_changed == True %}
         <span class="changed-test text-danger">Updated</span>
         {% endif %}
-    {% endif %}
     </td>
+    {% endif %}
     <td class='results-test'>{{ result.test.testid }}</td>
     <td class='results-desc'>{{ result.test.description }}</td>
     <td class='results-req'>
@@ -25,6 +26,11 @@
             {{ result_form.as_p }}
         {% else %}
             {{result|get_result_description}}
+        {% endif %}
+    </td>
+    <td class="results-notes">
+        {% if is_form == False and result.publish_notes == True %}
+        {{result.notes}}
         {% endif %}
     </td>
 </tr>

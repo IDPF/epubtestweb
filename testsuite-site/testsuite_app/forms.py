@@ -19,5 +19,19 @@ class ReadingSystemForm(ModelForm):
         model = ReadingSystem
         fields = ('name', 'version', 'operating_system', 'locale', 'sdk_version')
 
+class ResultForm(ModelForm):
+   class Meta:
+        model = Result
+        fields = ('result', 'notes', 'publish_notes')
+        
+        # clear the 'result' label: it's visually distracting
+        labels = {
+            'result': '',
+        }
 
-ResultFormSet = inlineformset_factory(Evaluation, Result, extra=0, can_delete=False, fields = ['result', 'notes'])
+        # use a custom text area
+        widgets = {
+            'notes': forms.Textarea(attrs={'cols': 40, 'rows': 3, 'title': 'Notes'}),
+        }
+
+ResultFormSet = inlineformset_factory(Evaluation, Result, extra=0, can_delete=False, form = ResultForm)

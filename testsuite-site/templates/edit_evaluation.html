@@ -14,9 +14,6 @@ $(document).ready(function() {
     });
     timer_id = setInterval(autosave, 30000);
 
-    // cheap shortcut to implementing custom forms in django: change @rows here instead
-    $(".results-result textarea").attr('rows', '3');	
-    $(".results-result textarea").attr('title', 'Notes');
 });
 
 function autosave() {

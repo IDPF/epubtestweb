@@ -156,7 +156,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'testsuite_app',
-    'django_evolution',
+    #'django_evolution',
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging
