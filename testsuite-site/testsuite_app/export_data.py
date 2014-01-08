@@ -23,10 +23,11 @@ def export_all_current_evaluations(user):
 	xmldoc = DOC(testsuite="{0}-{1}".format(testsuite.version_date, testsuite.version_revision))
 
 	for rs in reading_systems:
-		if permissions.user_can_view_reading_system(user, rs, 'manage') or \
-		user == None: #None means we are running the CLI
-			rs_elm = rs_to_xml(rs)
-    		xmldoc.append(rs_elm)
+		can_view = permissions.user_can_view_reading_system(user, rs, 'manage')
+        #user == None means we are running the CLI
+        if can_view or user == None: 
+            rs_elm = rs_to_xml(rs)
+            xmldoc.append(rs_elm)
 	tree = etree.ElementTree(xmldoc)
 	return tree
 

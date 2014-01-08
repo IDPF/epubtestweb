@@ -117,6 +117,11 @@ def getemails():
     emails = ", ".join(distinct_emails)
     print emails
 
+def listusers():
+    users = models.UserProfile.objects.all()
+    for u in users:
+        print "{0}\t\t\t\t{1} {2}".format(u.username, u.first_name.encode('utf-8'), u.last_name.encode('utf-8'))
+
 def integrity_check():
     "make sure that all RS evals have the right number of tests and score entries"
     report = {} 
@@ -272,6 +277,9 @@ def main():
     repair_scores_parser = subparsers.add_parser('repair', help="repair an evaluation")
     repair_scores_parser.add_argument("eval", action="store", help="evaluation ID")
     repair_scores_parser.set_defaults(func = lambda(args): repair(args.eval))
+
+    listusers_parser = subparsers.add_parser("listusers", help="list all users")
+    listusers_parser.set_defaults(func = lambda(args): listusers())
 
     args = argparser.parse_args()
     args.func(args)
