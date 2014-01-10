@@ -8,6 +8,10 @@ from testsuite_app.models import common
 from testsuite_app import helper_functions
 from testsuite_app import export_data
 from random import randrange
+from django.contrib.sessions.models import Session
+from testsuite_app.models import UserProfile
+from datetime import datetime
+
 
 def print_testsuite():
     rs = models.ReadingSystem.objects.get(id=1)
@@ -226,6 +230,20 @@ def repair_results(evalpk):
     else:
         print "No errors found in results"
 
+def list_logged_in_users():
+    # Query all non-expired sessions
+    sessions = Session.objects.filter(expire_date__gte=datetime.now())
+    uid_list = []
+
+    # Build a list of user ids from that query
+    for session in sessions:
+        data = session.get_decoded()
+        uid_list.append(data.get('_auth_user_id', None))
+
+    users = UserProfile.objects.filter(id__in=uid_list)
+
+    for u in users:
+        print u.username
 
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
@@ -282,6 +300,9 @@ def main():
 
     listusers_parser = subparsers.add_parser("listusers", help="list all users")
     listusers_parser.set_defaults(func = lambda(args): listusers())
+
+    list_logged_in_users_parser = subparsers.add_parser("list-logged-in-users", help="list logged in users")
+    list_logged_in_users_parser.set_defaults(func = lambda(args): list_logged_in_users())
 
     args = argparser.parse_args()
     args.func(args)
