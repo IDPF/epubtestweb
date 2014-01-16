@@ -1,5 +1,6 @@
 {% load testsuite_extras %}
 
+<dl>
 {% for category in categories %}
 	{% get_category_score category.item evaluation as score%}
 
@@ -13,3 +14,4 @@
 	</div>
 	</dd>
 {% endfor %}
+</dl>

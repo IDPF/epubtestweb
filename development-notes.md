@@ -8,6 +8,11 @@ When the testsuite has been updated, run import:
 
 This creates a new testsuite version, along with new evaluations. These new evaluations are partially populated with data from the previous evaluations, depending on how much of the testsuite has changed. Assuming these evaluations now contain some unanswered tests, they are flagged accordingly (see below in "Scoring").
 
+Naming conventions for templates
+-----
+All templates are in the `testsuite_app/templates` folder. Templates whose names are preceeded by an underscore (`_`) are fragments for inclusion in other templates.
+
+
 Scoring
 ======
 Test results are "Supported"/"Not supported"/"No answer given"
