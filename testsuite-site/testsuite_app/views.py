@@ -161,7 +161,7 @@ class ReadingSystemView(TemplateView):
 
 class EditEvaluationView(UpdateView):
     "Edit reading system evaluation"
-    template_name = "edit_evaluation.html"
+    template_name = "evaluation_form.html"
 
     def get(self, request, *args, **kwargs):
         try:
@@ -173,7 +173,7 @@ class EditEvaluationView(UpdateView):
         evaluation = rs.get_current_evaluation()
         results_form = ResultFormSet(instance = evaluation)
         testsuite = TestSuite.objects.get_most_recent_testsuite()
-        data = helper_functions.testsuite_to_dict(testsuite)
+        data = helper_functions.testsuite_to_dict(testsuite)[0:1]
         
         can_edit = permissions.user_can_edit_reading_system(request.user, rs)
         if can_edit == False:
@@ -206,7 +206,7 @@ class EditEvaluationView(UpdateView):
 
 # confirm deleting a reading system
 class ConfirmDeleteRSView(TemplateView):
-    template_name = "confirm.html"
+    template_name = "confirm_delete_rs.html"
     def get(self, request, *args, **kwargs):
         try:
             rs = ReadingSystem.objects.get(id=kwargs['pk'])
@@ -227,7 +227,7 @@ class ConfirmDeleteRSView(TemplateView):
 
 # create new reading system
 class EditReadingSystemView(TemplateView):
-    template_name = "edit_reading_system.html"
+    template_name = "reading_system_details_form.html"
 
     def get(self, request, *args, **kwargs):
         form = None

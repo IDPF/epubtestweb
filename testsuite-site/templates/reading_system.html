@@ -8,15 +8,15 @@
 {% get_current_evaluation rs as evaluation %}
 
 <div class="reading-system-info panel panel-default">
-    {% reading_system rs %}
-
-    <dl class="scores panel-right">
-        {% category_scores_as_dl_items first_half evaluation %}
-    </dl>
-
-    <dl class="scores panel-right">
-        {% category_scores_as_dl_items second_half evaluation %}
-    </dl>
+    <div class="panel-left">
+    {% reading_system_details_list rs %}
+    </div>
+    <div class="scores panel-right">
+    {% category_scores_list first_half evaluation %}
+    </div>
+    <div class="scores panel-right">
+        {% category_scores_list second_half evaluation %}
+    </div>
 </div>
 
 {% if evaluation.flagged_for_review %}
