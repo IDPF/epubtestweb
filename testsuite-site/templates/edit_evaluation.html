@@ -82,7 +82,7 @@ function jump_to_testid(testid) {
 <div class="panel panel-warning">
     <div class="panel-heading">Update</div>
     <div class="panel-body">
-        <p>The following tests require review due to changes as of {{evaluation.testsuite.version_date}}.</p>
+        <p>The following tests may require review due to changes as of {{evaluation.testsuite.version_date}}.</p>
         <ul>
         {% for id in flagged_items %}
         <li><a href="#" onclick="jump_to_testid( '{{ id }}' )">{{ id }}</a></li>
