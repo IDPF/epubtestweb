@@ -34,6 +34,26 @@ function autosave() {
         }
     });
 }
+
+function jump_to_testid(testid) {
+    // open the accordion and jump to the item
+
+    console.log("jumping to " + testid);
+    testelm = $('#'+testid);
+    this_accordion = testelm.closest("div.category-accordion");
+    // close all
+    $(".category-accordion").accordion("option", "active", false);
+
+    this_accordion.accordion({
+      activate: function( event, ui ) {
+        window.location.href = "#" + testid; 
+      }
+    });
+
+    // open the one containing the target id
+    this_accordion.accordion("option", "active", 0);
+}
+
 </script>
 {% endblock %}
 {% block content %}
@@ -57,18 +77,24 @@ function autosave() {
     </dl>
 </div>
 
-{% if evaluation.flagged_for_review == True %}
+{% get_unanswered_flagged_items evaluation as flagged_items %}
+{% if evaluation.flagged_for_review %}
 <div class="panel panel-warning">
-<div class="panel-heading">Alert</div>
-  <div class="panel-body">
-    The test suite for this evaluation may have been upgraded. Please review items requiring attention, highlighted below in yellow.
-  </div>
+    <div class="panel-heading">Update</div>
+    <div class="panel-body">
+        <p>The following tests require review due to changes as of {{evaluation.testsuite.version_date}}.</p>
+        <ul>
+        {% for id in flagged_items %}
+        <li><a href="#" onclick="jump_to_testid( '{{ id }}' )">{{ id }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endif %}
 
 <div class="results">
 {% for cat in data %}
-    {% category cat evaluation True results_form %}
+    {% category cat evaluation True results_form flagged_items %}
 {% endfor %}
 </div>
 

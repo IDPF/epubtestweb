@@ -71,6 +71,7 @@ function set_test_descriptions_hidden() {
     </thead>
     <tbody>
     	{% for reading_system in reading_systems %}
+            {% get_current_evaluation reading_system as eval %}
         	<tr>
         		<td>
                     <a href="/rs/{{reading_system.id}}">
@@ -80,12 +81,19 @@ function set_test_descriptions_hidden() {
                     {{reading_system.operating_system}}, {{reading_system.locale}}
                 </td>
             	{% for test in tests %}
-            		{% is_test_supported reading_system test as result%}
-            		{% if result == True %}
-            			<td class="result success">Supported</td>
-            		{% else %}
-            			<td class="result danger">Not Supported</td>
-            		{% endif %}
+            		
+                    {% get_result test eval as result %}
+                    {% if result.result == None %}
+                        <td>Data not available</td>
+                    {% else %}
+                        {% is_test_supported reading_system test as is_supported %}
+                        {% if is_supported %}
+                            <td class="result success">Supported</td>
+                        {% else %}
+                            <td class="result danger">Not Supported</td>
+                        {% endif %}                        
+                    {% endif %}
+
             	{% endfor %}
         	</tr>
     	{% endfor %}

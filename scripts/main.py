@@ -40,6 +40,8 @@ def add_testsuite(sourcedir, config_file):
             else:
                 print "Not a directory: {0}".format(fullpath)
 
+    num_tests = models.Test.objects.filter(testsuite = testsuite).count()
+    print "This testsuite contains {0} tests".format(num_tests)
     import_testsuite.migrate_data(old_testsuite)
     print "Done importing testsuite."
 

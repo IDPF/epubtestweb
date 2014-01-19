@@ -33,9 +33,9 @@
             {% get_result t evaluation as r %}
             {% if is_form == True %}
                 {% get_form_for_result r results_form as f %}
-                {% result r is_form f %}
+                {% result r is_form f flagged_items %}
             {% else %}
-                {% result r is_form None %}
+                {% result r is_form None flagged_items %}
             {% endif %}
         {% endfor %}
     </tbody>
@@ -43,7 +43,7 @@
 {% endif %}
 
 {% for subcat in category.subcategories %}
-    {% category subcat evaluation is_form results_form %}
+    {% category subcat evaluation is_form results_form flagged_items %}
 {% endfor %}
 
 {% if category.item.depth == 0 %}

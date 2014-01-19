@@ -71,4 +71,5 @@ def calculate_source(dirname):
 			dl = {"label": "Document {0}".format(doc_number), "link": link}
 			return dl
 	print "not found {0}".format(dirname)
-	return None
+	return None    
+

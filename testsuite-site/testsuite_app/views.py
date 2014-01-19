@@ -196,10 +196,6 @@ class EditEvaluationView(UpdateView):
             return redirect("/manage/")
         evaluation = rs.get_current_evaluation()
         formset = ResultFormSet(request.POST, instance=evaluation)
-
-        # clear the review flag
-        if evaluation.flagged_for_review == True:
-            evaluation.flagged_for_review = False
         
         formset.save()
         evaluation.save()

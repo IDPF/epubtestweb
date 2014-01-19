@@ -154,3 +154,24 @@ span.warn {
 .header-row td {
 	font-weight: bold;
 }
+
+.manage-name {
+    width: 15%;
+}
+.manage-version {
+}
+.manage-os {
+}
+.manage-locale {
+}
+.manage-sdk {
+}
+.manage-status {
+    width: 25%;
+}
+.manage-actions {
+    width: 25%;
+}
+.manage-visibility {
+    width: 25%;
+}

@@ -11,6 +11,7 @@ class EvaluationManager(models.Manager):
         from testsuite import TestSuite
 
         testsuite = TestSuite.objects.get_most_recent_testsuite()
+        print "Creating evaluation for testsuite {0}".format(testsuite.version_date)
         tests = Test.objects.filter(testsuite = testsuite)
 
         evaluation = self.create(
@@ -68,6 +69,7 @@ class Evaluation(models.Model, FloatToDecimalMixin):
         self.last_updated = generate_timestamp()
         self.save_scores()
         self.update_percent_complete()
+        self.flagged_for_review = len(self.get_unanswered_flagged_items()) > 0
         # call 'save' on the base class
         super(Evaluation, self).save(*args, **kwargs)
         
@@ -77,7 +79,6 @@ class Evaluation(models.Model, FloatToDecimalMixin):
         from result import Result
         from category import Category
         category_scores = Score.objects.filter(evaluation = self)
-        print category_scores
         for score in category_scores:
             results = None
             if score.category != None:
@@ -189,7 +190,15 @@ class Evaluation(models.Model, FloatToDecimalMixin):
             return score
         except Score.DoesNotExist:
             return None
-            
+
+    def get_unanswered_flagged_items(self):
+        results = self.get_all_results()
+        retval = []
+        for r in results:
+            if (r.test.flagged_as_new or r.test.flagged_as_changed) and r.result == None:
+                retval.append(r.test)
+        return retval
+
 def generate_timestamp():
     from datetime import datetime
     from django.utils.timezone import utc

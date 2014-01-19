@@ -43,12 +43,12 @@
                     <br/>
                     <span class="rs-details">Locale: {{ rs_score.reading_system.locale }}</span>
                     {% endif %}
+                    <br/>
+                    <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
                     {% if eval.flagged_for_review == True %}
                     <br/>
                     <span class="warn">This evaluation may not be current.</span>
                     {% endif %}
-                    <br/>
-                    <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
                 </td>
                 <td class="text-center">
                     <ul class="list-unstyled scores">
@@ -113,12 +113,12 @@
                     <br/>
                     <span class="rs-details">Locale: {{ rs_score.reading_system.locale }}</span>
                     {% endif %}
+                    <br/>
+                    <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
                     {% if eval.flagged_for_review == True %}
                     <br/>
                     <span class="warn">This evaluation may not be current.</span>
                     {% endif %}
-                    <br/>
-                    <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
                 </td>
                 <td class="text-center">
                     <span class="total">{{ rs_score.total_score.pct_total_passed }}%</span>

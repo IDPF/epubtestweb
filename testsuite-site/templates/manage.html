@@ -39,36 +39,38 @@
             
             {% if can_view %}
             <tr>
-                <td>{{ r.name }} </td>
-                <td>{{ r.version }}</td>
-                <td>{{ r.operating_system }} </td>
-                <td>{{ r.locale }} </td>
-                <td>{{ r.sdk_version }} </td>
-                <td style="font-style: italic">
+                <td class="manage-name">{{ r.name }} </td>
+                <td class="manage-version">{{ r.version }}</td>
+                <td class="manage-os">{{ r.operating_system }} </td>
+                <td class="manage-locale">{{ r.locale }} </td>
+                <td class="manage-sdk">{{ r.sdk_version }} </td>
+                <td  class="manage-status" style="font-style: italic">
                     {% get_current_evaluation r as eval%}
-                    <p>{{ eval.percent_complete }}% complete.</p>
                     {% if eval.flagged_for_review == True %}
-                    <p class="text-warning"><a href="/rs/{{ r.id }}/eval/">Please review this evaluation.</a></p>
+                    <p><span class="alert-danger">Needs review</span></p>
                     {% endif %}
+                    <p>{{ eval.percent_complete }}% complete.</p>
                     <p>
                         Added by {{ r.user|get_display_name }}
                         {% if r.user == user %} (you) {% endif %}
                     </p>
                 </td>
-                <td>
-                    <ul class="list-unstyled">
+                <td class="manage-actions">
+                    <ul class="">
+                        {% if can_edit == True %}
+                        <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
+                        {% endif %}
                         <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
                         <li><a href="/rs/{{ r.id }}/report/">View Issue Report</a></li>
                         {% if can_edit == True %}
-                        <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
                         <li><a href="/rs/{{ r.id }}/edit/">Edit details</a></li>
                         <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
                         {% endif %}
                     </ul>
                 </td>
-                <td>
-                    <span style="font-style: italic">Currently: {{ r|get_visibility }}</span>
-                    <ul class="list-unstyled">
+                <td class="manage-visibility">
+                    <ul class="">
+                        <li><span style="font-style: italic">Currently: {{ r|get_visibility }}</span></li>
                         {% if can_make_public %}
                         <li><a href="/rs/{{ r.id }}/visibility?set=2">Change to public</a></li>
                         {% endif %}

@@ -1,14 +1,16 @@
 {% load testsuite_extras %}
-<tr class="result
+<tr id="{{result.test.testid}}"
+class="result
     {{result | get_result_class:is_form}}
     ">
     {% if is_form %}
     <td class="results-status ">
-    
-        {%if result.test.flagged_as_new == True %}
-        <span class="new-test text-danger">New</span>
-        {% elif result.test.flagged_as_changed == True %}
-        <span class="changed-test text-danger">Updated</span>
+        {% if result.test.testid in flagged_items %}
+            {% if result.test.flagged_as_new == True %}
+            <span class="new-test text-danger">New</span>
+            {% elif result.test.flagged_as_changed == True %}
+            <span class="changed-test text-danger">Updated</span>
+            {% endif %}
         {% endif %}
     </td>
     {% endif %}

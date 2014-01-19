@@ -6,9 +6,9 @@ register = template.Library()
 
 # for the reading system and evaluation form
 @register.inclusion_tag('frag_category.html')
-def category(category, evaluation, is_form, results_form):
+def category(category, evaluation, is_form, results_form, flagged_items):
 	return {'category': category, "evaluation": evaluation, "is_form": is_form,
-		"results_form": results_form}
+		"results_form": results_form, "flagged_items": flagged_items}
 
 # for the filter search
 @register.inclusion_tag('frag_category_filter.html')
@@ -20,8 +20,8 @@ def category_scores_as_dl_items(categories, evaluation):
 	return {'evaluation': evaluation, 'categories': categories}
 
 @register.inclusion_tag('frag_result.html')
-def result(result, is_form, result_form):
-    return {'result': result, "is_form": is_form, "result_form": result_form}
+def result(result, is_form, result_form, flagged_items):
+    return {'result': result, "is_form": is_form, "result_form": result_form, "flagged_items": flagged_items}
 
 @register.inclusion_tag('frag_alerts.html')
 def alerts(alerts):
@@ -84,6 +84,12 @@ def get_category_heading(category):
         return "h{0}".format(category.depth + 1)
     else:
         return "h6"
+
+@register.assignment_tag
+def get_unanswered_flagged_items(evaluation):
+    "get unanswered flagged item ids"
+    tests = evaluation.get_unanswered_flagged_items()
+    return [t.testid for t in tests]
 
 @register.filter
 def get_display_name(user):
