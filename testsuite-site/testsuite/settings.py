@@ -13,6 +13,7 @@ epub_downloads_root = '/home/djangoweb/epub-testsuite/build'
 epub_downloads_url = '/epubs/' #symlinked to epub_downloads_root
 previous_db = '/home/djangoweb/epubtestweb-db/testsuite.db.last'
 secret_key = 'utq699x(arx2auy=fnmotm^_7g2d^fa4n+kefz%fev1)noiv1e' # change or override this
+allowed_hosts = [] 
 # end of overrides
 
 try:
@@ -50,7 +51,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['epubtest.org', '54.221.241.178']
+ALLOWED_HOSTS = allowed_hosts
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

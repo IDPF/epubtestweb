@@ -15,4 +15,5 @@ static_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/static'
 static_url = '/static/'
 epub_downloads_root = '/Users/marisa/Projects/epub-testsuite/build'
 previous_db = '/Users/marisa/Projects/epubtestweb-db/testsuite.db.last'
+allowed_hosts = []
 
