@@ -19,12 +19,14 @@
     </div>
 </div>
 
+{% if evaluation.flagged_for_review %}
 <div class="panel panel-warning">
     <div class="panel-heading">Note</div>
     <div class="panel-body">
         <p>This evaluation may not be current.</p>
     </div>
 </div>
+{% endif %}
 
 <div class="results category-accordion">
     {% for cat in data %}
