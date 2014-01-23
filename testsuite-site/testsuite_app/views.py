@@ -171,18 +171,37 @@ class EditEvaluationView(UpdateView):
 
         action_url = "/rs/{0}/eval/".format(rs.id)
         evaluation = rs.get_current_evaluation()
-        results_form = ResultFormSet(instance = evaluation)
         testsuite = TestSuite.objects.get_most_recent_testsuite()
-        data = helper_functions.testsuite_to_dict(testsuite)[0:1]
+        category_pages = []
+        top_level_categories = testsuite.get_top_level_categories()
+        
+        # default to the first category
+        cat = top_level_categories[0]
+
+        cat_option = '-1'
+        if kwargs.has_key('cat'):
+            cat_option = kwargs['cat']
+        print cat_option
+        for c in top_level_categories:
+            # check if we are starting at a different category
+            if c.id == int(cat_option):
+                cat = c
+            # collect category list data for other categories
+            category_pages.append({"link": "{0}{1}/".format(action_url, c.id), "name": c.name, "id": c.id})
+        
+        data = helper_functions.category_to_dict(cat)
+        results_form = ResultFormSet(instance = evaluation, queryset=evaluation.get_category_results(cat))
         
         can_edit = permissions.user_can_edit_reading_system(request.user, rs)
         if can_edit == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
             return redirect("/manage/")
 
+
+
         return render(request, self.template_name,
             {'evaluation': evaluation, 'results_form': results_form, 'data': data,
-            'rs': rs, "action_url": action_url})
+            'rs': rs, "action_url": action_url, "category_pages": category_pages})
 
     def post(self, request, *args, **kwargs):
         try:
