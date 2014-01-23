@@ -4,10 +4,9 @@
 {% get_category_heading category.item as heading_tag %}
 
 {% if category.item.depth == 0 %}
-    <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}
-            <span class="pull-right">Score: {{ score.pct_total_passed}}%</span>
-    </{{heading_tag}}>
-<div>
+    <div class="category-accordion">
+    <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}</{{heading_tag}}>
+    <div>
 {% else %}
     <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}</{{heading_tag}}>
 {% endif %}
@@ -26,17 +25,19 @@
     <tbody>
         {% for t in category.tests %}
             {% get_result t evaluation as r %}
-            {% result r %}
+            {% get_form_for_result r results_form as f %}
+            {% result_form r f flagged_items %}
         {% endfor %}
     </tbody>
 </table>
 {% endif %}
 
 {% for subcat in category.subcategories %}
-    {% category subcat evaluation %}
+    {% category_form subcat evaluation results_form flagged_items %}
 {% endfor %}
 
 {% if category.item.depth == 0 %}
+    </div>
     </div>
 {%endif%}
 

@@ -4,11 +4,14 @@ from testsuite_app.models import common
 
 register = template.Library()
 
-# for the reading system and evaluation form
 @register.inclusion_tag('_category.html')
-def category(category, evaluation, is_form, results_form):
-	return {'category': category, "evaluation": evaluation, "is_form": is_form,
-		"results_form": results_form, "flagged_items": flagged_items}
+def category(category, evaluation):
+	return {'category': category, "evaluation": evaluation}
+
+@register.inclusion_tag('_category_form.html')
+def category_form(category, evaluation, results_form, flagged_items):
+    return {'category': category, "evaluation": evaluation, "results_form": results_form, 
+    "flagged_items": flagged_items}
 
 # for the filter search
 @register.inclusion_tag('_category_compare_form.html')
@@ -20,8 +23,12 @@ def category_scores_list(categories, evaluation):
 	return {'evaluation': evaluation, 'categories': categories}
 
 @register.inclusion_tag('_result.html')
-def result(result, is_form, result_form):
-    return {'result': result, "is_form": is_form, "result_form": result_form}
+def result(result):
+    return {'result': result}
+
+@register.inclusion_tag('_result_form.html')
+def result_form(result, form, flagged_items):
+    return {'result': result, 'form': form, 'flagged_items': flagged_items}
 
 @register.inclusion_tag('_alerts.html')
 def alerts(alerts):

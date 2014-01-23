@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load testsuite_extras %}
-{% block title %}:: Edit Evaluation{% endblock %}
+{% block title %}:: Evaluate{% endblock %}
 {% block script %}
 <script>
 
@@ -34,6 +34,7 @@ function autosave() {
         }
     });
 }
+
 </script>
 {% endblock %}
 {% block content %}
@@ -44,9 +45,9 @@ function autosave() {
         
 <div style="margin-bottom: 40px;">
     <div class="panel-left">
-    {% reading_system_details_list rs %}
-
-    <p style="font-weight: bold">Percent complete:</p>
+        {% reading_system_details_list rs %}
+        
+        <p style="font-weight: bold">Percent complete:</p>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="{{evaluation.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{evaluation.percent_complete}}%; height: 100%">
             <span style="font-style: italic; {%if evaluation.percent_complete < 20 %} color: black;{%endif%}">
@@ -54,32 +55,48 @@ function autosave() {
           </div>
         </div>
     </div>
-    <dl class="panel-right">
-    <ul>
-        {% for cat in data %}    
-        <li>{{ cat.item.name }}</li>        
+    <div class="panel-right">
+        <h1 style="font-size: medium;">Sections</h1>
+        <ul>
+        {% for cat in category_pages %}
+        <li>
+            {% if cat.id != data.item.id %}
+            <a href=" {{ cat.link }}">{{ cat.name }}</a>
+            {% else %}
+            {{ cat.name }}
+            {% endif %}
+        </li>
+
         {% endfor %}
-    </dl>
+        </ul>
+    </div>
 </div>
 
-{% if evaluation.flagged_for_review == True %}
+{% get_unanswered_flagged_items evaluation as flagged_items %}
+{% if evaluation.flagged_for_review %}
 <div class="panel panel-warning">
-<div class="panel-heading">Alert</div>
-  <div class="panel-body">
-    The test suite for this evaluation may have been upgraded. Please review items requiring attention, highlighted below in yellow.
-  </div>
+    <div class="panel-heading">Update</div>
+    <div class="panel-body">
+        <p>The following tests may require review due to changes as of {{evaluation.testsuite.version_date}}.</p>
+        <ul>
+        {% for id in flagged_items %}
+        <li><a href="#" onclick="jump_to_testid( '{{ id }}' )">{{ id }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endif %}
 
 <div class="results">
-{% for cat in data %}
-    {% category cat evaluation True results_form %}
-{% endfor %}
+{% category_form data evaluation results_form flagged_items %}
 </div>
 
 {{ results_form.management_form }}
 
-<input type="submit" value="Save" style="margin-top: 30px" />
+<div style="margin-top: 30px">
+<input type="submit" value="Save and continue to next section" />
+<input type="submit" value="Save and go back"/>
+</div>
 </form>
 
 {% endblock %}
