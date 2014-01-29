@@ -96,7 +96,10 @@ def get_category_heading(category):
 def get_unanswered_flagged_items(evaluation):
     "get unanswered flagged item ids"
     tests = evaluation.get_unanswered_flagged_items()
-    return [t.testid for t in tests]
+    retval = []
+    for t in tests:
+        retval.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
+    return retval
 
 @register.filter
 def get_display_name(user):

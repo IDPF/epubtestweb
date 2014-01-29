@@ -245,6 +245,45 @@ def list_logged_in_users():
     for u in users:
         print u.username
 
+def force_random_changes(max_changes=0, avg_distance_between=0):
+    "Pretend that a random selection of tests has changed"
+    ts = models.TestSuite.objects.get_most_recent_testsuite()
+    tests = models.Test.objects.filter(testsuite = ts)
+    if max_changes == 0:
+        max_changes = tests.count()
+    changes = 0
+    unchanged_since_last = 0
+    for t in tests:
+        if changes < max_changes and unchanged_since_last >= avg_distance_between:
+            choice = randrange(1, 4)
+            if choice == 1:
+                print "Randomly marking {0} as new (from {1})".format(t.testid, t.source)
+                t.flagged_as_new = True
+                t.save()
+                changes += 1
+                since_last = 0
+            elif choice == 2:
+                print "Randomly marking {0} as changed (from {1})".format(t.testid, t.source)
+                t.flagged_as_changed == True
+                t.save()
+                changes += 1
+                unchanged_since_last = 0
+            else:
+                # don't modify the test
+                unchanged_since_last += 1
+        else:
+            unchanged_since_last += 1
+    print "Modified {0} tests".format(changes)
+    print "updating evaluations"
+    evals = models.Evaluation.objects.filter(testsuite = ts)
+    for e in evals:
+        results = e.get_all_results()
+        for r in results:
+            if r.test.flagged_as_changed or r.test.flagged_as_new:
+                r.result = None
+                r.save()
+        e.save()
+
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
     subparsers = argparser.add_subparsers(help='commands')
@@ -303,6 +342,9 @@ def main():
 
     list_logged_in_users_parser = subparsers.add_parser("list-logged-in-users", help="list logged in users")
     list_logged_in_users_parser.set_defaults(func = lambda(args): list_logged_in_users())
+
+    force_random_changes_parser = subparsers.add_parser("force-change-tests", help="pretend some (max 20) tests have changed")
+    force_random_changes_parser.set_defaults(func = lambda(args): force_random_changes(20, 30))
 
     args = argparser.parse_args()
     args.func(args)

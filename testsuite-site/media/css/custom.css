@@ -175,3 +175,31 @@ span.warn {
 .manage-visibility {
     width: 25%;
 }
+
+#flagged-list {
+    -moz-column-count: 3;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 20px;
+    column-count: 3;
+    column-gap: 20px;
+}
+
+#category-list li {
+    text-decoration: underline;
+}
+
+#category-list .current {
+    font-style: italic;
+    text-decoration: None;
+}
+
+.dl-horizontal dt{
+    text-align: left;
+    margin-bottom: 1em;
+    width: auto;
+    padding-right: 1em;
+}
+.dl-horizontal dd{
+    margin-left: 0;
+}
