@@ -181,14 +181,23 @@ class EditEvaluationView(UpdateView):
         cat_option = '-1'
         if kwargs.has_key('cat'):
             cat_option = kwargs['cat']
-        print cat_option
+
         for c in top_level_categories:
             # check if we are starting at a different category
             if c.id == int(cat_option):
                 cat = c
             # collect category list data for other categories
-            category_pages.append({"link": "{0}{1}/".format(action_url, c.id), "name": c.name, "id": c.id})
-        
+            category_pages.append({"link": "{0}{1}".format(action_url, c.id), "name": c.name, "id": c.id})
+
+        idx = 0
+        next = ''
+        for c in category_pages:
+            if c['id'] == cat.id:
+                if len(category_pages) > idx + 1:
+                    next = category_pages[idx + 1]['link']
+                    break
+            idx += 1
+
         data = helper_functions.category_to_dict(cat)
         results_form = ResultFormSet(instance = evaluation, queryset=evaluation.get_category_results(cat))
         
@@ -197,11 +206,9 @@ class EditEvaluationView(UpdateView):
             messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
             return redirect("/manage/")
 
-
-
         return render(request, self.template_name,
             {'evaluation': evaluation, 'results_form': results_form, 'data': data,
-            'rs': rs, "action_url": action_url, "category_pages": category_pages})
+            'rs': rs, "action_url": action_url, "category_pages": category_pages, 'next': next})
 
     def post(self, request, *args, **kwargs):
         try:
@@ -221,7 +228,14 @@ class EditEvaluationView(UpdateView):
         
         # if we are auto-saving, don't redirect
         if not request.POST.has_key('auto') or request.POST['auto'] == "false":
-            return redirect('/manage/')
+            if 'save_continue' in request.POST and request.POST.has_key('next'):
+                next = request.POST['next']
+                print "Going to next section: {0}".format(next)
+                # go to next section
+                return redirect('{0}/'.format(next))
+            else:
+                # go back to the manage page
+                return redirect('/manage/')
 
 # confirm deleting a reading system
 class ConfirmDeleteRSView(TemplateView):
