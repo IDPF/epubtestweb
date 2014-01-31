@@ -28,4 +28,5 @@ urlpatterns = patterns('',
     (r'^rs/new/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/visibility/$', login_required(function=set_visibility, login_url='/login/')),
     (r'^admin/', include(admin.site.urls)),
+    (r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.EPUB_URL, document_root = settings.EPUB_ROOT)
