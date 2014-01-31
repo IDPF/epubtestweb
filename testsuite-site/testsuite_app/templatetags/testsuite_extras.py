@@ -38,6 +38,10 @@ def alerts(alerts):
 def reading_system_details_list(rs):
 	return {"rs": rs}
 
+@register.inclusion_tag('_manage_table.html')
+def manage_table(reading_systems, user):
+    return {"reading_systems": reading_systems, "user": user}
+
 @register.assignment_tag
 def get_current_evaluation(rs):
     return rs.get_current_evaluation()
@@ -100,6 +104,14 @@ def get_unanswered_flagged_items(evaluation):
     for t in tests:
         retval.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
     return retval
+
+@register.assignment_tag
+def get_users_reading_systems(reading_systems, user):
+    rses = []
+    for rs in reading_systems:
+        if user == rs.user:
+            rses.append(rs)
+    return rses
 
 @register.filter
 def get_display_name(user):

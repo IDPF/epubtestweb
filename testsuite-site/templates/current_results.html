@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load testsuite_extras %}
+{% block script %}
+<script src="/media/js/jquery.tablesorter.min.js"></script>
+<script>
+$(document).ready(function() {
+{% if view_option = "detail" %}
+ $("#rstable-detail").tablesorter();
+{% else %}
+ $("#rstable-simple").tablesorter(); 
+{% endif %}
+});
+</script>
+{% endblock %}
+{% block content %}
+
+<h1>Current Results</h1>
+
+
+{% if rs_scores|length == 0 %}
+
+    <p class="well">No data available</p>
+
+{% else %}
+    
+    <p style="margin-bottom: 20px">These results are based on evaluations of reading system capabilities as described in the <a href="/testsuite/">EPUB Testsuite</a>. Click on a Reading System name in the table below to view details.</p>
+
+    {% if view_option = "detail" %}
+        <p>Switch to <a href="/results/?view=simple">simple</a> view.</p>
+    {% else %}
+        <p>Switch to <a href="/results/?view=detail">detail</a> view.</p>
+    {% endif %}
+
+    {% if view_option = "detail" %}
+    <table id="rstable-detail" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center"><a href="#" title="Sort by name">Reading System</a></th>
+                <th class="text-center"><a href="#" title="Sort by overall score">Overall score</a></th>
+                {% for cat in categories %}
+                    <th class="text-center"><a href="#" title="Sort by {{cat.name}} score">{{cat.name}}</a></th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for rs_score in rs_scores %}
+            {% get_current_evaluation rs_score.reading_system as eval%}
+            <tr>
+                <td><a href="rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
+                    {% if rs_score.reading_system.operating_system != "" %}
+                    <br/>
+                    <span class="rs-details">{{ rs_score.reading_system.operating_system }}</span>
+                    {% endif %}
+                    {% if rs_score.reading_system.locale != "" %}
+                    <br/>
+                    <span class="rs-details">Locale: {{ rs_score.reading_system.locale }}</span>
+                    {% endif %}
+                    <br/>
+                    <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
+                    {% if eval.flagged_for_review == True %}
+                    <br/>
+                    <span class="warn">This evaluation may not be current.</span>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    <ul class="list-unstyled scores">
+                        <li class="total">Total: {{ rs_score.total_score.pct_total_passed }}%</li>
+                    {% if rs_score.total_score.num_required_tests == 0 %}
+                        <li>Required: N/A</li>
+                    {% else %}
+                        <li>Required: {{ rs_score.total_score.pct_required_passed }}%</li>
+                    {% endif %}
+                    {% if rs_score.total_score.num_optional_tests == 0 %}
+                        <li>Optional: N/A</li>
+                    {% else %}
+                        <li>Optional: {{ rs_score.total_score.pct_optional_passed }}%</li>
+                    {% endif %}
+                    </ul>
+                </td>
+
+                {% for category_score in rs_score.category_scores %}
+                    <td class="text-center">
+                        <ul class="list-unstyled scores">
+                            <li class="total">Total: {{ category_score.pct_total_passed }}%</li>
+                        {% if category_score.num_required_tests == 0 %}
+                            <li>Required: N/A</li>
+                        {% else %}
+                            <li>Required: {{ category_score.pct_required_passed }}%</li>
+                        {% endif %}
+                        {% if category_score.num_optional_tests == 0 %}
+                            <li>Optional: N/A</li>
+                        {% else %}
+                            <li>Optional: {{ category_score.pct_optional_passed }}%</li>
+                        {% endif %}
+                        </ul>
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% elif view_option = "simple" %}
+
+    <table id="rstable-simple" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center" title="Reading system"><a href="#" title="Sort by name">Reading System</a></th>
+                <th class="text-center" title="Total score: tests passed divided by total number of tests."><a href="#" title="Sort by total score">Total</a></th>
+                <th class="text-center" title="Required tests score: required tests passed divided by total number of required tests."><a href="#" title="Sort by required tests score">Required Tests</a></th>
+                <th class="text-center" title="Optional tests score: optional tests passed divided by total number of optional tests."><a href="#" title="Sort by optional tests score">Optional Tests</a></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rs_score in rs_scores %}
+            {% get_current_evaluation rs_score.reading_system as eval%}
+            <tr>
+                <td>
+                    <a href="rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
+                    {% if rs_score.reading_system.operating_system != "" %}
+                    <br/>
+                    <span class="rs-details">{{ rs_score.reading_system.operating_system }}</span>
+                    {% endif %}
+                    {% if rs_score.reading_system.locale != "" %}
+                    <br/>
+                    <span class="rs-details">Locale: {{ rs_score.reading_system.locale }}</span>
+                    {% endif %}
+                    <br/>
+                    <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
+                    {% if eval.flagged_for_review == True %}
+                    <br/>
+                    <span class="warn">This evaluation may not be current.</span>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    <span class="total">{{ rs_score.total_score.pct_total_passed }}%</span>
+                </td>
+                <td class="text-center">
+                    {% if rs_score.total_score.num_required_tests == 0 %}
+                        <span>N/A</span>
+                    {% else %}
+                        <span>{{ rs_score.total_score.pct_required_passed }}%</span>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if rs_score.total_score.num_optional_tests == 0 %}
+                        <span>N/A</span>
+                    {% else %}
+                        <span>{{ rs_score.total_score.pct_optional_passed }}%</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %} {# view option #}
+
+    <p class="text-muted" style="font-style: italic">Reading Systems tests are based on the version of the test suite that was available on {{testsuite_date}}.</p>
+
+{% endif %} {# if there are scores to report #}
+
+{% endblock %}

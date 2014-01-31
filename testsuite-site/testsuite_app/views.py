@@ -16,15 +16,7 @@ import permissions
 
 class IndexView(TemplateView):
     "Home page"
-    template_name = "index.html"
-
-    def get(self, request, *args, **kwargs):
-        testsuite = TestSuite.objects.get_most_recent_testsuite()
-        categories = testsuite.get_top_level_categories()
-        rs_scores = helper_functions.get_public_scores(categories)
-        view_option = request.GET.get('view', 'simple')
-        return render(request, self.template_name, {'categories': categories, 'rs_scores': rs_scores,
-            "testsuite_date": testsuite.version_date, 'view_option': view_option})
+    template_name = "index.html"        
 
 class AboutView(TemplateView):
     "About page"
@@ -58,6 +50,18 @@ class TestsuiteView(TemplateView):
                 dl = {"label": label, "link": link}
                 downloads.append(dl)
         return render(request, self.template_name, {'downloads': downloads})
+
+class CurrentResultsView(TemplateView):
+    "Grid of scores"
+    template_name = "current_results.html"
+
+    def get(self, request, *args, **kwargs):
+        testsuite = TestSuite.objects.get_most_recent_testsuite()
+        categories = testsuite.get_top_level_categories()
+        rs_scores = helper_functions.get_public_scores(categories)
+        view_option = request.GET.get('view', 'simple')
+        return render(request, self.template_name, {'categories': categories, 'rs_scores': rs_scores,
+            "testsuite_date": testsuite.version_date, 'view_option': view_option})
 
 
 class CompareResultsView(TemplateView):
@@ -359,13 +363,32 @@ def logout_user(request):
     messages.add_message(request, messages.INFO, 'You have been logged out.')
     return redirect("/")
 
-def export_data(request):
+def export_data_all(request):
     import export_data
     from lxml import etree
     xmldoc = export_data.export_all_current_evaluations(request.user)
     xmldoc_str = etree.tostring(xmldoc, pretty_print=True)
     response = HttpResponse(mimetype='application/xml')
     response['Content-Disposition'] = 'attachment; filename="export.xml"'
+    response.write(xmldoc_str)
+    return response
+
+def export_data_single(request, *args, **kwargs):
+    import export_data
+    from lxml import etree
+    try:
+        rs = ReadingSystem.objects.get(id=kwargs['pk'])
+    except ReadingSystem.DoesNotExist:
+        return render(request, "404.html", {})
+    
+    can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
+    if can_view == False:
+        return render(request, "404.html", {})
+    xmldoc = export_data.export_single_evaluation(rs, request.user)
+    xmldoc_str = etree.tostring(xmldoc, pretty_print=True)
+    response = HttpResponse(mimetype='application/xml')
+    response['Content-Disposition'] = 'attachment; filename="export_{0}_{1}_{2}.xml"'.format\
+        (rs.name, rs.version, rs.operating_system)
     response.write(xmldoc_str)
     return response
 
