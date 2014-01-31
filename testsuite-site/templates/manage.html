@@ -2,99 +2,51 @@
 {% load testsuite_extras %}
 
 {% block title %}:: Manage{% endblock %}
+{% block script %}
+<script src="/media/js/jquery.tablesorter.min.js"></script>
+<script>
+$(document).ready(function() {
+ $("table").tablesorter({
+    headers: {
+      // disable sorting on these columns
+      1: { sorter: false},
+      5: { sorter: false},
+      6: { sorter: false},
+    }});
+});
+
+</script>
+{% endblock %}
 
 {% block content %}
 
-<p style="font-style: italic">You are logged in as {{ user|get_display_name }}.</p>
-
-<h1 style="font-size: medium">Reading Systems</h1>
-
+<p style="font-style: italic; padding-bottom: 15px">You are logged in as {{ user|get_display_name }}.</p>
 
 {% if reading_systems|length == 0 %}
     <p class="well">No data available. You can start by adding a reading system.</p>
+    <p><a class="btn btn-default" href="/rs/new" role="button">Add Reading System</a></p>
+    
 {% else %}
-<p>Reading Systems tests are based on the version of the test suite that was available on {{testsuite_date}}.</p>
+    <p>Reading Systems tests are based on the version of the test suite that was available on {{testsuite_date}}.</p>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Version</th>
-                <th>OS</th>
-                <th>Locale</th>
-                <th>SDK Version</th>
-                <th>Evaluation Status</th>
-                <th>Actions</th>
-                <th>Visibility</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for r in reading_systems %}
-            
-            {% user_can_view user r 'manage' as can_view %}
-            {% user_can_edit user r as can_edit %}
-            {% user_can_change_visibility user r '1' as can_make_members_only %}
-            {% user_can_change_visibility user r '2' as can_make_public %}
-            {% user_can_change_visibility user r '3' as can_make_owner_only %}
-            
-            {% if can_view %}
-            <tr>
-                <td class="manage-name">{{ r.name }} </td>
-                <td class="manage-version">{{ r.version }}</td>
-                <td class="manage-os">{{ r.operating_system }} </td>
-                <td class="manage-locale">{{ r.locale }} </td>
-                <td class="manage-sdk">{{ r.sdk_version }} </td>
-                <td  class="manage-status" style="font-style: italic">
-                    {% get_current_evaluation r as eval%}
-                    {% if eval.flagged_for_review == True %}
-                    <p><span class="alert-danger">May require review</span></p>
-                    {% endif %}
-                    <p>{{ eval.percent_complete }}% complete.</p>
-                    <p>
-                        Added by {{ r.user|get_display_name }}
-                        {% if r.user == user %} (you) {% endif %}
-                    </p>
-                </td>
-                <td class="manage-actions">
-                    <ul class="">
-                        {% if can_edit == True %}
-                        <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
-                        {% endif %}
-                        <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
-                        <li><a href="/rs/{{ r.id }}/report/">View Issue Report</a></li>
-                        {% if can_edit == True %}
-                        <li><a href="/rs/{{ r.id }}/edit/">Edit details</a></li>
-                        <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
-                        {% endif %}
-                    </ul>
-                </td>
-                <td class="manage-visibility">
-                    <ul class="">
-                        <li><span style="font-style: italic">Currently: {{ r|get_visibility }}</span></li>
-                        {% if can_make_public %}
-                        <li><a href="/rs/{{ r.id }}/visibility?set=2">Change to public</a></li>
-                        {% endif %}
+    {% get_users_reading_systems reading_systems user as my_reading_systems %}
 
-                        {% if can_make_members_only %}
-                        <li><a href="/rs/{{ r.id }}/visibility?set=1">Change to members-only</a></li>
-                        {% endif %}
+    <h1 style="font-size: medium">My Reading Systems</h1>
+    
+    {% if my_reading_systems|length == 0 %}
+        <p>You currently aren't managing any reading systems. Use the button below to add one and start testing.</p>
+    {% else %}
+        {% manage_table my_reading_systems user %}
+    {% endif %}
+    <p><a class="btn btn-default" href="/rs/new" role="button">Add Reading System</a></p>
+    
+    <h1 style="font-size: medium">All Reading Systems</h1>
 
-                        {% if can_make_owner_only %}
-                        <li><a href="/rs/{{ r.id }}/visibility?set=3">Change to owner-only</a></li>
-                        {% endif %}  
-
-                        {% if can_make_public == False and can_make_members_only == False and can_make_owner_only == False %}              
-                        <li style="font-style: italic" class="text-muted">You do not have permission to change visibility.</li>
-                        {% endif %}
-                    </ul>
-                </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+    {% manage_table reading_systems user %}
+    <p><a class="btn btn-default" href="/export" role="button">Export all evaluation data</a></p>
 {% endif %}
-<p><a href="/rs/new">Add Reading System</a></p>
-<p><a href="/export/">Download evaluation data</a></p>
+
+
+
 
 {% endblock %}
