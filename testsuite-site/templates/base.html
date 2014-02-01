@@ -1,7 +1,9 @@
 {% load testsuite_extras %}
+{% load analytical %}
 <!doctype html>
 <html lang="en">
 <head>
+    {% analytical_head_top %}
     <title>BISG Grid {% block title %}{% endblock %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,10 +44,11 @@
         }
     </style>
     {% endblock %}
-
+    {% analytical_head_bottom %}
 </head>
 
 <body>
+    {% analytical_body_top %}
     {% alerts messages %}
 
     <div class="container">
@@ -88,6 +91,6 @@
         
         </footer>
     </div>
-
+    {% analytical_body_bottom %}
 </body>
 </html>
