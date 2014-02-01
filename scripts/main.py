@@ -74,13 +74,6 @@ def add_rs(name):
 
     return rs
 
-# settings.py must contain a definition for the 'previous' database in order for this to work
-def copy_users():
-    users = models.UserProfile.objects.using('previous').all()
-    for u in users:
-        u.save(using='default')
-    print "Copied users from old database."
-
 def rollback():
     "roll back to the previous testsuite version, or just remove eval data if there is no previous version"
     ts = models.TestSuite.objects.get_most_recent_testsuite()
@@ -309,9 +302,6 @@ def main():
     add_rs_parser = subparsers.add_parser('add-rs', help="Add a new reading system")
     add_rs_parser.add_argument('name', action="store", help="reading system name")
     add_rs_parser.set_defaults(func = lambda(args): add_rs(args.name))
-
-    copy_users_parser = subparsers.add_parser('copy-users', help="Copy all users")
-    copy_users_parser.set_defaults(func = lambda(args): copy_users())
 
     rollback_parser = subparsers.add_parser('rollback', help="Roll back to the previous testsuite")
     rollback_parser.set_defaults(func = lambda(args): rollback())
