@@ -23,14 +23,28 @@ def export_all_current_evaluations(user):
 	xmldoc = DOC(testsuite="{0}-{1}".format(testsuite.version_date, testsuite.version_revision))
 
 	for rs in reading_systems:
-		can_view = permissions.user_can_view_reading_system(user, rs, 'manage')
-        #user == None means we are running the CLI
-        if can_view or user == None: 
-            rs_elm = rs_to_xml(rs)
+		rs_elm = export_evaluation(rs, user)
+        if rs_elm != None:
             xmldoc.append(rs_elm)
 	tree = etree.ElementTree(xmldoc)
 	return tree
 
+def export_single_evaluation(rs, user):
+    testsuite = TestSuite.objects.get_most_recent_testsuite()
+    xmldoc = DOC(testsuite="{0}-{1}".format(testsuite.version_date, testsuite.version_revision))
+
+    rs_elm = export_evaluation(rs, user)
+    if rs_elm != None:
+        xmldoc.append(rs_elm)
+    tree = etree.ElementTree(xmldoc)
+    return tree
+
+def export_evaluation(rs, user):
+    can_view = permissions.user_can_view_reading_system(user, rs, 'manage')
+    #user == None means we are running the CLI
+    if can_view or user == None: 
+        return rs_to_xml(rs)
+    return None
 
 def rs_to_xml(rs):
 	testsuite = TestSuite.objects.get_most_recent_testsuite()

@@ -14,9 +14,12 @@
 {% endblock %}
 
 {% block script %}
+<script src="/media/js/jquery.tablesorter.min.js"></script>
 <script>
 $(document).ready(function(){
 	set_test_descriptions_hidden();
+
+    $("table").tablesorter();
 });
 
 function toggle_test_descriptions() {

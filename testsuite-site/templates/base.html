@@ -1,7 +1,9 @@
 {% load testsuite_extras %}
+{% load analytical %}
 <!doctype html>
 <html lang="en">
 <head>
+    {% analytical_head_top %}
     <title>BISG Grid {% block title %}{% endblock %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +14,7 @@
 
     <!-- custom css -->
     <link href="/media/css/custom.css" rel="stylesheet" media="screen">
+    
 
      <!-- JavaScript plugins (requires jQuery) -->
     <script src="http://code.jquery.com/jquery.js"></script>
@@ -41,10 +44,11 @@
         }
     </style>
     {% endblock %}
-
+    {% analytical_head_bottom %}
 </head>
 
 <body>
+    {% analytical_body_top %}
     {% alerts messages %}
 
     <div class="container">
@@ -53,6 +57,7 @@
         <div class="navbar">
             <a class="navbar-brand" href="/">BISG Grid</a>
             <ul class="nav navbar-nav pull-right">
+                <li><a href="/results/">View</a></li>
                 <li><a href="/compare/">Compare</a></li>
                 <li><a href="/testsuite/">Testsuite</a></li>
                 {% if user.is_authenticated %}
@@ -86,6 +91,6 @@
         
         </footer>
     </div>
-
+    {% analytical_body_bottom %}
 </body>
 </html>

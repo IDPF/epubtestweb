@@ -90,8 +90,7 @@ class Evaluation(models.Model, FloatToDecimalMixin):
     def update_percent_complete(self):
         from result import Result
         all_results = self.get_all_results()
-        # note that we don't use all_results.count() because get_results() returns an array, not a queryset
-        if len(all_results) != 0:
+        if all_results.count() != 0:
             completed_results = Result.objects.filter(evaluation = self).exclude(result = RESULT_NOT_ANSWERED)
             pct_complete = (completed_results.count() * 1.0) / (len(all_results) * 1.0) * 100.0
             self.percent_complete = self.float_to_decimal(pct_complete)
@@ -107,28 +106,22 @@ class Evaluation(models.Model, FloatToDecimalMixin):
             return None
         return rs
 
-    def get_category_results(self, category):
-        "get an array of all the results for the given category"
+    def get_category_results(self, category): 
+        "get a queryset of all the results for the given category"
         tests = category.get_tests()
         return self.get_results(tests)
 
     def get_all_results(self):
-        "get an array of all the results for the current testsuite"
+        "get a queryset of all the results for the current testsuite"
         tests = self.get_tests()
         return self.get_results(tests)
 
     def get_results(self, tests):
-        "get an array of results for the given tests"
+        "get a queryset of results for the given tests"
         from result import Result
-        results = []
-        for t in tests:
-            try:
-                result = Result.objects.get(test = t, evaluation = self)
-            except Result.DoesNotExist:
-                continue
-            results.append(result)
+        results = Result.objects.filter(test__in=tests, evaluation = self)
         return results
-    
+
     def get_result(self, test):
         from result import Result
         try:
