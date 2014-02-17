@@ -1,6 +1,7 @@
 from django import template
 from testsuite_app import permissions
 from testsuite_app.models import common
+from testsuite import settings
 
 register = template.Library()
 
@@ -112,6 +113,10 @@ def get_users_reading_systems(reading_systems, user):
         if user == rs.user:
             rses.append(rs)
     return rses
+
+@register.assignment_tag
+def get_enable_analytics():
+    return settings.enable_analytics
 
 @register.filter
 def get_display_name(user):

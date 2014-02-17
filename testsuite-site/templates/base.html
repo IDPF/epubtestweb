@@ -1,9 +1,15 @@
 {% load testsuite_extras %}
+{% get_enable_analytics as using_analytics %}
+
+{% if using_analytics %}
 {% load analytical %}
+{% endif %}
 <!doctype html>
 <html lang="en">
 <head>
+    {% if using_analytics %}
     {% analytical_head_top %}
+    {% endif %}
     <title>EPUBTest{% block title %}{% endblock %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +34,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
 
-    {%block script %}
+    {% block script %}
     {% endblock %}
 
     {%block style %}
@@ -44,11 +50,15 @@
         }
     </style>
     {% endblock %}
+    {% if using_analytics %}
     {% analytical_head_bottom %}
+    {% endif %}
 </head>
 
 <body>
+    {% if using_analytics %}
     {% analytical_body_top %}
+    {% endif %}
     {% alerts messages %}
 
 
@@ -93,6 +103,8 @@
         
         </footer>
     </div>
+    {% if using_analytics %}
     {% analytical_body_bottom %}
+    {% endif %}
 </body>
 </html>
