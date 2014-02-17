@@ -1,19 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>EPUB Test</h1>
+<h1>EPUBTest</h1>
+
+<div class="front">
+
+<div class="front-left">
 
 <p>What do you want to do?</p>
 
 <ul>
-<li><a href="/results/">View EPUB reading system scores</a></li>
-<li><a href="/compare/">Compare specific features</a></li>
+<li><a href="/results/">View the EPUB 3 Support Grid (all results) </a></li>
+<li><a href="/compare/">Compare support of specific EPUB 3 features </a></li>
 {% if user.is_authenticated %}
 <li><a href="/manage/">Evaluate a reading system</a></li>
 {% endif %}
-<li><a href="/testsuite/">Download testsuite material</a></li>
-<li><a href="http://validator.idpf.org">Validate an EPUB</a></li>
+<li><a href="/testsuite/">Test a Device, App, or Reading System </a></li>
 </ul>
 
+<p>
+*If you want to validate an EPUB file, please visit <a href="http://validator.idpf.org">epubcheck</a>.
+</p>
+
+</div>
+
+<div class="front-right">
+<h3>About the Testsuite</h3>
+<p>The Testsuite is a set of <a target="_blank" href="http://idpf.org/epub/30">EPUB 3.0</a> files designed to enable anyone to systematically test an e-book reading system's support of various EPUB 3.0 features. <a href="/about">Read more.</a> </p>
+
+<h3>About the EPUB 3 Support Grid</h3> 
+<p>The EPUB 3 Support Grid was designed to be a handy reference to what enhancements and features of EPUB 3 render correctly on the most commonly used devices, apps, and reading systems. <a href="/about">Read more.</a> </p>
+
+</div>
+
+</div>
 
 {% endblock %}
