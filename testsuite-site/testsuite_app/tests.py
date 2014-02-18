@@ -206,7 +206,7 @@ class AddUserAndRS(TestCase):
         self.assertEqual(evaluation.percent_complete, 0.0)
 
         results = evaluation.get_all_results()
-        self.assertEqual(len(results), 3)
+        self.assertEqual(results.count(), 3)
 
         # each test should have a result
         tests = Test.objects.filter(testsuite = evaluation.testsuite)
@@ -368,7 +368,7 @@ class UpgradeTestSuite(TestCase):
         rses = ReadingSystem.objects.all()
         evaluation = rses[0].get_current_evaluation()
         results = evaluation.get_all_results()
-        self.assertEqual(len(results), 3)
+        self.assertEqual(results.count(), 3)
 
 
     def test_evaluation(self):

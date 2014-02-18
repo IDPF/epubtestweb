@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load testsuite_extras %}
-{% block title %}:: Edit Evaluation{% endblock %}
+{% block title %}:: Evaluate{% endblock %}
 {% block script %}
 <script>
 
@@ -13,7 +13,6 @@ $(document).ready(function() {
         value_changed = true;
     });
     timer_id = setInterval(autosave, 30000);
-
 });
 
 function autosave() {
@@ -35,47 +34,46 @@ function autosave() {
     });
 }
 
-function jump_to_testid(testid) {
-    // open the accordion and jump to the item
-
-    console.log("jumping to " + testid);
-    testelm = $('#'+testid);
-    this_accordion = testelm.closest("div.category-accordion");
-    // close all
-    $(".category-accordion").accordion("option", "active", false);
-
-    this_accordion.accordion({
-      activate: function( event, ui ) {
-        window.location.href = "#" + testid; 
-      }
-    });
-
-    // open the one containing the target id
-    this_accordion.accordion("option", "active", 0);
-}
-
 </script>
 {% endblock %}
 {% block content %}
 
-<h1>Edit Evaluation</h1>
+<h1>Evaluate</h1>
 
 <form action="{{ action_url }}" method="post" id="rsform">{% csrf_token %}
         
 <div style="margin-bottom: 40px;">
-    {% reading_system rs %}
-    <dl class="panel-right">
+    <div class="panel-left">
+    <h1 style="font-size: medium;">Reading System</h1>
+        {% reading_system_details_list rs %}
         
-        <p style="font-weight: bold">Percent complete:</p>
+    </div>
+    <div class="panel-right">
+        <h1 style="font-size: medium;">Sections</h1>
+        <ul id="category-list" class="list-unstyled">
+        {% for cat in category_pages %}
+            {% if cat.id == data.item.id %}
+            <li class="current">{{ cat.name }}</li>
+            {% else %}
+            <li><a href=" {{ cat.link }}">{{ cat.name }}</a></li>
+            {% endif %}
+        </li>
+
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div>
+<p style="font-weight: bold">Percent complete overall:</p>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="{{evaluation.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{evaluation.percent_complete}}%; height: 100%">
             <span style="font-style: italic; {%if evaluation.percent_complete < 20 %} color: black;{%endif%}">
                             {{evaluation.percent_complete}}% Completed</span>
           </div>
         </div>
-
-    </dl>
 </div>
+
 
 {% get_unanswered_flagged_items evaluation as flagged_items %}
 {% if evaluation.flagged_for_review %}
@@ -83,9 +81,14 @@ function jump_to_testid(testid) {
     <div class="panel-heading">Update</div>
     <div class="panel-body">
         <p>The following tests may require review due to changes as of {{evaluation.testsuite.version_date}}.</p>
-        <ul>
-        {% for id in flagged_items %}
-        <li><a href="#" onclick="jump_to_testid( '{{ id }}' )">{{ id }}</a></li>
+
+        <ul id="flagged-list" class="list-unstyled">
+        {% for item in flagged_items %}
+        <li><a href="{{ action_url }}{{ item.parentid }}/#{{ item.id }}">{{ item.id }}</a>
+        {% if item.parentid == data.item.id %}
+        <span class="notes">(on this page)</span>
+        {% endif %}
+        </li>
         {% endfor %}
         </ul>
     </div>
@@ -93,19 +96,18 @@ function jump_to_testid(testid) {
 {% endif %}
 
 <div class="results">
-{% for cat in data %}
-    {% category cat evaluation True results_form flagged_items %}
-{% endfor %}
+{% category_form data evaluation results_form flagged_items %}
 </div>
 
 {{ results_form.management_form }}
 
-<input type="submit" value="Save" style="margin-top: 30px" />
+<div style="margin-top: 30px">
+{% if next != '' %}
+<input type="hidden" name="next" value="{{ next }}">
+<input type="submit" name="save_continue" value="Save and continue to next section" />
+{% endif %}
+<input type="submit" name="save" value="Save and go back"/>
+</div>
 </form>
 
-<script>
-$( ".category-accordion" ).accordion({ collapsible: true, heightStyle: "content", active: false });
-// make the first accordion open
-$($(".category-accordion")[0]).accordion("option", "active", 0);
-</script>
 {% endblock %}

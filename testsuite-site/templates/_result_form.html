@@ -1,9 +1,8 @@
 {% load testsuite_extras %}
 <tr id="{{result.test.testid}}"
 class="result
-    {{result | get_result_class:is_form}}
+    {{result | get_result_class:True}}
     ">
-    {% if is_form %}
     <td class="results-status ">
         {% if result.test.testid in flagged_items %}
             {% if result.test.flagged_as_new == True %}
@@ -13,7 +12,6 @@ class="result
             {% endif %}
         {% endif %}
     </td>
-    {% endif %}
     <td class='results-test'>{{ result.test.testid }}</td>
     <td class='results-desc'>{{ result.test.description }}</td>
     <td class='results-req'>
@@ -24,15 +22,6 @@ class="result
         {% endif %}
     </td>
     <td class="results-result">
-        {% if is_form %}
-            {{ result_form.as_p }}
-        {% else %}
-            {{result|get_result_description}}
-        {% endif %}
-    </td>
-    <td class="results-notes">
-        {% if is_form == False and result.publish_notes == True %}
-        {{result.notes}}
-        {% endif %}
+        {{ form.as_p }}
     </td>
 </tr>

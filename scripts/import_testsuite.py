@@ -74,7 +74,7 @@ def migrate_data(previous_testsuite):
         
         print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
         results = new_evaluation.get_all_results()
-        print "Processing {0} results".format(len(results))
+        print "Processing {0} results".format(results.count())
         flag_evaluation = False
         for result in results:
             try:

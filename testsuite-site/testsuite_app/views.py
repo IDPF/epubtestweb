@@ -16,15 +16,7 @@ import permissions
 
 class IndexView(TemplateView):
     "Home page"
-    template_name = "index.html"
-
-    def get(self, request, *args, **kwargs):
-        testsuite = TestSuite.objects.get_most_recent_testsuite()
-        categories = testsuite.get_top_level_categories()
-        rs_scores = helper_functions.get_public_scores(categories)
-        view_option = request.GET.get('view', 'simple')
-        return render(request, self.template_name, {'categories': categories, 'rs_scores': rs_scores,
-            "testsuite_date": testsuite.version_date, 'view_option': view_option})
+    template_name = "index.html"        
 
 class AboutView(TemplateView):
     "About page"
@@ -58,6 +50,18 @@ class TestsuiteView(TemplateView):
                 dl = {"label": label, "link": link}
                 downloads.append(dl)
         return render(request, self.template_name, {'downloads': downloads})
+
+class CurrentResultsView(TemplateView):
+    "Grid of scores"
+    template_name = "current_results.html"
+
+    def get(self, request, *args, **kwargs):
+        testsuite = TestSuite.objects.get_most_recent_testsuite()
+        categories = testsuite.get_top_level_categories()
+        rs_scores = helper_functions.get_public_scores(categories)
+        view_option = request.GET.get('view', 'simple')
+        return render(request, self.template_name, {'categories': categories, 'rs_scores': rs_scores,
+            "testsuite_date": testsuite.version_date, 'view_option': view_option})
 
 
 class CompareResultsView(TemplateView):
@@ -161,7 +165,7 @@ class ReadingSystemView(TemplateView):
 
 class EditEvaluationView(UpdateView):
     "Edit reading system evaluation"
-    template_name = "edit_evaluation.html"
+    template_name = "evaluation_form.html"
 
     def get(self, request, *args, **kwargs):
         try:
@@ -171,9 +175,35 @@ class EditEvaluationView(UpdateView):
 
         action_url = "/rs/{0}/eval/".format(rs.id)
         evaluation = rs.get_current_evaluation()
-        results_form = ResultFormSet(instance = evaluation)
         testsuite = TestSuite.objects.get_most_recent_testsuite()
-        data = helper_functions.testsuite_to_dict(testsuite)
+        category_pages = []
+        top_level_categories = testsuite.get_top_level_categories()
+        
+        # default to the first category
+        cat = top_level_categories[0]
+
+        cat_option = '-1'
+        if kwargs.has_key('cat'):
+            cat_option = kwargs['cat']
+
+        for c in top_level_categories:
+            # check if we are starting at a different category
+            if c.id == int(cat_option):
+                cat = c
+            # collect category list data for other categories
+            category_pages.append({"link": "{0}{1}".format(action_url, c.id), "name": c.name, "id": c.id})
+
+        idx = 0
+        next = ''
+        for c in category_pages:
+            if c['id'] == cat.id:
+                if len(category_pages) > idx + 1:
+                    next = category_pages[idx + 1]['link']
+                    break
+            idx += 1
+
+        data = helper_functions.category_to_dict(cat)
+        results_form = ResultFormSet(instance = evaluation, queryset=evaluation.get_category_results(cat))
         
         can_edit = permissions.user_can_edit_reading_system(request.user, rs)
         if can_edit == False:
@@ -182,7 +212,7 @@ class EditEvaluationView(UpdateView):
 
         return render(request, self.template_name,
             {'evaluation': evaluation, 'results_form': results_form, 'data': data,
-            'rs': rs, "action_url": action_url})
+            'rs': rs, "action_url": action_url, "category_pages": category_pages, 'next': next})
 
     def post(self, request, *args, **kwargs):
         try:
@@ -202,11 +232,18 @@ class EditEvaluationView(UpdateView):
         
         # if we are auto-saving, don't redirect
         if not request.POST.has_key('auto') or request.POST['auto'] == "false":
-            return redirect('/manage/')
+            if 'save_continue' in request.POST and request.POST.has_key('next'):
+                next = request.POST['next']
+                print "Going to next section: {0}".format(next)
+                # go to next section
+                return redirect('{0}/'.format(next))
+            else:
+                # go back to the manage page
+                return redirect('/manage/')
 
 # confirm deleting a reading system
 class ConfirmDeleteRSView(TemplateView):
-    template_name = "confirm.html"
+    template_name = "confirm_delete_rs.html"
     def get(self, request, *args, **kwargs):
         try:
             rs = ReadingSystem.objects.get(id=kwargs['pk'])
@@ -227,7 +264,7 @@ class ConfirmDeleteRSView(TemplateView):
 
 # create new reading system
 class EditReadingSystemView(TemplateView):
-    template_name = "edit_reading_system.html"
+    template_name = "reading_system_details_form.html"
 
     def get(self, request, *args, **kwargs):
         form = None
@@ -326,13 +363,32 @@ def logout_user(request):
     messages.add_message(request, messages.INFO, 'You have been logged out.')
     return redirect("/")
 
-def export_data(request):
+def export_data_all(request):
     import export_data
     from lxml import etree
     xmldoc = export_data.export_all_current_evaluations(request.user)
     xmldoc_str = etree.tostring(xmldoc, pretty_print=True)
     response = HttpResponse(mimetype='application/xml')
     response['Content-Disposition'] = 'attachment; filename="export.xml"'
+    response.write(xmldoc_str)
+    return response
+
+def export_data_single(request, *args, **kwargs):
+    import export_data
+    from lxml import etree
+    try:
+        rs = ReadingSystem.objects.get(id=kwargs['pk'])
+    except ReadingSystem.DoesNotExist:
+        return render(request, "404.html", {})
+    
+    can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
+    if can_view == False:
+        return render(request, "404.html", {})
+    xmldoc = export_data.export_single_evaluation(rs, request.user)
+    xmldoc_str = etree.tostring(xmldoc, pretty_print=True)
+    response = HttpResponse(mimetype='application/xml')
+    response['Content-Disposition'] = 'attachment; filename="export_{0}_{1}_{2}.xml"'.format\
+        (rs.name, rs.version, rs.operating_system)
     response.write(xmldoc_str)
     return response
 

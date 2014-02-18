@@ -2,23 +2,23 @@
 
 {% if category.results|length > 0 %}
 
-        <tr class="category">
+        {% get_category_heading category.item as heading_tag %}
+        <tr class="category-{{heading_tag}}">
             <td class="filter-checkbox">
                 <input type="checkbox" name="category-selected" value="{{category.item.id}}" class="category {{ category.item|get_parent_ids }}"/>
             </td>
-            <td colspan="3">
-            {% get_category_heading category.item as heading_tag %}
+            <td colspan="3" >
             <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}</{{heading_tag}}>
             </td>
         </tr>
 
         {% for t in category.tests %}
             <tr>
-                <td class="filter-checkbox">
+                <td class="filter-checkbox-test">
                     <input type="checkbox" name="test-selected" value="{{t.id}}" class="test {{ t|get_parent_ids }}"/>
                 </td>
                 <td class="filter-testid">{{t.testid}}</td>
-                <td class="filter-desc">{{t.description}}</td>
+                <td class="filter-desc-test">{{t.description}}</td>
                 <td class="filter-req">
                 {% if t.required == True %}
                     Required
@@ -31,6 +31,6 @@
 {% endif %}
 
 {% for subcat in category.subcategories %}
-    {% category_filter subcat %}
+    {% category_compare_form subcat %}
 {% endfor %}
 
