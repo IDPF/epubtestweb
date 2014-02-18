@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+
+{% block nav-results %}<a class="nav-active">View</a>{% endblock %}
+
+
 {% load testsuite_extras %}
 {% block script %}
 <script src="/media/js/jquery.tablesorter.min.js"></script>
@@ -14,7 +18,7 @@ $(document).ready(function() {
 {% endblock %}
 {% block content %}
 
-<h1>Current Results</h1>
+<h1>BISG EPUB 3 Support Grid: Current Results</h1>
 
 
 {% if rs_scores|length == 0 %}
@@ -107,8 +111,8 @@ $(document).ready(function() {
             <tr>
                 <th class="text-center" title="Reading system"><a href="#" title="Sort by name">Reading System</a></th>
                 <th class="text-center" title="Total score: tests passed divided by total number of tests."><a href="#" title="Sort by total score">Total</a></th>
-                <th class="text-center" title="Required tests score: required tests passed divided by total number of required tests."><a href="#" title="Sort by required tests score">Required Tests</a></th>
-                <th class="text-center" title="Optional tests score: optional tests passed divided by total number of optional tests."><a href="#" title="Sort by optional tests score">Optional Tests</a></th>
+                <th class="text-center" title="Required tests score: required tests passed divided by total number of required tests."><a href="#" title="Sort by required tests score">Required Features</a></th>
+                <th class="text-center" title="Optional tests score: optional tests passed divided by total number of optional tests."><a href="#" title="Sort by optional tests score">Optional Features</a></th>
             </tr>
         </thead>
         <tbody>
