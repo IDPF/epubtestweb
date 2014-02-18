@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
 
+
     {%block script %}
     {% endblock %}
 
@@ -55,18 +56,24 @@
         <div class="navbar">
             <a class="navbar-brand" href="/">EPUBTest</a>
             <ul class="nav navbar-nav pull-right">
-                <li><a href="/results/">View</a></li>
-                <li><a href="/compare/">Compare</a></li>
-                <li><a href="/testsuite/">Testsuite</a></li>
+                <li>{% block nav-home %}<a href="/">EPUB 3 Support Grid</a>{% endblock %}
+                    <ul>
+                        <li>{% block nav-results %}<a href="/results/">View</a></li>{% endblock %}
+                        <li>{% block nav-compare %}<a href="/compare/">Compare</a></li>{% endblock %}
+                    </ul>
+                </li>    
+                <li>{% block nav-testsuite %}<a href="/testsuite/">Testsuite</a>{% endblock %}
                 {% if user.is_authenticated %}
-                <li><a href="/manage/">Manage</a></li>
-                <li><a href="/logout/">Logout</a></li>
+                    <ul>
+                        <li><a href="/manage/">Manage</a></li>
+                        <li><a href="/logout/">Logout</a></li>
+                    </ul>
+                </li>  
                 {% else %}
-                <li><a href="/login/">Login</a></li>
+                <li>{% block nav-login %}<a href="/login/">Login</a>{% endblock %}</li>
                 {% endif %}
-                <li><a href="/about/">About</a></li>
+                <li>{% block nav-about %}<a href="/about/">About</a>{% endblock %}</li>
             </ul>
-            
         </div>
 
     <div class="container">
