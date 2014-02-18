@@ -46,7 +46,7 @@ $(document).ready(function() {
         {% for rs_score in rs_scores %}
             {% get_current_evaluation rs_score.reading_system as eval%}
             <tr>
-                <td><a href="rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
+                <td><a href="/rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
                     {% if rs_score.reading_system.operating_system != "" %}
                     <br/>
                     <span class="rs-details">{{ rs_score.reading_system.operating_system }}</span>
@@ -116,7 +116,7 @@ $(document).ready(function() {
             {% get_current_evaluation rs_score.reading_system as eval%}
             <tr>
                 <td>
-                    <a href="rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
+                    <a href="/rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
                     {% if rs_score.reading_system.operating_system != "" %}
                     <br/>
                     <span class="rs-details">{{ rs_score.reading_system.operating_system }}</span>
