@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+
+{% block nav-compare %}<a class="nav-active">Compare</a>{% endblock %}
+
 {% load testsuite_extras %}
 
 {% block title %}:: Results{% endblock %}
@@ -6,7 +9,7 @@
 {% block style %}
 <style>
 .results td.result {
-	padding: 5px;
+    padding: 5px;
 }
 
 
@@ -14,31 +17,34 @@
 {% endblock %}
 
 {% block script %}
+<script src="/media/js/jquery.tablesorter.min.js"></script>
 <script>
 $(document).ready(function(){
-	set_test_descriptions_hidden();
+    set_test_descriptions_hidden();
+
+    $("table").tablesorter();
 });
 
 function toggle_test_descriptions() {
-	elm = $(".test_descriptions");
-	if (elm.is(":visible")) {
-		set_test_descriptions_hidden();
-	}
-	else {
-		set_test_descriptions_visible();
-	}
+    elm = $(".test_descriptions");
+    if (elm.is(":visible")) {
+        set_test_descriptions_hidden();
+    }
+    else {
+        set_test_descriptions_visible();
+    }
 }
 function set_test_descriptions_visible() {
-	elm = $(".test_descriptions");
-	elm.show();
-	$("#showhide").text("Hide");
+    elm = $(".test_descriptions");
+    elm.show();
+    $("#showhide").text("Hide");
 }
 function set_test_descriptions_hidden() {
-	elm = $(".test_descriptions");
-	elm.hide();
-	$("#showhide").text("Show");
+    elm = $(".test_descriptions");
+    elm.hide();
+    $("#showhide").text("Show");
 }
-	
+    
 </script>
 {% endblock %}
 
@@ -54,34 +60,34 @@ function set_test_descriptions_hidden() {
 
 {% for tests in test_arrays %}
 <div class="results">
-<table class="table table-striped">
+<table class="table-striped">
     <thead>
         <tr class="header-row">
-        	<td>Reading System</td>
+            <td>Reading System</td>
             {% for test in tests %}
-    		<td title="{{test.description}}">{{test.testid}}</td>
-    		{% endfor %}
+            <td title="{{test.description}}">{{test.testid}}</td>
+            {% endfor %}
         </tr>
         <tr class="test_descriptions">
-        	<td></td>
-        	{% for test in tests %}
-        	<td>{{test.description}}</td>
-        	{% endfor %}
+            <td></td>
+            {% for test in tests %}
+            <td>{{test.description}}</td>
+            {% endfor %}
         </tr>
     </thead>
     <tbody>
-    	{% for reading_system in reading_systems %}
+        {% for reading_system in reading_systems %}
             {% get_current_evaluation reading_system as eval %}
-        	<tr>
-        		<td>
+            <tr>
+                <td class="reading_system_name">
                     <a href="/rs/{{reading_system.id}}">
                         {{reading_system.name}} {{reading_system.version}}
                     </a>
                     <br/>
                     {{reading_system.operating_system}}, {{reading_system.locale}}
                 </td>
-            	{% for test in tests %}
-            		
+                {% for test in tests %}
+                    
                     {% get_result test eval as result %}
                     {% if result.result == None %}
                         <td>Data not available</td>
@@ -94,10 +100,10 @@ function set_test_descriptions_hidden() {
                         {% endif %}                        
                     {% endif %}
 
-            	{% endfor %}
-        	</tr>
-    	{% endfor %}
-	</tbody>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 </div>
 {% endfor %}

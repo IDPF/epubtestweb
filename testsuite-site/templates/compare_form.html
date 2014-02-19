@@ -22,9 +22,9 @@ $(document).ready(function(){
 {% endblock %}
 
 {% block content %}
-<h1>Compare Results</h1>
+<h1>BISG EPUB 3 Support Grid: Compare by Feature</h1>
 
-<p>Select one or more tests from the list to see a comparison of all reading systems' performances.</p>
+<p>Select one or more tests from the list to see a comparison of all reading systems' performances for a given set of EPUB 3.0 features.</p>
 
 <form action="{{ action_url }}" method="post" id="testsuite_form">{% csrf_token %}
 
@@ -40,7 +40,7 @@ $(document).ready(function(){
     </thead>
     <tbody>
 {% for cat in data %}
-    {% category_filter cat %}
+    {% category_compare_form cat %}
 {% endfor %}
 </tbody>
 </table>

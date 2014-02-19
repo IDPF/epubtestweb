@@ -1,35 +1,47 @@
 from django import template
 from testsuite_app import permissions
 from testsuite_app.models import common
+from testsuite import settings
 
 register = template.Library()
 
-# for the reading system and evaluation form
-@register.inclusion_tag('frag_category.html')
-def category(category, evaluation, is_form, results_form, flagged_items):
-	return {'category': category, "evaluation": evaluation, "is_form": is_form,
-		"results_form": results_form, "flagged_items": flagged_items}
+@register.inclusion_tag('_category.html')
+def category(category, evaluation):
+	return {'category': category, "evaluation": evaluation}
+
+@register.inclusion_tag('_category_form.html')
+def category_form(category, evaluation, results_form, flagged_items):
+    return {'category': category, "evaluation": evaluation, "results_form": results_form, 
+    "flagged_items": flagged_items}
 
 # for the filter search
-@register.inclusion_tag('frag_category_filter.html')
-def category_filter(category):
+@register.inclusion_tag('_category_compare_form.html')
+def category_compare_form(category):
 	return {'category': category}
 
-@register.inclusion_tag('frag_category_scores_as_dl_items.html')
-def category_scores_as_dl_items(categories, evaluation):
+@register.inclusion_tag('_category_scores_list.html')
+def category_scores_list(categories, evaluation):
 	return {'evaluation': evaluation, 'categories': categories}
 
-@register.inclusion_tag('frag_result.html')
-def result(result, is_form, result_form, flagged_items):
-    return {'result': result, "is_form": is_form, "result_form": result_form, "flagged_items": flagged_items}
+@register.inclusion_tag('_result.html')
+def result(result):
+    return {'result': result}
 
-@register.inclusion_tag('frag_alerts.html')
+@register.inclusion_tag('_result_form.html')
+def result_form(result, form, flagged_items):
+    return {'result': result, 'form': form, 'flagged_items': flagged_items}
+
+@register.inclusion_tag('_alerts.html')
 def alerts(alerts):
     return {"alerts": alerts}
 
-@register.inclusion_tag('frag_rs.html')
-def reading_system(rs):
+@register.inclusion_tag('_reading_system_details_list.html')
+def reading_system_details_list(rs):
 	return {"rs": rs}
+
+@register.inclusion_tag('_manage_table.html')
+def manage_table(reading_systems, user):
+    return {"reading_systems": reading_systems, "user": user}
 
 @register.assignment_tag
 def get_current_evaluation(rs):
@@ -89,7 +101,22 @@ def get_category_heading(category):
 def get_unanswered_flagged_items(evaluation):
     "get unanswered flagged item ids"
     tests = evaluation.get_unanswered_flagged_items()
-    return [t.testid for t in tests]
+    retval = []
+    for t in tests:
+        retval.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
+    return retval
+
+@register.assignment_tag
+def get_users_reading_systems(reading_systems, user):
+    rses = []
+    for rs in reading_systems:
+        if user == rs.user:
+            rses.append(rs)
+    return rses
+
+@register.assignment_tag
+def get_enable_analytics():
+    return settings.enable_analytics
 
 @register.filter
 def get_display_name(user):

@@ -14,6 +14,7 @@ epub_downloads_url = '/epubs/' #symlinked to epub_downloads_root
 previous_db = '/home/djangoweb/epubtestweb-db/testsuite.db.last'
 secret_key = 'utq699x(arx2auy=fnmotm^_7g2d^fa4n+kefz%fev1)noiv1e' # change or override this
 allowed_hosts = [] 
+enable_analytics = True
 # end of overrides
 
 try:
@@ -31,16 +32,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': db_file,                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    },
-
-    'previous': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': previous_db,                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -159,6 +150,7 @@ INSTALLED_APPS = (
     'testsuite_app',
     #'django_evolution',
     'south',
+    'analytical',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -194,6 +186,13 @@ AUTH_USER_MODEL = 'testsuite_app.UserProfile'
 LOGIN_REDIRECT_URL = '/manage/'
 
 APPEND_SLASH = True
+
+GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-47689191-1'
+GOOGLE_ANALYTICS_SITE_SPEED = True
+GOOGLE_ANALYTICS_INTERNAL_IPS = '142.136.168.189'
+GOOGLE_ANALYTICS_ANONYMIZE_IP = True
+
+
 
 
 

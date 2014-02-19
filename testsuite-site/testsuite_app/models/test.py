@@ -38,3 +38,10 @@ class Test(models.Model, common.ItemMixin):
     		if p.category_type == common.CATEGORY_EPUB: 
     			return p
     	return None
+
+    def get_top_level_parent_category(self):
+        p = self.parent_category
+        while p.parent_category != None:
+            p = p.parent_category
+        return p
+    

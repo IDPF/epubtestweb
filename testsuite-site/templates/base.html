@@ -1,8 +1,16 @@
 {% load testsuite_extras %}
+{% get_enable_analytics as using_analytics %}
+
+{% if using_analytics %}
+{% load analytical %}
+{% endif %}
 <!doctype html>
 <html lang="en">
 <head>
-    <title>BISG Grid {% block title %}{% endblock %}</title>
+    {% if using_analytics %}
+    {% analytical_head_top %}
+    {% endif %}
+    <title>EPUBTest{% block title %}{% endblock %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,6 +20,7 @@
 
     <!-- custom css -->
     <link href="/media/css/custom.css" rel="stylesheet" media="screen">
+    
 
      <!-- JavaScript plugins (requires jQuery) -->
     <script src="http://code.jquery.com/jquery.js"></script>
@@ -41,30 +50,44 @@
         }
     </style>
     {% endblock %}
-
+    {% if using_analytics %}
+    {% analytical_head_bottom %}
+    {% endif %}
 </head>
 
 <body>
+    {% if using_analytics %}
+    {% analytical_body_top %}
+    {% endif %}
     {% alerts messages %}
+
+
+        <div class="navbar">
+            <a class="navbar-brand" href="/">EPUBTest</a>
+            <ul class="nav navbar-nav pull-right">
+                <li>{% block nav-home %}<a href="/">EPUB 3 Support Grid</a>{% endblock %}
+                    <ul>
+                        <li>{% block nav-results %}<a href="/results/">View</a></li>{% endblock %}
+                        <li>{% block nav-compare %}<a href="/compare/">Compare</a></li>{% endblock %}
+                    </ul>
+                </li>    
+                <li>{% block nav-testsuite %}<a href="/testsuite/">Testsuite</a>{% endblock %}
+                {% if user.is_authenticated %}
+                    <ul>
+                        <li><a href="/manage/">Manage</a></li>
+                        <li><a href="/logout/">Logout</a></li>
+                    </ul>
+                </li>  
+                {% else %}
+                <li>{% block nav-login %}<a href="/login/">Login</a>{% endblock %}</li>
+                {% endif %}
+                <li>{% block nav-about %}<a href="/about/">About</a>{% endblock %}</li>
+            </ul>
+        </div>
 
     <div class="container">
         
-        
-        <div class="navbar">
-            <a class="navbar-brand" href="/">BISG Grid</a>
-            <ul class="nav navbar-nav pull-right">
-                <li><a href="/compare/">Compare</a></li>
-                <li><a href="/testsuite/">Testsuite</a></li>
-                {% if user.is_authenticated %}
-                <li><a href="/manage/">Manage</a></li>
-                <li><a href="/logout/">Logout</a></li>
-                {% else %}
-                <li><a href="/login/">Login</a></li>
-                {% endif %}
-                <li><a href="/about/">About</a></li>
-            </ul>
-            
-        </div>
+
 
 
 <div class="container">
@@ -81,11 +104,13 @@
             <a href="http://daisy.org" target="_blank"><img src="/media/img/daisy_logo.png"/></a>
             </p>
 
-            <p>BISG Grid development is sponsored by the <a target="_blank" href="http://daisy.org">DAISY Consortium</a>. Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</p>
+            <p>EPUBTest.org development is sponsored by the <a target="_blank" href="http://daisy.org">DAISY Consortium</a> and the <a target="_blank" href="https://www.bisg.org">Book Industry Study Group</a>. Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</p>
             
         
         </footer>
     </div>
-
+    {% if using_analytics %}
+    {% analytical_body_bottom %}
+    {% endif %}
 </body>
 </html>
