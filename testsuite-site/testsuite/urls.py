@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import admin
 from testsuite_app.views import *
 from django.contrib.auth.decorators import login_required
+import settings
 
 admin.autodiscover()
 
@@ -28,5 +29,17 @@ urlpatterns = patterns('',
     (r'^rs/new/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/visibility/$', login_required(function=set_visibility, login_url='/login/')),
     (r'^admin/', include(admin.site.urls)),
-    (r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.EPUB_URL, document_root = settings.EPUB_ROOT)
+) 
+
+additional_settings = patterns('',)
+
+if settings.allow_robots == False:
+    additional_settings = patterns('',
+        (r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain"))
+    )
+
+urlpatterns += additional_settings
+    
+
+urlpatterns = urlpatterns + \
+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.EPUB_URL, document_root = settings.EPUB_ROOT)
