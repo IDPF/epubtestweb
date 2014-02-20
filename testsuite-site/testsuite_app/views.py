@@ -306,7 +306,8 @@ class EditReadingSystemView(TemplateView):
 
         if form.is_valid():
             obj = form.save(commit = False)
-            obj.user = request.user
+            if hasattr(obj, 'user') == False:
+                obj.user = request.user
             obj.save()
             return redirect("/manage/")
         else:
