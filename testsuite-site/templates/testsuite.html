@@ -8,24 +8,18 @@
 {% block content %}
 <h1>Testsuite</h1>
 
-<p>A freely available collection of material created specifically for the purpose of testing reading systems is provided here. The source from which these downloadable publications are built can be found <a href="https://github.com/mgylling/epub-testsuite">on github</a>. Prebuilt versions are available here:</p>
-
-<ul>
-{% for download in downloads %}
-<li><a href="{{download.link}}">{{download.label}}</a></li>
-{% endfor %}
-</ul>
+<p>A freely available collection of material created specifically for the purpose of testing reading systems is provided here. The source from which these downloadable publications are built can be found <a href="https://github.com/mgylling/epub-testsuite">on github</a>. Prebuilt versions are available at the bottom of this page.</p>
 
 <h2>Instructions for evaluators</h2>
 
 <p>If you are interested in becoming an evaluator, please contact <a href="mailto:info@bisg.org?subject=epubtest.org">info@bisg.org</a>. Once you are a registered user of this site (it's free!), your results will be stored in the central database and available for your retrieval but will not be published unless you would like to contribute to the BISG EPUB3 Support Grid (the public results available on the front page). Contact <a href="mailto:info@bisg.org?subject=epubtest.org">info@bisg.org</a> for more information on the publication process.</p>
 
-<p>If you are not interested in becoming an evaluator, you are still encouraged to download the testsuite documents above to test your reading system.</p>
+<p>If you are not interested in becoming an evaluator, you are still encouraged to download the testsuite documents below to test your reading system.</p>
 
 <p>The following instructions apply to logged-in users. </p>
 
 <ul>
-<li>Download the zip archive from the list above.</li>
+<li>Download the zip archive from the list below.</li>
 <li><a href="/login/">Log in</a>.</li>
 <li>Go to <a href="/manage/">Manage</a>.</li>
 <li>Choose <code>Add Reading System</code>.</li>
@@ -39,6 +33,14 @@
 <li>When you are done with all of the tests, contact <a href="mailto:info@bisg.org?subject=epubtest.org">info@bisg.org</a> to publish your results.</li>
 <li>From time to time, the testsuite grows. You are encouraged to check back regularly for alerts that your evaluation requires updating.</li>
 </ul>
+
+<h2>Testsuite documents</h2>
+<ul>
+{% for download in downloads %}
+<li><a href="{{download.link}}">{{download.label}}</a></li>
+{% endfor %}
+</ul>
+
 
 
 {% endblock %}
