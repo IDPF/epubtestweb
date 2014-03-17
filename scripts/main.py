@@ -37,8 +37,11 @@ def add_testsuites(sourcedir, config_file):
 # look at each referenced epub in the testsuite config section
 def add_testsuite(config_section, sourcedir):
     yaml_categories = config_section['Categories']
-    old_testsuite = models.TestSuite.objects.get_most_recent_testsuite_of_type(config_section['Type'])
-    testsuite = import_testsuite.create_testsuite(config_section['Type'])
+    testsuite_type = common.TESTSUITE_TYPE_DEFAULT
+    if config_section['Type'] == "Accessibility": #TODO formalize this enum
+        testsuite_type = common.TESTSUITE_TYPE_ACCESSIBILITY
+    old_testsuite = models.TestSuite.objects.get_most_recent_testsuite_of_type(testsuite_type)
+    testsuite = import_testsuite.create_testsuite(testsuite_type)
 
     for cat in yaml_categories:
         new_category = import_testsuite.add_category('1', cat['Name'], None, testsuite, None)
@@ -55,6 +58,8 @@ def add_testsuite(config_section, sourcedir):
     print "This testsuite contains {0} tests".format(num_tests)
     if old_testsuite != None:
         import_testsuite.migrate_data(old_testsuite)
+    else:
+        print "Nothing to migrate"
     print "Done importing testsuite."
 
 def add_user(username, email, password, firstname, lastname):

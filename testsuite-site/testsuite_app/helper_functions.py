@@ -130,8 +130,17 @@ def calculate_score(tests, result_set):
             passed += 1
     if total == 0: 
         return 0.0
-    pct = (passed * 1.0) / (total * 1.0) * 100.00
-    return "%.2f" % pct
+    # not using percentages...but if we were:
+    # pct = (passed * 1.0) / (total * 1.0) * 100.00
+    # return "%.2f" % pct
+    if total == 100:
+        return "Pass"
+    if total == 0:
+        return "Fail"
+    return "Partial support"
+
+
+
 
 def has_any_accessibility(accessibility_score):
     # if a reader fails in all of screenreader, braille disp, & visual adj ==> inaccessible

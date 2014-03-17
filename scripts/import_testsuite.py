@@ -16,11 +16,9 @@ def generate_version_info():
 def create_testsuite(ts_type):
     version_date, version_revision = generate_version_info()
     print "Creating TestSuite version {0}-{1}".format(version_date, version_revision)
-    ts_type_ = common.TESTSUITE_TYPE_DEFAULT
-    if ts_type == "Accessibility":
-        print "accessible testsuite"
-        ts_type_ = common.TESTSUITE_TYPE_ACCESSIBILITY
-    ts = TestSuite(version_date = version_date, version_revision = version_revision, testsuite_type = ts_type_)
+    if ts_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
+        print "accessibility testsuite"
+    ts = TestSuite(version_date = version_date, version_revision = version_revision, testsuite_type = ts_type)
     ts.save()
     return ts
 
@@ -84,7 +82,11 @@ def migrate_data(previous_testsuite):
         new_evaluation = Evaluation.objects.create_evaluation(rs)
         
         print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
-        results = new_evaluation.get_all_results(new_evaluation.get_default_result_set())
+        results = None
+        if previous_testsuite.testsuite_type == common.TESTSUITE_TYPE_DEFAULT:
+            results = new_evaluation.get_all_results(new_evaluation.get_default_result_set())
+        else:
+            results = new_evaluation.get_all_results(new_evaluation.get_accessibility_result_set())
         print "Processing {0} results".format(results.count())
         flag_evaluation = False
         for result in results:

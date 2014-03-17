@@ -2,7 +2,7 @@
 # at the moment, the only supported types are 'Default' and 'Accessibility'
 TestSuites: 
     # -
-    #     Type: TESTSUITE_TYPE_DEFAULT
+    #     Type: Default
     #     Categories:
     #         -
     #             Name: Content Documents
