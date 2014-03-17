@@ -44,6 +44,7 @@ $(document).ready(function() {
                 {% for cat in categories %}
                     <th class="text-center"><a href="#" title="Sort by {{cat.name}} score">{{cat.name}}</a></th>
                 {% endfor %}
+                <th class="text-center"><a href="#" title="Sort by accessibility">Accessibility</a></th>
             </tr>
         </thead>
         <tbody>
@@ -99,6 +100,13 @@ $(document).ready(function() {
                         </ul>
                     </td>
                 {% endfor %}
+                <td class="text-center">
+                    {% if rs_score.accessibility == True %}
+                        <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/">Yes</a></span>
+                    {% else %}
+                        <span>No</span>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -113,6 +121,7 @@ $(document).ready(function() {
                 <th class="text-center" title="Total score: tests passed divided by total number of tests."><a href="#" title="Sort by total score">Total</a></th>
                 <th class="text-center" title="Required tests score: required tests passed divided by total number of required tests."><a href="#" title="Sort by required tests score">Required Features</a></th>
                 <th class="text-center" title="Optional tests score: optional tests passed divided by total number of optional tests."><a href="#" title="Sort by optional tests score">Optional Features</a></th>
+                <th class="text-center" title="Accessibility support"><a href="#" title="Sort by accessibility support">Accessibility Support</a></th>
             </tr>
         </thead>
         <tbody>
@@ -151,6 +160,13 @@ $(document).ready(function() {
                         <span>N/A</span>
                     {% else %}
                         <span>{{ rs_score.total_score.pct_optional_passed }}%</span>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if rs_score.accessibility == True %}
+                        <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/">Yes</a></span>
+                    {% else %}
+                        <span>No</span>
                     {% endif %}
                 </td>
             </tr>

@@ -1,11 +1,9 @@
 {% load testsuite_extras %}
 
-{% get_category_score category.item evaluation as score %}
 {% get_category_heading category.item as heading_tag %}
 
 {% if category.item.depth == 0 %}
     <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}
-            <span class="pull-right">Score: {{ score.pct_total_passed}}%</span>
     </{{heading_tag}}>
 <div>
 {% else %}
@@ -19,21 +17,22 @@
             <th aria-hidden="false" hidden='true'>Status</th>
             <th aria-hidden="false" hidden='true'>ID</th>
             <th aria-hidden="false" hidden='true'>Description</th>
-            <th aria-hidden="false" hidden='true'>Required</th>
             <th aria-hidden="false" hidden='true'>Result</th>
         </tr>
     </thead>
     <tbody>
+        {% if result_set != None %}
         {% for t in category.tests %}
-            {% get_result_for_default_set t evaluation as r %}
-            {% result r %}
+            {% get_result_for_result_set t evaluation result_set as r %}
+            {% result r False %}
         {% endfor %}
+        {% endif %}
     </tbody>
 </table>
 {% endif %}
 
 {% for subcat in category.subcategories %}
-    {% category subcat evaluation %}
+    {% accessibility_category subcat evaluation result_set %}
 {% endfor %}
 
 {% if category.item.depth == 0 %}

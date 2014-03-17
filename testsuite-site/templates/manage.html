@@ -38,12 +38,17 @@ $(document).ready(function() {
     {% else %}
         {% manage_table my_reading_systems user %}
     {% endif %}
+
+    {% comment %}
     <p><a class="btn btn-default" href="/rs/new" role="button">Add Reading System</a></p>
-    
+    {% endcomment %}
+
     <h1 style="font-size: medium">All Reading Systems</h1>
 
     {% manage_table reading_systems user %}
+    {% comment %}
     <p><a class="btn btn-default" href="/export" role="button">Export all evaluation data</a></p>
+    {% endcomment %}
 {% endif %}
 
 

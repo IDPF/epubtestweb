@@ -34,4 +34,9 @@ class ResultForm(ModelForm):
             'notes': forms.Textarea(attrs={'cols': 40, 'rows': 3, 'title': 'Notes'}),
         }
 
-ResultFormSet = inlineformset_factory(Evaluation, Result, extra=0, can_delete=False, form = ResultForm)
+class ResultSetMetadataForm(ModelForm):
+    class Meta:
+        model = ResultSetMetadata
+        fields = ('assistive_technology',)
+
+ResultFormSet = inlineformset_factory(ResultSet, Result, extra=0, can_delete=False, form = ResultForm)

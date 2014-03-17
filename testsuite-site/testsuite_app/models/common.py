@@ -32,6 +32,25 @@ RESULT_TYPE = (
     (RESULT_NOT_SUPPORTED, "Not Supported"),
 )
 
+ACCESS_TYPE_KEYBOARD = "1"
+ACCESS_TYPE_MOUSE = "2"
+ACCESS_TYPE_TOUCH = "3"
+ACCESS_TYPE_SCREENREADER = "4"
+
+ACCESS_TYPE = (
+    (ACCESS_TYPE_KEYBOARD, "Keyboard access to all features"),
+    (ACCESS_TYPE_MOUSE, "Mouse access to all features"),
+    (ACCESS_TYPE_TOUCH, "Touchscreen access to all features"),
+    (ACCESS_TYPE_SCREENREADER, "Screen reader or self-voicing support"),
+)
+
+TESTSUITE_TYPE_DEFAULT = "1"
+TESTSUITE_TYPE_ACCESSIBILITY = "2"
+TESTSUITE_TYPE = (
+    (TESTSUITE_TYPE_DEFAULT, "Default"),
+    (TESTSUITE_TYPE_ACCESSIBILITY, "Accessibility"),
+)
+
 CONTEXT_INDEX = "index"
 CONTEXT_MANAGE = "manage"
 CONTEXT_RS = "rs"

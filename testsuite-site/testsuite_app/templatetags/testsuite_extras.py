@@ -9,10 +9,20 @@ register = template.Library()
 def category(category, evaluation):
 	return {'category': category, "evaluation": evaluation}
 
+@register.inclusion_tag('_accessibility_category.html')
+def accessibility_category(category, evaluation, result_set):
+    return {'category': category, "evaluation": evaluation, "result_set": result_set}
+
 @register.inclusion_tag('_category_form.html')
 def category_form(category, evaluation, results_form, flagged_items):
     return {'category': category, "evaluation": evaluation, "results_form": results_form, 
     "flagged_items": flagged_items}
+
+@register.inclusion_tag('_accessibility_category_form.html')
+def accessibility_category_form(category, evaluation, results_form, flagged_items, result_set):
+    return {'category': category, "evaluation": evaluation, "results_form": results_form, 
+    "flagged_items": flagged_items, 'result_set': result_set}
+
 
 # for the filter search
 @register.inclusion_tag('_category_compare_form.html')
@@ -24,8 +34,8 @@ def category_scores_list(categories, evaluation):
 	return {'evaluation': evaluation, 'categories': categories}
 
 @register.inclusion_tag('_result.html')
-def result(result):
-    return {'result': result}
+def result(result, show_required=True):
+    return {'result': result, 'show_required': show_required}
 
 @register.inclusion_tag('_result_form.html')
 def result_form(result, form, flagged_items):
@@ -48,8 +58,14 @@ def get_current_evaluation(rs):
     return rs.get_current_evaluation()
 
 @register.assignment_tag
-def get_result(test, evaluation):
-	return evaluation.get_result_by_testid(test.testid)
+def get_result_for_default_set(test, evaluation):
+    result_set = evaluation.get_default_result_set()
+    return evaluation.get_result_by_testid(test.testid, result_set)
+
+@register.assignment_tag
+def get_result_for_result_set(test, evaluation, result_set):
+    result = evaluation.get_result_by_testid(test.testid, result_set)
+    return result
 
 @register.assignment_tag
 def get_category_score(category, evaluation):
@@ -67,15 +83,27 @@ def get_form_for_result(result, result_forms):
 	return None
 
 @register.assignment_tag
-def is_test_supported(reading_system, test):
+def is_test_supported_for_default_set(reading_system, test):
 	evaluation = reading_system.get_current_evaluation()
-	result = evaluation.get_result(test)
+	result = evaluation.get_result(test, evaluation.get_default_result_set())
 	if result == None:
 		return False
 	if result.result == common.RESULT_SUPPORTED:
 		return True
 	else:
 		return False
+
+@register.assignment_tag
+def is_test_supported_for_result_set(reading_system, test, result_set):
+    evaluation = reading_system.get_current_evaluation()
+    result = evaluation.get_result(test, result_set)
+    if result == None:
+        return False
+    if result.result == common.RESULT_SUPPORTED:
+        return True
+    else:
+        return False
+
 
 @register.assignment_tag
 def user_can_edit(user, reading_system):
@@ -98,9 +126,9 @@ def get_category_heading(category):
         return "h6"
 
 @register.assignment_tag
-def get_unanswered_flagged_items(evaluation):
+def get_unanswered_flagged_items_in_default_set(evaluation):
     "get unanswered flagged item ids"
-    tests = evaluation.get_unanswered_flagged_items()
+    tests = evaluation.get_unanswered_flagged_items(evaluation.get_default_result_set())
     retval = []
     for t in tests:
         retval.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})

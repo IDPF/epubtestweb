@@ -88,11 +88,11 @@ function set_test_descriptions_hidden() {
                 </td>
                 {% for test in tests %}
                     
-                    {% get_result test eval as result %}
+                    {% get_result_for_default_set test eval as result %}
                     {% if result.result == None %}
                         <td>Data not available</td>
                     {% else %}
-                        {% is_test_supported reading_system test as is_supported %}
+                        {% is_test_supported_for_default_set reading_system test as is_supported %}
                         {% if is_supported %}
                             <td class="result success">Supported</td>
                         {% else %}

@@ -42,10 +42,16 @@
                 <ul class="">
                     {% if can_edit == True %}
                     <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
+                    <li><a href="/rs/{{ r.id }}/eval/accessibility/">Evaluate Accessibility</a></li>
                     {% endif %}
                     <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
+                    <li><a href="/rs/{{ r.id }}/accessibility/">View Accessibility Evaluation</a></li>
+                    
+                    {% comment %}
+                    <!-- FOR NOW -->
                     <li><a href="/rs/{{ r.id }}/report/">View Issue Report</a></li>
                     <li><a href="/rs/{{ r.id }}/export">Export data</a></li>
+                    {% endcomment %}
                     {% if can_edit == True %}
                     <li><a href="/rs/{{ r.id }}/edit/">Edit details</a></li>
                     <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>

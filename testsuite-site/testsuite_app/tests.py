@@ -205,7 +205,7 @@ class AddUserAndRS(TestCase):
         self.assertNotEqual(evaluation, None)
         self.assertEqual(evaluation.percent_complete, 0.0)
 
-        results = evaluation.get_all_results()
+        results = evaluation.get_all_results(evaluation.get_default_result_set())
         self.assertEqual(results.count(), 3)
 
         # each test should have a result
@@ -367,7 +367,7 @@ class UpgradeTestSuite(TestCase):
 
         rses = ReadingSystem.objects.all()
         evaluation = rses[0].get_current_evaluation()
-        results = evaluation.get_all_results()
+        results = evaluation.get_all_results(evaluation.get_default_result_set())
         self.assertEqual(results.count(), 3)
 
 

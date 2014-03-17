@@ -45,3 +45,12 @@ class Test(models.Model, common.ItemMixin):
             p = p.parent_category
         return p
     
+class TestMetadata(models.Model):
+    "Annotate test objects with accessibility metadata indicating what they are testing"
+    class Meta:
+        db_table = 'testsuite_app_test_metadata'
+        app_label= 'testsuite_app'
+
+    test = models.ForeignKey('Test')
+    access_type = models.CharField(max_length = 1, choices = common.ACCESS_TYPE, null=True, blank=True)
+    is_advanced = models.BooleanField(default=False)

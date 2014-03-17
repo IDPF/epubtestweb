@@ -5,6 +5,7 @@ class="result
     ">
     <td class='results-test'>{{ result.test.testid }}</td>
     <td class='results-desc'>{{ result.test.description }}</td>
+    {% if show_required == True %}
     <td class='results-req'>
         {% if result.test.required == True %}
             Required
@@ -12,6 +13,7 @@ class="result
             Optional
         {% endif %}
     </td>
+    {% endif %}
     <td class="results-result">{{result|get_result_description}}</td>
     <td class="results-notes">
         {% if result.publish_notes == True %}

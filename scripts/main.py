@@ -23,20 +23,27 @@ def clear_data():
     models.UserProfile.objects.all().delete()
     models.ReadingSystem.objects.all().delete()
 
-# look at each referenced epub in the categories.yaml file
-# parse it and put the data under a category header
-def add_testsuite(sourcedir, config_file):
+# import testsuites from the YAML configuration file
+def add_testsuites(sourcedir, config_file):
     norm_sourcedir = os.path.normpath(sourcedir)
     norm_config_file = os.path.normpath(config_file)
     print "\nProcessing {0} (config = {1})".format(norm_sourcedir, norm_config_file)
-    old_testsuite = models.TestSuite.objects.get_most_recent_testsuite()
-    testsuite = import_testsuite.create_testsuite()
-    yaml_categories = yaml.load(open(norm_config_file).read())['Categories']
+
+    testsuites = yaml.load(open(norm_config_file).read())['TestSuites']
+
+    for ts in testsuites:
+        add_testsuite(ts, norm_sourcedir)
+
+# look at each referenced epub in the testsuite config section
+def add_testsuite(config_section, sourcedir):
+    yaml_categories = config_section['Categories']
+    old_testsuite = models.TestSuite.objects.get_most_recent_testsuite_of_type(config_section['Type'])
+    testsuite = import_testsuite.create_testsuite(config_section['Type'])
 
     for cat in yaml_categories:
         new_category = import_testsuite.add_category('1', cat['Name'], None, testsuite, None)
         for epub in cat['Files']:
-            fullpath = os.path.join(norm_sourcedir, epub)
+            fullpath = os.path.join(sourcedir, epub)
             if os.path.isdir(fullpath):
                 # this will add a new testsuite
                 epubparser = epub_parser.EpubParser()
@@ -46,7 +53,8 @@ def add_testsuite(sourcedir, config_file):
 
     num_tests = models.Test.objects.filter(testsuite = testsuite).count()
     print "This testsuite contains {0} tests".format(num_tests)
-    import_testsuite.migrate_data(old_testsuite)
+    if old_testsuite != None:
+        import_testsuite.migrate_data(old_testsuite)
     print "Done importing testsuite."
 
 def add_user(username, email, password, firstname, lastname):
@@ -99,11 +107,31 @@ def geneval(rspk):
         return
     evaluation = rs.get_current_evaluation()
     # generate result data
-    results = evaluation.get_all_results()
+    results = evaluation.get_all_results(evaluation.get_default_result_set())
     for r in results:
         r.result = str(randrange(1, 3))
         r.save()
     evaluation.save()
+
+def new_accessibility_eval(rspk):
+    random_at = ['MyScreenReader', 'Magnify200', 'Voices', 'ScreenZoom']
+    idx = randrange(0,4)
+    try:
+        rs = models.ReadingSystem.objects.get(id=rspk)
+    except models.ReadingSystem.DoesNotExist:
+        return
+    evaluation = rs.get_current_evaluation()
+    ts = models.TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
+    evaluation.accessibility_testsuite = ts
+    evaluation.save_partial()
+    result_set = models.ResultSet.objects.create_result_set(ts, evaluation, random_at[idx])
+    tests = evaluation.get_tests(ts)
+    for t in tests:
+        random_answer = str(randrange(1, 3))
+        result = models.Result(test = t, evaluation = evaluation, result = random_answer, result_set = result_set)
+        result.save()
+
+
 
 def getemails():
     users = models.UserProfile.objects.all()
@@ -181,7 +209,7 @@ def repair_scores(evalpk):
                 category = category,
                 evaluation = evaluation
             )
-            score.update(evaluation.get_category_results(category))
+            score.update(evaluation.get_category_results(category,evaluation.get_default_result_set()))
             score.save()
     try:
         total_score = models.Score.objects.get(evaluation = evaluation, category = None)
@@ -192,7 +220,7 @@ def repair_scores(evalpk):
             category = None,
             evaluation = evaluation
         )
-        score.update(evaluation.get_all_results())  
+        score.update(evaluation.get_all_results(evaluation.get_default_result_set()))  
         score.save()
 
     if found_error:
@@ -270,12 +298,34 @@ def force_random_changes(max_changes=0, avg_distance_between=0):
     print "updating evaluations"
     evals = models.Evaluation.objects.filter(testsuite = ts)
     for e in evals:
-        results = e.get_all_results()
+        results = e.get_all_results(e.get_default_result_set())
         for r in results:
             if r.test.flagged_as_changed or r.test.flagged_as_new:
                 r.result = None
                 r.save()
         e.save()
+
+def one_time_migration():
+    # this is a one-time function; it's very specific to a particular point in time (march 2014)
+    # add testsuite_type
+    evals = models.Evaluation.objects.all()
+    for e in evals:
+        e.testsuite.testsuite_type = models.common.TESTSUITE_TYPE_DEFAULT
+        e.save_partial()
+        
+        # create a result_set for each existing evaluation
+        ts = e.testsuite
+        result_set = models.ResultSet.objects.create_result_set(ts, e)
+        # move evaluation.percent_complete into result_set.percent_complete
+        result_set.percent_complete = e.percent_complete
+        result_set.save()
+        
+        results = models.Result.objects.filter(evaluation = e)
+        for r in results:
+            r.result_set = result_set
+            r.save()
+        
+        
 
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
@@ -283,7 +333,7 @@ def main():
     import_parser = subparsers.add_parser('import', help='Import a testsuite into the database')
     import_parser.add_argument("source", action="store", help="Folder containing EPUBs")
     import_parser.add_argument("config", action="store", default="categories.yaml", help="categories config file")
-    import_parser.set_defaults(func = lambda(args): add_testsuite(args.source, args.config))
+    import_parser.set_defaults(func = lambda(args): add_testsuites(args.source, args.config))
 
     print_parser = subparsers.add_parser('print', help="Print (some) contents of the database")
     print_parser.set_defaults(func = lambda(args): print_testsuite())
@@ -335,6 +385,13 @@ def main():
 
     force_random_changes_parser = subparsers.add_parser("force-change-tests", help="pretend some (max 20) tests have changed")
     force_random_changes_parser.set_defaults(func = lambda(args): force_random_changes(20, 30))
+
+    one_time_parser = subparsers.add_parser("one-time", help="run a one-time function")
+    one_time_parser.set_defaults(func = lambda(args): one_time_migration())
+
+    new_accessibility_eval_parser = subparsers.add_parser('a11y', help="add an accessibility evaluation")
+    new_accessibility_eval_parser.add_argument("rs", action="store", help="reading system ID")
+    new_accessibility_eval_parser.set_defaults(func = lambda(args): new_accessibility_eval(args.rs))
 
     args = argparser.parse_args()
     args.func(args)

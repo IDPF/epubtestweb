@@ -90,8 +90,10 @@ class EpubParser:
                     desc = self.get_desc(test_section)
                     testid = uri.fragment
                     required = test_section.attrib['class'].find('ctest') != -1
+                    access_type = self.get_access_type(test_section.attrib)
                     foldername = os.path.basename(self.folder)
-                    import_testsuite.add_test(name, desc, parent_category, required, testid, self.testsuite, xhtml, foldername)
+                    adv = test_section.attrib['class'].find('atest') != -1
+                    import_testsuite.add_test(name, desc, parent_category, required, testid, self.testsuite, xhtml, foldername, access_type, adv)
 
             if test_section == None:
                 # does this container eventually contain a test? otherwise we won't include it.
@@ -99,8 +101,9 @@ class EpubParser:
                     desc = self.get_label(c)
                     if self.restriction >= 3:
                         foldername = os.path.basename(self.folder)
+                        temp_flag = c.attrib.has_key('class') and c.attrib['class'].find('visual-adjustments') != -1
                         new_category = import_testsuite.add_category(common.CATEGORY_INTERNAL, \
-                            desc, parent_category, self.testsuite, foldername)
+                            desc, parent_category, self.testsuite, foldername, temp_flag)
                     else:
                         new_category = parent_category
                     # if this element has a nested list
@@ -135,7 +138,11 @@ class EpubParser:
         if elm.attrib.has_key('class') == False:
             return None
 
-        if elm.attrib['class'] == 'ctest' or elm.attrib['class'] == 'otest':
+        #ftest and atest are for accessibility
+        if elm.attrib['class'].find('ctest') != -1 \
+            or elm.attrib['class'].find('otest') != -1 \
+            or elm.attrib['class'].find('ftest') != -1 \
+            or elm.attrib['class'].find('atest') != -1: 
             return elm
         else:
             return None
@@ -158,6 +165,18 @@ class EpubParser:
         stringify = etree.XPath("string()")
         desc = stringify(desc_elm)
         return desc
+
+    def get_access_type(self, attrs):
+        if attrs['class'].find('keyboard') != -1:
+            return common.ACCESS_TYPE_KEYBOARD
+        if attrs['class'].find('mouse') != -1:
+            return common.ACCESS_TYPE_MOUSE
+        if attrs['class'].find('touch') != -1:
+            return common.ACCESS_TYPE_TOUCH
+        if attrs['class'].find('screenreader') != -1:
+            return common.ACCESS_TYPE_SCREENREADER
+    
+
 
 
 

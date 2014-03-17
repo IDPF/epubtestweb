@@ -46,22 +46,9 @@ function autosave() {
     <div class="panel-left">
     <h1 style="font-size: medium;">Reading System</h1>
         {% reading_system_details_list rs %}
-        
+        {{ result_set_metadata_form }}
     </div>
-    <div class="panel-right">
-        <h1 style="font-size: medium;">Sections</h1>
-        <ul id="category-list" class="list-unstyled">
-        {% for cat in category_pages %}
-            {% if cat.id == data.item.id %}
-            <li class="current">{{ cat.name }}</li>
-            {% else %}
-            <li><a href=" {{ cat.link }}">{{ cat.name }}</a></li>
-            {% endif %}
-        </li>
-
-        {% endfor %}
-        </ul>
-    </div>
+    
 </div>
 
 <div>
@@ -96,7 +83,7 @@ function autosave() {
 {% endif %}
 
 <div class="results">
-{% category_form data evaluation results_form flagged_items %}
+{% accessibility_category_form data evaluation results_form flagged_items result_set %}
 </div>
 
 {{ results_form.management_form }}
@@ -104,9 +91,8 @@ function autosave() {
 <div style="margin-top: 30px">
 {% if next != '' %}
 <input type="hidden" name="next" value="{{ next }}">
-<input type="submit" name="save_continue" value="Save and continue to next section" />
 {% endif %}
-<input type="submit" name="save" value="Save and go back"/>
+<input type="submit" name="save" value="Save"/>
 </div>
 </form>
 

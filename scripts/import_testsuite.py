@@ -13,25 +13,30 @@ def generate_version_info():
         version_revision = same_date[0].version_revision + 1
     return (version_date, version_revision)
 
-def create_testsuite():
+def create_testsuite(ts_type):
     version_date, version_revision = generate_version_info()
     print "Creating TestSuite version {0}-{1}".format(version_date, version_revision)
-    ts = TestSuite(version_date = version_date, version_revision = version_revision)
+    ts_type_ = common.TESTSUITE_TYPE_DEFAULT
+    if ts_type == "Accessibility":
+        print "accessible testsuite"
+        ts_type_ = common.TESTSUITE_TYPE_ACCESSIBILITY
+    ts = TestSuite(version_date = version_date, version_revision = version_revision, testsuite_type = ts_type_)
     ts.save()
     return ts
 
-def add_category(category_type, name, parent_category, testsuite, source):
+def add_category(category_type, name, parent_category, testsuite, source, flag=False):
     db_category = Category(
         category_type = category_type,
         name = name,
         parent_category = parent_category,
         testsuite = testsuite,
-        source = source
+        source = source,
+        temp_flag = flag,
     )
     db_category.save()
     return db_category
 
-def add_test(name, description, parent_category, required, testid, testsuite, xhtml, source):
+def add_test(name, description, parent_category, required, testid, testsuite, xhtml, source, access_type, is_advanced):
     db_test = Test(
         name = name,
         description = description,
@@ -43,6 +48,12 @@ def add_test(name, description, parent_category, required, testid, testsuite, xh
         source = source
     )
     db_test.save()
+
+    # only accessible tests need metadata right now
+    if access_type != "":
+        metadata = TestMetadata(test = db_test, access_type = access_type, is_advanced = is_advanced)
+        metadata.save()
+    
     return db_test
 
 def add_category_restriction(category, limit):
@@ -73,7 +84,7 @@ def migrate_data(previous_testsuite):
         new_evaluation = Evaluation.objects.create_evaluation(rs)
         
         print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
-        results = new_evaluation.get_all_results()
+        results = new_evaluation.get_all_results(new_evaluation.get_default_result_set())
         print "Processing {0} results".format(results.count())
         flag_evaluation = False
         for result in results:

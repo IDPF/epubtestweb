@@ -13,6 +13,10 @@ class Category(models.Model, common.ItemMixin):
     testsuite = models.ForeignKey('TestSuite')
     source = models.CharField(max_length = common.LONG_STRING, null=True, blank=True) # what epub the test or category came from
     depth = models.IntegerField(null=True, blank=True, default=0)
+    # use this to flag the visual adjustments category in accessibility testing
+    # we'll move to something more thorough eventually
+    temp_flag = models.BooleanField(default=False) 
+
 
     def save(self, *args, **kwargs):
         "custom save routine"
@@ -31,3 +35,4 @@ class Category(models.Model, common.ItemMixin):
         for cat in subcats:
             retval.extend(cat.get_tests())
         return retval
+

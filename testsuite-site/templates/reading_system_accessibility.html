@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}:: {{ rs.name }}{% endblock %}
+
+{% load testsuite_extras %}
+
+{% block content %}
+
+{% get_current_evaluation rs as evaluation %}
+
+<div class="reading-system-info panel panel-default">
+    <div class="panel-left">
+    
+<dl class="dl-horizontal">
+    <dt>Name</dt>
+    <dd>{{ rs.name }}</dd>
+
+    <dt>Version</dt>
+    <dd>{{ rs.version }}</dd>
+
+    {% if rs.operating_system|length > 0 %}
+    <dt>Operating system</dt>
+    <dd>{{ rs.operating_system }}</dd>
+    {% endif %}
+
+    <dt>Assistive technology</dt>
+    <dd>{{ result_set.metadata.assistive_technology }}</dd>
+
+    {% if rs.locale|length > 0 %}
+    <dt>Locale</dt>
+    <dd>{{ rs.locale}}</dd>
+    {% endif %}
+
+    {% if rs.sdk_version|length > 0 %}
+    <dt>SDK Version</dt>
+    <dd>{{ rs.sdk_version }}</dd>
+    {% endif %}
+
+    <dt>Evaluated</dt>
+    <dd> 
+    {% get_current_evaluation rs as eval%}
+    {{eval.last_updated }}</dd>
+</dl>
+
+    
+    </div>
+</div>
+
+<table summary="accessibility data" class="table table-striped">
+<thead>
+<tr>
+<td>Description</td>
+<td>Result</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keyboard access to all features</td>
+<td>{{ accessibility_score.keyboard }}%</td>
+</tr>
+<tr>
+<td>Mouse access to all features</td>
+<td>{{ accessibility_score.mouse }}%</td>
+</tr>
+<tr>
+<td>Touch screen access to all features</td>
+<td>{{ accessibility_score.touch }}%</td>
+</tr>
+<tr>
+<td>Screenreader or self-voicing access to all features</td>
+<td>{{ accessibility_score.screenreader }}%</td>
+</tr>
+<tr>
+<td>Visual adjustments available</td>
+<td>{{ accessibility_score.visual_adj }}%</td>
+</tr>
+{% comment %}
+<tr>
+<td>Integration with external switches</td>
+<td>{{ accessibility_score.external }}%</td>
+</tr>
+{% endcomment %}
+</tbody>
+</table>
+
+{% if evaluation.flagged_for_review %}
+<div class="panel panel-warning">
+    <div class="panel-heading">Note</div>
+    <div class="panel-body">
+        <p>This evaluation may not be current.</p>
+    </div>
+</div>
+{% endif %}
+
+{% if result_set != None %}
+<div class="results">
+    {% for cat in data %}
+        {% accessibility_category cat evaluation result_set %}
+    {% endfor %}
+</div>
+{% else %}
+<p>Results not available</p>
+{% endif %}
+
+
+{% endblock %}
