@@ -330,7 +330,12 @@ def one_time_migration():
             r.result_set = result_set
             r.save()
         
-        
+# settings.py must contain a definition for the 'previous' database in order for this to work
+def copy_users():
+    users = models.UserProfile.objects.using('previous').all()
+    for u in users:
+        u.save(using='default')
+    print "Copied users from old database."        
 
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
@@ -398,6 +403,9 @@ def main():
     new_accessibility_eval_parser.add_argument("rs", action="store", help="reading system ID")
     new_accessibility_eval_parser.set_defaults(func = lambda(args): new_accessibility_eval(args.rs))
 
+    copy_users_parser = subparsers.add_parser('copy-users', help="Copy all users")
+    copy_users_parser.set_defaults(func = lambda(args): copy_users())
+    
     args = argparser.parse_args()
     args.func(args)
 

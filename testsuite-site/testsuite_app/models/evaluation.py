@@ -51,7 +51,7 @@ class EvaluationManager(models.Manager):
             score.save()
 
         # add an accessibility eval
-        accessibility_result_set = ResultSet.objects.create_result_set(ts, evaluation, '')
+        accessibility_result_set = ResultSet.objects.create_result_set(accessible_testsuite, evaluation, '')
         accessibility_tests = Test.objects.filter(testsuite = accessible_testsuite)
         for t in accessibility_tests:
             result = Result(test = t, evaluation = evaluation, result = RESULT_NOT_ANSWERED, result_set = accessibility_result_set)
@@ -114,8 +114,12 @@ class Evaluation(models.Model, FloatToDecimalMixin):
 
     def update_percent_complete(self):
         from result import Result
-        self.get_default_result_set().update_percent_complete()
-        self.get_accessibility_result_set().update_percent_complete()
+        default_result_set = self.get_default_result_set()
+        if default_result_set != None:
+            default_result_set.update_percent_complete()
+        accessibility_result_set = self.get_accessibility_result_set()
+        if accessibility_result_set != None:
+            accessibility_result_set.update_percent_complete()
             
     def get_reading_system(self):
         from reading_system import ReadingSystem
@@ -130,7 +134,11 @@ class Evaluation(models.Model, FloatToDecimalMixin):
         #from result_set import ResultSet
         from result import ResultSet
         from common import *
-        return ResultSet.objects.get(evaluation = self, testsuite=self.testsuite)
+        try:
+            result_set = ResultSet.objects.get(evaluation = self, testsuite=self.testsuite)
+        except ResultSet.DoesNotExist:
+            return None
+        return result_set
 
     # TEMPORARY! for while we are supporting a single accessibility evaluation per reading system
     def get_accessibility_result_set(self):

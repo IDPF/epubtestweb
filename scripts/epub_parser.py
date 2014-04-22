@@ -173,8 +173,6 @@ class EpubParser:
             return common.ACCESS_TYPE_MOUSE
         if attrs['class'].find('touch') != -1:
             return common.ACCESS_TYPE_TOUCH
-        if attrs['class'].find('screenreader') != -1:
-            return common.ACCESS_TYPE_SCREENREADER
     
 
 

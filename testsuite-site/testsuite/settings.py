@@ -11,7 +11,7 @@ static_url = '/static/'
 static_root = '/home/djangoweb/epubtestweb/testsuite-site/static'
 epub_downloads_root = '/home/djangoweb/epub-testsuite/build'
 epub_downloads_url = '/epubs/' #symlinked to epub_downloads_root
-previous_db = '/home/djangoweb/epubtestweb-db/testsuite.db.last'
+previous_db = '/home/djangoweb/epubtestweb-db/testsuite-demo.db'
 secret_key = 'utq699x(arx2auy=fnmotm^_7g2d^fa4n+kefz%fev1)noiv1e' # change or override this
 allowed_hosts = [] 
 enable_analytics = True
@@ -38,6 +38,11 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
+    },
+
+    'previous': {
+        'ENGINE': 'django.db.backends.sqlite3', 
+        'NAME': previous_db,                      
     },
 }
 

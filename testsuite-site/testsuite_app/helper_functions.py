@@ -82,7 +82,7 @@ def calculate_source(dirname):
 def calculate_accessibility_score(rs):
     result_set = rs.get_current_evaluation().get_accessibility_result_set()
     if result_set == None:
-        return {"visual_adj": 0.0, "keyboard": 0.0, "mouse": 0.0, "touch": 0.0, "screenreader": 0.0}
+        return {"visual_adj": 0.0, "keyboard": 0.0, "mouse": 0.0, "touch": 0.0}
     # use the most recent accessibility testsuite
     ts = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
     top_level_cats = ts.get_top_level_categories()
@@ -107,17 +107,11 @@ def calculate_accessibility_score(rs):
     for m in touch_test_meta:
         touch_tests.append(m.test)
 
-    screenreader_tests = []
-    screenreader_test_meta = TestMetadata.objects.filter(access_type = common.ACCESS_TYPE_SCREENREADER)
-    for m in screenreader_test_meta:
-        screenreader_tests.append(m.test)
-    
     score = {}
     score['visual_adj'] = calculate_score(visual_adj_tests, result_set)
     score['keyboard'] = calculate_score(keyboard_tests, result_set)
     score['mouse'] = calculate_score(mouse_tests, result_set)
     score['touch'] = calculate_score(touch_tests, result_set)
-    score['screenreader'] = calculate_score(screenreader_tests, result_set)
     return score
 
 # tests is an array
@@ -139,14 +133,8 @@ def calculate_score(tests, result_set):
         return "Fail"
     return "Partial support"
 
-
-
-
 def has_any_accessibility(accessibility_score):
-    # if a reader fails in all of screenreader, braille disp, & visual adj ==> inaccessible
-    # if it passes in any of the above ==> accessible
-    # TODO add braille once we have test(s) for it
-    if accessibility_score['visual_adj'] > 0.0 or accessibility_score['screenreader'] > 0.0:
+    if accessibility_score['visual_adj'] > 0.0 or accessibility_score['keyboard'] > 0.0:
         return True
     else:
         return False 
