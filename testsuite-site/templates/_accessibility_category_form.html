@@ -26,7 +26,7 @@
         {% for t in category.tests %}
             {% get_result_for_result_set t evaluation result_set as r %}
             {% get_form_for_result r results_form as f %}
-            {% result_form r f flagged_items %}
+            {% result_form r f flagged_items False %}
         {% endfor %}
     </tbody>
 </table>

@@ -8,10 +8,15 @@ class ResultSetMetadata(models.Model):
         app_label = 'testsuite_app'
 
     assistive_technology = models.CharField(max_length = common.LONG_STRING, null = True, blank = True)
+    is_keyboard = models.BooleanField(default=False)
+    is_mouse = models.BooleanField(default=False)
+    is_touch = models.BooleanField(default=False)
+    is_screenreader = models.BooleanField(default=False)
+    is_braille = models.BooleanField(default=False)
 
 class ResultSetManager(models.Manager):
     def create_result_set(self, testsuite, evaluation, assistive_technology = ''):
-        if assistive_technology != '':
+        if testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
             metadata = ResultSetMetadata(assistive_technology = assistive_technology)
             metadata.save()
             result_set = ResultSet(metadata = metadata, testsuite=testsuite, evaluation = evaluation)
@@ -31,6 +36,7 @@ class ResultSet(models.Model, common.FloatToDecimalMixin):
     metadata = models.ForeignKey('ResultSetMetadata', blank=True, null=True)
     testsuite = models.ForeignKey('TestSuite')
     evaluation = models.ForeignKey('Evaluation')
+
     percent_complete = models.DecimalField(decimal_places = 2, max_digits = 5, default=0)
 
     def update_percent_complete(self):

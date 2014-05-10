@@ -1,6 +1,22 @@
 {% extends 'base.html' %}
 {% load testsuite_extras %}
 {% block title %}:: Evaluate{% endblock %}
+
+{% block style %}
+<style>
+#at_options input {
+   margin-left:5px;
+}
+#at_options li {
+    color: #0099cc;
+    margin-bottom: 10px;
+}
+#at_options {
+    margin-top: -20px;
+}
+</style>
+{% endblock %}
+
 {% block script %}
 <script>
 
@@ -36,6 +52,7 @@ function autosave() {
 
 </script>
 {% endblock %}
+
 {% block content %}
 
 <h1>Evaluate</h1>
@@ -46,9 +63,11 @@ function autosave() {
     <div class="panel-left">
     <h1 style="font-size: medium;">Reading System</h1>
         {% reading_system_details_list rs %}
-        {{ result_set_metadata_form }}
+        <ul id="at_options" class="list-unstyled">
+            {{ result_set_metadata_form }}
+        </ul>
     </div>
-    
+        
 </div>
 
 <div>

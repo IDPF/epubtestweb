@@ -149,7 +149,6 @@ class Evaluation(models.Model, FloatToDecimalMixin):
             result_set = result_sets[0]
             return result_set
         else:
-            print "AHHH"
             return None
 
     def get_category_results(self, category, result_set): 

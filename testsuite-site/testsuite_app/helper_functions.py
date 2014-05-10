@@ -22,7 +22,12 @@ def get_public_scores(categories):
             for cat in categories:
                 ordered_scores.append(scores[cat])
             accessibility_score = calculate_accessibility_score(rs)
-            accessibility_boolean = has_any_accessibility(accessibility_score)
+            #accessibility_boolean = has_any_accessibility(accessibility_score)
+            ats = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
+            ars = rs.get_current_evaluation().get_accessibility_result_set()
+            # if there are any accessible evaluations, then the answer here is "true"
+            accessibility_boolean = ars != None
+
             retval.append({"reading_system": rs, "total_score": evaluation.get_total_score(),
                 "category_scores": ordered_scores, "accessibility_score": accessibility_score, "accessibility": accessibility_boolean})
     return retval
@@ -80,6 +85,9 @@ def calculate_source(dirname):
 
 # TODO expand to support more than one accessibility evaluation
 def calculate_accessibility_score(rs):
+    # TODO ; FOR NOW
+    return {"visual_adj": 0.0, "keyboard": 0.0, "mouse": 0.0, "touch": 0.0}
+
     result_set = rs.get_current_evaluation().get_accessibility_result_set()
     if result_set == None:
         return {"visual_adj": 0.0, "keyboard": 0.0, "mouse": 0.0, "touch": 0.0}

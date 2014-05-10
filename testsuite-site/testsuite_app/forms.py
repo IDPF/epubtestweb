@@ -37,6 +37,13 @@ class ResultForm(ModelForm):
 class ResultSetMetadataForm(ModelForm):
     class Meta:
         model = ResultSetMetadata
-        fields = ('assistive_technology',)
+        fields = ('assistive_technology', 'is_keyboard', 'is_mouse', 'is_touch', 'is_braille', 'is_screenreader')
+        labels = {
+            'is_keyboard': 'Supports keyboard input',
+            'is_mouse': 'Supports mouse input',
+            'is_touch': 'Supports touch or gesture input',
+            'is_screenreader': 'Supports screenreader output',
+            'is_braille': 'Supports Braille output',
+        }
 
 ResultFormSet = inlineformset_factory(ResultSet, Result, extra=0, can_delete=False, form = ResultForm)

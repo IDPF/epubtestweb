@@ -38,8 +38,8 @@ def result(result, show_required=True):
     return {'result': result, 'show_required': show_required}
 
 @register.inclusion_tag('_result_form.html')
-def result_form(result, form, flagged_items):
-    return {'result': result, 'form': form, 'flagged_items': flagged_items}
+def result_form(result, form, flagged_items, show_required = True):
+    return {'result': result, 'form': form, 'flagged_items': flagged_items, 'show_required': show_required}
 
 @register.inclusion_tag('_alerts.html')
 def alerts(alerts):
@@ -195,3 +195,22 @@ def get_result_class(result, is_form):
         elif result.result == common.RESULT_NOT_SUPPORTED:
             return "danger"
     return "" # default
+
+
+@register.filter
+def get_AT_metadata_description(evaluation):
+    meta = evaluation.get_accessibility_result_set().metadata
+    modalities = []
+    if meta.is_keyboard:
+        modalities.append("Keyboard")
+    if meta.is_mouse:
+        modalities.append("Mouse")
+    if meta.is_touch:
+        modalities.append("Touch/Gestures")
+    if meta.is_screenreader:
+        modalities.append("Screenreader/Self-voicing")
+    if meta.is_braille:
+        modalities.append("Braille")
+
+    s = ", ".join(modalities)
+    return s

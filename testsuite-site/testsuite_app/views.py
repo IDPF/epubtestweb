@@ -411,6 +411,7 @@ class EditAccessibilityEvaluationView(UpdateView):
         result_set = evaluation.get_accessibility_result_set()
         results_form = ResultFormSet(instance = result_set, queryset=evaluation.get_category_results(cat, result_set))
         at_type_form = ResultSetMetadataForm(instance = result_set.metadata)
+        print at_type_form
 
         can_edit = permissions.user_can_edit_reading_system(request.user, rs)
         if can_edit == False:
@@ -420,7 +421,7 @@ class EditAccessibilityEvaluationView(UpdateView):
         return render(request, self.template_name,
             {'evaluation': evaluation, 'results_form': results_form, 'data': data,
             'rs': rs, "action_url": action_url, "category_pages": category_pages, 'next': next, 'result_set': result_set,
-            'result_set_metadata_form': at_type_form})
+            'result_set_metadata_form': at_type_form.as_ul()})
 
     def post(self, request, *args, **kwargs):
         try:
@@ -435,11 +436,13 @@ class EditAccessibilityEvaluationView(UpdateView):
         evaluation = rs.get_current_evaluation()
         result_set = evaluation.get_accessibility_result_set()
         formset = ResultFormSet(request.POST, instance=result_set)
+
         result_set_meta_form = ResultSetMetadataForm(request.POST, instance = result_set.metadata)
-        result_set_meta_form.save()
+
         formset.save()
         evaluation.save()
-        
+        result_set_meta_form.save()
+
         # if we are auto-saving, don't redirect
         if not request.POST.has_key('auto') or request.POST['auto'] == "false":
             if 'save_continue' in request.POST and request.POST.has_key('next'):

@@ -14,6 +14,7 @@ class="result
     </td>
     <td class='results-test'>{{ result.test.testid }}</td>
     <td class='results-desc'>{{ result.test.description }}</td>
+    {% if show_req_optional == True %}
     <td class='results-req'>
         {% if result.test.required == True %}
             Required
@@ -21,6 +22,7 @@ class="result
             Optional
         {% endif %}
     </td>
+    {% endif %}
     <td class="results-result">
         {{ form.as_p }}
     </td>

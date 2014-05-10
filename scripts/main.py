@@ -332,9 +332,17 @@ def one_time_migration():
         
 # settings.py must contain a definition for the 'previous' database in order for this to work
 def copy_users():
-    users = models.UserProfile.objects.using('previous').all()
-    for u in users:
-        u.save(using='default')
+    new_users = models.UserProfile.objects.using('previous').all()
+    current_users = models.UserProfile.objects.using('default').all()
+    usernames = [u.username for u in current_users]
+    #new_usernames = [u.username for u in new_users]
+    #print new_usernames
+    for u in new_users:
+        if u.username not in usernames:
+            print "New user found {0}".format(u.username)
+            u.save(using='default')
+        else:
+            print "skipping duplicate {0}".format(u.username)
     print "Copied users from old database."        
 
 def main():
