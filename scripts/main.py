@@ -129,7 +129,7 @@ def new_accessibility_eval(rspk):
     ts = models.TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
     evaluation.accessibility_testsuite = ts
     evaluation.save_partial()
-    result_set = models.ResultSet.objects.create_result_set(ts, evaluation, random_at[idx])
+    result_set = models.ResultSet.objects.create_result_set(ts, evaluation, evaluation.user, random_at[idx])
     tests = evaluation.get_tests(ts)
     for t in tests:
         random_answer = str(randrange(1, 3))
@@ -320,7 +320,7 @@ def one_time_migration():
         
         # create a result_set for each existing evaluation
         ts = e.testsuite
-        result_set = models.ResultSet.objects.create_result_set(ts, e)
+        result_set = models.ResultSet.objects.create_result_set(ts, e, e.user)
         # move evaluation.percent_complete into result_set.percent_complete
         result_set.percent_complete = e.percent_complete
         result_set.save()

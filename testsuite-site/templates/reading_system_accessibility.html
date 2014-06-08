@@ -27,7 +27,7 @@
     <dd>{{ result_set.metadata.assistive_technology }}</dd>
     
     <dt>Assistive technology features</dt>
-    <dd>{{evaluation | get_AT_metadata_description}}</dd>
+    <dd>{{result_set | get_AT_metadata_description}}</dd>
 
     {% if rs.locale|length > 0 %}
     <dt>Locale</dt>
@@ -48,42 +48,7 @@
     
     </div>
 </div>
-{% comment %}
-<table summary="accessibility data" class="table table-striped">
-<thead>
-<tr>
-<td>Description</td>
-<td>Result</td>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Keyboard access to all features</td>
-<td>{{ accessibility_score.keyboard }}</td>
-</tr>
-<tr>
-<td>Mouse access to all features</td>
-<td>{{ accessibility_score.mouse }}</td>
-</tr>
-<tr>
-<td>Touch screen access to all features</td>
-<td>{{ accessibility_score.touch }}</td>
-</tr>
-<tr>
-<td>Visual adjustments available</td>
-<td>{{ accessibility_score.visual_adj }}</td>
-</tr>
-{% endcomment %}
-{% comment %}
-<tr>
-<td>Integration with external switches</td>
-<td>{{ accessibility_score.external }}</td>
-</tr>
-{% endcomment %}
-{% comment %}
-</tbody>
-</table>
-{% endcomment %}
+
 
 {% if evaluation.flagged_for_review %}
 <div class="panel panel-warning">

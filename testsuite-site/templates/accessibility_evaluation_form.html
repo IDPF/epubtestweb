@@ -73,9 +73,9 @@ function autosave() {
 <div>
 <p style="font-weight: bold">Percent complete overall:</p>
         <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="{{evaluation.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{evaluation.percent_complete}}%; height: 100%">
-            <span style="font-style: italic; {%if evaluation.percent_complete < 20 %} color: black;{%endif%}">
-                            {{evaluation.percent_complete}}% Completed</span>
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{result_set.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{result_set.percent_complete}}%; height: 100%">
+            <span style="font-style: italic; {%if result_set.percent_complete < 20 %} color: black;{%endif%}">
+                            {{result_set.percent_complete}}% Completed</span>
           </div>
         </div>
 </div>

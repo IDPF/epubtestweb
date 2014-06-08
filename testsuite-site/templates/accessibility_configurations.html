@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load testsuite_extras %}
+{% block title %}:: Accessibility Evaluations{% endblock %}
+
+{% block content %}
+
+{% reading_system_details_list rs True %}
+
+<table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center"><a href="#" title="Sort by name">Assistive Technology</a></th>
+                <th class="text-center"><a href="#" title="Sort by score">Score</a></th>
+                <th class="text-center"><a href="#" title="Sort by supports keyboard input">Supports Keyboard Input</a></th>
+                <th class="text-center"><a href="#" title="Sort by supports mouse input">Supports Mouse Input</a></th>
+                <th class="text-center"><a href="#" title="Sort by supports touch/gesture input">Supports Touch/Gesture Input</a></th>
+                <th class="text-center"><a href="#" title="Sort by supports screenreader output">Supports Screenreader Output</a></th>
+                <th class="text-center"><a href="#" title="Sort by supports Braille output">Supports Braille output</a></th>
+                {% for cat in categories %}
+                    <th class="text-center"><a href="#" title="Sort by {{cat.name}} score">{{cat.name}}</a></th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for result_set in result_sets %}
+            <tr>
+                <td>
+                    {% if edit == True %}
+                    <a href="/rs/{{rs.id}}/eval/accessibility/{{result_set.id}}">{{ result_set.metadata.assistive_technology }}</a>
+                    {% else %}
+                    <a href="/rs/{{rs.id}}/accessibility/{{result_set.id}}">{{ result_set.metadata.assistive_technology }}</a>
+                    {% endif %}
+                    <br/><br/>
+                    <span class="rs-details">Added by {{ rs.user|get_display_name }}</span>
+                    {% if result_set.evaluation.flagged_for_review == True %}
+                    <br/>
+                    <span class="warn">This evaluation may not be current.</span>
+                    {% endif %}
+                    {% if edit == True %}
+                    <br/><br/>
+                    <span><a href="/rs/{{rs.id}}/accessibility/{{result_set.id}}/delete">Delete</span>
+                    {% endif %}
+                </td>
+                <td class="text-center">{% get_accessibility_result_set_score result_set as score %}{{ score.pct_total_passed}}%</td>
+                <td class="text-center">{{result_set.metadata.is_keyboard|print_yes_no}}</td>
+                <td class="text-center">{{result_set.metadata.is_mouse|print_yes_no}}</td>
+                <td class="text-center">{{result_set.metadata.is_touch|print_yes_no}}</td>
+                <td class="text-center">{{result_set.metadata.is_screenreader|print_yes_no}}</td>
+                <td class="text-center">{{result_set.metadata.is_braille|print_yes_no}}</td>
+                {% for cat in categories %}
+                    <td class="text-center">
+                        {% get_accessibility_category_score result_set cat as score %}
+                        {{ score.pct_total_passed }}%
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if edit == True %}
+    <p><a class="btn btn-default" href="/rs/{{ rs.id}}/eval/accessibility/new" role="button">Add Accessibility Evaluation</a></p>
+    {% endif %}
+{% endblock %}

@@ -90,10 +90,9 @@ class EpubParser:
                     desc = self.get_desc(test_section)
                     testid = uri.fragment
                     required = test_section.attrib['class'].find('ctest') != -1
-                    access_type = self.get_access_type(test_section.attrib)
                     foldername = os.path.basename(self.folder)
                     adv = test_section.attrib['class'].find('atest') != -1
-                    import_testsuite.add_test(name, desc, parent_category, required, testid, self.testsuite, xhtml, foldername, access_type, adv)
+                    import_testsuite.add_test(name, desc, parent_category, required, testid, self.testsuite, xhtml, foldername, adv)
 
             if test_section == None:
                 # does this container eventually contain a test? otherwise we won't include it.
@@ -166,13 +165,6 @@ class EpubParser:
         desc = stringify(desc_elm)
         return desc
 
-    def get_access_type(self, attrs):
-        if attrs['class'].find('keyboard') != -1:
-            return common.ACCESS_TYPE_KEYBOARD
-        if attrs['class'].find('mouse') != -1:
-            return common.ACCESS_TYPE_MOUSE
-        if attrs['class'].find('touch') != -1:
-            return common.ACCESS_TYPE_TOUCH
     
 
 

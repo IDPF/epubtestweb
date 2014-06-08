@@ -101,10 +101,12 @@ $(document).ready(function() {
                     </td>
                 {% endfor %}
                 <td class="text-center">
-                    {% if rs_score.accessibility == True %}
+                    {% if rs_score.accessibility == 1 %}
                         <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/">See details</a></span>
+                    {% elif rs_score.accessibility == -1 %}
+                        <span>Data not available</span>
                     {% else %}
-                        <span>No</span>
+                        <span>None</span>
                     {% endif %}
                 </td>
             </tr>
@@ -163,10 +165,12 @@ $(document).ready(function() {
                     {% endif %}
                 </td>
                 <td class="text-center">
-                    {% if rs_score.accessibility == True %}
+                    {% if rs_score.accessibility == 1 %}
                         <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/">See details</a></span>
+                    {% elif rs_score.accessibility == -1 %}
+                        <span>Data not available</span>
                     {% else %}
-                        <span>No</span>
+                        <span>None</span>
                     {% endif %}
                 </td>
             </tr>

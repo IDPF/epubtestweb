@@ -9,6 +9,7 @@ class EvaluationManager(models.Manager):
         from result import Result, ResultSet
         from category import Category
         from testsuite import TestSuite
+        from score import AccessibilityScore
         #from result_set import ResultSet
 
         default_testsuite = TestSuite.objects.get_most_recent_testsuite_of_type(TESTSUITE_TYPE_DEFAULT)
@@ -31,7 +32,7 @@ class EvaluationManager(models.Manager):
         # create default results for this evaluation
         default_tests = Test.objects.filter(testsuite = default_testsuite)
         
-        default_result_set = ResultSet.objects.create_result_set(default_testsuite, evaluation)
+        default_result_set = ResultSet.objects.create_result_set(default_testsuite, evaluation, evaluation.user)
         for t in default_tests:
             result = Result(test = t, evaluation = evaluation, result = RESULT_NOT_ANSWERED, result_set = default_result_set)
             result.save()
@@ -49,13 +50,6 @@ class EvaluationManager(models.Manager):
             )
             score.update(evaluation.get_category_results(cat, default_result_set))
             score.save()
-
-        # add an accessibility eval
-        accessibility_result_set = ResultSet.objects.create_result_set(accessible_testsuite, evaluation, '')
-        accessibility_tests = Test.objects.filter(testsuite = accessible_testsuite)
-        for t in accessibility_tests:
-            result = Result(test = t, evaluation = evaluation, result = RESULT_NOT_ANSWERED, result_set = accessibility_result_set)
-            result.save()            
 
         return evaluation
 
@@ -97,10 +91,10 @@ class Evaluation(models.Model, FloatToDecimalMixin):
     def save_partial(self, *args, **kwargs):
         super(Evaluation, self).save(*args, **kwargs)
     
-    # only categories from the default testsuite have associated score objects
     def save_scores(self):
         # update the score
         from score import Score
+        from score import AccessibilityScore
         from result import Result
         from category import Category
         category_scores = Score.objects.filter(evaluation = self)
@@ -112,14 +106,20 @@ class Evaluation(models.Model, FloatToDecimalMixin):
                 results = self.get_all_results(self.get_default_result_set())
             score.update(results)
 
+        category_scores = AccessibilityScore.objects.filter(evaluation = self)
+        for score in category_scores:
+            results = None
+            if score.category != None:
+                results = self.get_category_results(score.category, score.result_set)
+            else:
+                results = score.result_set.get_results_in_set()
+            score.update(results)
+
     def update_percent_complete(self):
-        from result import Result
-        default_result_set = self.get_default_result_set()
-        if default_result_set != None:
-            default_result_set.update_percent_complete()
-        accessibility_result_set = self.get_accessibility_result_set()
-        if accessibility_result_set != None:
-            accessibility_result_set.update_percent_complete()
+        from result import ResultSet
+        result_sets = ResultSet.objects.filter(evaluation = self)
+        for rset in result_sets:
+            rset.update_percent_complete()
             
     def get_reading_system(self):
         from reading_system import ReadingSystem
@@ -131,7 +131,6 @@ class Evaluation(models.Model, FloatToDecimalMixin):
     
     def get_default_result_set(self):
         # there should only be one
-        #from result_set import ResultSet
         from result import ResultSet
         from common import *
         try:
@@ -140,16 +139,44 @@ class Evaluation(models.Model, FloatToDecimalMixin):
             return None
         return result_set
 
-    # TEMPORARY! for while we are supporting a single accessibility evaluation per reading system
-    def get_accessibility_result_set(self):
+    def get_accessibility_result_sets(self):
+        from result import ResultSet
+        result_sets = ResultSet.objects.filter(evaluation = self, testsuite = self.accessibility_testsuite)
+        return result_sets
+
+    def get_result_set(self, result_set_id):
         from result import ResultSet
         from common import *
-        result_sets = ResultSet.objects.filter(evaluation = self, testsuite=self.accessibility_testsuite)        
-        if result_sets.count() > 0:
-            result_set = result_sets[0]
-            return result_set
-        else:
+        try:
+            rset = ResultSet.objects.get(id=result_set_id)
+            return rset
+        except ResultSet.DoesNotExist:
             return None
+
+    def create_accessibility_result_set(self, user):
+        # add an accessibility eval
+        from result import ResultSet, Result
+        from test import Test
+        from category import Category
+        from score import AccessibilityScore
+        accessibility_result_set = ResultSet.objects.create_result_set(self.accessibility_testsuite, self, user, '')
+        accessibility_tests = Test.objects.filter(testsuite = self.accessibility_testsuite)
+        for t in accessibility_tests:
+            result = Result(test = t, evaluation = self, result = RESULT_NOT_ANSWERED, result_set = accessibility_result_set)
+            result.save()   
+        accessibility_categories = Category.objects.filter(testsuite = self.accessibility_testsuite)
+        for cat in accessibility_categories:
+            score = AccessibilityScore(
+                category = cat,
+                evaluation = self,
+                result_set = accessibility_result_set
+            )
+            score.update(self.get_category_results(cat, accessibility_result_set))
+            score.save()  
+        total_score = AccessibilityScore(evaluation = self, category = None, result_set = accessibility_result_set)
+        total_score.save()
+        accessibility_result_set.save() 
+        return accessibility_result_set      
 
     def get_category_results(self, category, result_set): 
         "get a queryset of all the results for the given category"
@@ -227,6 +254,7 @@ class Evaluation(models.Model, FloatToDecimalMixin):
             return score
         except Score.DoesNotExist:
             return None
+
 
     def get_unanswered_flagged_items(self, result_set):
         results = self.get_all_results(result_set)

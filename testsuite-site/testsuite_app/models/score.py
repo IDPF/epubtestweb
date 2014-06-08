@@ -59,3 +59,27 @@ class Score(models.Model, common.FloatToDecimalMixin):
         
         self.save()
 
+class AccessibilityScore(models.Model, common.FloatToDecimalMixin):
+    class Meta:
+        db_table = 'testsuite_app_accessibilityscore'
+        app_label= 'testsuite_app'
+
+    num_applicable_tests = models.IntegerField(default = 0)
+    num_passed_tests = models.IntegerField(default = 0)
+    
+    pct_total_passed = models.DecimalField(decimal_places = 2, max_digits = 5, default = 0)
+
+    evaluation = models.ForeignKey('Evaluation')
+    category = models.ForeignKey('Category', null=True, blank=True) # if category = None, this is the overall score
+    result_set = models.ForeignKey('ResultSet', null=True, blank=True)
+
+    def update(self, results):
+        for r in results:
+            if r.result != common.RESULT_NOT_APPLICABLE:
+                self.num_applicable_tests += 1
+            if r.result == common.RESULT_SUPPORTED:
+                self.num_passed_tests += 1
+        if self.num_applicable_tests > 0:
+            self.pct_total_passed = (self.num_passed_tests * 1.0) / (self.num_applicable_tests * 1.0) * 100
+        self.save()
+

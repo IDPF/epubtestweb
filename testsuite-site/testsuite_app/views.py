@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from models import ReadingSystem, Evaluation, TestSuite, Test, Result, common
+from models import ReadingSystem, Evaluation, TestSuite, Test, Result, common, ResultSet
 from forms import ReadingSystemForm, ResultFormSet, ResultSetMetadataForm
 from testsuite import settings
 import helper_functions
@@ -245,7 +245,7 @@ class EditEvaluationView(UpdateView):
 
 # confirm deleting a reading system
 class ConfirmDeleteRSView(TemplateView):
-    template_name = "confirm_delete_rs.html"
+    template_name = "confirm_delete.html"
     def get(self, request, *args, **kwargs):
         try:
             rs = ReadingSystem.objects.get(id=kwargs['pk'])
@@ -259,10 +259,39 @@ class ConfirmDeleteRSView(TemplateView):
         
         rs_desc = "{0} {1} {2} {3}".format(rs.name, rs.version, rs.locale, rs.operating_system)
         return render(request, self.template_name,
-            {"header": 'Confirm delete',
+            {"header": 'Confirm delete reading system',
             "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
-            "confirm_url": "/rs/{0}/".format(kwargs['pk'])
+            "confirm_url": "/rs/{0}/".format(kwargs['pk']),
+            "redirect_url": "/manage/"
             })
+
+# confirm deleting an accessibility configuration
+class ConfirmDeleteAccessibilityConfigurationView(TemplateView):
+    template_name = "confirm_delete.html"
+    def get(self, request, *args, **kwargs):
+        try:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
+            return render(request, "404.html", {})
+
+        try:
+            rset = ResultSet.objects.get(id=kwargs['rset'])
+        except ResultSet.DoesNotExist:
+            return render(request, "404.html", {})
+
+        can_delete = permissions.user_can_delete_accessibility_eval(request.user, rset)
+        if can_delete == False:
+            messages.add_message(request, messages.INFO, 'You do not have permission to delete that accessibility configuration.')
+            return redirect("/manage/")
+        
+        rs_desc = "{0} for {1}".format(rset.metadata.assistive_technology, rs.name)
+        return render(request, self.template_name,
+            {"header": 'Confirm delete accessibility configuration',
+            "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
+            "confirm_url": "/rs/{0}/accessibility/{1}".format(kwargs['pk'], kwargs['rset']),
+            "redirect_url": "/rs/{0}/eval/accessibility".format(kwargs['pk'])
+            })
+
 
 # create new reading system
 class EditReadingSystemView(TemplateView):
@@ -344,9 +373,9 @@ class ProblemReportView(TemplateView):
             except Evaluation.DoesNotExist:
                 return render(request, "404.html", {})
 
-class AccessibilityReadingSystemView(TemplateView):
-    "Details for a single reading system's accessibility evaluation"
-    template_name = "reading_system_accessibility.html"
+class AccessibilityConfigurationsView(TemplateView):
+    "Lists evaluated configurations for a single reading system"
+    template_name = "accessibility_configurations.html"
 
     def get(self, request, *args, **kwargs):
         try:
@@ -359,17 +388,80 @@ class AccessibilityReadingSystemView(TemplateView):
             messages.add_message(request, messages.INFO, 'You do not have permission to view that reading system.')
             return redirect("/")
 
+        result_sets = rs.get_current_evaluation().get_accessibility_result_sets()
+        
+        return render(request, self.template_name, {'rs': rs, 'result_sets': result_sets, 'edit': False})
+
+class EditAccessibilityConfigurationsView(TemplateView):
+    "Lists evaluated configurations for a single reading system"
+    template_name = "accessibility_configurations.html"
+
+    def get(self, request, *args, **kwargs):
+        try:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
+            return render(request, "404.html", {})
+
+        can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
+        if can_view == False:
+            messages.add_message(request, messages.INFO, 'You do not have permission to view that reading system.')
+            return redirect("/")
+
+        result_sets = rs.get_current_evaluation().get_accessibility_result_sets()
+
+        return render(request, self.template_name, {'rs': rs, 'result_sets': result_sets, 'edit': True})
+
+
+class AccessibilityReadingSystemView(TemplateView):
+    "Details for a single reading system's accessibility evaluation"
+    template_name = "reading_system_accessibility.html"
+
+    def get(self, request, *args, **kwargs):
+        try:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
+            return render(request, "404.html", {})
+
+        try:
+            rset = ResultSet.objects.get(id=kwargs['rset'])
+        except ResultSet.DoesNotExist:
+            return render(request, "404.html", {})
+        print rset
+
+        can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
+        if can_view == False:
+            messages.add_message(request, messages.INFO, 'You do not have permission to view that reading system.')
+            return redirect("/")
+
         ts = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
         data = helper_functions.testsuite_to_dict(ts)
-        # limiting to one accessibility eval per RS FOR NOW ONLY
-        result_set = rs.get_current_evaluation().get_accessibility_result_set()
-        accessibility_score = helper_functions.calculate_accessibility_score(rs)
-        return render(request, self.template_name, {'rs': rs, 'data': data, 'result_set': result_set, 
-            'accessibility_score': accessibility_score})
+        return render(request, self.template_name, {'rs': rs, 'data': data, 'result_set': rset})
+
+    def delete(self, request, *args, **kwargs):
+        print "DELETING ACCESSIBILITY CONFIG"
+        try:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
+            return render(request, "404.html", {})
+
+        try:
+            rset = ResultSet.objects.get(id=kwargs['rset'])
+        except ResultSet.DoesNotExist:
+            return render(request, "404.html", {})        
+
+        can_delete = permissions.user_can_delete_accessibility_eval(request.user, rset)
+        if can_delete == False:
+            messages.add_message(request, messages.INFO, 'You do not have permission to delete that accessibility configuration.')
+            return redirect("/manage/")
+        
+        rset.delete_associated()
+        rset.delete()
+        messages.add_message(request, messages.INFO, "Accessibility configuration deleted")
+        return HttpResponse(status=204)
 
  
 class EditAccessibilityEvaluationView(UpdateView):
-    "Edit reading system accessibility evaluation"
+    "Edit reading system accessibility evaluation; create if does not exist"
     template_name = "accessibility_evaluation_form.html"
 
     def get(self, request, *args, **kwargs):
@@ -378,7 +470,15 @@ class EditAccessibilityEvaluationView(UpdateView):
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
-        action_url = "/rs/{0}/eval/accessibility/".format(rs.id)
+        if kwargs.has_key('rset'):
+            try:
+                rset = ResultSet.objects.get(id=kwargs['rset'])
+            except ResultSet.DoesNotExist:
+                return render(request, "404.html", {})
+        else:
+            rset = rs.get_current_evaluation().create_accessibility_result_set(request.user)
+
+        action_url = "/rs/{0}/eval/accessibility/{1}".format(rs.id, rset.id)
         evaluation = rs.get_current_evaluation()
         testsuite = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
         category_pages = []
@@ -399,21 +499,15 @@ class EditAccessibilityEvaluationView(UpdateView):
             category_pages.append({"link": "{0}{1}".format(action_url, c.id), "name": c.name, "id": c.id})
 
         idx = 0
-        next = ''
-        for c in category_pages:
-            if c['id'] == cat.id:
-                if len(category_pages) > idx + 1:
-                    next = category_pages[idx + 1]['link']
-                    break
-            idx += 1
+        next = "/rs/{0}/eval/accessibility/".format(rs.id)
 
         data = helper_functions.category_to_dict(cat)
-        result_set = evaluation.get_accessibility_result_set()
+        result_set = evaluation.get_result_set(rset.id)
         results_form = ResultFormSet(instance = result_set, queryset=evaluation.get_category_results(cat, result_set))
         at_type_form = ResultSetMetadataForm(instance = result_set.metadata)
         print at_type_form
 
-        can_edit = permissions.user_can_edit_reading_system(request.user, rs)
+        can_edit = permissions.user_can_edit_accessibility_eval(request.user, result_set)
         if can_edit == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
             return redirect("/manage/")
@@ -429,12 +523,17 @@ class EditAccessibilityEvaluationView(UpdateView):
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
+        try:
+            rset = ResultSet.objects.get(id=kwargs['rset'])
+        except ResultSet.DoesNotExist:
+            return render(request, "404.html", {})
+
         can_edit = permissions.user_can_edit_reading_system(request.user, rs)
         if can_edit == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
             return redirect("/manage/")
         evaluation = rs.get_current_evaluation()
-        result_set = evaluation.get_accessibility_result_set()
+        result_set = rset 
         formset = ResultFormSet(request.POST, instance=result_set)
 
         result_set_meta_form = ResultSetMetadataForm(request.POST, instance = result_set.metadata)
@@ -452,7 +551,7 @@ class EditAccessibilityEvaluationView(UpdateView):
                 return redirect('{0}/'.format(next))
             else:
                 # go back to the manage page
-                return redirect('/manage/')
+                return redirect("/rs/{0}/eval/accessibility/".format(rs.id))
 
 
 ################################################

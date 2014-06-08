@@ -29,10 +29,12 @@
             <td class="manage-locale">{{ r.locale }} </td>
             <td  class="manage-status" style="font-style: italic">
                 {% get_current_evaluation r as eval%}
+                {% get_default_result_set eval as default_result_set %}
                 {% if eval.flagged_for_review == True %}
                 <p><span class="alert-danger">May require review</span></p>
                 {% endif %}
-                <p>{{ eval.percent_complete }}% complete.</p>
+
+                <p>{{ default_result_set.percent_complete }}% complete.</p>
                 <p>
                     Added by {{ r.user|get_display_name }}
                     {% if r.user == user %} (you) {% endif %}
@@ -45,7 +47,7 @@
                     <li><a href="/rs/{{ r.id }}/eval/accessibility/">Evaluate Accessibility</a></li>
                     {% endif %}
                     <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
-                    <li><a href="/rs/{{ r.id }}/accessibility/">View Accessibility Evaluation</a></li>
+                    <li><a href="/rs/{{ r.id }}/accessibility/">View Accessibility Evaluations</a></li>
                     
                     {% comment %}
                     <!-- FOR NOW -->

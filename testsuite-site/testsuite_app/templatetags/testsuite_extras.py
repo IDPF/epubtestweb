@@ -2,6 +2,8 @@ from django import template
 from testsuite_app import permissions
 from testsuite_app.models import common
 from testsuite import settings
+from testsuite_app.models.result import ResultSet
+from testsuite_app.models.score import AccessibilityScore
 
 register = template.Library()
 
@@ -46,8 +48,8 @@ def alerts(alerts):
     return {"alerts": alerts}
 
 @register.inclusion_tag('_reading_system_details_list.html')
-def reading_system_details_list(rs):
-	return {"rs": rs}
+def reading_system_details_list(rs, show_abridged = False):
+	return {"rs": rs, "show_abridged": show_abridged}
 
 @register.inclusion_tag('_manage_table.html')
 def manage_table(reading_systems, user):
@@ -70,6 +72,20 @@ def get_result_for_result_set(test, evaluation, result_set):
 @register.assignment_tag
 def get_category_score(category, evaluation):
 	return evaluation.get_category_score(category)
+
+@register.assignment_tag
+def get_accessibility_category_score(result_set, category):
+    # this could one day be merged with the above function
+    return result_set.get_accessibility_category_score(category)
+
+@register.assignment_tag
+def get_accessibility_result_set_score(result_set):
+    # get the overall score
+    try:
+        score = AccessibilityScore.objects.get(result_set = result_set, category = None)
+        return score
+    except AccessibilityScore.DoesNotExist:
+        return None
 
 @register.assignment_tag
 def get_current_evaluation(reading_system):
@@ -118,6 +134,16 @@ def user_can_change_visibility(user, reading_system, new_visibility):
 	return permissions.user_can_change_visibility(user, reading_system, new_visibility)
 
 @register.assignment_tag
+def get_default_result_set(evaluation):
+    print evaluation.get_default_result_set().percent_complete
+    return evaluation.get_default_result_set()
+
+@register.assignment_tag
+def get_accessibility_result_set(rset_id):
+    return evaluation.get_result_set(rset_id)
+
+
+@register.assignment_tag
 def get_category_heading(category):
     "get the heading tag to use with this category"
     if category.depth >= 0 and category.depth <=4:
@@ -148,7 +174,8 @@ def get_enable_analytics():
 
 @register.filter
 def get_display_name(user):
-    if (user.first_name != None and user.first_name != "") or \
+    print user
+    if (user.first_name != None and user.first_name != "") and \
         (user.last_name != None and user.last_name != ""):
         return "{0} {1}".format(user.first_name, user.last_name)
     else:
@@ -181,6 +208,8 @@ def get_result_description(result):
         return "Supported"
     elif result.result == common.RESULT_NOT_SUPPORTED:
         return "Not Supported"
+    elif result.result == common.RESULT_NOT_APPLICABLE:
+        return "N/A"
     else:
         return "-"
 
@@ -198,8 +227,8 @@ def get_result_class(result, is_form):
 
 
 @register.filter
-def get_AT_metadata_description(evaluation):
-    meta = evaluation.get_accessibility_result_set().metadata
+def get_AT_metadata_description(result_set):
+    meta = result_set.metadata
     modalities = []
     if meta.is_keyboard:
         modalities.append("Keyboard")
@@ -214,3 +243,10 @@ def get_AT_metadata_description(evaluation):
 
     s = ", ".join(modalities)
     return s
+
+@register.filter
+def print_yes_no(bool_value):
+    if bool_value == True:
+        return "Yes"
+    else:
+        return "No"

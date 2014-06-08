@@ -1,5 +1,5 @@
 from models.category import Category
-from models.score import Score
+from models.score import Score, AccessibilityScore
 from models.result import Result
 from models.reading_system import ReadingSystem
 from models.test import Test, TestMetadata
@@ -21,15 +21,11 @@ def get_public_scores(categories):
             ordered_scores = []
             for cat in categories:
                 ordered_scores.append(scores[cat])
-            accessibility_score = calculate_accessibility_score(rs)
-            #accessibility_boolean = has_any_accessibility(accessibility_score)
-            ats = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
-            ars = rs.get_current_evaluation().get_accessibility_result_set()
-            # if there are any accessible evaluations, then the answer here is "true"
-            accessibility_boolean = ars != None
 
+            accessibility_score = has_any_accessibility(rs)
+            
             retval.append({"reading_system": rs, "total_score": evaluation.get_total_score(),
-                "category_scores": ordered_scores, "accessibility_score": accessibility_score, "accessibility": accessibility_boolean})
+                "category_scores": ordered_scores, "accessibility": accessibility_score})
     return retval
 
 def testsuite_to_dict(testsuite, test_filter_ids = []):
@@ -83,45 +79,6 @@ def calculate_source(dirname):
 	return None    
 
 
-# TODO expand to support more than one accessibility evaluation
-def calculate_accessibility_score(rs):
-    # TODO ; FOR NOW
-    return {"visual_adj": 0.0, "keyboard": 0.0, "mouse": 0.0, "touch": 0.0}
-
-    result_set = rs.get_current_evaluation().get_accessibility_result_set()
-    if result_set == None:
-        return {"visual_adj": 0.0, "keyboard": 0.0, "mouse": 0.0, "touch": 0.0}
-    # use the most recent accessibility testsuite
-    ts = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
-    top_level_cats = ts.get_top_level_categories()
-
-    visual_adj_tests = []
-    # hackishly using this to indicate the visual_adjustments category
-    visual_adj_cat = Category.objects.filter(testsuite = ts, temp_flag = True)[0]
-    visual_adj_tests = visual_adj_cat.get_tests()
-        
-    keyboard_tests = []
-    keyboard_test_meta = TestMetadata.objects.filter(access_type = common.ACCESS_TYPE_KEYBOARD)
-    for m in keyboard_test_meta:
-        keyboard_tests.append(m.test)
-
-    mouse_tests = []
-    mouse_test_meta = TestMetadata.objects.filter(access_type = common.ACCESS_TYPE_MOUSE)
-    for m in mouse_test_meta:
-        mouse_tests.append(m.test)
-
-    touch_tests = []
-    touch_test_meta = TestMetadata.objects.filter(access_type = common.ACCESS_TYPE_TOUCH)
-    for m in touch_test_meta:
-        touch_tests.append(m.test)
-
-    score = {}
-    score['visual_adj'] = calculate_score(visual_adj_tests, result_set)
-    score['keyboard'] = calculate_score(keyboard_tests, result_set)
-    score['mouse'] = calculate_score(mouse_tests, result_set)
-    score['touch'] = calculate_score(touch_tests, result_set)
-    return score
-
 # tests is an array
 def calculate_score(tests, result_set):
     total = len(tests)
@@ -141,8 +98,18 @@ def calculate_score(tests, result_set):
         return "Fail"
     return "Partial support"
 
-def has_any_accessibility(accessibility_score):
-    if accessibility_score['visual_adj'] > 0.0 or accessibility_score['keyboard'] > 0.0:
-        return True
-    else:
-        return False 
+def has_any_accessibility(rs):
+    # return values: 0 = fail; -1 = no accessible evals available, 1 = some accessibility support
+    result_sets = rs.get_current_evaluation().get_accessibility_result_sets()
+    if result_sets.count() == 0:
+        return -1    
+    
+    for result_set in result_sets:
+        try:
+            score = AccessibilityScore.objects.get(result_set = result_set, category = None)
+            if score.pct_total_passed > 0:
+                return 1
+        except AccessibilityScore.DoesNotExist:
+            continue
+
+    return 0

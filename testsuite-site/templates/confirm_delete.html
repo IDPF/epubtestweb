@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}:: Confirm Delete Reading System{% endblock %}
+{% block title %}:: {{header}}{% endblock %}
 
 {%block script %}
 <script>
@@ -17,7 +17,7 @@ function delete_rs() {
         url: '{{ confirm_url }}',
         type: 'DELETE',
         success: function(){
-            window.location.href = "/manage/";
+            window.location.href = "{{redirect_url}}";
         }
     });
 }
@@ -26,7 +26,7 @@ function delete_rs() {
 
 {% block content %}
 
-<h1>{{ heading }}</h1>
+<h1>{{ header }}</h1>
 
 <p class="confirm-warning">{{ warning }}</p>
 

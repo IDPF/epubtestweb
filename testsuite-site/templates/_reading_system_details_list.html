@@ -17,6 +17,7 @@
     <dd>{{ rs.locale}}</dd>
     {% endif %}
 
+{% if show_abridged == False %}
     {% if rs.sdk_version|length > 0 %}
     <dt>SDK Version</dt>
     <dd>{{ rs.sdk_version }}</dd>
@@ -26,4 +27,5 @@
     <dd> 
     {% get_current_evaluation rs as eval%}
     {{eval.last_updated }}</dd>
+{% endif %}
 </dl>
