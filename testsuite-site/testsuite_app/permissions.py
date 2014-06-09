@@ -33,7 +33,7 @@ def user_can_view_reading_system(user, rs, context):
     else:
         return False
 
-def user_can_add_accessibility_eval(user, rs):
+def user_can_create_accessibility_eval(user, rs):
     return user_can_view_reading_system(user, rs, common.CONTEXT_MANAGE)
 
 def user_can_edit_accessibility_eval(user, result_set):
@@ -41,3 +41,7 @@ def user_can_edit_accessibility_eval(user, result_set):
 
 def user_can_delete_accessibility_eval(user, result_set):
     return result_set.user == user or user.is_superuser    
+
+def user_can_view_accessibility_eval(user, rs):
+    return user_can_view_reading_system(user, rs, common.CONTEXT_MANAGE)
+

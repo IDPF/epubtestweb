@@ -62,7 +62,6 @@ class ResultSet(models.Model, common.FloatToDecimalMixin):
             completed_results = all_results.exclude(result = common.RESULT_NOT_ANSWERED)
             pct_complete = (completed_results.count() * 1.0) / (all_results.count() * 1.0) * 100.0
             self.percent_complete = self.float_to_decimal(pct_complete)
-            print "PCT COMPLETE: {0}".format(self.percent_complete)
         else:
             self.percent_complete = 0.0
 
@@ -75,9 +74,11 @@ class ResultSet(models.Model, common.FloatToDecimalMixin):
             score = AccessibilityScore.objects.get(result_set = self, category = category)
             return score
         except AccessibilityScore.DoesNotExist:
-            print "NO SCORE"
             return None
 
+def validate_result(value):
+    print "MODEL VALIDATION"
+    return
 
 class Result(models.Model):
     class Meta:
@@ -85,7 +86,7 @@ class Result(models.Model):
         app_label= 'testsuite_app'
 
     evaluation = models.ForeignKey('Evaluation')
-    result = models.CharField(max_length = 1, choices = common.RESULT_TYPE, null = True, blank = True)
+    result = models.CharField(max_length = 1, choices = common.RESULT_NA_TYPE, null = True, blank = True, validators=[validate_result])
     notes = models.TextField(null=True, blank=True, validators=[MaxLengthValidator(300)])
     test = models.ForeignKey('Test')
     publish_notes = models.BooleanField(default=False)

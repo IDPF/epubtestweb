@@ -25,11 +25,13 @@ class Test(models.Model, common.ItemMixin):
     flagged_as_changed = models.BooleanField(default = False)
     source = models.CharField(max_length = common.LONG_STRING, null=True, blank=True) # what epub the test or category came from
     depth = models.IntegerField(null=True, blank=True, default=0)
+    allow_na = models.BooleanField(default = False) # allow "Not applicable" as an answer to this test
 
     def save(self, *args, **kwargs):
         "custom save routine"
         # call 'save' on the base class
         self.depth = self.calculate_depth()
+        print "allow_na? {0}{1}".format(self.testid, self.allow_na)
         super(Test, self).save(*args, **kwargs)
 
     def get_epub_parent_category(self):

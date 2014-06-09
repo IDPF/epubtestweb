@@ -16,10 +16,11 @@ class ReadingSystem(models.Model):
 
     def save(self, *args, **kwargs):
         "custom save routine"
-        from evaluation import Evaluation
+        from evaluation import Evaluation, EvaluationManager
         super(ReadingSystem, self).save(*args, **kwargs)
         # create an evaluation if there is none
         if self.get_current_evaluation() == None:
+            print "CREATING EVAL"
             evaluation = Evaluation.objects.create_evaluation(self)
         
 

@@ -134,6 +134,14 @@ def user_can_change_visibility(user, reading_system, new_visibility):
 	return permissions.user_can_change_visibility(user, reading_system, new_visibility)
 
 @register.assignment_tag
+def user_can_manage_accessibility(user, reading_system):
+    return permissions.user_can_create_accessibility_eval(user, reading_system)
+
+@register.assignment_tag
+def user_can_edit_accessibility_eval(user, result_set):
+    return permissions.user_can_edit_accessibility_eval(user, result_set)
+
+@register.assignment_tag
 def get_default_result_set(evaluation):
     print evaluation.get_default_result_set().percent_complete
     return evaluation.get_default_result_set()

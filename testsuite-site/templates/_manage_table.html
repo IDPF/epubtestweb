@@ -17,6 +17,7 @@
         
         {% user_can_view user r 'manage' as can_view %}
         {% user_can_edit user r as can_edit %}
+        {% user_can_manage_accessibility user r as can_manage_accessibility %}
         {% user_can_change_visibility user r '1' as can_make_members_only %}
         {% user_can_change_visibility user r '2' as can_make_public %}
         {% user_can_change_visibility user r '3' as can_make_owner_only %}
@@ -44,10 +45,11 @@
                 <ul class="">
                     {% if can_edit == True %}
                     <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
-                    <li><a href="/rs/{{ r.id }}/eval/accessibility/">Evaluate Accessibility</a></li>
+                    {% endif %}
+                    {% if can_manage_accessibility == True %}
+                    <li><a href="/rs/{{ r.id }}/eval/accessibility/">Manage Accessibility</a></li>
                     {% endif %}
                     <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
-                    <li><a href="/rs/{{ r.id }}/accessibility/">View Accessibility Evaluations</a></li>
                     
                     {% comment %}
                     <!-- FOR NOW -->

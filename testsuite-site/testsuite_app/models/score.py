@@ -74,11 +74,14 @@ class AccessibilityScore(models.Model, common.FloatToDecimalMixin):
     result_set = models.ForeignKey('ResultSet', null=True, blank=True)
 
     def update(self, results):
+        self.num_passed_tests = 0
+        self.num_applicable_tests = 0
         for r in results:
             if r.result != common.RESULT_NOT_APPLICABLE:
                 self.num_applicable_tests += 1
             if r.result == common.RESULT_SUPPORTED:
                 self.num_passed_tests += 1
+        print "SCORING {0} / {1}".format(self.num_passed_tests, self.num_applicable_tests)
         if self.num_applicable_tests > 0:
             self.pct_total_passed = (self.num_passed_tests * 1.0) / (self.num_applicable_tests * 1.0) * 100
         self.save()

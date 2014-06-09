@@ -129,7 +129,7 @@ def new_accessibility_eval(rspk):
     ts = models.TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
     evaluation.accessibility_testsuite = ts
     evaluation.save_partial()
-    result_set = models.ResultSet.objects.create_result_set(ts, evaluation, evaluation.user, random_at[idx])
+    result_set = evaluation.create_accessibility_result_set(rs.user)
     tests = evaluation.get_tests(ts)
     for t in tests:
         random_answer = str(randrange(1, 3))

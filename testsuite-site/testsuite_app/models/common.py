@@ -29,6 +29,12 @@ RESULT_NOT_APPLICABLE = "3"
 RESULT_NOT_ANSWERED = None
 
 RESULT_TYPE = (
+    (RESULT_NOT_ANSWERED, "---------"), # TODO a way to make this appear by default as in RESULT_NA_TYPE ?
+    (RESULT_SUPPORTED, "Supported"),
+    (RESULT_NOT_SUPPORTED, "Not Supported"),
+)
+
+RESULT_NA_TYPE = (
     (RESULT_SUPPORTED, "Supported"),
     (RESULT_NOT_SUPPORTED, "Not Supported"),
     (RESULT_NOT_APPLICABLE, "Not Applicable"),

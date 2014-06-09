@@ -20,7 +20,7 @@ class ReadingSystemForm(ModelForm):
         fields = ('name', 'version', 'operating_system', 'locale', 'sdk_version')
 
 class ResultForm(ModelForm):
-   class Meta:
+    class Meta:
         model = Result
         fields = ('result', 'notes', 'publish_notes')
         
@@ -33,7 +33,7 @@ class ResultForm(ModelForm):
         widgets = {
             'notes': forms.Textarea(attrs={'cols': 40, 'rows': 3, 'title': 'Notes'}),
         }
-
+    
 class ResultSetMetadataForm(ModelForm):
     class Meta:
         model = ResultSetMetadata

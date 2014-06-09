@@ -281,12 +281,12 @@ class ConfirmDeleteAccessibilityConfigurationView(TemplateView):
 
         can_delete = permissions.user_can_delete_accessibility_eval(request.user, rset)
         if can_delete == False:
-            messages.add_message(request, messages.INFO, 'You do not have permission to delete that accessibility configuration.')
+            messages.add_message(request, messages.INFO, 'You do not have permission to delete that accessibility evaluation.')
             return redirect("/manage/")
         
         rs_desc = "{0} for {1}".format(rset.metadata.assistive_technology, rs.name)
         return render(request, self.template_name,
-            {"header": 'Confirm delete accessibility configuration',
+            {"header": 'Confirm delete accessibility evaluation',
             "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
             "confirm_url": "/rs/{0}/accessibility/{1}".format(kwargs['pk'], kwargs['rset']),
             "redirect_url": "/rs/{0}/eval/accessibility".format(kwargs['pk'])
@@ -426,11 +426,10 @@ class AccessibilityReadingSystemView(TemplateView):
             rset = ResultSet.objects.get(id=kwargs['rset'])
         except ResultSet.DoesNotExist:
             return render(request, "404.html", {})
-        print rset
 
-        can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
+        can_view = permissions.user_can_view_accessibility_eval(request.user, rs)
         if can_view == False:
-            messages.add_message(request, messages.INFO, 'You do not have permission to view that reading system.')
+            messages.add_message(request, messages.INFO, 'You do not have permission to view that accessibility evaluation.')
             return redirect("/")
 
         ts = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
@@ -456,7 +455,7 @@ class AccessibilityReadingSystemView(TemplateView):
         
         rset.delete_associated()
         rset.delete()
-        messages.add_message(request, messages.INFO, "Accessibility configuration deleted")
+        messages.add_message(request, messages.INFO, "Accessibility evaluation deleted")
         return HttpResponse(status=204)
 
  
@@ -476,7 +475,11 @@ class EditAccessibilityEvaluationView(UpdateView):
             except ResultSet.DoesNotExist:
                 return render(request, "404.html", {})
         else:
-            rset = rs.get_current_evaluation().create_accessibility_result_set(request.user)
+            if permissions.user_can_create_accessibility_eval(request.user, rs):
+                rset = rs.get_current_evaluation().create_accessibility_result_set(request.user)
+            else:
+                messages.add_message(request, messages.INFO, 'You do not have permission to create an accessibility evaluation.')
+                return redirect("/manage/")
 
         action_url = "/rs/{0}/eval/accessibility/{1}".format(rs.id, rset.id)
         evaluation = rs.get_current_evaluation()
@@ -505,7 +508,6 @@ class EditAccessibilityEvaluationView(UpdateView):
         result_set = evaluation.get_result_set(rset.id)
         results_form = ResultFormSet(instance = result_set, queryset=evaluation.get_category_results(cat, result_set))
         at_type_form = ResultSetMetadataForm(instance = result_set.metadata)
-        print at_type_form
 
         can_edit = permissions.user_can_edit_accessibility_eval(request.user, result_set)
         if can_edit == False:
@@ -528,7 +530,7 @@ class EditAccessibilityEvaluationView(UpdateView):
         except ResultSet.DoesNotExist:
             return render(request, "404.html", {})
 
-        can_edit = permissions.user_can_edit_reading_system(request.user, rs)
+        can_edit = permissions.user_can_edit_accessibility_eval(request.user, rset)
         if can_edit == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
             return redirect("/manage/")

@@ -92,7 +92,8 @@ class EpubParser:
                     required = test_section.attrib['class'].find('ctest') != -1
                     foldername = os.path.basename(self.folder)
                     adv = test_section.attrib['class'].find('atest') != -1
-                    import_testsuite.add_test(name, desc, parent_category, required, testid, self.testsuite, xhtml, foldername, adv)
+                    allow_na = test_section.attrib['class'].find('allow-na') != -1
+                    import_testsuite.add_test(name, desc, parent_category, required, testid, self.testsuite, xhtml, foldername, adv, allow_na)
 
             if test_section == None:
                 # does this container eventually contain a test? otherwise we won't include it.

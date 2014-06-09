@@ -34,7 +34,7 @@ def add_category(category_type, name, parent_category, testsuite, source, flag=F
     db_category.save()
     return db_category
 
-def add_test(name, description, parent_category, required, testid, testsuite, xhtml, source, access_type, is_advanced):
+def add_test(name, description, parent_category, required, testid, testsuite, xhtml, source, is_advanced, allow_na):
     db_test = Test(
         name = name,
         description = description,
@@ -43,13 +43,14 @@ def add_test(name, description, parent_category, required, testid, testsuite, xh
         testid = testid,
         testsuite = testsuite,
         xhtml = xhtml,
-        source = source
+        source = source,
+        allow_na = allow_na
     )
     db_test.save()
 
     # only accessible tests need metadata right now
-    if access_type != "":
-        metadata = TestMetadata(test = db_test, access_type = access_type, is_advanced = is_advanced)
+    if testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
+        metadata = TestMetadata(test = db_test, is_advanced = is_advanced)
         metadata.save()
     
     return db_test
@@ -103,7 +104,7 @@ def migrate_data(previous_testsuite):
             # if the ID (checked above) and xhtml for the test matches, then copy over the old result
             if result.test.xhtml == old_test_version.xhtml:
                 # print "Copying previous result for {0}".format(old_test_version.testid)
-                previous_result = old_evaluation.get_result_by_testid(result.test.testid)
+                previous_result = old_evaluation.get_result_by_testid(result, result.test.testid)
                 result.result = previous_result.result
                 result.notes = previous_result.notes
                 result.save()

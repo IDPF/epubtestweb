@@ -24,18 +24,21 @@ class EvaluationManager(models.Manager):
             percent_complete = 0.00,
             reading_system = reading_system
         )
+        print "hi"
         evaluation.save()
-
         total_score = Score(category = None, evaluation = evaluation)
         total_score.save()
+
 
         # create default results for this evaluation
         default_tests = Test.objects.filter(testsuite = default_testsuite)
         
-        default_result_set = ResultSet.objects.create_result_set(default_testsuite, evaluation, evaluation.user)
+        print "Creating default result set"
+        default_result_set = ResultSet.objects.create_result_set(default_testsuite, evaluation, evaluation.reading_system.user)
         for t in default_tests:
             result = Result(test = t, evaluation = evaluation, result = RESULT_NOT_ANSWERED, result_set = default_result_set)
             result.save()
+        default_result_set.save()
 
         # only do scoring for the default testsuite
         # update the score once results have been created
@@ -50,7 +53,6 @@ class EvaluationManager(models.Manager):
             )
             score.update(evaluation.get_category_results(cat, default_result_set))
             score.save()
-
         return evaluation
 
     def delete_associated(self, reading_system):
@@ -78,6 +80,7 @@ class Evaluation(models.Model, FloatToDecimalMixin):
 
     def save(self, *args, **kwargs):
         "custom save routine"
+        print "SAVING EVAL"
         self.last_updated = generate_timestamp()
         self.save_scores()
         self.update_percent_complete()
@@ -106,20 +109,28 @@ class Evaluation(models.Model, FloatToDecimalMixin):
                 results = self.get_all_results(self.get_default_result_set())
             score.update(results)
 
-        category_scores = AccessibilityScore.objects.filter(evaluation = self)
-        for score in category_scores:
-            results = None
-            if score.category != None:
-                results = self.get_category_results(score.category, score.result_set)
-            else:
-                results = score.result_set.get_results_in_set()
-            score.update(results)
+        result_sets = self.get_accessibility_result_sets()
+        for rset in result_sets:
+            category_scores = AccessibilityScore.objects.filter(evaluation = self, result_set = rset)
+            for score in category_scores:
+                results = None
+                if score.category != None:
+                    print "UPDATING SCORE: {0}".format(score.category.name)
+                    results = self.get_category_results(score.category, score.result_set)
+                else:
+                    print "UPDATING SCORE: {0}".format("ALL")
+                    results = score.result_set.get_results_in_set()
+                score.update(results)
 
     def update_percent_complete(self):
         from result import ResultSet
         result_sets = ResultSet.objects.filter(evaluation = self)
         for rset in result_sets:
             rset.update_percent_complete()
+            rset.save()
+        if self.get_default_result_set() != None:
+            self.percent_complete = self.get_default_result_set().percent_complete
+        
             
     def get_reading_system(self):
         from reading_system import ReadingSystem
@@ -181,6 +192,7 @@ class Evaluation(models.Model, FloatToDecimalMixin):
     def get_category_results(self, category, result_set): 
         "get a queryset of all the results for the given category"
         tests = category.get_tests()
+        print "CATEGORY HAS  {0} TESTS".format(len(tests))
         return self.get_results(tests, result_set)
 
     def get_all_results(self, result_set):
