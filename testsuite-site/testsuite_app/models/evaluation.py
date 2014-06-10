@@ -68,16 +68,6 @@ class Evaluation(models.Model, FloatToDecimalMixin):
 
     objects = EvaluationManager()
     
-    # scheduled for deprecation
-    percent_complete = models.DecimalField(decimal_places = 2, max_digits = 5, default=0)
-    
-    testsuite = models.ForeignKey('TestSuite', related_name='evaluation_testsuite')
-    # new as of march 2014
-    accessibility_testsuite = models.ForeignKey('TestSuite', related_name='evaluation_accessibility_testsuite', null=True, blank=True)
-    last_updated = models.DateTimeField()
-    reading_system = models.ForeignKey('ReadingSystem')
-    flagged_for_review = models.BooleanField(default = False)
-
     def save(self, *args, **kwargs):
         "custom save routine"
         print "SAVING EVAL"
@@ -94,67 +84,8 @@ class Evaluation(models.Model, FloatToDecimalMixin):
     def save_partial(self, *args, **kwargs):
         super(Evaluation, self).save(*args, **kwargs)
     
-    def save_scores(self):
-        # update the score
-        from score import Score
-        from score import AccessibilityScore
-        from result import Result
-        from category import Category
-        category_scores = Score.objects.filter(evaluation = self)
-        for score in category_scores:
-            results = None
-            if score.category != None:
-                results = self.get_category_results(score.category, self.get_default_result_set())
-            else:
-                results = self.get_all_results(self.get_default_result_set())
-            score.update(results)
-
-        result_sets = self.get_accessibility_result_sets()
-        for rset in result_sets:
-            category_scores = AccessibilityScore.objects.filter(evaluation = self, result_set = rset)
-            for score in category_scores:
-                results = None
-                if score.category != None:
-                    print "UPDATING SCORE: {0}".format(score.category.name)
-                    results = self.get_category_results(score.category, score.result_set)
-                else:
-                    print "UPDATING SCORE: {0}".format("ALL")
-                    results = score.result_set.get_results_in_set()
-                score.update(results)
-
-    def update_percent_complete(self):
-        from result import ResultSet
-        result_sets = ResultSet.objects.filter(evaluation = self)
-        for rset in result_sets:
-            rset.update_percent_complete()
-            rset.save()
-        if self.get_default_result_set() != None:
-            self.percent_complete = self.get_default_result_set().percent_complete
-        
             
-    def get_reading_system(self):
-        from reading_system import ReadingSystem
-        try:
-            rs = ReadingSystem.objects.get(evaluation = self)
-        except ReadingSystem.DoesNotExist:
-            return None
-        return rs
     
-    def get_default_result_set(self):
-        # there should only be one
-        from result import ResultSet
-        from common import *
-        try:
-            result_set = ResultSet.objects.get(evaluation = self, testsuite=self.testsuite)
-        except ResultSet.DoesNotExist:
-            return None
-        return result_set
-
-    def get_accessibility_result_sets(self):
-        from result import ResultSet
-        result_sets = ResultSet.objects.filter(evaluation = self, testsuite = self.accessibility_testsuite)
-        return result_sets
-
     def get_result_set(self, result_set_id):
         from result import ResultSet
         from common import *

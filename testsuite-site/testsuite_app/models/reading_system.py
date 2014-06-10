@@ -24,15 +24,21 @@ class ReadingSystem(models.Model):
             evaluation = Evaluation.objects.create_evaluation(self)
         
 
-    def get_current_evaluation(self):
-        "get the evaluation associated with the most recent testsuite"
-        from testsuite import TestSuite
-        from evaluation import Evaluation
-        most_recent_testsuite = TestSuite.objects.get_most_recent_testsuite()
+    def get_default_result_set(self):
+        # there should only be one
+        from result import ResultSet
+        from common import *
         try:
-            return Evaluation.objects.get(reading_system = self, testsuite = most_recent_testsuite)
-        except Evaluation.DoesNotExist:
+            result_set = ResultSet.objects.get(evaluation = self, testsuite=self.testsuite)
+        except ResultSet.DoesNotExist:
             return None
+        return result_set
+
+    def get_accessibility_result_sets(self):
+        from result import ResultSet
+        result_sets = ResultSet.objects.filter(evaluation = self, testsuite = self.accessibility_testsuite)
+        return result_sets
+
 
     def get_evaluation_for_testsuite(self, testsuite):
         from testsuite import TestSuite
@@ -42,7 +48,3 @@ class ReadingSystem(models.Model):
         except Evaluation.DoesNotExist:
             return None
 
-    def get_all_evaluations(self):
-        "get all evaluations"
-        from evaluation import Evaluation
-        return Evaluation.objects.filter(reading_system = self)
