@@ -277,6 +277,16 @@ def force_random_changes(max_changes=0, avg_distance_between=0):
                 r.save()
         e.save()
 
+def export_db_to_json():
+    from testsuite_app import database_export
+    data = database_export.export_database_as_json_string()
+    filename = "db_export_{0}".format(datetime.now())
+    f = open(filename, "w")
+    f.write(data)
+    f.close()
+    print "Wrote data to {0}".format(filename)
+
+
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
     subparsers = argparser.add_subparsers(help='commands')
@@ -335,6 +345,9 @@ def main():
 
     force_random_changes_parser = subparsers.add_parser("force-change-tests", help="pretend some (max 20) tests have changed")
     force_random_changes_parser.set_defaults(func = lambda(args): force_random_changes(20, 30))
+
+    export_database_to_json_parser = subparsers.add_parser("export-db", help="Export the database to json")
+    export_database_to_json_parser.set_defaults(func = lambda(args): export_db_to_json())
 
     args = argparser.parse_args()
     args.func(args)
