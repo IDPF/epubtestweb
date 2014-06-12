@@ -72,7 +72,7 @@ def migrate_data(previous_testsuite):
         old_evaluation = rs.get_evaluation_for_testsuite(previous_testsuite)
         new_evaluation = Evaluation.objects.create_evaluation(rs)
         
-        print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
+        print "Migrating data for {0} {1} {2}".format(rs.name.encode('utf-8'), rs.version.encode('utf-8'), rs.operating_system.encode('utf-8'))
         results = new_evaluation.get_all_results()
         print "Processing {0} results".format(results.count())
         flag_evaluation = False
