@@ -1,16 +1,18 @@
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
 
 {% get_category_heading category.item as heading_tag %}
 
 {% if category.item.depth == 0 %}
-    {% get_accessibility_result_set_score result_set as score %}
+    {% get_overall_score result_set as score %}
     <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}
     <span class="pull-right">Total Score: {{ score.pct_total_passed}}%</span>
     </{{heading_tag}}>
 
 
 {% elif category.item.depth == 2 %}
-    {% get_accessibility_category_score result_set category.item as score %}
+    {% get_category_score category.item result_set as score %}
     <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}
     <span class="pull-right">Score: {{ score.pct_total_passed}}%</span>
     </{{heading_tag}}>
@@ -32,7 +34,7 @@
     <tbody>
         {% if result_set != None %}
         {% for t in category.tests %}
-            {% get_result_for_result_set t evaluation result_set as r %}
+            {% get_result t result_set as r %}
             {% result r False %}
         {% endfor %}
         {% endif %}
@@ -41,7 +43,7 @@
 {% endif %}
 
 {% for subcat in category.subcategories %}
-    {% accessibility_category subcat evaluation result_set %}
+    {% accessibility_category subcat result_set %}
 {% endfor %}
 
 {% if category.item.depth == 0 %}

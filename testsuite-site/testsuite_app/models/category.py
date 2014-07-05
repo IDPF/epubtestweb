@@ -13,10 +13,7 @@ class Category(models.Model, common.ItemMixin):
     testsuite = models.ForeignKey('TestSuite')
     source = models.CharField(max_length = common.LONG_STRING, null=True, blank=True) # what epub the test or category came from
     depth = models.IntegerField(null=True, blank=True, default=0)
-    # use this to flag the visual adjustments category in accessibility testing
-    # we'll move to something more thorough eventually
-    temp_flag = models.BooleanField(default=False) 
-
+    
 
     def save(self, *args, **kwargs):
         "custom save routine"
@@ -24,9 +21,8 @@ class Category(models.Model, common.ItemMixin):
         self.depth = self.calculate_depth()
         super(Category, self).save(*args, **kwargs)
 
-    # get all the tests in the given category (drill down through subcategories too)
-    # TODO should this go in a manager class instead of being directly in Category?
     def get_tests(self):
+        # get all the tests in the given category (drill down through subcategories too)
         tests = Test.objects.filter(parent_category = self)
         retval = []
         for t in tests:

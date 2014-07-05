@@ -1,6 +1,7 @@
 from django.db import models
 import common
 
+
 class Score(models.Model, common.FloatToDecimalMixin):
     class Meta:
         db_table = 'testsuite_app_score'
@@ -15,8 +16,8 @@ class Score(models.Model, common.FloatToDecimalMixin):
     pct_optional_passed = models.DecimalField(decimal_places = 2, max_digits = 5, default = 0)
     pct_total_passed = models.DecimalField(decimal_places = 2, max_digits = 5, default = 0)
 
-    evaluation = models.ForeignKey('Evaluation')
     category = models.ForeignKey('Category', null=True, blank=True) # if category = None, this is the overall score
+    result_set = models.ForeignKey('ResultSet')
 
     def update(self, results):
         "calculate a new score for the given results"
@@ -69,9 +70,8 @@ class AccessibilityScore(models.Model, common.FloatToDecimalMixin):
     
     pct_total_passed = models.DecimalField(decimal_places = 2, max_digits = 5, default = 0)
 
-    evaluation = models.ForeignKey('Evaluation')
     category = models.ForeignKey('Category', null=True, blank=True) # if category = None, this is the overall score
-    result_set = models.ForeignKey('ResultSet', null=True, blank=True)
+    result_set = models.ForeignKey('ResultSet')
 
     def update(self, results):
         self.num_passed_tests = 0
@@ -81,7 +81,6 @@ class AccessibilityScore(models.Model, common.FloatToDecimalMixin):
                 self.num_applicable_tests += 1
             if r.result == common.RESULT_SUPPORTED:
                 self.num_passed_tests += 1
-        print "SCORING {0} / {1}".format(self.num_passed_tests, self.num_applicable_tests)
         if self.num_applicable_tests > 0:
             self.pct_total_passed = (self.num_passed_tests * 1.0) / (self.num_applicable_tests * 1.0) * 100
         self.save()

@@ -1,8 +1,11 @@
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 
 <dl>
 {% for category in categories %}
-	{% get_category_score category.item evaluation as score%}
+	{% get_category_score category.item result_set as score%}
 
 	<dt><a href="#c{{category.item.id}}">{{category.item.name}}</a></dt>
 	<dd>

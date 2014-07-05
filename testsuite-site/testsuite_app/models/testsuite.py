@@ -36,3 +36,14 @@ class TestSuite(models.Model):
         from category import Category
         return Category.objects.filter(testsuite = self, parent_category = None)
 
+    def get_categories(self):
+        from category import Category
+        return Category.objects.filter(testsuite = self)
+    
+    def get_tests(self):
+        "get a queryset of all tests"
+        from test import Test
+        tests = Test.objects.filter(testsuite = self)
+        return tests
+
+

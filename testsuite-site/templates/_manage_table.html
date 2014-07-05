@@ -1,4 +1,7 @@
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 
 <table class="table table-striped tablesorter">
     <thead>
@@ -15,12 +18,15 @@
     <tbody>
         {% for r in reading_systems %}
         
+        {% get_default_result_set r as default_result_set %}
+
         {% user_can_view user r 'manage' as can_view %}
         {% user_can_edit user r as can_edit %}
         {% user_can_manage_accessibility user r as can_manage_accessibility %}
-        {% user_can_change_visibility user r '1' as can_make_members_only %}
-        {% user_can_change_visibility user r '2' as can_make_public %}
-        {% user_can_change_visibility user r '3' as can_make_owner_only %}
+
+        {% user_can_change_rs_visibility user r '1' as can_make_members_only %}
+        {% user_can_change_rs_visibility user r '2' as can_make_public %}
+        {% user_can_change_rs_visibility user r '3' as can_make_owner_only %}
         
         {% if can_view %}
         <tr>
@@ -29,13 +35,17 @@
             <td class="manage-os">{{ r.operating_system }} </td>
             <td class="manage-locale">{{ r.locale }} </td>
             <td  class="manage-status" style="font-style: italic">
-                {% get_current_evaluation r as eval%}
-                {% get_default_result_set eval as default_result_set %}
-                {% if eval.flagged_for_review == True %}
+                
+                {% if default_result_set.flagged_for_review == True %}
                 <p><span class="alert-danger">May require review</span></p>
                 {% endif %}
 
-                <p>{{ default_result_set.percent_complete }}% complete.</p>
+                <p>{% if default_result_set.percent_complete != None %}
+                    {{ default_result_set.percent_complete }}%
+                   {% else %}
+                   0%
+                   {% endif %}
+                    complete.</p>
                 <p>
                     Added by {{ r.user|get_display_name }}
                     {% if r.user == user %} (you) {% endif %}
@@ -47,7 +57,7 @@
                     <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
                     {% endif %}
                     {% if can_manage_accessibility == True %}
-                    <li><a href="/rs/{{ r.id }}/eval/accessibility/">Manage Accessibility</a></li>
+                    <li><a href="/rs/{{ r.id }}/eval/accessibility/">Accessibility Evaluations</a></li>
                     {% endif %}
                     <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
                     
@@ -80,6 +90,7 @@
                     {% if can_make_public == False and can_make_members_only == False and can_make_owner_only == False %}              
                     <li style="font-style: italic" class="text-muted">You do not have permission to change visibility.</li>
                     {% endif %}
+                
                 </ul>
             </td>
         </tr>

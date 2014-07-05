@@ -1,4 +1,7 @@
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 
 <dl class="dl-horizontal">
     <dt>Name</dt>
@@ -19,13 +22,13 @@
 
 {% if show_abridged == False %}
     {% if rs.sdk_version|length > 0 %}
-    <dt>SDK Version</dt>
-    <dd>{{ rs.sdk_version }}</dd>
+    <dt>Notes</dt>
+    <dd>{{ rs.notes }}</dd>
     {% endif %}
 
     <dt>Evaluated</dt>
     <dd> 
-    {% get_current_evaluation rs as eval%}
-    {{eval.last_updated }}</dd>
+    {% get_default_result_set rs as result_set%}
+    {{result_set.last_updated }}</dd>
 {% endif %}
 </dl>

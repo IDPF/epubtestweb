@@ -5,6 +5,7 @@ from django.contrib import admin
 from testsuite_app.views import *
 from django.contrib.auth.decorators import login_required
 import settings
+from testsuite_app.views import *
 
 admin.autodiscover()
 
@@ -24,16 +25,18 @@ urlpatterns = patterns('',
     (r'^rs/(?P<pk>\d+)/accessibility/(?P<rset>\d+)$', AccessibilityReadingSystemView.as_view()),
     (r'^rs/(?P<pk>\d+)/export/$', login_required(function=export_data_single, login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/edit/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
-    (r'^rs/(?P<pk>\d+)/eval/$', login_required(function=EditEvaluationView.as_view(), login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/eval/$', login_required(function=EditResultSetView.as_view(), login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/eval/new$', login_required(function=EditResultSetView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/eval/accessibility/$', login_required(function=EditAccessibilityConfigurationsView.as_view(), login_url='/login/')),
-    (r'^rs/(?P<pk>\d+)/eval/accessibility/new$', login_required(function=EditAccessibilityEvaluationView.as_view(), login_url='/login/')),
-    (r'^rs/(?P<pk>\d+)/eval/accessibility/(?P<rset>\d+)$', login_required(function=EditAccessibilityEvaluationView.as_view(), login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/eval/accessibility/new$', login_required(function=EditAccessibilityResultSetView.as_view(), login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/eval/accessibility/(?P<rset>\d+)$', login_required(function=EditAccessibilityResultSetView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/accessibility/(?P<rset>\d+)/delete$', login_required(function=ConfirmDeleteAccessibilityConfigurationView.as_view(), login_url='/login/')),
-    (r'^rs/(?P<pk>\d+)/eval/(?P<cat>\d+)/$', login_required(function=EditEvaluationView.as_view(), login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/eval/(?P<cat>\d+)/$', login_required(function=EditResultSetView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteRSView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/report/$', login_required(function=ProblemReportView.as_view(), login_url='/login/')),
     (r'^rs/new/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
-    (r'^rs/(?P<pk>\d+)/visibility/$', login_required(function=set_visibility, login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/visibility/$', login_required(function=set_rs_visibility, login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/accessibility/(?P<rset>\d+)/visibility/$', login_required(function=set_accessibility_visibility, login_url='/login/')),
     (r'^admin/', include(admin.site.urls)),
 ) 
 

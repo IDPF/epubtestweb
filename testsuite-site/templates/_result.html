@@ -1,4 +1,7 @@
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 <tr id="{{result.test.testid}}"
 class="result
     {{result | get_result_class:False}}

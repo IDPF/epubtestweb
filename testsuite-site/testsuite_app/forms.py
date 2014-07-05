@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from models import *
 from django.forms.models import inlineformset_factory
+from django.db.models.fields import BLANK_CHOICE_DASH
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
@@ -17,7 +18,7 @@ class ReadingSystemForm(ModelForm):
 
     class Meta:
         model = ReadingSystem
-        fields = ('name', 'version', 'operating_system', 'locale', 'sdk_version')
+        fields = ('name', 'version', 'operating_system', 'locale', 'notes')
 
 class ResultForm(ModelForm):
     class Meta:
@@ -33,17 +34,22 @@ class ResultForm(ModelForm):
         widgets = {
             'notes': forms.Textarea(attrs={'cols': 40, 'rows': 3, 'title': 'Notes'}),
         }
+    def __init__(self, *args, **kwargs):
+        super(ResultForm, self).__init__(*args, **kwargs)
+        if self.instance.test.allow_na == False:
+            self.fields['result'] = forms.ChoiceField(choices=BLANK_CHOICE_DASH + list(common.RESULT_TYPE), required=False)
     
 class ResultSetMetadataForm(ModelForm):
     class Meta:
-        model = ResultSetMetadata
-        fields = ('assistive_technology', 'is_keyboard', 'is_mouse', 'is_touch', 'is_braille', 'is_screenreader')
+        model = ATMetadata
+        fields = ('assistive_technology', 'input_type', 'supports_braille', 'supports_screenreader')
         labels = {
-            'is_keyboard': 'Supports keyboard input',
-            'is_mouse': 'Supports mouse input',
-            'is_touch': 'Supports touch or gesture input',
-            'is_screenreader': 'Supports screenreader output',
-            'is_braille': 'Supports Braille output',
+            'input_type': 'Input type',
+            'supports_screenreader': 'Supports screenreader output',
+            'supports_braille': 'Supports Braille output',
+        }
+        widgets = {
+            'input_type': forms.RadioSelect
         }
 
 ResultFormSet = inlineformset_factory(ResultSet, Result, extra=0, can_delete=False, form = ResultForm)

@@ -101,9 +101,8 @@ class EpubParser:
                     desc = self.get_label(c)
                     if self.restriction >= 3:
                         foldername = os.path.basename(self.folder)
-                        temp_flag = c.attrib.has_key('class') and c.attrib['class'].find('visual-adjustments') != -1
                         new_category = import_testsuite.add_category(common.CATEGORY_INTERNAL, \
-                            desc, parent_category, self.testsuite, foldername, temp_flag)
+                            desc, parent_category, self.testsuite, foldername)
                     else:
                         new_category = parent_category
                     # if this element has a nested list

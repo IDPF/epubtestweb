@@ -9,14 +9,14 @@ from testsuite import settings
 from models import common
 
 def get_public_scores(categories):
-    "get the public evaluation scores for each reading system"
+    "get the public scores for each reading system"
     retval = []
     reading_systems = ReadingSystem.objects.all()
     for rs in reading_systems:
         if rs.visibility == common.VISIBILITY_PUBLIC:
-            evaluation = rs.get_current_evaluation()
-            ts = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_DEFAULT)
-            scores = evaluation.get_top_level_category_scores(ts)
+            result_set = rs.get_default_result_set()
+            ts = TestSuite.objects.get_most_recent_testsuite()
+            scores = result_set.get_top_level_category_scores(ts)
             # make sure scores have the same order as the categories
             ordered_scores = []
             for cat in categories:
@@ -24,7 +24,7 @@ def get_public_scores(categories):
 
             accessibility_score = has_any_accessibility(rs)
             
-            retval.append({"reading_system": rs, "total_score": evaluation.get_total_score(),
+            retval.append({"reading_system": rs, "total_score": result_set.get_total_score(),
                 "category_scores": ordered_scores, "accessibility": accessibility_score})
     return retval
 
@@ -84,7 +84,7 @@ def calculate_score(tests, result_set):
     total = len(tests)
     passed = 0
     for t in tests:
-        result = result_set.evaluation.get_result(t, result_set)
+        result = result_set.get_result_for_test(t)
         if result.result == common.RESULT_SUPPORTED:
             passed += 1
     if total == 0: 
@@ -100,16 +100,19 @@ def calculate_score(tests, result_set):
 
 def has_any_accessibility(rs):
     # return values: 0 = fail; -1 = no accessible evals available, 1 = some accessibility support
-    result_sets = rs.get_current_evaluation().get_accessibility_result_sets()
+    result_sets = rs.get_accessibility_result_sets()
+    print "count {0}".format(result_sets.count())
     if result_sets.count() == 0:
         return -1    
     
     for result_set in result_sets:
-        try:
-            score = AccessibilityScore.objects.get(result_set = result_set, category = None)
-            if score.pct_total_passed > 0:
+        score = result_set.get_total_score()
+        if score.pct_total_passed > 0:
                 return 1
-        except AccessibilityScore.DoesNotExist:
-            continue
-
     return 0
+
+def generate_timestamp():
+    from datetime import datetime
+    from django.utils.timezone import utc
+    return datetime.utcnow().replace(tzinfo=utc)
+

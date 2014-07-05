@@ -1,7 +1,10 @@
-Categories:
+TestSuites: 
     -
-        Name: Top-level category
-        CategoryDisplayDepthLimit: Internal
-        Files:
-            - epub
-    
+        Type: Default
+        Categories:
+        -
+            Name: Top-level category
+            CategoryDisplayDepthLimit: Internal
+            Files:
+                - epub
+        

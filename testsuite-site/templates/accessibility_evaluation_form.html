@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 {% block title %}:: Evaluate{% endblock %}
 
 {% block style %}
@@ -81,12 +84,12 @@ function autosave() {
 </div>
 
 
-{% get_unanswered_flagged_items_in_default_set evaluation as flagged_items %}
-{% if evaluation.flagged_for_review %}
+{% get_unanswered_flagged_items result_set as flagged_items %}
+{% if result_set.flagged_for_review %}
 <div class="panel panel-warning">
     <div class="panel-heading">Update</div>
     <div class="panel-body">
-        <p>The following tests may require review due to changes as of {{evaluation.testsuite.version_date}}.</p>
+        <p>The following tests may require review due to changes as of {{result_set.testsuite.version_date}}.</p>
 
         <ul id="flagged-list" class="list-unstyled">
         {% for item in flagged_items %}
@@ -102,7 +105,7 @@ function autosave() {
 {% endif %}
 
 <div class="results">
-{% accessibility_category_form data evaluation results_form flagged_items result_set %}
+{% accessibility_category_form data result_set results_form flagged_items %}
 </div>
 
 {{ results_form.management_form }}

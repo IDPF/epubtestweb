@@ -29,7 +29,6 @@ RESULT_NOT_APPLICABLE = "3"
 RESULT_NOT_ANSWERED = None
 
 RESULT_TYPE = (
-    (RESULT_NOT_ANSWERED, "---------"), # TODO a way to make this appear by default as in RESULT_NA_TYPE ?
     (RESULT_SUPPORTED, "Supported"),
     (RESULT_NOT_SUPPORTED, "Not Supported"),
 )
@@ -40,21 +39,20 @@ RESULT_NA_TYPE = (
     (RESULT_NOT_APPLICABLE, "Not Applicable"),
 )
 
-ACCESS_TYPE_KEYBOARD = "1"
-ACCESS_TYPE_MOUSE = "2"
-ACCESS_TYPE_TOUCH = "3"
-
-ACCESS_TYPE = (
-    (ACCESS_TYPE_KEYBOARD, "Keyboard access to all features"),
-    (ACCESS_TYPE_MOUSE, "Mouse access to all features"),
-    (ACCESS_TYPE_TOUCH, "Touchscreen access to all features"),
-)
-
 TESTSUITE_TYPE_DEFAULT = "1"
 TESTSUITE_TYPE_ACCESSIBILITY = "2"
 TESTSUITE_TYPE = (
     (TESTSUITE_TYPE_DEFAULT, "Default"),
     (TESTSUITE_TYPE_ACCESSIBILITY, "Accessibility"),
+)
+
+INPUT_TYPE_KEYBOARD = "1"
+INPUT_TYPE_MOUSE = "2"
+INPUT_TYPE_TOUCH = "3"
+INPUT_TYPE = (
+    (INPUT_TYPE_KEYBOARD, "Keyboard"),
+    (INPUT_TYPE_MOUSE, "Mouse"),
+    (INPUT_TYPE_TOUCH, "Touch/Gestures"),
 )
 
 CONTEXT_INDEX = "index"

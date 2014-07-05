@@ -19,10 +19,6 @@ def print_testsuite():
     for r in res:
         helper_functions.print_item_summary(r)
 
-def clear_data():
-    models.UserProfile.objects.all().delete()
-    models.ReadingSystem.objects.all().delete()
-
 # import testsuites from the YAML configuration file
 def add_testsuites(sourcedir, config_file):
     norm_sourcedir = os.path.normpath(sourcedir)
@@ -76,27 +72,16 @@ def add_rs(name):
         locale = "US",
         name = name,
         operating_system = "OSX",
-        sdk_version = "N/A",
+        notes = "NOTES",
         version = "1.0",
         user = user,
-        visibility = common.VISIBILITY_PUBLIC,
     )
-    rs.save() # save now to generate an initial evaluation
+    rs.save() 
     
-    geneval(rs.pk)
-
     return rs
 
-def rollback():
-    "roll back to the previous testsuite version, or just remove eval data if there is no previous version"
-    ts = models.TestSuite.objects.get_most_recent_testsuite()
-    evals = models.Evaluation.objects.filter(testsuite = ts)
-    for e in evals:
-        e.delete()
-    ts.delete()
-
 def export(outfile):
-    xmldoc = export_data.export_all_current_evaluations(None)
+    xmldoc = export_data.export_all_current_reading_systems(None)
     xmldoc.write(outfile)
     print "Data exported to {0}".format(outfile)
 
@@ -105,37 +90,25 @@ def listrs():
     for rs in rses:
         print "{0}: {1}".format(rs.name, rs.pk)
 
-def geneval(rspk):
+def geneval(rspk, testsuite_type):
     try:
         rs = models.ReadingSystem.objects.get(id=rspk)
     except models.ReadingSystem.DoesNotExist:
         return
-    evaluation = rs.get_current_evaluation()
+    testsuite = None
+    if testsuite_type == "DEFAULT":
+        testsuite = models.TestSuite.objects.get_most_recent_testsuite()
+    else:
+        testsuite = models.TestSuite.objects.get_most_recent_accessibility_testsuite()
+    result_set = models.ResultSet.objects.create_result_set(rs, testsuite, rs.user)
+    result_set.save()
+    if testsuite_type == "ACCESSIBILITY":
+        result_set.add_metadata("AT123", common.INPUT_TYPE_KEYBOARD, False, False)
     # generate result data
-    results = evaluation.get_all_results(evaluation.get_default_result_set())
+    results = result_set.get_results()
     for r in results:
         r.result = str(randrange(1, 3))
         r.save()
-    evaluation.save()
-
-def new_accessibility_eval(rspk):
-    random_at = ['MyScreenReader', 'Magnify200', 'Voices', 'ScreenZoom']
-    idx = randrange(0,4)
-    try:
-        rs = models.ReadingSystem.objects.get(id=rspk)
-    except models.ReadingSystem.DoesNotExist:
-        return
-    evaluation = rs.get_current_evaluation()
-    ts = models.TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
-    evaluation.accessibility_testsuite = ts
-    evaluation.save_partial()
-    result_set = evaluation.create_accessibility_result_set(rs.user)
-    tests = evaluation.get_tests(ts)
-    for t in tests:
-        random_answer = str(randrange(1, 3))
-        result = models.Result(test = t, evaluation = evaluation, result = random_answer, result_set = result_set)
-        result.save()
-
 
 
 def getemails():
@@ -154,107 +127,107 @@ def listusers():
     for u in users:
         print "{0}\t\t\t\t{1} {2}".format(u.username, u.first_name.encode('utf-8'), u.last_name.encode('utf-8'))
 
-def integrity_check():
-    "make sure that all RS evals have the right number of tests and score entries"
-    report = {} 
-    rses = models.ReadingSystem.objects.all()
-    for rs in rses:
-        report[rs] = {"results": "ok", "scores": "ok"}
-        print "Checking Reading System: {0} (ID = {1})".format(rs.name, rs.pk)
-        evaluations = models.Evaluation.objects.filter(reading_system = rs)
-        for evaluation in evaluations:
-            print "Checking evaluation from {0} (ID = {1})".format(evaluation.last_updated, evaluation.pk)
+# def integrity_check():
+#     "make sure that all RS evals have the right number of tests and score entries"
+#     report = {} 
+#     rses = models.ReadingSystem.objects.all()
+#     for rs in rses:
+#         report[rs] = {"results": "ok", "scores": "ok"}
+#         print "Checking Reading System: {0} (ID = {1})".format(rs.name, rs.pk)
+#         evaluations = models.Evaluation.objects.filter(reading_system = rs)
+#         for evaluation in evaluations:
+#             print "Checking evaluation from {0} (ID = {1})".format(evaluation.last_updated, evaluation.pk)
             
-            # check that each testsuite test has a result
-            print "Checking results"
-            tests = models.Test.objects.filter(testsuite = evaluation.testsuite)
-            for test in tests:
-                try:
-                    result = models.Result.objects.get(evaluation = evaluation, test = test)
-                except models.Result.DoesNotExist:
-                    print "Result missing for {0}".format(test.testid)
-                    report[rs]['results'] = "Missing result record(s)"
+#             # check that each testsuite test has a result
+#             print "Checking results"
+#             tests = models.Test.objects.filter(testsuite = evaluation.testsuite)
+#             for test in tests:
+#                 try:
+#                     result = models.Result.objects.get(evaluation = evaluation, test = test)
+#                 except models.Result.DoesNotExist:
+#                     print "Result missing for {0}".format(test.testid)
+#                     report[rs]['results'] = "Missing result record(s)"
             
-            print "Checking scores"
-            categories = models.Category.objects.filter(testsuite = evaluation.testsuite)
-            for category in categories:
-                try:
-                    score = models.Score.objects.get(evaluation = evaluation, category = category)
-                except models.Score.DoesNotExist:
-                    print "Score missing for {0}".format(category.name.encode('utf-8'))
-                    report[rs]['scores'] = "Missing score record(s)"
+#             print "Checking scores"
+#             categories = models.Category.objects.filter(testsuite = evaluation.testsuite)
+#             for category in categories:
+#                 try:
+#                     score = models.Score.objects.get(evaluation = evaluation, category = category)
+#                 except models.Score.DoesNotExist:
+#                     print "Score missing for {0}".format(category.name.encode('utf-8'))
+#                     report[rs]['scores'] = "Missing score record(s)"
 
-            try:
-                total_score = models.Score.objects.get(evaluation = evaluation, category = None)
-            except models.Score.DoesNotExist:
-                print "Total score missing for {0}".format(rs.name)
+#             try:
+#                 total_score = models.Score.objects.get(evaluation = evaluation, category = None)
+#             except models.Score.DoesNotExist:
+#                 print "Total score missing for {0}".format(rs.name)
 
-def repair(evalpk):
-    "repair an evaluation"
-    repair_scores(evalpk)
-    repair_results(evalpk)
+# def repair(evalpk):
+#     "repair an evaluation"
+#     repair_scores(evalpk)
+#     repair_results(evalpk)
 
-def repair_scores(evalpk):
-    "repair scores for the given evaluation"
-    try:
-        evaluation = models.Evaluation.objects.get(id=evalpk)
-    except models.Evaluation.DoesNotExist:
-        return
-    found_error = False
+# def repair_scores(evalpk):
+#     "repair scores for the given evaluation"
+#     try:
+#         evaluation = models.Evaluation.objects.get(id=evalpk)
+#     except models.Evaluation.DoesNotExist:
+#         return
+#     found_error = False
     
-    print "Repairing scores for {0} (evaluation ID = {1})".format(evaluation.reading_system.name, evaluation.pk)
-    categories = models.Category.objects.filter(testsuite = evaluation.testsuite)
-    for category in categories:
-        try:
-            score = models.Score.objects.get(evaluation = evaluation, category = category)
-        except models.Score.DoesNotExist:
-            found_error = True
-            print "Adding score record for {0}".format(category.name.encode('utf-8'))
-            score = models.Score(
-                category = category,
-                evaluation = evaluation
-            )
-            score.update(evaluation.get_category_results(category,evaluation.get_default_result_set()))
-            score.save()
-    try:
-        total_score = models.Score.objects.get(evaluation = evaluation, category = None)
-    except models.Score.DoesNotExist:
-        found_error = True
-        print "Adding total score for {0}".format(evaluation.reading_system.name)    
-        score = models.Score(
-            category = None,
-            evaluation = evaluation
-        )
-        score.update(evaluation.get_all_results(evaluation.get_default_result_set()))  
-        score.save()
+#     print "Repairing scores for {0} (evaluation ID = {1})".format(evaluation.reading_system.name, evaluation.pk)
+#     categories = models.Category.objects.filter(testsuite = evaluation.testsuite)
+#     for category in categories:
+#         try:
+#             score = models.Score.objects.get(evaluation = evaluation, category = category)
+#         except models.Score.DoesNotExist:
+#             found_error = True
+#             print "Adding score record for {0}".format(category.name.encode('utf-8'))
+#             score = models.Score(
+#                 category = category,
+#                 evaluation = evaluation
+#             )
+#             score.update(evaluation.get_category_results(category,evaluation.get_default_result_set()))
+#             score.save()
+#     try:
+#         total_score = models.Score.objects.get(evaluation = evaluation, category = None)
+#     except models.Score.DoesNotExist:
+#         found_error = True
+#         print "Adding total score for {0}".format(evaluation.reading_system.name)    
+#         score = models.Score(
+#             category = None,
+#             evaluation = evaluation
+#         )
+#         score.update(evaluation.get_all_results(evaluation.get_default_result_set()))  
+#         score.save()
 
-    if found_error:
-        print "Repaired scores for {0}".format(evaluation.reading_system.name)
-    else:
-        print "No errors found in scores"
+#     if found_error:
+#         print "Repaired scores for {0}".format(evaluation.reading_system.name)
+#     else:
+#         print "No errors found in scores"
 
-def repair_results(evalpk):
-    "repair results for the given evaluation"
-    try:
-        evaluation = models.Evaluation.objects.get(id=evalpk)
-    except models.Evaluation.DoesNotExist:
-        return
-    found_error = False
-    print "Repairing results for {0} (evaluation ID = {1})".format(evaluation.reading_system.name, evaluation.pk)
-    tests = models.Test.objects.filter(testsuite = evaluation.testsuite)
-    for test in tests:
-        try:
-            result = models.Result.objects.get(evaluation = evaluation, test = test)
-        except models.Result.DoesNotExist:
-            found_error = True
-            print "Adding result record for {0}".format(test.testid)
-            result = models.Result(test = test, evaluation = evaluation, result = common.RESULT_NOT_ANSWERED)
-            result.save()
+# def repair_results(evalpk):
+#     "repair results for the given evaluation"
+#     try:
+#         evaluation = models.Evaluation.objects.get(id=evalpk)
+#     except models.Evaluation.DoesNotExist:
+#         return
+#     found_error = False
+#     print "Repairing results for {0} (evaluation ID = {1})".format(evaluation.reading_system.name, evaluation.pk)
+#     tests = models.Test.objects.filter(testsuite = evaluation.testsuite)
+#     for test in tests:
+#         try:
+#             result = models.Result.objects.get(evaluation = evaluation, test = test)
+#         except models.Result.DoesNotExist:
+#             found_error = True
+#             print "Adding result record for {0}".format(test.testid)
+#             result = models.Result(test = test, evaluation = evaluation, result = common.RESULT_NOT_ANSWERED)
+#             result.save()
 
-    if found_error:
-        print "Repaired results for {0}".format(evaluation.reading_system.name)
-    else:
-        print "No errors found in results"
+#     if found_error:
+#         print "Repaired results for {0}".format(evaluation.reading_system.name)
+#     else:
+#         print "No errors found in results"
 
 def list_logged_in_users():
     # Query all non-expired sessions
@@ -271,65 +244,45 @@ def list_logged_in_users():
     for u in users:
         print u.username
 
-def force_random_changes(max_changes=0, avg_distance_between=0):
-    "Pretend that a random selection of tests has changed"
-    ts = models.TestSuite.objects.get_most_recent_testsuite()
-    tests = models.Test.objects.filter(testsuite = ts)
-    if max_changes == 0:
-        max_changes = tests.count()
-    changes = 0
-    unchanged_since_last = 0
-    for t in tests:
-        if changes < max_changes and unchanged_since_last >= avg_distance_between:
-            choice = randrange(1, 4)
-            if choice == 1:
-                print "Randomly marking {0} as new (from {1})".format(t.testid, t.source)
-                t.flagged_as_new = True
-                t.save()
-                changes += 1
-                since_last = 0
-            elif choice == 2:
-                print "Randomly marking {0} as changed (from {1})".format(t.testid, t.source)
-                t.flagged_as_changed == True
-                t.save()
-                changes += 1
-                unchanged_since_last = 0
-            else:
-                # don't modify the test
-                unchanged_since_last += 1
-        else:
-            unchanged_since_last += 1
-    print "Modified {0} tests".format(changes)
-    print "updating evaluations"
-    evals = models.Evaluation.objects.filter(testsuite = ts)
-    for e in evals:
-        results = e.get_all_results(e.get_default_result_set())
-        for r in results:
-            if r.test.flagged_as_changed or r.test.flagged_as_new:
-                r.result = None
-                r.save()
-        e.save()
+# def force_random_changes(max_changes=0, avg_distance_between=0):
+#     "Pretend that a random selection of tests has changed"
+#     ts = models.TestSuite.objects.get_most_recent_testsuite()
+#     tests = models.Test.objects.filter(testsuite = ts)
+#     if max_changes == 0:
+#         max_changes = tests.count()
+#     changes = 0
+#     unchanged_since_last = 0
+#     for t in tests:
+#         if changes < max_changes and unchanged_since_last >= avg_distance_between:
+#             choice = randrange(1, 4)
+#             if choice == 1:
+#                 print "Randomly marking {0} as new (from {1})".format(t.testid, t.source)
+#                 t.flagged_as_new = True
+#                 t.save()
+#                 changes += 1
+#                 since_last = 0
+#             elif choice == 2:
+#                 print "Randomly marking {0} as changed (from {1})".format(t.testid, t.source)
+#                 t.flagged_as_changed == True
+#                 t.save()
+#                 changes += 1
+#                 unchanged_since_last = 0
+#             else:
+#                 # don't modify the test
+#                 unchanged_since_last += 1
+#         else:
+#             unchanged_since_last += 1
+#     print "Modified {0} tests".format(changes)
+#     print "updating evaluations"
+#     evals = models.Evaluation.objects.filter(testsuite = ts)
+#     for e in evals:
+#         results = e.get_all_results(e.get_default_result_set())
+#         for r in results:
+#             if r.test.flagged_as_changed or r.test.flagged_as_new:
+#                 r.result = None
+#                 r.save()
+#         e.save()
 
-def one_time_migration():
-    # this is a one-time function; it's very specific to a particular point in time (march 2014)
-    # add testsuite_type
-    evals = models.Evaluation.objects.all()
-    for e in evals:
-        e.testsuite.testsuite_type = models.common.TESTSUITE_TYPE_DEFAULT
-        e.save_partial()
-        
-        # create a result_set for each existing evaluation
-        ts = e.testsuite
-        result_set = models.ResultSet.objects.create_result_set(ts, e, e.user)
-        # move evaluation.percent_complete into result_set.percent_complete
-        result_set.percent_complete = e.percent_complete
-        result_set.save()
-        
-        results = models.Result.objects.filter(evaluation = e)
-        for r in results:
-            r.result_set = result_set
-            r.save()
-        
 # settings.py must contain a definition for the 'previous' database in order for this to work
 def copy_users():
     new_users = models.UserProfile.objects.using('previous').all()
@@ -356,9 +309,6 @@ def main():
     print_parser = subparsers.add_parser('print', help="Print (some) contents of the database")
     print_parser.set_defaults(func = lambda(args): print_testsuite())
 
-    clear_data_parser = subparsers.add_parser('clear', help="Clear user and reading system data from the database")
-    clear_data_parser.set_defaults(func = lambda(args): clear_data())
-
     add_user_parser = subparsers.add_parser('add-user', help="Add a new user")
     add_user_parser.add_argument('username', action="store", help="username")
     add_user_parser.add_argument('password', action="store", help="password")
@@ -371,16 +321,15 @@ def main():
     add_rs_parser.add_argument('name', action="store", help="reading system name")
     add_rs_parser.set_defaults(func = lambda(args): add_rs(args.name))
 
-    rollback_parser = subparsers.add_parser('rollback', help="Roll back to the previous testsuite")
-    rollback_parser.set_defaults(func = lambda(args): rollback())
-
+    
     export_parser = subparsers.add_parser('export', help="Export evaluation data for all reading systems")
     export_parser.add_argument("file", action="store", help="store the xml file here")
     export_parser.set_defaults(func = lambda(args): export(args.file))
 
     geneval_parser = subparsers.add_parser('geneval', help="Generate random evaluation data for the given reading system")
     geneval_parser.add_argument("rs", action="store", help="reading system ID")
-    geneval_parser.set_defaults(func = lambda(args): geneval(args.rs))
+    geneval_parser.add_argument("type", action="store", help="DEFAULT or ACCESSIBILITY")
+    geneval_parser.set_defaults(func = lambda(args): geneval(args.rs, args.type))
 
     listrs_parser = subparsers.add_parser('listrs', help="List all reading systems and their IDs")
     listrs_parser.set_defaults(func = lambda(args): listrs())
@@ -388,12 +337,12 @@ def main():
     emails_parser = subparsers.add_parser('emails', help="List user emails")
     emails_parser.set_defaults(func = lambda(args): getemails())
 
-    integrity_parser = subparsers.add_parser('integrity', help="check db integrity")
-    integrity_parser.set_defaults(func = lambda(args): integrity_check())
+    # integrity_parser = subparsers.add_parser('integrity', help="check db integrity")
+    # integrity_parser.set_defaults(func = lambda(args): integrity_check())
 
-    repair_scores_parser = subparsers.add_parser('repair', help="repair an evaluation")
-    repair_scores_parser.add_argument("eval", action="store", help="evaluation ID")
-    repair_scores_parser.set_defaults(func = lambda(args): repair(args.eval))
+    # repair_scores_parser = subparsers.add_parser('repair', help="repair an evaluation")
+    # repair_scores_parser.add_argument("eval", action="store", help="evaluation ID")
+    # repair_scores_parser.set_defaults(func = lambda(args): repair(args.eval))
 
     listusers_parser = subparsers.add_parser("listusers", help="list all users")
     listusers_parser.set_defaults(func = lambda(args): listusers())
@@ -401,15 +350,8 @@ def main():
     list_logged_in_users_parser = subparsers.add_parser("list-logged-in-users", help="list logged in users")
     list_logged_in_users_parser.set_defaults(func = lambda(args): list_logged_in_users())
 
-    force_random_changes_parser = subparsers.add_parser("force-change-tests", help="pretend some (max 20) tests have changed")
-    force_random_changes_parser.set_defaults(func = lambda(args): force_random_changes(20, 30))
-
-    one_time_parser = subparsers.add_parser("one-time", help="run a one-time function")
-    one_time_parser.set_defaults(func = lambda(args): one_time_migration())
-
-    new_accessibility_eval_parser = subparsers.add_parser('a11y', help="add an accessibility evaluation")
-    new_accessibility_eval_parser.add_argument("rs", action="store", help="reading system ID")
-    new_accessibility_eval_parser.set_defaults(func = lambda(args): new_accessibility_eval(args.rs))
+    # force_random_changes_parser = subparsers.add_parser("force-change-tests", help="pretend some (max 20) tests have changed")
+    # force_random_changes_parser.set_defaults(func = lambda(args): force_random_changes(20, 30))
 
     copy_users_parser = subparsers.add_parser('copy-users', help="Copy all users")
     copy_users_parser.set_defaults(func = lambda(args): copy_users())

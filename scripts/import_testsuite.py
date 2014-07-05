@@ -22,14 +22,13 @@ def create_testsuite(ts_type):
     ts.save()
     return ts
 
-def add_category(category_type, name, parent_category, testsuite, source, flag=False):
+def add_category(category_type, name, parent_category, testsuite, source):
     db_category = Category(
         category_type = category_type,
         name = name,
         parent_category = parent_category,
         testsuite = testsuite,
-        source = source,
-        temp_flag = flag,
+        source = source
     )
     db_category.save()
     return db_category
@@ -78,42 +77,45 @@ def migrate_data(previous_testsuite):
     "look for any tests that haven't changed since the last import and copy reading system results over"
     print "Looking for data to migrate"
     reading_systems = ReadingSystem.objects.all()
+    testsuite = None
+    if previous_testsuite.testsuite_type == common.TESTSUITE_TYPE_DEFAULT:
+        testsuite = TestSuite.objects.get_most_recent_testsuite()
+    else:
+        testsuite = TestSuite.objects.get_most_recent_accessibility_testsuite()
+    
     for rs in reading_systems:
-        old_evaluation = rs.get_evaluation_for_testsuite(previous_testsuite)
-        new_evaluation = Evaluation.objects.create_evaluation(rs)
-        
-        print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
-        results = None
-        if previous_testsuite.testsuite_type == common.TESTSUITE_TYPE_DEFAULT:
-            results = new_evaluation.get_all_results(new_evaluation.get_default_result_set())
-        else:
-            results = new_evaluation.get_all_results(new_evaluation.get_accessibility_result_set())
-        print "Processing {0} results".format(results.count())
-        flag_evaluation = False
-        for result in results:
-            try:
-                old_test_version = Test.objects.get(testsuite = old_evaluation.testsuite, testid = result.test.testid)
-            except Test.DoesNotExist:
-                # the test may be new
-                print "No previous version of test {0} was found".format(result.test.testid)
-                result.test.flagged_as_new = True
-                result.test.save()
-                #new_evaluation.flagged_for_review = True
-                continue
+        old_result_sets = rs.get_result_sets_for_testsuite(previous_testsuite)
+        for old_rset in old_result_sets:
+            new_result_set = ResultSet.objects.create_result_set(rs, testsuite, old_rset.user)
+            new_result_set.copy_metadata(old_rset)
 
-            # if the ID (checked above) and xhtml for the test matches, then copy over the old result
-            if result.test.xhtml == old_test_version.xhtml:
-                # print "Copying previous result for {0}".format(old_test_version.testid)
-                previous_result = old_evaluation.get_result_by_testid(result, result.test.testid)
-                result.result = previous_result.result
-                result.notes = previous_result.notes
-                result.save()
-            else:
-                print "Test {0} has changed from the previous test suite".format(result.test.testid)
-                result.test.flagged_as_changed = True
-                result.test.save()
-                #new_evaluation.flagged_for_review = True
-        new_evaluation.save()
+            
+            print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
+            results = new_result_set.get_results()
+            print "Processing {0} results".format(results.count())
+            
+            for result in results:
+                try:
+                    old_test_version = Test.objects.get(testsuite = previous_testsuite, testid = result.test.testid)
+                except Test.DoesNotExist:
+                    # the test may be new
+                    print "No previous version of test {0} was found".format(result.test.testid)
+                    result.test.flagged_as_new = True
+                    result.test.save()
+                    continue
+
+                # if the ID (checked above) and xhtml for the test matches, then copy over the old result
+                if result.test.xhtml == old_test_version.xhtml:
+                    # print "Copying previous result for {0}".format(old_test_version.testid)
+                    previous_result = old_rset.get_result_for_test_by_id(result.test.testid)
+                    result.result = previous_result.result
+                    result.notes = previous_result.notes
+                    result.save()
+                else:
+                    print "Test {0} has changed from the previous test suite".format(result.test.testid)
+                    result.test.flagged_as_changed = True
+                    result.test.save()
+            new_result_set.save()
 
 
 # debug functions

@@ -1,4 +1,4 @@
-from testsuite_app.models import ReadingSystem, Evaluation, Test, Result, Category, TestSuite
+from testsuite_app.models import ReadingSystem, Test, Result, Category, TestSuite
 from lxml.builder import ElementMaker
 from lxml import etree
 from testsuite_app import helper_functions
@@ -10,64 +10,77 @@ E = ElementMaker(namespace="http://idpf.org/ns/testsuite",
 
 DOC = E.evaluations
 EVAL = E.evaluation
+RESULT_SET = E.resultset
 RS = E.readingSystem
 RESULT = E.result
 CATEGORY = E.category
-RESULTS = E.results
 TEST = E.test
 NOTES = E.notes
 
-def export_all_current_evaluations(user):
+def export_all_current_reading_systems(user):
 	reading_systems = ReadingSystem.objects.all()
-	testsuite = TestSuite.objects.get_most_recent_testsuite()
-	xmldoc = DOC(testsuite="{0}-{1}".format(testsuite.version_date, testsuite.version_revision))
+	xmldoc = DOC()
 
 	for rs in reading_systems:
-		rs_elm = export_evaluation(rs, user)
+		rs_elm = export_reading_system(rs, user)
         if rs_elm != None:
             xmldoc.append(rs_elm)
 	tree = etree.ElementTree(xmldoc)
 	return tree
 
-def export_single_evaluation(rs, user):
-    testsuite = TestSuite.objects.get_most_recent_testsuite()
-    xmldoc = DOC(testsuite="{0}-{1}".format(testsuite.version_date, testsuite.version_revision))
-
-    rs_elm = export_evaluation(rs, user)
+def export_single_reading_system(rs, user):
+    xmldoc = DOC()
+    rs_elm = export_reading_system(rs, user)
     if rs_elm != None:
         xmldoc.append(rs_elm)
     tree = etree.ElementTree(xmldoc)
     return tree
 
-def export_evaluation(rs, user):
+def export_reading_system(rs, user):
     can_view = permissions.user_can_view_reading_system(user, rs, 'manage')
     #user == None means we are running the CLI
     if can_view or user == None: 
-        return rs_to_xml(rs)
+        return rs_to_xml(rs, testsuite, accessibility_testsuite)
     return None
 
 def rs_to_xml(rs):
-	testsuite = TestSuite.objects.get_most_recent_testsuite()
-	data = helper_functions.testsuite_to_dict(testsuite)
-	results_elm = RESULTS()
-	for item in data:
-		top_level_category_elm = category_to_xml(item, rs)
-		results_elm.append(top_level_category_elm)
+    testsuite = TestSuite.objects.get_most_recent_testsuite()
+    accessibility_testsuite = TestSuite.objects.get_most_recent_accessibility_testsuite()
+    testsuite_date = "{0}-{1}".format(testsuite.version_date, testsuite.version_revision)
+    accessibility_testsuite_date = "{0}-{1}".format(accessibility_testsuite.version_date, accessibility_testsuite.version_revision)
+    
+    testsuite_data = helper_functions.testsuite_to_dict(testsuite)
+    accessibility_testsuite_data = helper_functions.testsuite_to_dict(accessibility_testsuite)
+    
+    rs_elm = RS(name=rs.name, version=rs.version, operating_system=rs.operating_system, locale=rs.locale, notes=rs.notes)
+    result_set_elm = result_set_to_xml(rs, rs.get_default_result_set(), testsuite, testsuite_data, testsuite_date)
+    rs_elm.append(result_set_elm)
 
-	evaluation = rs.get_current_evaluation()
-	eval_elm = EVAL(
-		RS(name=rs.name, version=rs.version, operating_system=rs.operating_system, locale=rs.locale, sdk_version=rs.sdk_version),
-		results_elm,
-		last_updated=str(evaluation.last_updated),	
-	)
-	return eval_elm
+    accessibility_result_sets = rs.get_accessibility_result_sets()
 
-def category_to_xml(category, rs):
-	evaluation = rs.get_current_evaluation()
-	category_score = evaluation.get_category_score(category['item'])
+    for accessibility_result_set in accessibility_result_sets:
+        accessibility_result_set_elm = result_set_to_xml(rs, accessibility_result_set, \
+            accessibility_testsuite, accessibility_testsuite_data, accessibility_testsuite_date)
+        rs_elm.append(accessibility_result_set_elm)	
+	return rs_elm
+
+def result_set_to_xml(rs, result_set, testsuite, testsuite_data, testsuite_date):
+    testsuite_type = "DEFAULT"
+    if testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
+        testsuite_type = "ACCESSIBILITY"
+
+    result_set_elm = RESULT_SET(testsuite_date = testsuite_date, testsuite_type = testsuite_type, last_updated = result_set.last_updated)
+    for item in testsuite_data:
+        top_level_category_elm = category_to_xml(item, rs, result_set)
+        result_set_elm.append(top_level_category_elm)
+
+    return result_set_elm
+
+def category_to_xml(category, rs, result_set):
+	category_score = result_set.get_category_score(category['item'])
 	category_elm = CATEGORY(name=category['item'].name, score=str(category_score.pct_total_passed))
 	for t in category['tests']:
-		result = evaluation.get_result(t)
+		result = result_set.get_result_for_test(t)
 		result_elm = result_to_xml(result)
 		category_elm.append(result_elm)
 

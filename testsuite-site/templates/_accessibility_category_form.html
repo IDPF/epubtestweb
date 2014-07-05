@@ -1,6 +1,9 @@
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
 
-{% get_category_score category.item evaluation as score %}
+
+{% get_category_score category.item result_set as score %}
 {% get_category_heading category.item as heading_tag %}
 
 {% if category.item.depth == 0 %}
@@ -24,7 +27,7 @@
     </thead>
     <tbody>
         {% for t in category.tests %}
-            {% get_result_for_result_set t evaluation result_set as r %}
+            {% get_result t result_set as r %}
             {% get_form_for_result r results_form as f %}
             {% result_form r f flagged_items False %}
         {% endfor %}
@@ -33,7 +36,7 @@
 {% endif %}
 
 {% for subcat in category.subcategories %}
-    {% accessibility_category_form subcat evaluation results_form flagged_items result_set %}
+    {% accessibility_category_form subcat result_set results_form flagged_items %}
 {% endfor %}
 
 {% if category.item.depth == 0 %}

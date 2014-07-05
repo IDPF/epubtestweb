@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 {% block title %}:: Evaluate{% endblock %}
 {% block script %}
 <script>
@@ -69,14 +72,14 @@ function autosave() {
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="{{evaluation.percent_complete}}" aria-valuemin="0" aria-valuemax="100" style="width: {{evaluation.percent_complete}}%; height: 100%">
             <span style="font-style: italic; {%if evaluation.percent_complete < 20 %} color: black;{%endif%}">
-                            {{evaluation.percent_complete}}% Completed</span>
+                            {{result_set.percent_complete}}% Completed</span>
           </div>
         </div>
 </div>
 
 
-{% get_unanswered_flagged_items_in_default_set evaluation as flagged_items %}
-{% if evaluation.flagged_for_review %}
+{% get_unanswered_flagged_items result_set as flagged_items %}
+{% if result_set.flagged_for_review %}
 <div class="panel panel-warning">
     <div class="panel-heading">Update</div>
     <div class="panel-body">
@@ -96,7 +99,7 @@ function autosave() {
 {% endif %}
 
 <div class="results">
-{% category_form data evaluation results_form flagged_items %}
+{% category_form data result_set results_form flagged_items %}
 </div>
 
 {{ results_form.management_form }}

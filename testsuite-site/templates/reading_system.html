@@ -1,21 +1,24 @@
 {% extends 'base.html' %}
 {% block title %}:: {{ rs.name }}{% endblock %}
 
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 
 {% block content %}
 
-{% get_current_evaluation rs as evaluation %}
+{% get_default_result_set rs as result_set %}
 
 <div class="reading-system-info panel panel-default">
     <div class="panel-left">
     {% reading_system_details_list rs %}
     </div>
     <div class="scores panel-right">
-    {% category_scores_list first_half evaluation %}
+    {% category_scores_list first_half result_set %}
     </div>
     <div class="scores panel-right">
-        {% category_scores_list second_half evaluation %}
+        {% category_scores_list second_half result_set %}
     </div>
 </div>
 
@@ -30,7 +33,7 @@
 
 <div class="results category-accordion">
     {% for cat in data %}
-        {% category cat evaluation %}
+        {% category cat result_set %}
     {% endfor %}
 </div>
 

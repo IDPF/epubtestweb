@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}:: {{ rs.name }}{% endblock %}
 
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 
 
 {% block content %}
 
-{% get_current_evaluation rs as evaluation %}
 
 <div class="reading-system-info panel panel-default">
     <div class="panel-left">
@@ -41,8 +43,7 @@
 
     <dt>Evaluated</dt>
     <dd> 
-    {% get_current_evaluation rs as eval%}
-    {{eval.last_updated }}</dd>
+    {{result_set.last_updated }}</dd>
 </dl>
 
     
@@ -50,7 +51,7 @@
 </div>
 
 
-{% if evaluation.flagged_for_review %}
+{% if result_set.flagged_for_review %}
 <div class="panel panel-warning">
     <div class="panel-heading">Note</div>
     <div class="panel-body">
@@ -62,7 +63,7 @@
 {% if result_set != None %}
 <div class="results">
     {% for cat in data %}
-        {% accessibility_category cat evaluation result_set %}
+        {% accessibility_category cat result_set %}
     {% endfor %}
 </div>
 {% else %}

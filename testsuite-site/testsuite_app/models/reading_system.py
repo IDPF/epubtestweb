@@ -9,42 +9,49 @@ class ReadingSystem(models.Model):
     locale = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
     name = models.CharField(max_length = common.LONG_STRING, blank = False, null = False)
     operating_system = models.CharField(max_length = common.SHORT_STRING, blank = False, null = False)
-    sdk_version = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
+    notes = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
     version = models.CharField(max_length = common.SHORT_STRING, blank = False, null = False)
-    user = models.ForeignKey('UserProfile')
     visibility = models.CharField(max_length = 1, choices = common.VISIBILITY_TYPE, default=common.VISIBILITY_MEMBERS_ONLY)
-
-    def save(self, *args, **kwargs):
-        "custom save routine"
-        from evaluation import Evaluation, EvaluationManager
-        super(ReadingSystem, self).save(*args, **kwargs)
-        # create an evaluation if there is none
-        if self.get_current_evaluation() == None:
-            print "CREATING EVAL"
-            evaluation = Evaluation.objects.create_evaluation(self)
-        
+    user = models.ForeignKey('UserProfile')
 
     def get_default_result_set(self):
         # there should only be one
-        from result import ResultSet
-        from common import *
-        try:
-            result_set = ResultSet.objects.get(evaluation = self, testsuite=self.testsuite)
-        except ResultSet.DoesNotExist:
+        from testsuite import TestSuite
+        testsuite = TestSuite.objects.get_most_recent_testsuite()
+        result_sets = self.get_result_sets_for_testsuite(testsuite)
+        if result_sets.count() > 0:
+            return result_sets[0]
+        else:
             return None
-        return result_set
 
     def get_accessibility_result_sets(self):
-        from result import ResultSet
-        result_sets = ResultSet.objects.filter(evaluation = self, testsuite = self.accessibility_testsuite)
+        from result_set import ResultSet
+        from testsuite import TestSuite
+        testsuite = TestSuite.objects.get_most_recent_accessibility_testsuite()
+        result_sets = self.get_result_sets_for_testsuite(testsuite)
         return result_sets
 
+    def get_result_sets_for_testsuite(self, testsuite):
+        from result_set import ResultSet
+        result_sets = ResultSet.objects.get_result_sets_for_testsuite(self, testsuite)
+        return result_sets        
 
-    def get_evaluation_for_testsuite(self, testsuite):
-        from testsuite import TestSuite
-        from evaluation import Evaluation
-        try:
-            return Evaluation.objects.get(reading_system = self, testsuite = testsuite)
-        except Evaluation.DoesNotExist:
-            return None
+    def get_result_set_by_id(self, rset_id):
+        from result_set import ResultSet
+        return ResultSet.objects.get_result_set_by_id(rset_id)
+
+    def delete_associated(self):
+        result_set = self.get_default_result_set()
+        result_set.delete_associated()
+        result_set.delete()
+        accessibility_result_sets = self.get_accessibility_result_sets()
+        for ars in accessibility_result_sets:
+            ars.delete_associated()
+            ars.delete()
+
+    def set_visibility(self, visibility):
+        self.visibility = visibility
+        rset = self.get_default_result_set()
+        rset.visibility = visibility
+    
 

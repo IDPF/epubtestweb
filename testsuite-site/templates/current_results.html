@@ -3,7 +3,10 @@
 {% block nav-results %}<a class="nav-active">View</a>{% endblock %}
 
 
-{% load testsuite_extras %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
 {% block script %}
 <script src="/media/js/jquery.tablesorter.min.js"></script>
 <script>
@@ -49,7 +52,7 @@ $(document).ready(function() {
         </thead>
         <tbody>
         {% for rs_score in rs_scores %}
-            {% get_current_evaluation rs_score.reading_system as eval%}
+            {% get_default_result_set rs_score.reading_system as result_set%}
             <tr>
                 <td><a href="/rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
                     {% if rs_score.reading_system.operating_system != "" %}
@@ -62,7 +65,7 @@ $(document).ready(function() {
                     {% endif %}
                     <br/>
                     <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
-                    {% if eval.flagged_for_review == True %}
+                    {% if result_set.flagged_for_review == True %}
                     <br/>
                     <span class="warn">This evaluation may not be current.</span>
                     {% endif %}
@@ -128,7 +131,7 @@ $(document).ready(function() {
         </thead>
         <tbody>
         {% for rs_score in rs_scores %}
-            {% get_current_evaluation rs_score.reading_system as eval%}
+            {% get_default_result_set rs_score.reading_system as result_set%}
             <tr>
                 <td>
                     <a href="/rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
@@ -142,7 +145,7 @@ $(document).ready(function() {
                     {% endif %}
                     <br/>
                     <span>Added by {{ rs_score.reading_system.user|get_display_name }}</span>
-                    {% if eval.flagged_for_review == True %}
+                    {% if result_set.flagged_for_review == True %}
                     <br/>
                     <span class="warn">This evaluation may not be current.</span>
                     {% endif %}
