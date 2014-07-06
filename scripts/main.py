@@ -298,6 +298,10 @@ def copy_users():
             print "skipping duplicate {0}".format(u.username)
     print "Copied users from old database."        
 
+def import_json(filepath):
+    import import_db_for_june_refactor
+    import_db_for_june_refactor.import_from_json(filepath)
+
 def main():
     argparser = argparse.ArgumentParser(description="Collect tests")
     subparsers = argparser.add_subparsers(help='commands')
@@ -355,6 +359,10 @@ def main():
 
     copy_users_parser = subparsers.add_parser('copy-users', help="Copy all users")
     copy_users_parser.set_defaults(func = lambda(args): copy_users())
+
+    import_json_parser = subparsers.add_parser('import-json', help="Import DB data from json")
+    import_json_parser.add_argument("filepath", action="store", help="JSON data file")
+    import_json_parser.set_defaults(func = lambda(args): import_json(args.filepath))
     
     args = argparser.parse_args()
     args.func(args)
