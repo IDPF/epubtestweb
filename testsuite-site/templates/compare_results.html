@@ -80,7 +80,7 @@ function set_test_descriptions_hidden() {
     </thead>
     <tbody>
         {% for reading_system in reading_systems %}
-            {% get_current_evaluation reading_system as eval %}
+            {% get_default_result_set reading_system as rset %}
             <tr>
                 <td class="reading_system_name">
                     <a href="/rs/{{reading_system.id}}">
@@ -91,11 +91,11 @@ function set_test_descriptions_hidden() {
                 </td>
                 {% for test in tests %}
                     
-                    {% get_result test result_set as result %}
+                    {% get_result test rset as result %}
                     {% if result.result == None %}
                         <td>Data not available</td>
                     {% else %}
-                        {% is_test_supported result_set test as is_supported %}
+                        {% is_test_supported result as is_supported %}
                         {% if is_supported %}
                             <td class="result success">Supported</td>
                         {% else %}

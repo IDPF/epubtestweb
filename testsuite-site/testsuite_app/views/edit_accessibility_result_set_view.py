@@ -26,7 +26,7 @@ class EditAccessibilityResultSetView(UpdateView):
             return render(request, "404.html", {})
 
         testsuite = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
-
+        create_flag = False
         if kwargs.has_key('rset'):
             try:
                 rset = ResultSet.objects.get(id=kwargs['rset'])
@@ -34,6 +34,7 @@ class EditAccessibilityResultSetView(UpdateView):
                 return render(request, "404.html", {})
         else:
             if permissions.user_can_create_accessibility_result_set(request.user, rs):
+                create_flag = True
                 rset = ResultSet.objects.create_result_set(rs, testsuite, request.user)
                 # add dummy metadata
                 rset.add_metadata("", common.INPUT_TYPE_KEYBOARD, False, False)
@@ -69,10 +70,11 @@ class EditAccessibilityResultSetView(UpdateView):
         results_form = ResultFormSet(instance = result_set, queryset=result_set.get_results_for_category(cat))
         at_type_form = ResultSetMetadataForm(instance = result_set.get_metadata())
 
-        can_edit = permissions.user_can_edit_accessibility_result_set(request.user, result_set)
-        if can_edit == False:
-            messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
-            return redirect("/manage/")
+        if create_flag == False:
+            can_edit = permissions.user_can_edit_accessibility_result_set(request.user, result_set)
+            if can_edit == False:
+                messages.add_message(request, messages.INFO, 'You do not have permission to edit that evaluation.')
+                return redirect("/manage/")
 
         return render(request, self.template_name,
             {'results_form': results_form, 'data': data,

@@ -72,6 +72,15 @@ def get_users_reading_systems(reading_systems, user):
 def get_metadata(result_set):
     return result_set.get_metadata()
 
+@register.assignment_tag
+def is_test_supported(result):
+    if result == None:
+        return False
+    if result.result == common.RESULT_SUPPORTED:
+        return True
+    else:
+        return False
+
 ####################
 # permissions
 @register.assignment_tag

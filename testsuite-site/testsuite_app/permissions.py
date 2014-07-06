@@ -29,11 +29,11 @@ def user_can_create_accessibility_result_set(user, rs):
 
 def user_can_edit_accessibility_result_set(user, result_set):
     # the accessibility config owner can edit (so can superusers)
-    return result_set.reading_system.user == user or user.is_superuser
+    return result_set.user == user or user.is_superuser
 
 def user_can_delete_accessibility_result_set(user, result_set):
     # the accessibility config owner can delete (so can superusers)
-    return result_set.reading_system.user == user or user.is_superuser    
+    return result_set.user == user or user.is_superuser    
 
 def user_can_view_accessibility_result_set(user, result_set):
     can_view_rs = user_can_view_reading_system(user, result_set.reading_system, common.CONTEXT_MANAGE)
@@ -57,7 +57,7 @@ def user_can_change_reading_system_visibility(user, rs, new_visibility):
     if user.is_superuser: # superusers can do anything
         return True
 
-    if user == rset.reading_system.user and new_visibility != common.VISIBILITY_PUBLIC:
+    if user == rs.user and new_visibility != common.VISIBILITY_PUBLIC:
         return True
     
     return False
@@ -85,11 +85,7 @@ def user_can_change_result_set_visibility(user, rset, new_visibility):
     if user.is_superuser: # superusers can do anything
         return True
 
-    if rset == default_result_set:
-        if user == rset.reading_system.user and new_visibility != common.VISIBILITY_PUBLIC:
-            return True
-    else:
-        if new_visibility != common.VISIBILITY_PUBLIC:
-            return True
-
+    if user == rset.user and new_visibility != common.VISIBILITY_PUBLIC:
+        return True
+    
     return False

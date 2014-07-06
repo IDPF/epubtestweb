@@ -77,7 +77,7 @@ def import_from_json(filepath):
     print "Done importing"
 
 def add_rs(rs):
-    print "Adding reading system {0}".format(rs['name'])
+    print "Adding reading system {0}".format(rs['name'].encode('utf-8'))
     reading_system = ReadingSystem(
         name = rs['name'],
         version = rs['version'],
