@@ -49,7 +49,7 @@ class TestSuite(models.Model):
     def get_test_by_id(self, testid):
         from test import Test
         try:
-            return Test.objects.get(testid = testid)
+            return Test.objects.get(testid = testid, testsuite = self)
         except Test.DoesNotExist:
             return None
 
