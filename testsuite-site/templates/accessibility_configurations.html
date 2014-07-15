@@ -20,6 +20,8 @@ $(document).ready(function() {
 {% endblock %}
 {% block content %}
 
+<h1>Accessibility Evaluations</h1>
+
 {% reading_system_details_list rs True %}
 
 {% if result_sets|length == 0 %}
@@ -67,8 +69,8 @@ $(document).ready(function() {
                     <span class="warn">This evaluation may not be current.</span>
                     {% endif %}
                 </td>
-                <td class="text-center">{{result_set.percent_complete }}%</td>
                 <td class="text-center">{% get_overall_score result_set as score %}{{ score.pct_total_passed}}%</td>
+                <td class="text-center">{{result_set.percent_complete }}%</td>
                 <td class="text-center">{{metadata|print_input_type}}</td>
                 <td class="text-center">{{metadata.supports_screenreader|print_yes_no}}</td>
                 <td class="text-center">{{metadata.supports_braille|print_yes_no}}</td>
