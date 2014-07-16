@@ -23,6 +23,10 @@ class AboutView(TemplateView):
     "About page"
     template_name = "about.html"
 
+class CallForModeratorsView(TemplateView):
+    "Call for moderators page"
+    template_name = "call_for_moderators.html"
+
 class TestsuiteView(TemplateView):
     "Testsuite download page"
     template_name = "testsuite.html"
