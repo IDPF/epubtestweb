@@ -58,9 +58,21 @@ $(document).ready(function() {
             <tr>
                 <td>
                     {% if edit == True %}
-                    <a href="/rs/{{rs.id}}/eval/accessibility/{{result_set.id}}">{{ metadata.assistive_technology }}</a>
+                    <a href="/rs/{{rs.id}}/eval/accessibility/{{result_set.id}}">
+                        {% if metadata.assistive_technology|length > 0 %} 
+                            {{ metadata.assistive_technology }}
+                        {% else %}
+                            <span class="text-muted">Description not available</span>
+                        {% endif %}
+                    </a>
                     {% else %}
-                    <a href="/rs/{{rs.id}}/accessibility/{{result_set.id}}">{{ metadata.assistive_technology }}</a>
+                        <a href="/rs/{{rs.id}}/accessibility/{{result_set.id}}">
+                        {% if metadata.assistive_technology|length > 0 %} 
+                            {{ metadata.assistive_technology }}
+                        {% else %}
+                            <span class="text-muted">Description not available</span>
+                        {% endif %}
+                        </a>
                     {% endif %}
                     <br/><br/>
                     <span class="rs-details">Added by {{ result_set.user|get_display_name }}</span>

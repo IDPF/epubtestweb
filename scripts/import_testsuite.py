@@ -90,7 +90,7 @@ def migrate_data(previous_testsuite):
             new_result_set.copy_metadata(old_rset)
 
             
-            print "Migrating data for {0} {1} {2}".format(rs.name, rs.version, rs.operating_system)
+            print "Migrating data for {0} {1} {2}".format(rs.name.encode('utf-8'), rs.version.encode('utf-8'), rs.operating_system.encode('utf-8'))
             results = new_result_set.get_results()
             print "Processing {0} results".format(results.count())
             

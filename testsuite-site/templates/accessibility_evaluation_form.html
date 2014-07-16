@@ -93,7 +93,7 @@ function autosave() {
 
         <ul id="flagged-list" class="list-unstyled">
         {% for item in flagged_items %}
-        <li><a href="{{ action_url }}{{ item.parentid }}/#{{ item.id }}">{{ item.id }}</a>
+        <li><a href="{{ action_url }}#{{ item.id }}">{{ item.id }}</a>
         {% if item.parentid == data.item.id %}
         <span class="notes">(on this page)</span>
         {% endif %}
