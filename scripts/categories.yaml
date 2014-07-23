@@ -65,7 +65,7 @@ TestSuites:
         Type: Accessibility
         Categories:
             -
-                Name: Accessibility
+                Name: Fundamental Accessibility Tests
                 CategoryDisplayDepthLimit: Internal
                 Files:
                     - epub30-test-0300

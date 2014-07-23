@@ -84,8 +84,8 @@ $(document).ready(function() {
                 <td class="text-center">{% get_overall_score result_set as score %}{{ score.pct_total_passed}}%</td>
                 <td class="text-center">{{result_set.percent_complete }}%</td>
                 <td class="text-center">{{metadata|print_input_type}}</td>
-                <td class="text-center">{{metadata.supports_screenreader|print_yes_no}}</td>
-                <td class="text-center">{{metadata.supports_braille|print_yes_no}}</td>
+                <td class="text-center">{{metadata.supports_screenreader|print_yes_not_tested}}</td>
+                <td class="text-center">{{metadata.supports_braille|print_yes_not_tested}}</td>
                 {%if edit == True %}
                     <td>
                         <ul>

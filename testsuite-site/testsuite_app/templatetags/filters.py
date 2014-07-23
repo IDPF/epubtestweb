@@ -81,11 +81,11 @@ def get_AT_metadata_description(result_set):
     return s
 
 @register.filter
-def print_yes_no(bool_value):
+def print_yes_not_tested(bool_value):
     if bool_value == True:
         return "Yes"
     else:
-        return "No"
+        return "Not tested"
 
 @register.filter
 def print_input_type(metadata):
