@@ -42,12 +42,14 @@ class ReadingSystem(models.Model):
 
     def delete_associated(self):
         result_set = self.get_default_result_set()
-        result_set.delete_associated()
-        result_set.delete()
+        if result_set != None:
+            result_set.delete_associated()
+            result_set.delete()
         accessibility_result_sets = self.get_accessibility_result_sets()
         for ars in accessibility_result_sets:
-            ars.delete_associated()
-            ars.delete()
+            if ars != None:
+                ars.delete_associated()
+                ars.delete()
 
     def set_visibility(self, visibility):
         self.visibility = visibility
