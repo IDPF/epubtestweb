@@ -81,9 +81,9 @@ def get_AT_metadata_description(result_set):
     return s
 
 @register.filter
-def print_yes_not_tested(bool_value):
+def print_tested_not_tested(bool_value):
     if bool_value == True:
-        return "Yes"
+        return "Tested"
     else:
         return "Not tested"
 

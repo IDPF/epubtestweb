@@ -38,8 +38,8 @@ $(document).ready(function() {
                 <th class="text-center"><a href="#" title="Sort by score">Score</a></th>
                 <th class="text-center"><a href="#" title="Sort by percent complete">Percent complete</a></th>
                 <th class="text-center"><a href="#" title="Sort by input type">Input Type</a></th>
-                <th class="text-center"><a href="#" title="Sort by supports screenreader output">Supports Screenreader Output</a></th>
-                <th class="text-center"><a href="#" title="Sort by supports Braille output">Supports Braille output</a></th>
+                <th class="text-center"><a href="#" title="Sort by supports screenreader output">Screenreader Output</a></th>
+                <th class="text-center"><a href="#" title="Sort by supports Braille output">Braille output</a></th>
                 {%if edit == True %}
                     <th class="text-center">Actions</th>
                     <th class="text-center">Visibility</th>
@@ -84,8 +84,8 @@ $(document).ready(function() {
                 <td class="text-center">{% get_overall_score result_set as score %}{{ score.pct_total_passed}}%</td>
                 <td class="text-center">{{result_set.percent_complete }}%</td>
                 <td class="text-center">{{metadata|print_input_type}}</td>
-                <td class="text-center">{{metadata.supports_screenreader|print_yes_not_tested}}</td>
-                <td class="text-center">{{metadata.supports_braille|print_yes_not_tested}}</td>
+                <td class="text-center">{{metadata.supports_screenreader|print_tested_not_tested}}</td>
+                <td class="text-center">{{metadata.supports_braille|print_tested_not_tested}}</td>
                 {%if edit == True %}
                     <td>
                         <ul>
