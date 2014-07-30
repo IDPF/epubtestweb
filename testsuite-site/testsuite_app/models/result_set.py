@@ -48,6 +48,8 @@ class ResultSetManager(models.Manager):
             overall_score = AccessibilityScore(category = None, result_set = result_set)
             overall_score.save()
 
+        result_set.visibility = reading_system.visibility
+
         return result_set
 
     def get_result_sets_for_testsuite(self, reading_system, testsuite):

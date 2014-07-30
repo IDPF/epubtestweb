@@ -40,6 +40,8 @@ def get_parent_ids(item):
 
 @register.filter
 def get_result_description(result):
+    if result == None:
+        return "-"
     if result.result == common.RESULT_SUPPORTED:
         return "Supported"
     elif result.result == common.RESULT_NOT_SUPPORTED:
@@ -51,6 +53,8 @@ def get_result_description(result):
 
 @register.filter
 def get_result_class(result, is_form):
+    if result == None:
+        return ""
     if is_form:
         if result.result == common.RESULT_NOT_ANSWERED:
             return "warning"

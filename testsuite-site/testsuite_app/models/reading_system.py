@@ -54,6 +54,7 @@ class ReadingSystem(models.Model):
     def set_visibility(self, visibility):
         self.visibility = visibility
         rset = self.get_default_result_set()
-        rset.visibility = visibility
+        if rset != None:
+            rset.visibility = visibility
     
 

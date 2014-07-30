@@ -81,7 +81,12 @@ $(document).ready(function() {
                     <span class="warn">This evaluation may not be current.</span>
                     {% endif %}
                 </td>
-                <td class="text-center">{% get_overall_score result_set as score %}{{ score.pct_total_passed}}%</td>
+                <td class="text-center">{% get_overall_score result_set as score %}
+                {% if score == None %}
+                0%
+                {% else %}
+                {{ score.pct_total_passed}}%
+                {% endif %}</td>
                 <td class="text-center">{{result_set.percent_complete }}%</td>
                 <td class="text-center">{{metadata|print_input_type}}</td>
                 <td class="text-center">{{metadata.supports_screenreader|print_tested_not_tested}}</td>

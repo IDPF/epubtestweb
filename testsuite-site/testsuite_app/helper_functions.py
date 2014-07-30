@@ -16,15 +16,19 @@ def get_public_scores(categories):
         if rs.visibility == common.VISIBILITY_PUBLIC:
             result_set = rs.get_default_result_set()
             ts = TestSuite.objects.get_most_recent_testsuite()
-            scores = result_set.get_top_level_category_scores(ts)
-            # make sure scores have the same order as the categories
             ordered_scores = []
-            for cat in categories:
-                ordered_scores.append(scores[cat])
-
-            accessibility_score = has_any_accessibility(rs)
+            if result_set != None:
+                scores = result_set.get_top_level_category_scores(ts)
+                # make sure scores have the same order as the categories
+                
+                for cat in categories:
+                    ordered_scores.append(scores[cat])
             
-            retval.append({"reading_system": rs, "total_score": result_set.get_total_score(),
+            accessibility_score = has_any_accessibility(rs)
+            total_score = 0.0
+            if result_set != None:
+                total_score = result_set.get_total_score()
+            retval.append({"reading_system": rs, "total_score": total_score,
                 "category_scores": ordered_scores, "accessibility": accessibility_score})
     return retval
 
@@ -101,11 +105,14 @@ def calculate_score(tests, result_set):
 def has_any_accessibility(rs):
     # return values: 0 = fail; -1 = no accessible evals available, 1 = some accessibility support
     result_sets = rs.get_accessibility_result_sets()
-    #print "count {0}".format(result_sets.count())
-    if result_sets.count() == 0:
+    public_result_sets = []
+    for rset in result_sets:
+        if rset.visibility == common.VISIBILITY_PUBLIC:
+            public_result_sets.append(rset)
+    if len(public_result_sets) == 0:
         return -1    
     
-    for result_set in result_sets:
+    for result_set in public_result_sets:
         score = result_set.get_total_score()
         if score.pct_total_passed > 0:
                 return 1

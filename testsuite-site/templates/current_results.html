@@ -71,6 +71,13 @@ $(document).ready(function() {
                     {% endif %}
                 </td>
                 <td class="text-center">
+                {% if rs_score.total_score == None %}
+                    <ul class="list-unstyled scores">
+                        <li class="total">Total: 0%</li>
+                        <li>Required: N/A</li>
+                        <li>Optional: N/A</li>
+                    </ul>
+                {% else %}
                     <ul class="list-unstyled scores">
                         <li class="total">Total: {{ rs_score.total_score.pct_total_passed }}%</li>
                     {% if rs_score.total_score.num_required_tests == 0 %}
@@ -84,25 +91,37 @@ $(document).ready(function() {
                         <li>Optional: {{ rs_score.total_score.pct_optional_passed }}%</li>
                     {% endif %}
                     </ul>
+                {% endif %}
                 </td>
-
-                {% for category_score in rs_score.category_scores %}
-                    <td class="text-center">
-                        <ul class="list-unstyled scores">
-                            <li class="total">Total: {{ category_score.pct_total_passed }}%</li>
-                        {% if category_score.num_required_tests == 0 %}
-                            <li>Required: N/A</li>
-                        {% else %}
-                            <li>Required: {{ category_score.pct_required_passed }}%</li>
-                        {% endif %}
-                        {% if category_score.num_optional_tests == 0 %}
-                            <li>Optional: N/A</li>
-                        {% else %}
-                            <li>Optional: {{ category_score.pct_optional_passed }}%</li>
-                        {% endif %}
-                        </ul>
-                    </td>
-                {% endfor %}
+                {% if rs_score.category_scores|length > 0 %}
+                    {% for category_score in rs_score.category_scores %}
+                        <td class="text-center">
+                            <ul class="list-unstyled scores">
+                                <li class="total">Total: {{ category_score.pct_total_passed }}%</li>
+                            {% if category_score.num_required_tests == 0 %}
+                                <li>Required: N/A</li>
+                            {% else %}
+                                <li>Required: {{ category_score.pct_required_passed }}%</li>
+                            {% endif %}
+                            {% if category_score.num_optional_tests == 0 %}
+                                <li>Optional: N/A</li>
+                            {% else %}
+                                <li>Optional: {{ category_score.pct_optional_passed }}%</li>
+                            {% endif %}
+                            </ul>
+                        </td>
+                    {% endfor %}
+                {% else %}
+                    {% for cat in categories %}
+                        <td class="text-center">
+                            <ul class="list-unstyled scores">
+                                <li class="total">Total: 0%</li>
+                                <li>Required: N/A</li>
+                                <li>Optional: N/A</li>
+                            </ul>
+                        </td>
+                    {% endfor %}
+                {% endif %}
                 <td class="text-center">
                     {% if rs_score.accessibility == 1 %}
                         <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/">See details</a></span>
@@ -151,17 +170,22 @@ $(document).ready(function() {
                     {% endif %}
                 </td>
                 <td class="text-center">
-                    <span class="total">{{ rs_score.total_score.pct_total_passed }}%</span>
+                    <span class="total">
+                    {% if rs_score.total_score == None %}
+                    0%
+                    {% else %}
+                    {{ rs_score.total_score.pct_total_passed }}%
+                    {% endif %}</span>
                 </td>
                 <td class="text-center">
-                    {% if rs_score.total_score.num_required_tests == 0 %}
+                    {% if rs_score.total_score == None or rs_score.total_score.num_required_tests == 0 %}
                         <span>N/A</span>
                     {% else %}
                         <span>{{ rs_score.total_score.pct_required_passed }}%</span>
                     {% endif %}
                 </td>
                 <td class="text-center">
-                    {% if rs_score.total_score.num_optional_tests == 0 %}
+                    {% if rs_score.total_score == None or rs_score.total_score.num_optional_tests == 0 %}
                         <span>N/A</span>
                     {% else %}
                         <span>{{ rs_score.total_score.pct_optional_passed }}%</span>

@@ -12,7 +12,11 @@
 	<div class="progress">
 	    <div class="progress-bar" role="progressbar" aria-valuenow="{{score.pct_total_passed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{score.pct_total_passed}}%; height: 100%">
 	        <span style="font-style: italic; {%if score.pct_total_passed < 10 %} color: black;{%endif%}">
+                {% if score == None %}
+                0%
+                {% else %}
 	            {{score.pct_total_passed}}%</span>
+                {% endif %}
 	    </div>
 	</div>
 	</dd>

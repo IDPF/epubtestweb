@@ -12,14 +12,20 @@ register = template.Library()
 
 @register.assignment_tag
 def get_result(test, result_set):
+    if result_set == None:
+        return None
     return result_set.get_result_for_test(test)
 
 @register.assignment_tag
 def get_category_score(category, result_set):
+    if result_set == None or category == None:
+        return None
     return result_set.get_category_score(category)
 
 @register.assignment_tag
 def get_overall_score(result_set):
+    if result_set == None:
+        return None
     return result_set.get_total_score()
 
 @register.assignment_tag
