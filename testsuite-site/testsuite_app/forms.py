@@ -45,8 +45,8 @@ class ResultSetMetadataForm(ModelForm):
         fields = ('assistive_technology', 'input_type', 'supports_braille', 'supports_screenreader')
         labels = {
             'input_type': 'Input type',
-            'supports_screenreader': 'Supports screenreader output',
-            'supports_braille': 'Supports Braille output',
+            'supports_screenreader': 'Testing includes screenreader output',
+            'supports_braille': 'Testing includes Braille output',
         }
         widgets = {
             'input_type': forms.RadioSelect
