@@ -101,7 +101,7 @@ def calculate_score(tests, result_set):
 def has_any_accessibility(rs):
     # return values: 0 = fail; -1 = no accessible evals available, 1 = some accessibility support
     result_sets = rs.get_accessibility_result_sets()
-    print "count {0}".format(result_sets.count())
+    #print "count {0}".format(result_sets.count())
     if result_sets.count() == 0:
         return -1    
     

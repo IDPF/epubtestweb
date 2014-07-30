@@ -31,7 +31,7 @@ class Test(models.Model, common.ItemMixin):
         "custom save routine"
         # call 'save' on the base class
         self.depth = self.calculate_depth()
-        print "allow_na? {0}{1}".format(self.testid, self.allow_na)
+        #print "allow_na? {0}{1}".format(self.testid, self.allow_na)
         super(Test, self).save(*args, **kwargs)
 
     def get_epub_parent_category(self):
