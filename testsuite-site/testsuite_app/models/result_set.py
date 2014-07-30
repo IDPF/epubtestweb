@@ -166,7 +166,7 @@ class ResultSet(models.Model, common.FloatToDecimalMixin):
             pct_complete = (completed_results.count() * 1.0) / (all_results.count() * 1.0) * 100.0
             self.percent_complete = self.float_to_decimal(pct_complete)
         else:
-            self.percent_complete = 0.0
+            self.percent_complete = self.float_to_decimal(0.0)
 
     def get_results(self):
         "get a queryset of all the results for the given testsuite"

@@ -83,5 +83,6 @@ class AccessibilityScore(models.Model, common.FloatToDecimalMixin):
                 self.num_passed_tests += 1
         if self.num_applicable_tests > 0:
             self.pct_total_passed = (self.num_passed_tests * 1.0) / (self.num_applicable_tests * 1.0) * 100
+            self.pct_total_passed = self.float_to_decimal(self.pct_total_passed)
         self.save()
 
