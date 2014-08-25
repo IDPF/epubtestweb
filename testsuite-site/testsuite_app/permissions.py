@@ -38,7 +38,7 @@ def user_can_delete_accessibility_result_set(user, result_set):
 def user_can_view_accessibility_result_set(user, result_set):
     can_view_rs = user_can_view_reading_system(user, result_set.reading_system, common.CONTEXT_MANAGE)
     #print "can view rs {0}".format(can_view_rs)
-    print "user is {0}".format(user)
+    #print "user is {0}".format(user)
     if can_view_rs and result_set.visibility == common.VISIBILITY_MEMBERS_ONLY:
         if user.is_authenticated():
             return True
