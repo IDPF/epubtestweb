@@ -85,6 +85,14 @@ def get_AT_metadata_description(result_set):
     return s
 
 @register.filter
+def get_AT_name(result_set):
+    meta = result_set.get_metadata()
+    if meta == None:
+        return ""
+    else:
+        return meta.assistive_technology
+
+@register.filter
 def print_tested_not_tested(bool_value):
     if bool_value == True:
         return "Tested"

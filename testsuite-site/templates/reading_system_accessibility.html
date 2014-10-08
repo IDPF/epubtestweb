@@ -26,7 +26,7 @@
     {% endif %}
 
     <dt>Assistive technology</dt>
-    <dd>{{ result_set.metadata.assistive_technology }}</dd>
+    <dd>{{ result_set | get_AT_name }}</dd>
     
     <dt>Assistive technology features</dt>
     <dd>{{result_set | get_AT_metadata_description}}</dd>
