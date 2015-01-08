@@ -11,6 +11,7 @@
             <th><a href="#" title="Sort by OS">OS</a></th>
             <th><a href="#" title="Sort by locale">Locale</a></th>
             <th><a href="#" title="Sort by status">Evaluation Status</a></th>
+            <th><a href="#" title="Sort by archived status">Archived</a></th>
             <th>Actions</th>
             <th>Visibility</th>
         </tr>
@@ -51,6 +52,14 @@
                     {% if r.user == user %} (you) {% endif %}
                 </p>
             </td>
+            <td class="manage-archived">
+                {% is_reading_system_archived r as is_archived %}
+                {% if is_archived %}
+                Yes
+                {% else %}
+                No
+                {% endif %}
+            </td>
             <td class="manage-actions">
                 <ul class="">
                     {% if can_edit == True %}
@@ -67,6 +76,11 @@
                     <li><a href="/rs/{{ r.id }}/export">Export data</a></li>
                     {% endcomment %}
                     {% if can_edit == True %}
+                    {% if is_archived == False %}
+                    <li><a href="/rs/{{ r.id }}/archive/">Flag as archived version</a></li>
+                    {% else %}
+                    <li><a href="/rs/{{ r.id }}/unarchive/">Unflag as archived version</a></li>
+                    {% endif %}
                     <li><a href="/rs/{{ r.id }}/edit/">Edit details</a></li>
                     <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
                     {% endif %}

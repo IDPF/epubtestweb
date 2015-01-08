@@ -110,3 +110,18 @@ def set_accessibility_visibility(request, *args, **kwargs):
 
     return redirect("/rs/{0}/eval/accessibility/".format(rs.id))
 
+def archive_rs(request, *args, **kwargs):
+    return set_rs_status(kwargs['pk'], common.READING_SYSTEM_STATUS_TYPE_ARCHIVED)
+
+def unarchive_rs(request, *args, **kwargs):
+    return set_rs_status(kwargs['pk'], common.READING_SYSTEM_STATUS_TYPE_CURRENT)
+
+def set_rs_status(rsid, rs_status):
+    try:
+        rs = ReadingSystem.objects.get(id=rsid)
+    except ReadingSystem.DoesNotExist:
+        return render(request, "404.html", {})
+
+    rs.status = rs_status
+    rs.save()
+    return redirect('/manage/') 

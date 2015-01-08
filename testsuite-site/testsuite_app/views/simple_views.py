@@ -57,17 +57,29 @@ class TestsuiteView(TemplateView):
         return render(request, self.template_name, {'downloads': downloads})
 
 class CurrentResultsView(TemplateView):
-    "Grid of scores"
+    "Grid of current scores"
     template_name = "current_results.html"
 
     def get(self, request, *args, **kwargs):
         testsuite = TestSuite.objects.get_most_recent_testsuite()
         categories = testsuite.get_top_level_categories()
-        rs_scores = helper_functions.get_public_scores(categories)
+        rs_scores = helper_functions.get_public_scores(categories, common.READING_SYSTEM_STATUS_TYPE_CURRENT)
+        view_option = request.GET.get('view', 'simple')
+        # i would prefer to have archive_view set in the template itself but not sure how to do this w django templates
+        return render(request, self.template_name, {'categories': categories, 'rs_scores': rs_scores,
+            "testsuite_date": testsuite.version_date, 'view_option': view_option, 'archive_view': False})
+
+class ArchivedResultsView(TemplateView):
+    "Grid of archived scores"
+    template_name = "archived_results.html"
+
+    def get(self, request, *args, **kwargs):
+        testsuite = TestSuite.objects.get_most_recent_testsuite()
+        categories = testsuite.get_top_level_categories()
+        rs_scores = helper_functions.get_public_scores(categories, common.READING_SYSTEM_STATUS_TYPE_ARCHIVED)
         view_option = request.GET.get('view', 'simple')
         return render(request, self.template_name, {'categories': categories, 'rs_scores': rs_scores,
-            "testsuite_date": testsuite.version_date, 'view_option': view_option})
-
+            "testsuite_date": testsuite.version_date, 'view_option': view_option, 'archive_view': True})
 
 class ManageView(TemplateView):
     "Manage page"

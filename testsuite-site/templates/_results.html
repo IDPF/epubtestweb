@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% block nav-results %}<a class="nav-active">View</a>{% endblock %}
-
 
 {% load assignments %}
 {% load filters %}
@@ -21,8 +19,8 @@ $(document).ready(function() {
 {% endblock %}
 {% block content %}
 
-<h1>BISG EPUB 3 Support Grid: Current Results</h1>
-
+{% block title_heading %}
+{% endblock %}
 
 {% if rs_scores|length == 0 %}
 

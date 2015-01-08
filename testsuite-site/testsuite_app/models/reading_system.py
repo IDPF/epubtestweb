@@ -13,6 +13,7 @@ class ReadingSystem(models.Model):
     version = models.CharField(max_length = common.SHORT_STRING, blank = False, null = False)
     visibility = models.CharField(max_length = 1, choices = common.VISIBILITY_TYPE, default=common.VISIBILITY_MEMBERS_ONLY)
     user = models.ForeignKey('UserProfile')
+    status = models.CharField(max_length = 1, choices = common.READING_SYSTEM_STATUS_TYPE, default=common.READING_SYSTEM_STATUS_TYPE_CURRENT)
 
     def get_default_result_set(self):
         # there should only be one
