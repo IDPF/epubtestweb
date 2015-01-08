@@ -1,0 +1,15 @@
+{% extends '_results.html' %}
+
+{% comment %}
+using current and archive templates instead of just _results.html because you can't define blocks conditionally
+{% endcomment %}
+
+{% block nav-results %}
+<a class="nav-active">View</a>
+{% endblock %}
+
+{% block title_heading %}
+
+<h1>BISG EPUB 3 Support Grid: Current Results</h1>
+
+{% endblock %}
