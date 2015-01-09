@@ -40,6 +40,7 @@ $(document).ready(function() {
     <table id="rstable-detail" class="table table-striped table-bordered">
         <thead>
             <tr>
+                <th class="text-center"><a href="#" title="Sort by index">#</a></th>
                 <th class="text-center"><a href="#" title="Sort by name">Reading System</a></th>
                 <th class="text-center"><a href="#" title="Sort by overall score">Overall score</a></th>
                 {% for cat in categories %}
@@ -52,6 +53,7 @@ $(document).ready(function() {
         {% for rs_score in rs_scores %}
             {% get_default_result_set rs_score.reading_system as result_set%}
             <tr>
+                <td>{{forloop.counter}}</td>
                 <td><a href="/rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
                     {% if rs_score.reading_system.operating_system != "" %}
                     <br/>
@@ -139,6 +141,7 @@ $(document).ready(function() {
     <table id="rstable-simple" class="table table-striped table-bordered">
         <thead>
             <tr>
+                <th class="text-center"><a href="#" title="Sort by index">#</a></th>
                 <th class="text-center" title="Reading system"><a href="#" title="Sort by name">Reading System</a></th>
                 <th class="text-center" title="Total score: tests passed divided by total number of tests."><a href="#" title="Sort by total score">Total</a></th>
                 <th class="text-center" title="Required tests score: required tests passed divided by total number of required tests."><a href="#" title="Sort by required tests score">Required Features</a></th>
@@ -150,6 +153,7 @@ $(document).ready(function() {
         {% for rs_score in rs_scores %}
             {% get_default_result_set rs_score.reading_system as result_set%}
             <tr>
+                <td>{{forloop.counter}}</td>
                 <td>
                     <a href="/rs/{{rs_score.reading_system.id}}/">{{ rs_score.reading_system.name }} {{rs_score.reading_system.version}}</a>
                     {% if rs_score.reading_system.operating_system != "" %}
