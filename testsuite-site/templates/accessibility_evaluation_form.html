@@ -85,21 +85,24 @@ function autosave() {
 
 
 {% get_unanswered_flagged_items result_set as flagged_items %}
+{% get_unanswered_flagged_items_sorted_by_epub result_set as flagged_items_by_epub %}
 {% if result_set.flagged_for_review %}
 <div class="panel panel-warning">
     <div class="panel-heading">Update</div>
-    <div class="panel-body">
+    <div class="panel-body flagged-items">
         <p>The following tests may require review due to changes as of {{result_set.testsuite.version_date}}.</p>
-
-        <ul id="flagged-list" class="list-unstyled">
-        {% for item in flagged_items %}
-        <li><a href="{{ action_url }}#{{ item.id }}">{{ item.id }}</a>
-        {% if item.parentid == data.item.id %}
-        <span class="notes">(on this page)</span>
-        {% endif %}
-        </li>
+        {% for epub in flagged_items_by_epub %}
+        <h2 style="font-size: medium">{{epub.epub_name}} <a target="_blank" href="{{epub.epub_url}}" style="font-size: smaller; font-style: italic">[download EPUB]</a></h2>
+            <ul class="flagged-list" class="list-unstyled">
+            {% for item in epub.tests %}
+                <li><a href="{{ action_url }}{{ item.parentid }}/#{{ item.id }}">{{ item.id }}</a>
+                {% if item.parentid == data.item.id %}
+                    <span class="notes">(on this page)</span>
+                {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
         {% endfor %}
-        </ul>
     </div>
 </div>
 {% endif %}

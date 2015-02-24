@@ -588,7 +588,7 @@ span.warn {
     width: 25%;
 }
 
-#flagged-list {
+.flagged-list {
     -moz-column-count: 3;
     -moz-column-gap: 20px;
     -webkit-column-count: 3;
@@ -597,7 +597,7 @@ span.warn {
     column-gap: 20px;
 }
 
-#flagged-list .notes {
+.flagged-list .notes {
     font-style: italic;
     font-size: smaller;
 }

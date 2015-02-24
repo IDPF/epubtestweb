@@ -125,3 +125,9 @@ def generate_timestamp():
     from django.utils.timezone import utc
     return datetime.utcnow().replace(tzinfo=utc)
 
+def get_epubs_from_latest_testsuites():
+    default_epubs = Category.objects.filter(category_type = common.CATEGORY_EPUB, testsuite = TestSuite.objects.get_most_recent_testsuite())
+    accessibility_epubs = Category.objects.filter(category_type = common.CATEGORY_EPUB, testsuite = TestSuite.objects.get_most_recent_accessibility_testsuite())
+    # merge two query sets with "|"
+    return default_epubs | accessibility_epubs
+

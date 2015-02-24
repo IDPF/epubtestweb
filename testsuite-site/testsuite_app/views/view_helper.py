@@ -8,11 +8,14 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, ResultSet
+from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, ResultSet, Category
 from testsuite_app.forms import ReadingSystemForm, ResultFormSet, ResultSetMetadataForm
 from testsuite import settings
 from testsuite_app import helper_functions
 from testsuite_app import permissions
+from lxml import etree
+from datetime import datetime
+
 
 def auth_and_login(request, onfail='/login/'):
     if request.POST:
@@ -125,3 +128,17 @@ def set_rs_status(rsid, rs_status):
     rs.status = rs_status
     rs.save()
     return redirect('/manage/') 
+
+def gen_testsuite_xml(request, *args, **kwargs):
+    doc = etree.Element("testsuite")
+    doc.attrib["date"] = datetime.utcnow().strftime("%Y-%m-%d")
+    epubs = helper_functions.get_epubs_from_latest_testsuites()
+    for epub in epubs: 
+        item = etree.SubElement(doc, "epub")
+        item.attrib["src"] = epub.source
+        item.attrib["name"] = epub.name
+        if epub.desc != None:
+            item.attrib["desc"] = "epub.desc"
+    xmlstr = etree.tostring(doc, pretty_print = True, encoding="utf-8")
+    return HttpResponse(xmlstr, mimetype='text')
+

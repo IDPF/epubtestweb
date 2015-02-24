@@ -46,6 +46,13 @@ class Test(models.Model, common.ItemMixin):
         while p.parent_category != None:
             p = p.parent_category
         return p
+
+    # get the epub that this test is from
+    def get_parent_epub_category(self):
+        p = self.parent_category
+        while p.parent_category != None and p.parent_category.category_type != common.CATEGORY_EPUB:
+            p = p.parent_category
+        return p        
     
 class TestMetadata(models.Model):
     "Annotate test objects with accessibility metadata"

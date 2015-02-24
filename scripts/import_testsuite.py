@@ -22,13 +22,14 @@ def create_testsuite(ts_type):
     ts.save()
     return ts
 
-def add_category(category_type, name, parent_category, testsuite, source):
+def add_category(category_type, name, desc, parent_category, testsuite, source):
     db_category = Category(
         category_type = category_type,
         name = name,
         parent_category = parent_category,
         testsuite = testsuite,
-        source = source
+        source = source,
+        desc = desc
     )
     db_category.save()
     return db_category

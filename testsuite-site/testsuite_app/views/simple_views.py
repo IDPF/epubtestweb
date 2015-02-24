@@ -32,28 +32,35 @@ class TestsuiteView(TemplateView):
     template_name = "testsuite.html"
 
     def get(self, request, *args, **kwargs):
-        files = os.listdir(settings.EPUB_ROOT)
-        downloads = []
+        # files = os.listdir(settings.EPUB_ROOT)
+        # downloads = []
 
-        for f in sorted(files):
-            ext = os.path.splitext(f)[1]
-            if ext == '.epub' or ext == '.zip':
-                # the download link is going to be EPUB_URL + filename
-                filename = os.path.basename(f)
-                link = "{0}{1}".format(settings.EPUB_URL, filename)
+        # for f in sorted(files):
+        #     ext = os.path.splitext(f)[1]
+        #     if ext == '.epub' or ext == '.zip':
+        #         # the download link is going to be EPUB_URL + filename
+        #         filename = os.path.basename(f)
+        #         link = "{0}{1}".format(settings.EPUB_URL, filename)
                 
-                label = ""
-                if ext == '.epub':
-                    # assuming the filenames are all like:
-                    # epub30-test-0220-20131016.epub
-                    # chop off the first 12 and the last 14 to get the number, e.g. 0220.
-                    # this matches what is usually in the publication title and what is shown to the user in the test form
-                    label = "Document {0}".format(f[12:len(f)-14])
-                else:
-                    label = "All Testsuite Documents (zip)"
+        #         label = ""
+        #         if ext == '.epub':
+        #             # assuming the filenames are all like:
+        #             # epub30-test-0220-20131016.epub
+        #             # chop off the first 12 and the last 14 to get the number, e.g. 0220.
+        #             # this matches what is usually in the publication title and what is shown to the user in the test form
+        #             label = "Document {0}".format(f[12:len(f)-14])
+        #         else:
+        #             label = "All Testsuite Documents (zip)"
 
-                dl = {"label": label, "link": link}
-                downloads.append(dl)
+        #         dl = {"label": label, "link": link}
+        #         downloads.append(dl)
+        downloads = []
+        epubs = helper_functions.get_epubs_from_latest_testsuites()
+        for epub in epubs:
+            dl = {"label": epub.name, "link": "{0}{1}".format(settings.EPUB_URL, epub.source)}
+            downloads.append(dl)
+        dl = {"label": "All Testsuite Documents (zip)", "link": "{0}TestSuiteDocuments.zip".format(settings.EPUB_URL)}
+        downloads.append(dl)
         return render(request, self.template_name, {'downloads': downloads})
 
 class CurrentResultsView(TemplateView):

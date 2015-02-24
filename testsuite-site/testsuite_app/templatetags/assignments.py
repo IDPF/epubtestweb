@@ -58,12 +58,31 @@ def get_category_heading(category):
         return "h6"
 
 @register.assignment_tag
+def get_unanswered_flagged_items_sorted_by_epub(result_set):
+    "get unanswered flagged item ids, organized by the EPUB file they appear in"
+    tests = result_set.get_unanswered_flagged_tests()
+    unique_epubs = []
+    tests_by_epub = []
+    for t in tests:
+        epub = t.get_parent_epub_category()
+        if epub not in unique_epubs:
+            unique_epubs.append(t.get_parent_epub_category())
+
+    for epub in unique_epubs:
+        testdata = []
+        for t in tests:
+            if t.get_parent_epub_category() == epub:
+                testdata.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
+        tests_by_epub.append({"epub_name": epub.name, "epub_url": "{0}{1}".format(settings.EPUB_URL, epub.source), "tests": testdata})
+    return tests_by_epub
+
+@register.assignment_tag
 def get_unanswered_flagged_items(result_set):
     "get unanswered flagged item ids"
     tests = result_set.get_unanswered_flagged_tests()
     retval = []
     for t in tests:
-        retval.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
+        retval.append(t.testid)
     return retval
 
 @register.assignment_tag

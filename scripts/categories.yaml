@@ -7,65 +7,72 @@ TestSuites:
             -
                 Name: Content Documents
                 CategoryDisplayDepthLimit: Internal
-                Files:
-                    - epub30-test-0100
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0100
             -
                 Name: Styling
                 CategoryDisplayDepthLimit: Internal
-                Files:
-                    - epub30-test-0101
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0101
             -
                 Name: Scripting
                 CategoryDisplayDepthLimit: Internal
-                Files:
-                    - epub30-test-0102
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0102
             -
                 Name: Font Embedding and Obfuscation
                 CategoryDisplayDepthLimit: Internal
-                Files:
-                    - epub30-test-0103
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0103
+            -
+                Name: Document Flow
+                CategoryDisplayDepthLimit: Internal
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0110
+                    - com.github.epub-testsuite.epub30-test-0111
+                    - com.github.epub-testsuite.epub30-test-0112
             -
                 Name: Media Overlays
                 CategoryDisplayDepthLimit: Epub
-                Files:
-                    - epub30-test-0120
-                    - epub30-test-0220
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0120
+                    - com.github.epub-testsuite.epub30-test-0220
             -
                 Name: Global Language Support
                 CategoryDisplayDepthLimit: Internal
-                Files:
-                    - epub30-test-0130
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0130
             -
                 Name: Content Fragment Identifiers
                 CategoryDisplayDepthLimit: Internal
-                Files:
-                    - epub30-test-0140
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0140
 
             -
                 Name: Navigation
                 CategoryDisplayDepthLimit: Internal
-                Files:
-                    - epub30-test-0150
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0150
             -
                 Name: Fixed Layout
                 CategoryDisplayDepthLimit: Epub
-                Files:
-                    - epub30-test-0201
-                    - epub30-test-0202
-                    - epub30-test-0203
-                    - epub30-test-0204
-                    - epub30-test-0205
-                    - epub30-test-0206
-                    - epub30-test-0207
-                    - epub30-test-0208
-                    - epub30-test-0209
-                    - epub30-test-0210
-                    - epub30-test-0211
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0201
+                    - com.github.epub-testsuite.epub30-test-0202
+                    - com.github.epub-testsuite.epub30-test-0203
+                    - com.github.epub-testsuite.epub30-test-0204
+                    - com.github.epub-testsuite.epub30-test-0205
+                    - com.github.epub-testsuite.epub30-test-0206
+                    - com.github.epub-testsuite.epub30-test-0207
+                    - com.github.epub-testsuite.epub30-test-0208
+                    - com.github.epub-testsuite.epub30-test-0209
+                    - com.github.epub-testsuite.epub30-test-0210
+                    - com.github.epub-testsuite.epub30-test-0211
     - 
         Type: Accessibility
         Categories:
             -
                 Name: Fundamental Accessibility Tests
                 CategoryDisplayDepthLimit: Internal
-                Files:
-                    - epub30-test-0300
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0300
