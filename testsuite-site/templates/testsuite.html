@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<h1>Testsuite</h1>
+<h1 id="top">Testsuite</h1>
 
 <p>A freely available collection of material created specifically for the purpose of testing reading systems is provided <a href="#testsuite-documents">here</a>. The source from which these downloadable publications are built can be found <a href="https://github.com/IDPF/epub-testsuite">on github</a>. Prebuilt versions are available at the bottom of this page.</p>
 
@@ -49,6 +49,7 @@
 <li>When you are done with all of the tests, contact <a href="mailto:info@bisg.org?subject=epubtest.org">info@bisg.org</a> to publish your results.</li>
 <li>From time to time, the testsuite grows. You are encouraged to check back regularly for alerts that your evaluation requires updating.</li>
 </ul>
+<p><a href="#top">Back to top</a></p>
 
 <h2 id="instructions-for-accessibility-evaluation">Instructions for Accessibility Evaluation of Reading Systems</h2>
 
@@ -66,6 +67,7 @@
 </ul>
 
 <p>To evaluate the accessibility of Reading Systems, test plans have been prepared with sample content to carry out the tests; the fundamental test book provides the tests and instructions to the person conducting the test.  The Reading Systems should be evaluated using a wide variety of assistive technologies, e.g. Screen Readers, Magnifiers, Braille displays and alternative input. Results from the testing of the various configurations must be stored in the form provided on the website.</p>
+<p><a href="#top">Back to top</a></p>
 
 <h3 id="access-register">Getting Registered</h3>
 
@@ -76,6 +78,8 @@
 <p>A BISG representative or the appointed moderator will contact you to supervise the testing of your selected Reading System. You will be added as an evaluator and provided the evaluator login credentials. You can then evaluate the accessibility of reading systems using the test books and testing form provided on the EPUBTEST website.  Testing results will be stored in a central database and may be reviewed by moderators before publishing.  The moderator who contacts you will be your go to person for assistance in any testing related questions.</p>
  
 <p>If you are interested in being a moderator, please see the <a href="/call-for-moderators">description of qualifications and duties</a> and contact us via one of the methods above.</p>
+
+<p><a href="#top">Back to top</a></p>
 
 <h3 id="access-start">Getting Started</h3>
 
@@ -92,7 +96,7 @@
 
 <li>The next page lists all accessibility evaluations  (in the early stages this may be empty), performed for this reading system with different combinations (configurations) of assistive technologies.  Click on (activate) Add Accessibility Evaluation to add another evaluation with your chosen combination of assistive technology.</li>
  </ol>
-
+<p><a href="#top">Back to top</a></p>
 <h3 id="access-testing">Performing the tests</h3>
 <ol>
 <li>You will now see the entire form for the fundamental accessibility evaluation with numerous tests. Provide the information related to the chosen assistive technology at the beginning of the form.</li>
@@ -111,14 +115,14 @@
 
 <li>With time more test books may be added for accessibility evaluation or tests may be modified. Your accessibility evaluation will then be flagged as "requires updating". You are encouraged to visit the EPUBTEST website frequently and update your evaluation when requested.</li>
 </ol>
-
+<p><a href="#top">Back to top</a></p>
 <h2 id="testsuite-documents">Testsuite documents</h2>
 <ul>
 {% for download in downloads %}
 <li><a href="{{download.link}}">{{download.label}}</a></li>
 {% endfor %}
 </ul>
-
+<p><a href="#top">Back to top</a></p>
 
 
 {% endblock %}
