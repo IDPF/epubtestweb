@@ -73,8 +73,8 @@
                     {% comment %}
                     <!-- FOR NOW -->
                     <li><a href="/rs/{{ r.id }}/report/">View Issue Report</a></li>
-                    <li><a href="/rs/{{ r.id }}/export">Export data</a></li>
                     {% endcomment %}
+                    <li><a href="/rs/{{ r.id }}/export">Export data</a></li>
                     {% if can_edit == True %}
                     {% if is_archived == False %}
                     <li><a href="/rs/{{ r.id }}/archive/">Flag as archived version</a></li>

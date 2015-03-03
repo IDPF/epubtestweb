@@ -11,6 +11,7 @@ import os
 from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, ResultSet, Category
 from testsuite_app.forms import ReadingSystemForm, ResultFormSet, ResultSetMetadataForm
 from testsuite import settings
+from testsuite_app import export_data
 from testsuite_app import helper_functions
 from testsuite_app import permissions
 from lxml import etree
@@ -33,8 +34,6 @@ def logout_user(request):
     return redirect("/")
 
 def export_data_all(request):
-    import export_data
-    from lxml import etree
     xmldoc = export_data.export_all_current_reading_systems(request.user)
     xmldoc_str = etree.tostring(xmldoc, pretty_print=True)
     response = HttpResponse(mimetype='application/xml')
@@ -43,8 +42,6 @@ def export_data_all(request):
     return response
 
 def export_data_single(request, *args, **kwargs):
-    import export_data
-    from lxml import etree
     try:
         rs = ReadingSystem.objects.get(id=kwargs['pk'])
     except ReadingSystem.DoesNotExist:
