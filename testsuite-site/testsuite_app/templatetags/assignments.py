@@ -4,6 +4,8 @@ from testsuite_app.models import common
 from testsuite import settings
 from testsuite_app.models.result_set import ResultSet
 from testsuite_app.models.score import AccessibilityScore
+from testsuite_app import helper_functions
+import os
 
 register = template.Library()
 
@@ -61,19 +63,26 @@ def get_category_heading(category):
 def get_unanswered_flagged_items_sorted_by_epub(result_set):
     "get unanswered flagged item ids, organized by the EPUB file they appear in"
     tests = result_set.get_unanswered_flagged_tests()
-    unique_epubs = []
+    unique_epubs = helper_functions.get_epubs_from_latest_testsuites()
     tests_by_epub = []
-    for t in tests:
-        epub = t.get_parent_epub_category()
-        if epub not in unique_epubs:
-            unique_epubs.append(t.get_parent_epub_category())
-
+    
     for epub in unique_epubs:
+        print "epub: {0}".format(epub.id)
+        
+    for epub in unique_epubs:
+        
+
         testdata = []
         for t in tests:
             if t.get_parent_epub_category() == epub:
+                print "match!"
                 testdata.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
-        tests_by_epub.append({"epub_name": epub.name, "epub_url": "{0}{1}".format(settings.EPUB_URL, epub.source), "tests": testdata})
+            else:
+                print t.get_parent_epub_category().id
+        if len(testdata) > 0:
+            tests_by_epub.append({"epub_name": epub.name, 
+                "epub_url": "{0}{1}".format(settings.EPUB_URL, os.path.basename(epub.source)), 
+                "tests": testdata})
     return tests_by_epub
 
 @register.assignment_tag

@@ -57,7 +57,7 @@ class TestsuiteView(TemplateView):
         downloads = []
         epubs = helper_functions.get_epubs_from_latest_testsuites()
         for epub in epubs:
-            dl = {"label": epub.name, "link": "{0}{1}".format(settings.EPUB_URL, epub.source)}
+            dl = {"label": epub.name, "link": "{0}{1}".format(settings.EPUB_URL, os.path.basename(epub.source))}
             downloads.append(dl)
         dl = {"label": "All Testsuite Documents (zip)", "link": "{0}TestSuiteDocuments.zip".format(settings.EPUB_URL)}
         downloads.append(dl)
