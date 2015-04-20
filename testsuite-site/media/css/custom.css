@@ -9,7 +9,11 @@ p {
 }
 
 a {
-    color: #0099cc;
+    color: #9400D3;
+}
+
+a:hover {
+    color: #9400D3;    
 }
 
 
@@ -21,7 +25,7 @@ a {
 
 .navbar-brand {
     font-family: 'Open Sans', sans-serif;
-    color: #0099cc;
+    color: #9400D3;
     font-size: 22px;
     font-weight: bold;
 }
@@ -69,7 +73,7 @@ a {
 
 .navbar-nav ul li a:hover {
     text-decoration: none;
-    color: #0099cc;
+    color: #9400D3;
 }
 
 .navbar ul li ul {
@@ -102,7 +106,7 @@ a {
 
 
 
-
+.container { padding: 20px !important; }
 
 div.front { width: 100%; }
 div.front-left { float: left; width: 45%; margin-right: 40px; height: 300px; }
@@ -136,7 +140,7 @@ th {
 }
 
 .table-bordered>tbody>tr>td a {
-    color: #0099cc;
+    color: #9400D3;
 }
 
 .table-striped>tbody>tr:nth-child(odd)>td {
@@ -159,7 +163,7 @@ th {
 
 .tablesorter-header-inner a:hover {
     text-decoration: none;
-    color: #0099cc;
+    color: #9400D3;
 }
 
 .table>tr.category { 
@@ -176,15 +180,15 @@ td.filter-testid {
     background-color: white !important;
     border-top: 1px solid #ddd !important;
     border-bottom: 1px solid #ddd !important;
-    position: relative;
-    left: 70px !important;
-    width: 18%;
+    width: 20%;
+    padding-left: 60px !important;
 }
 
 td.filter-desc-test { 
     background-color: white !important;
     border-top: 1px solid #ddd !important;
     border-bottom: 1px solid #ddd !important;
+    width: 50%;
 }
 
 td.filter-req { 
@@ -200,7 +204,7 @@ tr.category-h1 h1 {
 }
 
 tr.category-h1>td { 
-    background-color: #0099cc !important;
+    background-color: #008AB8 !important;
     border-top: 1px solid #ddd !important;
     border-bottom: 1px solid #ddd !important;
 }
@@ -292,7 +296,23 @@ td.results-notes {
     background-color: #eaf8fc !important;
     padding: 20px !important;
 }
-
+#input-wrapper.top-input {
+  z-index: 99;
+  position: fixed;
+  right: 4.2%;
+  width: 150px;
+  height: 50px;
+  background: rgba(0, 153, 204, 0.5);
+}
+input.top-input {
+  margin-top: 8%;
+  float: right;
+  margin-right: 35px;
+}
+input.top-input:hover {
+    background: #9400D3;
+    color: #fff;
+}
 .progress { 
     height: 20px !important;
 }
@@ -324,10 +344,6 @@ form#testsuite_form .results table>tbody>tr>td {
 
 .results table>tbody>tr {
     border-bottom: 10px solid white;
-}
-
-.results table>tbody>tr>td {
-    padding: 20px !important;
 }
 
 form#testsuite_form .results table {
@@ -558,12 +574,12 @@ span.new-test, span.changed-test {
 }
 
 span.warn {
-	color: #c09853;
-	background-color: #fcf8e3;
+    color: #c09853;
+    background-color: #fcf8e3;
 }
 
 .header-row td {
-	font-weight: bold;
+    font-weight: bold;
     padding: 20px !important;
 }
 
@@ -616,7 +632,7 @@ span.warn {
     margin-bottom: 1em;
     width: auto;
     padding-right: 1em;
-    color: #0099cc;
+    color: #9400D3;
 }
 .dl-horizontal dd{
     margin-left: 0;
@@ -655,4 +671,17 @@ span.warn {
     /*border-bottom: #000 2px solid;*/
 }
 
+@media only screen and (max-width: 720px) {
+    .navbar a.navbar-brand {
+        float: left;
+        margin: 0;
+    }
 
+    .container {
+        width: 100% !important;
+    }
+    .container .front-left {
+        width: 100% !important;
+        height: auto !important;
+    }
+}
