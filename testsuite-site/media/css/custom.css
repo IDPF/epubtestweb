@@ -78,7 +78,6 @@ a:hover {
 
 .navbar ul li ul {
   padding: 0;
-  position: absolute;
   width: 150px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -104,9 +103,6 @@ a:hover {
     font-size: 12px;
 }
 
-
-
-.container { padding: 20px !important; }
 
 div.front { width: 100%; }
 div.front-left { float: left; width: 45%; margin-right: 40px; height: 300px; }
@@ -205,8 +201,6 @@ tr.category-h1 h1 {
 
 tr.category-h1>td { 
     background-color: #008AB8 !important;
-    border-top: 1px solid #ddd !important;
-    border-bottom: 1px solid #ddd !important;
 }
 
 tr.category-h2 h2 {
@@ -296,6 +290,23 @@ td.results-notes {
     background-color: #eaf8fc !important;
     padding: 20px !important;
 }
+.category-h1 {
+    background-color: #008AB8 !important;
+    border-top: 1px solid #ddd !important;
+    border-bottom: 1px solid #ddd !important;    
+}
+.category-h1.scroll-to-fixed-fixed {
+    background-color: #008AB8 !important;
+    border-top: 1px solid #ddd !important;
+    border-bottom: 1px solid #ddd !important;
+}
+.category-h1.scroll-to-fixed-fixed h1 {
+    padding-left: 65px;
+}
+input.fixed {
+    float: right;
+    margin: 30px 20px;
+}
 #input-wrapper.top-input {
   z-index: 99;
   position: fixed;
@@ -330,7 +341,7 @@ form#testsuite_form .results table>tbody>tr {
 }
 
 form#testsuite_form .results table>tbody>tr>td {
-    padding: 10px !important;
+    /*padding: 10px !important;*/
 }
 
 .results table { 
@@ -358,21 +369,30 @@ form#testsuite_form .results table {
     border-right: 40px solid white !important;
 }
 
+.results td.result {
+    padding: 15px !important;
+}
 .results td.result.danger {
     background-color: #ffcccc;
-    padding: 10px;
     border: 1px solid #fff;
 }
 
 .results td.result.success {
     background-color: #c5de9e;
-    padding: 10px;
     border: 1px solid #fff;
+}
+
+.results td[data-column="0"] {
+    width: 30.7% !important;
+}
+.results td.tablesorter-header {
+
 }
 
 .results tr.test_descriptions>td {
 
 }
+
 
 footer {
         padding-top: 40px;
@@ -671,7 +691,29 @@ span.warn {
     /*border-bottom: #000 2px solid;*/
 }
 
-@media only screen and (max-width: 720px) {
+.sticky-header {
+    position: fixed;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.sticky-header table {
+    background-color: #fff;
+}
+
+.sticky-table-for-shifting {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+
+@media screen and (max-width: 720px) {
     .navbar a.navbar-brand {
         float: left;
         margin: 0;
@@ -679,9 +721,23 @@ span.warn {
 
     .container {
         width: 100% !important;
+        padding: 20px !important;
     }
     .container .front-left {
         width: 100% !important;
         height: auto !important;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .navbar {
+        max-height: 50px;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    .front-right {
+        width: 45%;
+        float: left;
     }
 }

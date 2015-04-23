@@ -49,6 +49,12 @@ function set_test_descriptions_hidden() {
 }
     
 </script>
+<script src="/media/js/jquery.scrollTableBody-1.0.0.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $('.compare-results').scrollTableBody();
+    });
+</script>
 {% endblock %}
 
 
@@ -63,7 +69,7 @@ function set_test_descriptions_hidden() {
 
 {% for tests in test_arrays %}
 <div class="results">
-<table class="table-striped">
+<table class="table-striped compare-results">
     <thead>
         <tr class="header-row">
             <td>Reading System</td>
