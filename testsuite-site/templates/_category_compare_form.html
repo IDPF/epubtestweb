@@ -7,7 +7,7 @@
         {% get_category_heading category.item as heading_tag %}
         <tr class="category-{{heading_tag}}">
             <td class="filter-checkbox">
-                <input type="checkbox" name="category-selected" value="{{category.item.id}}" class="category {{ category.item|get_parent_ids }}"/>
+                <input type="checkbox" name="category-selected" value="{{category.item.id}}" class="category {{ category.item|get_parent_ids }}" title="Select category: {{category.item.name}} "/>
             </td>
             <td colspan="4" >
             <{{heading_tag}} id="c{{category.item.id}}">{{ category.item.name }}</{{heading_tag}}>
@@ -17,7 +17,8 @@
         {% for t in category.tests %}
             <tr>
                 <td class="filter-checkbox-test">
-                    <input type="checkbox" name="test-selected" value="{{t.id}}" class="test {{ t|get_parent_ids }}"/>
+                    <input type="checkbox" name="test-selected" value="{{t.id}}" class="test {{ t|get_parent_ids }}"
+                    title="Select test: {{t.name}}"/>
                 </td>
                 <td class="filter-testid">{{t.name}} </td>
                 <td class="filter-testid">{{t.testid}}</td>
