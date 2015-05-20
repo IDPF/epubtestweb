@@ -36,7 +36,9 @@ $(document).ready(function() {
 
 {% else %}
     
-    <p style="margin-bottom: 20px">These results are based on evaluations of reading system capabilities as described in the <a href="/testsuite/">EPUB Testsuite</a>. Click on a Reading System name in the table below to view details.</p>
+    <p>These results are based on evaluations of reading system capabilities as described in the <a href="/testsuite/">EPUB Testsuite</a>. Click on a Reading System name in the table below to view details.</p>
+
+    <p>Looking for an older version of a Reading System? Check out the <a href="/archived-results/">Archived Results</a> page.</p>
 
     {% if view_option = "detail" %}
         <p>Switch to <a href="/results/?view=simple">simple</a> view.</p>
@@ -132,7 +134,8 @@ $(document).ready(function() {
                 {% endif %}
                 <td class="text-center">
                     {% if rs_score.accessibility == 1 %}
-                        <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/">See details</a></span>
+                        <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/"
+                        title="See accessibility details for {{ rs_score.reading_system.name}} {{ rs_score.reading_system.version}}">See details</a></span>
                     {% elif rs_score.accessibility == -1 %}
                         <span>Data not available</span>
                     {% else %}
@@ -203,7 +206,8 @@ $(document).ready(function() {
                 </td>
                 <td class="text-center">
                     {% if rs_score.accessibility == 1 %}
-                        <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/">See details</a></span>
+                        <span><a href="/rs/{{ rs_score.reading_system.id}}/accessibility/"
+                        title="See accessibility details for {{ rs_score.reading_system.name}} {{ rs_score.reading_system.version }}">See details</a></span>
                     {% elif rs_score.accessibility == -1 %}
                         <span>Data not available</span>
                     {% else %}

@@ -9,11 +9,13 @@ p {
 }
 
 a {
-    color: #9400D3;
+    color: #0d93cf;
+    font-weight: bold;
 }
 
 a:hover {
-    color: #9400D3;    
+    font-weight: bolder;
+    color: #0d93cf;
 }
 
 
@@ -21,20 +23,26 @@ a:hover {
     font-family: 'Open Sans', sans-serif;
     margin-top: 40px;
     margin-bottom: 30px;
+    background-color: #0d93cf;
+    color: white;
+}
+
+.navbar a:hover {
+    color: white;
 }
 
 .navbar-brand {
     font-family: 'Open Sans', sans-serif;
-    color: #9400D3;
+    color: inherit;
     font-size: 22px;
-    font-weight: bold;
+    font-weight: bolder;
 }
 
 .navbar-nav>li>a {
     text-transform: uppercase;
-    font-size: 12px;
-    color: #333;
-    font-weight: 600;
+    font-size: 14px;
+    color: inherit;
+    font-weight: bold;
 }
 
 .navbar-nav ul {
@@ -73,7 +81,7 @@ a:hover {
 
 .navbar-nav ul li a:hover {
     text-decoration: none;
-    color: #9400D3;
+    /*color: #9400D3;*/
 }
 
 .navbar ul li ul {
@@ -136,7 +144,7 @@ th {
 }
 
 .table-bordered>tbody>tr>td a {
-    color: #9400D3;
+  /*  color: #9400D3;*/
 }
 
 .table-striped>tbody>tr:nth-child(odd)>td {
@@ -159,7 +167,7 @@ th {
 
 .tablesorter-header-inner a:hover {
     text-decoration: none;
-    color: #9400D3;
+    /*color: #9400D3;*/
 }
 
 .table>tr.category { 
@@ -321,7 +329,7 @@ input.top-input {
   margin-right: 35px;
 }
 input.top-input:hover {
-    background: #9400D3;
+    /*background: #9400D3;*/
     color: #fff;
 }
 .progress { 
@@ -652,7 +660,7 @@ span.warn {
     margin-bottom: 1em;
     width: auto;
     padding-right: 1em;
-    color: #9400D3;
+    /*color: #9400D3;*/
 }
 .dl-horizontal dd{
     margin-left: 0;
