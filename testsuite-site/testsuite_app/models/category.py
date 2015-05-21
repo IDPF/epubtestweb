@@ -13,7 +13,8 @@ class Category(models.Model, common.ItemMixin):
     testsuite = models.ForeignKey('TestSuite')
     source = models.CharField(max_length = common.LONG_STRING, null=True, blank=True) # what epub the test or category came from
     depth = models.IntegerField(null=True, blank=True, default=0)
-    
+    # desc is for an extended category description; e.g. an epub file will use name for the title and desc for the description
+    desc = models.TextField(null = True, blank = True)    
 
     def save(self, *args, **kwargs):
         "custom save routine"

@@ -3,6 +3,7 @@ import os
 import yaml
 import epub_parser
 import import_testsuite
+import epub_id_check
 from testsuite_app import models
 from testsuite_app.models import common
 from testsuite_app import helper_functions
@@ -39,16 +40,14 @@ def add_testsuite(config_section, sourcedir):
     old_testsuite = models.TestSuite.objects.get_most_recent_testsuite_of_type(testsuite_type)
     testsuite = import_testsuite.create_testsuite(testsuite_type)
 
+    epub_id_checker = epub_id_check.EpubIdCheck()
+    epub_id_checker.process_epubs(sourcedir)
     for cat in yaml_categories:
-        new_category = import_testsuite.add_category('1', cat['Name'], None, testsuite, None)
-        for epub in cat['Files']:
-            fullpath = os.path.join(sourcedir, epub)
-            if os.path.isdir(fullpath):
-                # this will add a new testsuite
-                epubparser = epub_parser.EpubParser()
-                epubparser.parse(fullpath, new_category, testsuite, cat['CategoryDisplayDepthLimit'])
-            else:
-                print "Not a directory: {0}".format(fullpath)
+        new_category = import_testsuite.add_category('1', cat['Name'], "", None, testsuite, None)
+        for epubid in cat['EpubIds']:
+            filename = epub_id_checker.get_filename_for_id(epubid)
+            epubparser = epub_parser.EpubParser()
+            epubparser.parse(filename, new_category, testsuite, cat['CategoryDisplayDepthLimit'])
 
     num_tests = models.Test.objects.filter(testsuite = testsuite).count()
     print "This testsuite contains {0} tests".format(num_tests)

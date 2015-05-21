@@ -85,6 +85,12 @@ def get_AT_metadata_description(result_set):
     return s
 
 @register.filter
+def get_AT_metadata_notes(result_set):
+    meta = result_set.get_metadata()
+    return meta.notes
+
+
+@register.filter
 def get_AT_name(result_set):
     meta = result_set.get_metadata()
     if meta == None:

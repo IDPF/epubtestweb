@@ -22,7 +22,7 @@
 
 {% if show_abridged == False %}
     {% if rs.sdk_version|length > 0 %}
-    <dt>Notes</dt>
+    <dt>Reading System Notes</dt>
     <dd>{{ rs.notes }}</dd>
     {% endif %}
 
@@ -30,5 +30,16 @@
     <dd> 
     {% get_default_result_set rs as result_set%}
     {{result_set.last_updated }}</dd>
+    
+    <dt>Status</dt>
+    <dd>
+    {% is_reading_system_archived rs as is_archived %}
+    {% if is_archived %}
+    Archived
+    {% else %}
+    Current
+    {% endif %}
+    </dd>
+
 {% endif %}
 </dl>

@@ -128,7 +128,9 @@ $(document).ready(function() {
         {% endfor %}
         </tbody>
     </table>
+    {% if edit == True %}
     <p class="text-muted">*Note that an accessibility evaluation cannot have a higher visibility level than that of its reading system.</p>
+    {% endif %}
     {% endif %}
     {% if edit == True %}
     <p><a class="btn btn-default" href="/rs/{{ rs.id}}/eval/accessibility/new" role="button">Add Accessibility Evaluation</a></p>

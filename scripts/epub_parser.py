@@ -3,6 +3,8 @@ import os
 from urlparse import urlparse
 from testsuite_app.models import *
 import import_testsuite
+import zipfile
+import tempfile
 
 EPUB_NS = "http://www.idpf.org/2007/ops"
 OPF_NS = "http://www.idpf.org/2007/opf"
@@ -29,9 +31,16 @@ class EpubParser:
         self.testsuite = None
         self.epub_category = None # the book itself is a category
         self.restriction = 3
+        self.filename = ""
 
-    def parse(self, folder, parent_category, testsuite, restriction):
-        self.folder = folder
+    def parse(self, filename, parent_category, testsuite, restriction):
+        # first, extract the file to a temp folder
+        zip = zipfile.ZipFile(filename)
+        tempdir = tempfile.mkdtemp()
+        zip.extractall(tempdir)
+        
+        self.filename = os.path.basename(filename)
+        self.folder = tempdir
         self.testsuite = testsuite
         self.restriction = import_testsuite.category_restriction_to_int(restriction)
         opfpath = self.parse_container()
@@ -39,7 +48,7 @@ class EpubParser:
         if self.restriction >= 2:
         	foldername = os.path.basename(self.folder)
         	self.epub_category = import_testsuite.add_category(common.CATEGORY_EPUB, \
-                self.title, parent_category, testsuite, foldername)
+                self.title, self.description, parent_category, testsuite, filename)
         else:
             self.epub_category = parent_category
         self.parse_nav(navpath)
@@ -102,7 +111,7 @@ class EpubParser:
                     if self.restriction >= 3:
                         foldername = os.path.basename(self.folder)
                         new_category = import_testsuite.add_category(common.CATEGORY_INTERNAL, \
-                            desc, parent_category, self.testsuite, foldername)
+                            desc, "", parent_category, self.testsuite, foldername)
                     else:
                         new_category = parent_category
                     # if this element has a nested list

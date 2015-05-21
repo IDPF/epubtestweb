@@ -4,6 +4,8 @@ from testsuite_app.models import common
 from testsuite import settings
 from testsuite_app.models.result_set import ResultSet
 from testsuite_app.models.score import AccessibilityScore
+from testsuite_app import helper_functions
+import os
 
 register = template.Library()
 
@@ -58,12 +60,37 @@ def get_category_heading(category):
         return "h6"
 
 @register.assignment_tag
+def get_unanswered_flagged_items_sorted_by_epub(result_set):
+    "get unanswered flagged item ids, organized by the EPUB file they appear in"
+    tests = result_set.get_unanswered_flagged_tests()
+    unique_epubs = helper_functions.get_epubs_from_latest_testsuites()
+    tests_by_epub = []
+    
+    for epub in unique_epubs:
+        print "epub: {0}".format(epub.id)
+        
+    for epub in unique_epubs:
+        
+
+        testdata = []
+        for t in tests:
+            if t.get_parent_epub_category() == epub:
+                testdata.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
+            else:
+                pass #print t.get_parent_epub_category().id
+        if len(testdata) > 0:
+            tests_by_epub.append({"epub_name": epub.name, 
+                "epub_url": "{0}{1}".format(settings.EPUB_URL, os.path.basename(epub.source)), 
+                "tests": testdata})
+    return tests_by_epub
+
+@register.assignment_tag
 def get_unanswered_flagged_items(result_set):
     "get unanswered flagged item ids"
     tests = result_set.get_unanswered_flagged_tests()
     retval = []
     for t in tests:
-        retval.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
+        retval.append(t.testid)
     return retval
 
 @register.assignment_tag
@@ -86,6 +113,11 @@ def is_test_supported(result):
         return True
     else:
         return False
+
+@register.assignment_tag
+def is_reading_system_archived(reading_system):
+    return reading_system.status == common.READING_SYSTEM_STATUS_TYPE_ARCHIVED
+
 
 ####################
 # permissions

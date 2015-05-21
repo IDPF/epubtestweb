@@ -33,19 +33,19 @@ class Test(models.Model, common.ItemMixin):
         self.depth = self.calculate_depth()
         #print "allow_na? {0}{1}".format(self.testid, self.allow_na)
         super(Test, self).save(*args, **kwargs)
-
-    def get_epub_parent_category(self):
-    	parents = self.get_parents()
-    	for p in parents:
-    		if p.category_type == common.CATEGORY_EPUB: 
-    			return p
-    	return None
-
+    
     def get_top_level_parent_category(self):
         p = self.parent_category
         while p.parent_category != None:
             p = p.parent_category
         return p
+
+    # get the epub that this test is from
+    def get_parent_epub_category(self):
+        p = self.parent_category
+        while p != None and p.category_type != common.CATEGORY_EPUB:
+            p = p.parent_category
+        return p        
     
 class TestMetadata(models.Model):
     "Annotate test objects with accessibility metadata"

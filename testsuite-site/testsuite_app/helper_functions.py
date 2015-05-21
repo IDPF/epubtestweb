@@ -8,10 +8,12 @@ import os
 from testsuite import settings
 from models import common
 
-def get_public_scores(categories):
+def get_public_scores(categories, rs_status):
     "get the public scores for each reading system"
+    "rs_status is an enum from common.py and indicates whether we want archived or current reading systems"
     retval = []
-    reading_systems = ReadingSystem.objects.all()
+
+    reading_systems = ReadingSystem.objects.filter(status = rs_status)
     for rs in reading_systems:
         if rs.visibility == common.VISIBILITY_PUBLIC:
             result_set = rs.get_default_result_set()
@@ -122,4 +124,10 @@ def generate_timestamp():
     from datetime import datetime
     from django.utils.timezone import utc
     return datetime.utcnow().replace(tzinfo=utc)
+
+def get_epubs_from_latest_testsuites():
+    default_epubs = Category.objects.filter(category_type = common.CATEGORY_EPUB, testsuite = TestSuite.objects.get_most_recent_testsuite())
+    accessibility_epubs = Category.objects.filter(category_type = common.CATEGORY_EPUB, testsuite = TestSuite.objects.get_most_recent_accessibility_testsuite())
+    # merge two query sets with "|"
+    return default_epubs | accessibility_epubs
 

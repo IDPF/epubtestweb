@@ -8,11 +8,15 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, ResultSet
+from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, ResultSet, Category
 from testsuite_app.forms import ReadingSystemForm, ResultFormSet, ResultSetMetadataForm
 from testsuite import settings
+from testsuite_app import export_data
 from testsuite_app import helper_functions
 from testsuite_app import permissions
+from lxml import etree
+from datetime import datetime
+
 
 def auth_and_login(request, onfail='/login/'):
     if request.POST:
@@ -30,8 +34,6 @@ def logout_user(request):
     return redirect("/")
 
 def export_data_all(request):
-    import export_data
-    from lxml import etree
     xmldoc = export_data.export_all_current_reading_systems(request.user)
     xmldoc_str = etree.tostring(xmldoc, pretty_print=True)
     response = HttpResponse(mimetype='application/xml')
@@ -40,8 +42,6 @@ def export_data_all(request):
     return response
 
 def export_data_single(request, *args, **kwargs):
-    import export_data
-    from lxml import etree
     try:
         rs = ReadingSystem.objects.get(id=kwargs['pk'])
     except ReadingSystem.DoesNotExist:
@@ -109,4 +109,33 @@ def set_accessibility_visibility(request, *args, **kwargs):
         messages.add_message(request, messages.WARNING, "You don't have permission to change the visibility for this item.")    
 
     return redirect("/rs/{0}/eval/accessibility/".format(rs.id))
+
+def archive_rs(request, *args, **kwargs):
+    return set_rs_status(kwargs['pk'], common.READING_SYSTEM_STATUS_TYPE_ARCHIVED)
+
+def unarchive_rs(request, *args, **kwargs):
+    return set_rs_status(kwargs['pk'], common.READING_SYSTEM_STATUS_TYPE_CURRENT)
+
+def set_rs_status(rsid, rs_status):
+    try:
+        rs = ReadingSystem.objects.get(id=rsid)
+    except ReadingSystem.DoesNotExist:
+        return render(request, "404.html", {})
+
+    rs.status = rs_status
+    rs.save()
+    return redirect('/manage/') 
+
+def gen_testsuite_xml(request, *args, **kwargs):
+    doc = etree.Element("testsuite")
+    doc.attrib["date"] = datetime.utcnow().strftime("%Y-%m-%d")
+    epubs = helper_functions.get_epubs_from_latest_testsuites()
+    for epub in epubs: 
+        item = etree.SubElement(doc, "epub")
+        item.attrib["src"] = epub.source
+        item.attrib["name"] = epub.name
+        if epub.desc != None:
+            item.attrib["desc"] = "epub.desc"
+    xmlstr = etree.tostring(doc, pretty_print = True, encoding="utf-8")
+    return HttpResponse(xmlstr, mimetype='text')
 

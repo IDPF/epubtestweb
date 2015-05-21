@@ -57,24 +57,28 @@
 
         <div class="navbar">
             <a class="navbar-brand" href="/">EPUBTest</a>
-            <ul class="nav navbar-nav pull-right">
-                <li>{% block nav-home %}<a href="/">EPUB 3 Support Grid</a>{% endblock %}
+            <ul class="nav navbar-nav pull-right" role="navigation">
+                <li><a href="/results/">Support Grid</a></li>
+                <li><a href="/compare/">Compare</a></li>
+
+                <!-- <li>{% block nav-home %}<a href="/">EPUB 3 Support Grid</a>{% endblock %}
                     <ul>
-                        <li>{% block nav-results %}<a href="/results/">View</a></li>{% endblock %}
+                        <li>{% block nav-results %}<a href="/results/">Current Results</a></li>{% endblock %}
+                        <li>{% block nav-archived-results %}<a href="/archived-results/">Results Archive</a></li>{% endblock %}
                         <li>{% block nav-compare %}<a href="/compare/">Compare</a></li>{% endblock %}
                     </ul>
-                </li>    
-                <li>{% block nav-testsuite %}<a href="/testsuite/">Testsuite</a>{% endblock %}
+                </li>     -->
+                <li><a href="/testsuite/">Testsuite</a></li>
                 {% if user.is_authenticated %}
-                    <ul>
+                    
                         <li><a href="/manage/">Manage</a></li>
                         <li><a href="/logout/">Logout</a></li>
-                    </ul>
-                </li>  
+                    
+                  
                 {% else %}
-                <li>{% block nav-login %}<a href="/login/">Login</a>{% endblock %}</li>
+                <li><a href="/login/">Login</a></li>
                 {% endif %}
-                <li>{% block nav-about %}<a href="/about/">About</a>{% endblock %}</li>
+                <li><a href="/about/">About</a></li>
             </ul>
         </div>
 
@@ -92,9 +96,9 @@
         </div>
 
         <footer>
-            <p><a href="http://bisg.org" target="_blank"><img src="/media/img/bisg_logo.gif" height="50px"/></a>
-            <a href="http://idpf.org" target="_blank"><img src="/media/img/idpf_logo.jpg"/></a>
-            <a href="http://daisy.org" target="_blank"><img src="/media/img/daisy_logo.png"/></a>
+            <p><a href="http://bisg.org" target="_blank"><img src="/media/img/bisg_logo.gif" height="50px" alt="BISG logo"/></a>
+            <a href="http://idpf.org" target="_blank"><img src="/media/img/idpf_logo.jpg" alt="IDPF logo"/></a>
+            <a href="http://daisy.org" target="_blank"><img src="/media/img/daisy_logo.png" alt="DAISY Consortium logo"/></a>
             </p>
 
             <p>EPUBTest.org development is sponsored by the <a target="_blank" href="http://daisy.org">DAISY Consortium</a> and the <a target="_blank" href="https://www.bisg.org">Book Industry Study Group</a>. Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</p>

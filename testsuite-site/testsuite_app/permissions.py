@@ -44,7 +44,7 @@ def user_can_view_accessibility_result_set(user, result_set):
             return True
         else:
             return False
-    if can_view_rs and result_set.visibility == common.VISIBILITY_OWNER_ONLY and user == rset.user:
+    if can_view_rs and result_set.visibility == common.VISIBILITY_OWNER_ONLY and user == result_set.user:
         return True
     if can_view_rs and result_set.visibility == common.VISIBILITY_PUBLIC:
         return True
