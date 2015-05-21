@@ -75,10 +75,9 @@ def get_unanswered_flagged_items_sorted_by_epub(result_set):
         testdata = []
         for t in tests:
             if t.get_parent_epub_category() == epub:
-                print "match!"
                 testdata.append({"id": t.testid, "parentid": t.get_top_level_parent_category().id})
             else:
-                print t.get_parent_epub_category().id
+                pass #print t.get_parent_epub_category().id
         if len(testdata) > 0:
             tests_by_epub.append({"epub_name": epub.name, 
                 "epub_url": "{0}{1}".format(settings.EPUB_URL, os.path.basename(epub.source)), 

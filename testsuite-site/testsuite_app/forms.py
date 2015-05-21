@@ -42,14 +42,16 @@ class ResultForm(ModelForm):
 class ResultSetMetadataForm(ModelForm):
     class Meta:
         model = ATMetadata
-        fields = ('assistive_technology', 'input_type', 'supports_braille', 'supports_screenreader')
+        fields = ('assistive_technology', 'input_type', 'supports_braille', 'supports_screenreader', 'notes')
         labels = {
             'input_type': 'Input type',
             'supports_screenreader': 'Testing includes screenreader output',
             'supports_braille': 'Testing includes Braille output',
+            'notes': 'Notes about this configuration',
         }
         widgets = {
-            'input_type': forms.RadioSelect
+            'input_type': forms.RadioSelect,
+            'notes': forms.Textarea(attrs={'cols': 40, 'rows': 3, 'title': 'Notes'}),
         }
 
 ResultFormSet = inlineformset_factory(ResultSet, Result, extra=0, can_delete=False, form = ResultForm)

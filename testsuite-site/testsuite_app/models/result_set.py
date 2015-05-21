@@ -14,6 +14,7 @@ class ATMetadata(models.Model):
     input_type = models.CharField(max_length = 1, choices = common.INPUT_TYPE, default=common.INPUT_TYPE_KEYBOARD) 
     supports_screenreader = models.BooleanField(default=False)
     supports_braille = models.BooleanField(default=False)
+    notes = models.CharField(max_length = common.LONG_STRING, null = True, blank = True)
 
 
 class ResultSetManager(models.Manager):
