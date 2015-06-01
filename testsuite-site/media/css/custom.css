@@ -356,13 +356,15 @@ form#testsuite_form .results table>tbody>tr>td {
     background: #fff;
 }
 .results tr.scroll-to-fixed-fixed { 
-        border-top: 2px solid #0099cc;
+    border-top: 2px solid #0099cc;
     border-bottom: 2px solid #0099cc;
     background: #fff;
 }
 
 .results tr.scroll-to-fixed-fixed>[data-column="0"]  { 
-    width: 225px !important;
+    width: 269px !important;
+}
+.results tr.scroll-to-fixed-fixed>[data-column="1"]  { 
 }
 .results table>tbody>tr {
     border-bottom: 10px solid white;
@@ -373,19 +375,15 @@ form#testsuite_form .results table {
 }
 
 .results td.reading_system_name { 
-    /*border-right: 40px solid white !important;*/
-    width: 225px;
+    width: 225px !important;
 }
 
 [data-column="0"] {
-    /*border-right: 40px solid white !important;*/
-    width: 225px;
+    width: 225px !important;
 }
-
-
-
 .results td.result {
     padding: 15px !important;
+    width: 118px;
 }
 .results td.result.danger {
     background-color: #ffcccc;
@@ -396,13 +394,9 @@ form#testsuite_form .results table {
     background-color: #c5de9e;
     border: 1px solid #fff;
 }
-
-.results td[data-column="0"] {
-    width: 225px;
-}
-.results td.tablesorter-header {
-    width: 118px !important;
-    height: 62px !important;
+.results tr.scroll-to-fixed-fixed td.tablesorter-header {
+    height: 62px;
+    width: 149px;
 }
 
 .results tr.test_descriptions>td {
