@@ -49,21 +49,17 @@ function set_test_descriptions_hidden() {
 <script>
     $(document).ready(function() {
 
-        // Dock the header to the top of the window when scrolled past the banner.
+        // Dock the header to the top of the window when scrolling through results.
         // This is the default behavior.
 
         $('.fixed').scrollToFixed();
 
+        var header = $('.header-row');
+        header.each(function(i) {
+            var header = $(header[i]);
+            var next = header[i + 1];
 
-        // Dock each summary as it arrives just below the docked header, pushing the
-        // previous summary up the page.
-
-        var summaries = $('.header-row');
-        summaries.each(function(i) {
-            var summary = $(summaries[i]);
-            var next = summaries[i + 1];
-
-            summary.scrollToFixed({
+            header.scrollToFixed({
                 marginTop: $('.header').outerHeight(true) + 10,
                 limit: function() {
                     var limit = 0;
