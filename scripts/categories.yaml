@@ -2,60 +2,589 @@
 # at the moment, the only supported types are 'Default' and 'Accessibility'
 TestSuites: 
     -
-        Type: Default
+        Name: EPUB3 Test Suite
+        Type: default
+        Id: testsuite-default
+        Allow: One
         Categories:
             -
-                Name: Content Documents
-                CategoryDisplayDepthLimit: Internal
+                Name: XHTML
+                Id: xhtml
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0100
-            -
-                Name: Styling
-                CategoryDisplayDepthLimit: Internal
-                EpubIds:
-                    - com.github.epub-testsuite.epub30-test-0101
-            -
-                Name: Scripting
-                CategoryDisplayDepthLimit: Internal
-                EpubIds:
-                    - com.github.epub-testsuite.epub30-test-0102
-            -
-                Name: Font Embedding and Obfuscation
-                CategoryDisplayDepthLimit: Internal
-                EpubIds:
-                    - com.github.epub-testsuite.epub30-test-0103
-            -
-                Name: Document Flow
-                CategoryDisplayDepthLimit: Internal
-                EpubIds:
                     - com.github.epub-testsuite.epub30-test-0110
                     - com.github.epub-testsuite.epub30-test-0111
                     - com.github.epub-testsuite.epub30-test-0112
+                Features:
+                    - 
+                        Id: inline-frames
+                        Name: Inline Frames
+                        TestIds:
+                            - iframe-010
+                    - 
+                        Id: image-formats
+                        Name: Image Formats
+                        TestIds:
+                            - img-010
+                            - img-020
+                            - img-030
+                    -
+                        Id: audio
+                        Name: Audio
+                        TestIds:
+                            - audio-010
+                            - audio-020
+                            - audio-030
+                            - audio-040
+                    -
+                        Id: video
+                        Name: Video
+                        TestIds:
+                            - video-010
+                            - video-020
+                            - video-030
+                            - video-040
+                            - video-050
+                            - video-060
+                            - video-070
+                            - video-080
+                    -
+                        Id: epub-trigger
+                        Name: epub:trigger
+                        TestIds:
+                            - trigger-010
+                            - trigger-020
+                            - trigger-030
+                            - trigger-040
+                    -
+                        Id: namespaces
+                        Name: Namespaces
+                        TestIds:
+                            - namespace-010
+                    -
+                        Id: mathml
+                        Name: MathML
+                        TestIds:
+                            - mathml-010
+                            - mathml-020
+                            - mathml-021
+                            - mathml-030
+                            - mathml-040
+                            - mathml-050
+                            - mathml-060
+                            - mathml-061
+                            - mathml-070
+                            - mathml-080
+                            - mathml-081
+                            - mathml-090
+                    -
+                        Id: fallbacks
+                        Name: Fallbacks
+                        TestIds:
+                            - bindings-010
+                            - fallback-010
+                            - fallback-020
+                            - fallback-030
+                            - fallback-040
+                            - switch-010
+                            - switch-020
+                    -
+                        Id: document-flow
+                        Name: Document Flow
+                        TestIds:
+                            - flow-010
+                            - flow-015
+                            - flow-020
+            - 
+                Name: SVG
+                Id: svg
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0100
+                Features:
+                    - 
+                        Id: shapes
+                        Name: Shapes
+                        TestIds:
+                            - svg-010
+                            - svg-020
+                    - 
+                        Id: styling
+                        Name: Styling
+                        TestIds:
+                            - svg-110
+                            - svg-120
+                            - svg-130
+                            - svg-140
+                            - svg-150
+                            - svg-160
+                    -
+                        Id: positioning
+                        Name: Positioning
+                        TestIds:
+                            - svg-210
+                            - svg-220
+                            - svg-230
+                            - svg-240
+                    -
+                        Id: rotating
+                        Name: Rotating
+                        TestIds:
+                            - svg-310
+                            - svg-320
+                    -
+                        Id: svg-xhtml-support
+                        Name: XHTML Support
+                        TestIds:
+                            - svg-410
+                            - svg-420
+                            - svg-430
+                    - 
+                        Id: image-embedding
+                        Name: Image Embedding
+                        TestIds:
+                            - svg-510
+                    -
+                        Id: svg-in-spine
+                        Name: SVG Support in Spine
+                        TestIds:
+                            - svg-doc-001                        
+
+            -
+                Name: EPUB Style Sheets
+                Id: epub-style-sheets
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0101
+                Features:
+                    - 
+                        Id: multicolumn-layouts
+                        Name: Multi-Column Layouts
+                        TestIds:
+                            - style-110
+                    - 
+                        Id: css-namespaces
+                        Name: CSS Namespaces
+                        TestIds:
+                            - style-061
+                    -
+                        Id: list-styling
+                        Name: List Styling
+                        TestIds:
+                            - style-009
+                            - style-010
+                            - style-011
+                            - style-012
+                            - style-013
+                            - style-014
+                            - style-015
+                            - style-016
+                            - style-017
+                            - style-018
+                            - style-019
+                            - style-020
+                            - style-012
+                            - style-022
+                            - style-023
+                            - style-024
+                            - style-025
+                            - style-026
+                            - style-027
+                            - style-028
+                            - style-029
+                            - style-030
+                            - style-040
+                            - style-041
+                            - style-050
+                            - style-051
+                    -
+                        Id: text-transforms
+                        Name: Text Transforms
+                        TestIds:
+                            - style-310
+                            - style-311
+                            - style-312
+                    -
+                        Id: media-rules
+                        Name: @media Rules
+                        TestIds:
+                            - style-210
+                            - style-211
+                            - style-220
+                            - style-221
+                    -
+                        Id: epub-ruby-position-property
+                        Name: The -epub-ruby-position property
+                        TestIds:
+                            - style-410
+                            - style-411
+                            - style-412
+                    -
+                        Id: alternate-style-tags
+                        Name: Alternate Style Tags
+                        TestIds:
+                            - style-610
+                            - style-611
+            -
+                Name: Scripting
+                Id: scripting
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0102
+                Features:
+                    - 
+                        Name: epubReadingSystem
+                        Id:
+                        TestIds:
+                            - rso-010
+                            - rso-020
+                            - rso-030
+                            - rso-040
+                            - rso-050
+                            - rso-060
+                            - rso-070
+                            - rso-080
+                            - rso-090
+                            - rso-100
+                    -
+                        Name: XMLHttpRequest
+                        Id: 
+                        TestIds:
+                            - xhr-010
+                            - xhr-020
+                            - xhr-030
+                    -
+                        Name: JSONP
+                        Id:
+                        TestIds:
+                            - jsonp-010
+                    -
+                        Name: Filesystem
+                        Id:
+                        TestIds:
+                            - fs-010
+                            - fs-020
+                            - fs-030
+                            - fs-040
+                            - fs-050
+                    -
+                        Name: Geolocation
+                        Id:
+                        TestIds:
+                            - geo-010
+                            - geo-020
+                    -
+                        Name: Scripting contexts
+                        Id:
+                        TestIds:
+                            - scr-010
+                            - scr-020
+                    -
+                        Name: Canvas
+                        Id:
+                        TestIds:
+                            - canvas-010
+                            - canvas-020
+                    -
+                        Name: Form elements
+                        Id:
+                        TestIds:
+                            - forms-010
+                            - forms-020
+                            - forms-030
+                            - forms-040
+                            - forms-050
+                            - forms-060
+                            - forms-070
+                            - forms-080
+                    -
+                        Name: Input Types
+                        Id:
+                        TestIds:
+                            - input-010
+                            - input-020
+                            - input-030
+                            - input-040
+                            - input-050
+                            - input-060
+                            - input-070
+                            - input-080
+                            - input-090
+                            - input-100
+                            - input-110
+                            - input-120
+                            - input-130
+                            - input-140
+                            - input-150
+                            - input-160
+
+            -
+                Name: Fonts
+                Id: fonts
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0103
+                Features:
+                    -
+                        Name: TTF
+                        Id:
+                        TestIds:
+                            - fonts-010
+                            - fonts-040
+                            - fonts-070
+                            - fonts-110
+                            - fonts-140
+                    -
+                        Name: OTF
+                        Id:
+                        TestIds:
+                            - fonts-020
+                            - fonts-050
+                            - fonts-120
+                            - fonts-150
+                    -
+                        Name: WOFF
+                        Id:
+                        TestIds:
+                            - fonts-030
+                            - fonts-060
+                            - fonts-130
+                            - fonts-160
             -
                 Name: Media Overlays
-                CategoryDisplayDepthLimit: Epub
+                Id: media-overlays
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0120
                     - com.github.epub-testsuite.epub30-test-0220
+                Features:
+                    -
+                        Name: Media Overlays Playback
+                        Id:
+                        TestIds:
+                            - mo-basic-010
+                    -
+                        Name: Highlighting
+                        Id:
+                        TestIds:
+                            - mo-basic-020
+                            - mo-basic-030
+                            - mo-audio-070
+                    -
+                        Name: Audio
+                        Id:
+                        TestIds:
+                            - mo-basic-040
+                            - mo-basic-050
+                            - mo-basic-060
+                            - mo-audio-010
+                            - mo-audio-020
+                            - mo-audio-030
+                            - mo-audio-040
+                            - mo-chap-010
+                            - mo-end-010
+                            - mo-audio-050
+                            - mo-audio-060
+                            - mo-audio-080
+                    -
+                        Name: Skippability
+                        Id:
+                        TestIds:
+                            - mo-skip-010
+                            - mo-skip-020
+                    -
+                        Name: Escapability
+                        Id:
+                        TestIds:
+                            - mo-esc-010
+                            - mo-esc-020
+                            - mo-esc-030
+                    -
+                        Name: Navigation
+                        Id:
+                        TestIds:
+                            - mo-nav-010
+                            - mo-nav-020
+                            - mo-nav-030
+                            - mo-chap-020
+                    -
+                        Name: Embedded Media
+                        Id:
+                        TestIds:
+                            - mo-embed-010
+                            - mo-embed-020
+                            - mo-embed-030
+                    -
+                        Name: Fixed Layouts
+                        Id:
+                        TestIds:
+                            - mo-basic-210
+                            - mo-basic-220
+                            - mo-basic-230
+                            - mo-basic-250
+                            - mo-basic-260
+                            - mo-basic-270
+                            - mo-nav-210
+                            - mo-nav-220
+                            - mo-nav-230
+                            - mo-end-210
             -
                 Name: Global Language Support
-                CategoryDisplayDepthLimit: Internal
+                Id: global-language-support
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0130
+                Features:
+                    -
+                        Name: Text direction
+                        Id:
+                        TestIds:
+                            - pagination-rtl-010
+                            - pagination-rtl-020
+                            - pagination-rtl-030
+                            - pagination-rtl-040
+                    -
+                        Name: Styling
+                        Id:
+                        TestIds:
+                            - headings-rtl-010
+                            - headings-rtl-020
+                            - headings-rtl-030
+                            - headings-rtl-040
+                    -
+                        Name: links
+                        Id:
+                        TestIds:
+                            - links-rtl-010
+                            - links-rtl-020
+                            - links-rtl-030
+                    -
+                        Name: character
+                        Id:
+                        TestIds:
+                            - character-rtl-010
+                            - character-rtl-020
+                            - character-rtl-030
+                            - character-rtl-040
+                            - character-rtl-050
+                            - character-rtl-060
+                            - character-rtl-070
+                            - character-rtl-080
+                    -
+                        Name: paragraph style
+                        Id:
+                        TestIds:
+                            - paragraph-rtl-010
+                            - paragraph-rtl-020
+                            - paragraph-rtl-030
+                    -
+                        Name: ruby
+                        Id:
+                        TestIds:
+                            - ruby-rtl-010
+                            - ruby-rtl-020
+                    -
+                        Name: Text style
+                        Id:
+                        TestIds:
+                            - text-style-rtl-010
+                            - text-style-rtl-020
+                            - text-style-rtl-030
+                            - text-style-rtl-040
+                            - text-style-rtl-050
+                    -
+                        Name: Images
+                        Id:
+                        TestIds:
+                            - images-rtl-010
+                            - images-rtl-020
+                            - images-rtl-030
+                            - images-rtl-040
+                            - images-rtl-050
+                    -
+                        Name: Double column layout
+                        Id:
+                        TestIds:
+                            - multi-colums-rtl-010
+                    -
+                        Name: Page progression direction
+                        Id:
+                        TestIds:
+                            - page-progression
+                    -
+                        Name: Glyph display
+                        Id:
+                        TestIds:
+                            - disp01
+                            - disp02
+                    -
+                        Name: Justification
+                        Id:
+                        TestIds:
+                            - disp03
+                            - disp04
+                    -
+                        Name: Directionality characters
+                        Id:
+                        TestIds:
+                            - disp05
+                            - disp06
             -
                 Name: Content Fragment Identifiers
-                CategoryDisplayDepthLimit: Internal
+                Id: content-fragment-identifiers
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0140
-
+                Features:
+                    -
+                        Name: Intra-Publication Linking
+                        Id:
+                        TestIds:
+                            - epubcfi-010
+                            - epubcfi-020
+                            - epubcfi-030
+                            - epubcfi-040
+                            - epubcfi-050
+                            - epubcfi-060
+                    -
+                        Name: Inter-Publication Linking
+                        Id:
+                        TestIds:
+                            - epubcfi-110
             -
                 Name: Navigation
-                CategoryDisplayDepthLimit: Internal
+                Id: navigation
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0150
+                Features:
+                    -
+                        Name: toc nav
+                        Id:
+                        TestIds:
+                            - epubnav-010
+                            - epubnav-020
+                            - epubnav-030
+                    -
+                        Name: landmarks nav
+                        Id:
+                        TestIds:
+                            - epubnav-040
+                            - epubnav-050
+                            - epubnav-060
+                    -
+                        Name: page-list nav
+                        Id:
+                        TestIds:
+                            - epubnav-070
+                            - epubnav-080
+                    -
+                        Name: Custom nav elements
+                        Id:
+                        TestIds:
+                            - epubnav-090
+                            - epubnav-100
+                            - epubnav-110
+                    -
+                        Name: Spine rendering
+                        Id:
+                        TestIds:
+                            - epubnav-120
             -
-                Name: Fixed Layout
-                CategoryDisplayDepthLimit: Epub
+                Name: Fixed Layouts
+                Id: fixed-layouts
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0201
                     - com.github.epub-testsuite.epub30-test-0202
@@ -68,11 +597,96 @@ TestSuites:
                     - com.github.epub-testsuite.epub30-test-0209
                     - com.github.epub-testsuite.epub30-test-0210
                     - com.github.epub-testsuite.epub30-test-0211
+                Features:
+                    -
+                        Name: Fixed Layout Support
+                        Id:
+                        TestIds:
+                            - fxl-010
+                    -
+                        Name: Synthetic Spreads
+                        Id: 
+                        TestIds:
+                            - fxl-020
+                            - fxl-030
+                            - fxl-040
+                            - fxl-050
+                            - fxl-130
+                            - fxl-140
+                            - fxl-150
+                    - 
+                        Name: Orientation
+                        Id:
+                        TestIds:
+                            - fxl-060
+                            - fxl-070
+                            - fxl-080
+                            - fxl-090
+                            - fxl-100
+                    -
+                        Name: Right-to-left Page Progression Direction
+                        Id:
+                        TestIds:
+                            - fxl-120
+
     - 
-        Type: Accessibility
+        Name: Accessibility Test Suite
+        Type: accessibility
+        Id: testsuite-accessibility-fundamental
+        Allow: Many
         Categories:
             -
                 Name: Fundamental Accessibility Tests
-                CategoryDisplayDepthLimit: Internal
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0300
+                Features:
+                    - 
+                        Name: File Management
+                        Id:
+                        TestIds:
+                            - file-010
+                            - file-110
+                            - file-310
+                            - file-410
+                    - 
+                        Name: Reading
+                        Id:
+                        TestIds:
+                            - reading-010
+                            - reading-110
+                            - reading-210
+                            - reading-310
+                            - reading-410
+                            - reading-510
+                    - 
+                        Name: Visual Adjustment
+                        Id:
+                        TestIds:
+                            - visual-010
+                            - visual-210
+                            - visual-510
+                            - visual-610
+                            - visual-710
+                    - 
+                        Name: Navigation
+                        Id:
+                        TestIds:
+                            - nav-010
+                            - nav-210
+                            - nav-310
+                            - nav-410
+                            - nav-510
+                            - nav-610
+                            - nav-710
+                            - nav-810
+                            - nav-910
+                            - nav-1010
+                            - nav-1110
+                    -
+                        Name: Annotation
+                        Id: 
+                        TestIds:
+                            - anno-010
+                            - anno-110
+                            - anno-210
+                            - anno-310

@@ -139,7 +139,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    template_dir
+    template_dir,
 )
 
 INSTALLED_APPS = (
@@ -153,9 +153,7 @@ INSTALLED_APPS = (
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'testsuite_app',
-    #'django_evolution',
-    'south',
+    #'testsuite_app',
     'analytical',
 )
 
@@ -188,7 +186,7 @@ LOGGING = {
     }
 }
 
-AUTH_USER_MODEL = 'testsuite_app.UserProfile'
+AUTH_USER_MODEL = 'testsuite.UserProfile'
 LOGIN_REDIRECT_URL = '/manage/'
 
 APPEND_SLASH = True

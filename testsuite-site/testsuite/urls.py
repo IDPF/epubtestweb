@@ -2,10 +2,9 @@ from django.conf.urls import patterns, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from testsuite_app.views import *
+from testsuite.views import *
 from django.contrib.auth.decorators import login_required
 import settings
-from testsuite_app.views import *
 
 admin.autodiscover()
 
