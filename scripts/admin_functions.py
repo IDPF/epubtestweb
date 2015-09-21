@@ -1,18 +1,17 @@
 import os
-from testsuite import models
-from testsuite.models import common
-from testsuite import helper_functions
-from testsuite import export_data
+from testsuite_app import models
+from testsuite_app.models import common, UserProfile
+from testsuite_app import helper_functions
+from testsuite_app import export_data
 
 from django.contrib.sessions.models import Session
-from testsuite.models import UserProfile
 from datetime import datetime
 
 
 def listusers():
     users = models.UserProfile.objects.all()
     for u in users:
-        print "{0}\t\t\t\t{1} {2}".format(u.username, u.first_name.encode('utf-8'), u.last_name.encode('utf-8'))
+        print ("{0}\t\t\t\t{1} {2}".format(u.username, u.first_name.encode('utf-8'), u.last_name.encode('utf-8')))
 
 
 def list_logged_in_users():
@@ -28,12 +27,12 @@ def list_logged_in_users():
     users = UserProfile.objects.filter(id__in=uid_list)
 
     for u in users:
-        print u.username
+        print(u.username)
 
 def listrs():
-    rses = models.ReadingSystem.objects.all()
+    rses = models.ReadingSystemVersion.objects.all()
     for rs in rses:
-        print "{0}: {1}".format(rs.name, rs.pk)
+        print("{0}: {1}".format(rs.name, rs.pk))
 
 def getemails():
     users = models.UserProfile.objects.all()
@@ -44,4 +43,4 @@ def getemails():
         if u.email.lower() not in distinct_emails:
             distinct_emails.append(u.email.lower())
     emails = ", ".join(distinct_emails)
-    print emails
+    print(emails)

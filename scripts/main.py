@@ -1,19 +1,17 @@
 import argparse
 import os
 import yaml
-from testsuite import models
-from testsuite.models import common
-from testsuite.models import helper_functions
-from testsuite.models import export_data
-from testsuite.models import UserProfile
+from testsuite_app import models
+from testsuite_app import export_data
 
 from admin_functions import *
+from import_testsuite import import_testsuite
+import setup_testdb
+
+import refactor_functions
 
 from django.contrib.sessions.models import Session
 from datetime import datetime
-
-
-
 
 def export(outfile):
     xmldoc = export_data.export_all_current_reading_systems(None)
@@ -21,20 +19,22 @@ def export(outfile):
     print ("Data exported to {}".format(outfile))
 
 def main():
-    argparser = argparse.ArgumentParser(description="Collect tests")
+    import django
+    django.setup()
+    
+    argparser = argparse.ArgumentParser(description="epubtest.org command line")
     subparsers = argparser.add_subparsers(help='commands')
     import_parser = subparsers.add_parser('import', help='Import a testsuite into the database')
     import_parser.add_argument("source", action="store", help="Folder containing EPUBs")
     import_parser.add_argument("config", action="store", default="categories.yaml", help="categories config file")
-    import_parser.set_defaults(func = lambda args: add_testsuites(args.source, args.config))
+    import_parser.set_defaults(func = lambda args: import_testsuite.add_testsuites(args.source, args.config))
 
-    print_parser = subparsers.add_parser('print', help="Print (some) contents of the database")
-    print_parser.set_defaults(func = lambda args: print_testsuite())
-
-    
     export_parser = subparsers.add_parser('export', help="Export evaluation data for all reading systems")
     export_parser.add_argument("file", action="store", help="store the xml file here")
     export_parser.set_defaults(func = lambda args: export(args.file))
+
+    setup_testdb_parser = subparsers.add_parser('setup-testdb', help = "Init the DB for testing. WARNING!!! This will change the database.")
+    setup_testdb_parser.set_defaults(func = lambda args: setup_testdb.init_for_testing())
 
     listrs_parser = subparsers.add_parser('listrs', help="List all reading systems and their IDs")
     listrs_parser.set_defaults(func = lambda args: listrs())

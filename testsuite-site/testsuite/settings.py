@@ -19,7 +19,7 @@ allow_robots = True
 # end of overrides
 
 try:
-    from local_settings import *
+    from .local_settings import *
 except ImportError:
     pass
 
@@ -153,7 +153,7 @@ INSTALLED_APPS = (
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    #'testsuite_app',
+    'testsuite_app',
     'analytical',
 )
 
@@ -186,7 +186,7 @@ LOGGING = {
     }
 }
 
-AUTH_USER_MODEL = 'testsuite.UserProfile'
+AUTH_USER_MODEL = 'testsuite_app.UserProfile'
 LOGIN_REDIRECT_URL = '/manage/'
 
 APPEND_SLASH = True

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load assignments %}
+{% load filters %}
+{% block nav-home %}<a class="nav-active">EPUB 3 Support Grid</a>{% endblock %}
+
+{% block content %}
+
+<h1>{{reading_system_version.reading_system.name}} / 
+{{reading_system_version.reading_system.operating_system}} / 
+{{reading_system_version.version}}</h1>
+
+<h2>{{testsuite.name}}</h2>
+
+{% if evaluations|length > 1 %}
+<p>There are {{evaluations | length}} evaluations</p>
+
+<ul>
+    {% for evaluation in evaluations %}
+    {% get_metadata evaluation as metadata %}
+    <li><a href="#eval_{{forloop.counter}}">{{metadata.assistive_technology}}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% for evaluation in evaluations %}
+
+{% if evaluations|length > 1 %}
+<h2 id="eval_{{forloop.counter}}">Evaluation #{{forloop.counter}}</h2>
+{% endif %}
+
+{% get_metadata evaluation as metadata %}
+{% if metadata != None %}
+<dl>
+    <dt>Assistive technology</dt>
+    <dd>{{ metadata.assistive_technology }}</dd>
+    
+    <dt>Assistive technology features</dt>
+    <dd>{{metadata | get_AT_metadata_description}}</dd>
+</dl>
+{% endif %}
+
+{% for category in categories %}
+
+{% get_score evaluation category as category_score %}
+<h2 id="{{category.category_id}}">{{category.name}}: {{category_score.percent | floatformat}}%</h2>
+
+{% for feature in category.features %}
+{% get_score evaluation feature as feature_score %}
+
+<h3 id="{{feature.feature_id}}">{{feature.name}}: {{feature_score.fraction}}</h3>
+
+<ul>
+    {%for test in feature.tests %}
+    {% get_result test evaluation as test_result%}
+    <li id="{{test.test_id}}">{{test.name}}: {{test_result | get_result_description}}</li>
+    {% endfor %}
+</ul>
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endblock %}

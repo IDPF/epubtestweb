@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
+
+{% block style %}
+<style>
+table {
+	margin-top: 20px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h1>Problem Report</h1>
+
+<p>The following tests were reported as <code>Not Supported</code> for the given reading system. Tests referenced in this report are based on the version of the test suite that was available on {{testsuite_date}}.</p>
+
+{% reading_system_details_list rs %}
+
+<table class="table table-striped">
+	<thead>
+		<tr class="header-row">
+			<td>ID</td>
+			<td>Name</td>
+			<td>Notes</td>
+			<td>Source</td>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in results %}
+<tr>
+<td style="font-weight: bold">{{result.result.test.test_id}}</td>
+<td><p style="font-weight: bold">{{result.result.test.name}}</p><p>{{result.result.test.description}}</p></td>
+<td style="width: 25%">
+{% if result.result.notes != None %}
+{{result.result.notes}}
+{% endif %}</td>
+<td style="width: 15%">
+<a href="{{result.source.link}}">{{result.source.label}}</a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}

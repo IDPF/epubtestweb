@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block nav-home %}<a class="nav-active">EPUB 3 Support Grid</a>{% endblock %}
+
+{% block content %}
+
+<h1>EPUB Features</h1>
+
+<p>This site describes reading system support for different EPUB features.</p>
+
+{% for testsuite in testsuites %}
+    <h1>{{testsuite.name}}</h1>
+    {% for category in testsuite.categories %}
+        <h2>{{category.name}}</h2>
+        <ul>
+        {% for feature in category.features %}
+            <li><a href="/ts/{{testsuite.id}}/features/{{feature.id}}">{{feature.name}}</a></li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endfor %}
+
+{% endblock %}
