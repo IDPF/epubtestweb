@@ -22,8 +22,10 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', FeaturesView.as_view()),
     (r'^rs/$', ReadingSystemsView.as_view()),
+    (r'^accessibility/$', AccessibleReadingSystemsView.as_view()),
     (r'^ts/(?P<pk>\d+)/features/(?P<feature_id>\d+)$', FeatureView.as_view()),
     (r'^rs/(?P<pk>\d+)/ts/(?P<testsuite_id>\d+)$', ReadingSystemView.as_view()),
+
     
     
     

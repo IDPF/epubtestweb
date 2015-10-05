@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load assignments %}
+{% load filters %}
+{% block nav-home %}<a class="nav-active">EPUB 3 Support Grid</a>{% endblock %}
+
+{% block content %}
+
+<h1>Reading Systems</h1>
+
+<p>The following reading systems have been evaluated for accessibility:</p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                    {% for category in testsuite.categories %}
+                    <th>{{category.name}}</th>
+                    {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for reading_system in reading_systems %}
+            {% with y=forloop.counter %}
+            {% get_evaluations reading_system testsuite as evaluations %}
+            {% for evaluation in evaluations %}
+                {% get_metadata evaluation as metadata %}
+                
+                <tr>
+                    <td>{{y}}.{{forloop.counter}}</td>
+                    <td>{{reading_system.name}} ({{reading_system.operating_system}})
+                        <br/>
+                        {{metadata.assistive_technology}}
+                    </td>
+                        {% for category in testsuite.categories %}
+                            {% get_score evaluation category as category_score %}
+                            <td>
+                                <a href="/rs/{{reading_system.id}}/ts/{{testsuite.id}}#{{category.id}}">
+                                    {{category_score.percent | floatformat}}%
+                                </a>
+                            </td>
+                        {% endfor %}
+                </tr>
+                
+            {% endfor %}
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

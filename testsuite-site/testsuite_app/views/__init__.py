@@ -9,3 +9,4 @@ from .features_view import *
 from .reading_systems_view import *
 from .feature_view import *
 from .reading_system_view import *
+from .accessible_reading_systems_view import *

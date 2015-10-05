@@ -12,19 +12,11 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th colspan="2">Reading System</th>
-                {% for testsuite in testsuites %}
-                    <th colspan="{{testsuite.categories | length}}">{{testsuite.name}}</th>
-                {% endfor %}
-            </tr>
-            <tr>
                 <th>#</th>
                 <th>Name</th>
-                {% for testsuite in testsuites %}
                     {% for category in testsuite.categories %}
                     <th>{{category.name}}</th>
                     {% endfor %}
-                {% endfor %}
             </tr>
         </thead>
         <tbody>
@@ -32,34 +24,16 @@
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{reading_system.name}} ({{reading_system.operating_system}})</td>
-                {% for testsuite in testsuites %}
-
-                    {% if testsuite.allow_many_evaluations == False %}
-                        {% get_evaluation reading_system testsuite as evaluation %}
-                        {% for category in testsuite.categories %}
-                            {% get_score evaluation category as category_score %}
-                            <td>
-                                <a href="/rs/{{reading_system.id}}/ts/{{testsuite.id}}#{{category.id}}">
-                                    {{category_score.percent | floatformat}}%
-                                </a>
-                            </td>
-                        {% endfor %}
-                    {% else %}
-                        {% get_evaluations reading_system testsuite as evaluations %}
-                        {% if evaluations|length == 0 %}
-                            <td>Data not available</td>
-                        {% else %}
-                            {% for category in testsuite.categories %}
-                                {% get_composite_score evaluations category as category_score %}
-                                <td>
-                                    <a href="/rs/{{reading_system.id}}/ts/{{testsuite.id}}#{{category.id}}">
-                                    {{category_score}}
-                                    </a>
-                                </td>
-                            {% endfor %}
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
+                
+                    {% get_evaluation reading_system testsuite as evaluation %}
+                    {% for category in testsuite.categories %}
+                        {% get_score evaluation category as category_score %}
+                        <td>
+                            <a href="/rs/{{reading_system.id}}/ts/{{testsuite.id}}#{{category.id}}">
+                                {{category_score.percent | floatformat}}%
+                            </a>
+                        </td>
+                    {% endfor %}
             </tr>
             {% endfor %}
         </tbody>
