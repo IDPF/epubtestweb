@@ -28,4 +28,4 @@ class ReadingSystemsView(UpdateView):
             if reading_system.has_any_evaluations() == True:
                 reading_systems_.append(reading_system)    
         
-        return render(request, self.template_name,{'reading_systems': reading_systems_, 'testsuites': testsuites})
+        return render(request, self.template_name,{'reading_systems': reading_systems_, 'testsuite': testsuite})
