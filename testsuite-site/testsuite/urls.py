@@ -26,6 +26,9 @@ urlpatterns = patterns('',
     (r'^accessibility/$', AccessibleReadingSystemsView.as_view()),
     (r'^ts/(?P<pk>\d+)/features/(?P<feature_id>\d+)$', FeatureView.as_view()),
     (r'^rs/(?P<pk>\d+)/ts/(?P<testsuite_id>\d+)$', ReadingSystemView.as_view()),
+    (r'^docs/instructions-for-evaluators/$', InstructionsForEvaluatorsView.as_view()),
+    (r'^docs/instructions-for-accessibility-evaluators/$', InstructionsForAccessibilityEvaluatorsView.as_view()),
+    (r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),
 
     
     
@@ -34,7 +37,7 @@ urlpatterns = patterns('',
     (r'^testsuite/$', TestsuiteView.as_view()),
     # (r'^results/$', CurrentResultsView.as_view()),
     # (r'^archived-results/$', ArchivedResultsView.as_view()),
-    # (r'^call-for-moderators/$', CallForModeratorsView.as_view()),
+    
     # (r'^testsuite-xml/$', gen_testsuite_xml),
     # (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     # (r'^auth/$', auth_and_login),

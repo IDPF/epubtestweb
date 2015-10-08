@@ -15,17 +15,9 @@ from testsuite_app import helper_functions
 from testsuite_app import permissions
 from .view_helper import *
 
-class IndexView(TemplateView):
-    "Home page"
-    template_name = "index.html"        
-
 class AboutView(TemplateView):
     "About page"
     template_name = "about.html"
-
-class CallForModeratorsView(TemplateView):
-    "Call for moderators page"
-    template_name = "call_for_moderators.html"
 
 class TestsuiteView(TemplateView):
     "Testsuite download page"
