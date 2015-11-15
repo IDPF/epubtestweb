@@ -38,23 +38,57 @@
 </dl>
 {% endif %}
 
+<table class="table table-condensed">
+<thead>
+    <tr>
+        <th>Category</th>
+        <th>Feature</th>
+        <th>Test</th>
+        <th style="width: 200px">Result</th>
+    </tr>
+</thead>
+<tbody>
 {% for category in categories %}
 
 {% get_score evaluation category as category_score %}
-<h2 id="{{category.category_id}}">{{category.name}}: {{category_score.percent | floatformat}}%</h2>
+<tr>
+    <td id="{{category.category_id}}"><h2>{{category.name}}</h2></td>
+    <td/>
+    <td/>
+    <td><h2>{{category_score.percent | floatformat}}%</h2></td>
+</tr>
 
 {% for feature in category.features %}
 {% get_score evaluation feature as feature_score %}
-
-<h3 id="{{feature.feature_id}}">{{feature.name}}: {{feature_score.fraction}}</h3>
-
-<ul>
-    {%for test in feature.tests %}
+<tr>
+    <td/>
+    <td id="{{feature.feature_id}}"><h3>{{feature.name}}</h3></td>
+    <td/>
+    <td><h3>{{feature_score.fraction}}</h3></td>
+</tr>
+    {% for test in feature.tests %}
     {% get_result test evaluation as test_result%}
-    <li id="{{test.test_id}}">{{test.name}}: {{test_result | get_result_description}}</li>
+<tr>
+    <td/>
+    <td/>
+    <td id="{{test.test_id}}">{{test.name}}</td>
+    <td>
+        {% if test_result.result == "1" %}
+        <span class="supported">
+        {% elif test_result.result == "2" %}
+        <span class="not-supported">
+        {% else %}
+        <span>
+        {% endif %}
+        {{test_result | get_result_description}}
+        </span>
+    </td>
+</tr>
     {% endfor %}
-</ul>
+
 {% endfor %}
 {% endfor %}
 {% endfor %}
+</tbody>
+</table>
 {% endblock %}

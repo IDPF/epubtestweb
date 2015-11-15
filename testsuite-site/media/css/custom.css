@@ -719,6 +719,22 @@ span.warn {
     display: none !important;
 }
 
+.supported {
+    color: green;
+}
+
+.not-supported {
+    color: red;
+}
+
+.features-list {
+     -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+    -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+    -moz-column-gap: 40px; /* Firefox */
+    column-gap: 40px;
+}
 
 
 @media screen and (max-width: 720px) {

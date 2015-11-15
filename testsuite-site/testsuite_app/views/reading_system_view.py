@@ -37,7 +37,7 @@ class ReadingSystemView(UpdateView):
             features = Feature.objects.filter(category = category)
             if features != None:
                 category.features = features
-                for feature in features:
+                for feature in category.features:
                     tests = Test.objects.filter(feature = feature)
                     if tests != None:
                         feature.tests = tests

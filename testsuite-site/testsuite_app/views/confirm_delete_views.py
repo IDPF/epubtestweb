@@ -32,7 +32,7 @@ class ConfirmDeleteRSView(TemplateView):
         return render(request, self.template_name,
             {"header": 'Confirm delete reading system',
             "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
-            "confirm_url": "/rs/{0}/".format(kwargs['pk']),
+            "confirm_url": "/grid/{0}/".format(kwargs['pk']),
             "redirect_url": "/manage/"
             })
 
@@ -64,7 +64,7 @@ class ConfirmDeleteAccessibilityConfigurationView(TemplateView):
         return render(request, self.template_name,
             {"header": 'Confirm delete accessibility evaluation',
             "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
-            "confirm_url": "/rs/{0}/accessibility/{1}".format(kwargs['pk'], kwargs['rset']),
-            "redirect_url": "/rs/{0}/eval/accessibility".format(kwargs['pk'])
+            "confirm_url": "/grid/{0}/accessibility/{1}".format(kwargs['pk'], kwargs['rset']),
+            "redirect_url": "/grid/{0}/eval/accessibility".format(kwargs['pk'])
             })
 

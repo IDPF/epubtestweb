@@ -13,8 +13,8 @@ from testsuite_app.models.testsuite import TestSuite
 from testsuite_app.models.reading_system import ReadingSystemVersion, ReadingSystem
 from testsuite_app.models import common
 
-class AccessibleReadingSystemsView(UpdateView):
-    template_name = "accessible_reading_systems.html"
+class AccessibilityGridView(UpdateView):
+    template_name = "accessibility_grid.html"
 
     def get(self, request, *args, **kwargs):
         testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_ACCESSIBILITY)

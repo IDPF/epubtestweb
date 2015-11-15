@@ -30,7 +30,17 @@
             <td>{{feature_score.fraction}}</td>
             {% for test in tests %}
             {% get_result test evaluation as result %}
-            <td>{{result | get_result_description}}</td>
+            <td>
+                {% if result.result == "1" %}
+                <span class="supported">
+                {% elif result.result == "2" %}
+                <span class="not-supported">
+                {% else %}
+                <span>
+                {% endif %}
+                {{result | get_result_description}}
+                </span>
+            </td>
             {% endfor %}
         </tr>
         {% endfor %}

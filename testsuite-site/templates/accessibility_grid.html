@@ -30,13 +30,13 @@
                 
                 <tr>
                     <td>{{y}}.{{forloop.counter}}</td>
-                    <td>{{reading_system.name}} {{evaluation.reading_system_version.version}}</td>
+                    <td><a href="/grid/{{reading_system.id}}/ts/{{testsuite.id}}">{{reading_system.name}} {{evaluation.reading_system_version.version}}</a></td>
                     <td>{{reading_system.operating_system}}</td>
                     <td>{{metadata.assistive_technology}}</td>
                         {% for category in testsuite.categories %}
                             {% get_score evaluation category as category_score %}
                             <td>
-                                <a href="/rs/{{reading_system.id}}/ts/{{testsuite.id}}#{{category.id}}">
+                                <a href="/grid/{{reading_system.id}}/ts/{{testsuite.id}}#{{category.category_id}}">
                                 {%if category_score.percent = 0 %}
                                 N/A
                                 {% else %}

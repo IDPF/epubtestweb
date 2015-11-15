@@ -63,26 +63,26 @@
             <td class="manage-actions">
                 <ul class="">
                     {% if can_edit == True %}
-                    <li><a href="/rs/{{ r.id }}/eval/">Evaluate</a></li>
+                    <li><a href="/grid/{{ r.id }}/eval/">Evaluate</a></li>
                     {% endif %}
                     {% if can_manage_accessibility == True %}
-                    <li><a href="/rs/{{ r.id }}/eval/accessibility/">Accessibility Evaluations</a></li>
+                    <li><a href="/grid/{{ r.id }}/eval/accessibility/">Accessibility Evaluations</a></li>
                     {% endif %}
-                    <li><a href="/rs/{{ r.id }}/">View Evaluation</a></li>
+                    <li><a href="/grid/{{ r.id }}/">View Evaluation</a></li>
                     
                     {% comment %}
                     <!-- FOR NOW -->
-                    <li><a href="/rs/{{ r.id }}/report/">View Issue Report</a></li>
+                    <li><a href="/grid/{{ r.id }}/report/">View Issue Report</a></li>
                     {% endcomment %}
-                    <li><a href="/rs/{{ r.id }}/export">Export data</a></li>
+                    <li><a href="/grid/{{ r.id }}/export">Export data</a></li>
                     {% if can_edit == True %}
                     {% if is_archived == False %}
-                    <li><a href="/rs/{{ r.id }}/archive/">Flag as archived version</a></li>
+                    <li><a href="/grid/{{ r.id }}/archive/">Flag as archived version</a></li>
                     {% else %}
-                    <li><a href="/rs/{{ r.id }}/unarchive/">Unflag as archived version</a></li>
+                    <li><a href="/grid/{{ r.id }}/unarchive/">Unflag as archived version</a></li>
                     {% endif %}
-                    <li><a href="/rs/{{ r.id }}/edit/">Edit details</a></li>
-                    <li><a href="/rs/{{ r.id }}/delete/">Delete</a></li>
+                    <li><a href="/grid/{{ r.id }}/edit/">Edit details</a></li>
+                    <li><a href="/grid/{{ r.id }}/delete/">Delete</a></li>
                     {% endif %}
                 </ul>
             </td>
@@ -90,15 +90,15 @@
                 <ul class="">
                     <li><span style="font-style: italic">Currently: {{ r|get_visibility }}</span></li>
                     {% if can_make_public %}
-                    <li><a href="/rs/{{ r.id }}/visibility?set=2">Change to public</a></li>
+                    <li><a href="/grid/{{ r.id }}/visibility?set=2">Change to public</a></li>
                     {% endif %}
 
                     {% if can_make_members_only %}
-                    <li><a href="/rs/{{ r.id }}/visibility?set=1">Change to members-only</a></li>
+                    <li><a href="/grid/{{ r.id }}/visibility?set=1">Change to members-only</a></li>
                     {% endif %}
 
                     {% if can_make_owner_only %}
-                    <li><a href="/rs/{{ r.id }}/visibility?set=3">Change to owner-only</a></li>
+                    <li><a href="/grid/{{ r.id }}/visibility?set=3">Change to owner-only</a></li>
                     {% endif %}  
 
                     {% if can_make_public == False and can_make_members_only == False and can_make_owner_only == False %}              

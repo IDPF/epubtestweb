@@ -13,19 +13,20 @@ from testsuite_app.models.testsuite import TestSuite
 from testsuite_app.models.reading_system import ReadingSystemVersion, ReadingSystem
 from testsuite_app.models import common
 
-class ReadingSystemsView(UpdateView):
-    template_name = "reading_systems.html"
+class GridView(UpdateView):
+    template_name = "grid.html"
 
     def get(self, request, *args, **kwargs):
-        testsuites = TestSuite.objects.get_most_recent_testsuites()
-        for testsuite in testsuites:
-            categories = Category.objects.filter(testsuite = testsuite)
-            testsuite.categories = categories
-            
+        testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_DEFAULT)
+        categories = Category.objects.filter(testsuite = testsuite)
+        testsuite.categories = categories
+        
         reading_systems = ReadingSystem.objects.all()
         reading_systems_ = []
         for reading_system in reading_systems:
-            if reading_system.has_any_evaluations() == True:
-                reading_systems_.append(reading_system)    
+            # make sure there's an evaluation for this testsuite
+            reading_system_version = reading_system.get_most_recent_version_with_evaluation(testsuite)
+            if reading_system_version != None:
+                reading_systems_.append(reading_system)
         
         return render(request, self.template_name,{'reading_systems': reading_systems_, 'testsuite': testsuite})
