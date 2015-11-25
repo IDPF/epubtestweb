@@ -21,7 +21,7 @@ div#contents h1:first-child {
 }
 
 div#contents > h2 {
-    background-color: #965600;
+    background-color: #004096;
     color: white;
     font-size: 125%;
     text-indent: 0.75em;
@@ -96,15 +96,13 @@ a:hover {
 }
 
 .navbar a:hover,
-.navbar-nav > li > a:hover {
+.navbar-nav > li > a:hover,
+.navbar-nav>li>a.navbar-brand:hover {
     color: #eaea48;
 }
 
-.navbar-brand {
-    font-family: 'Open Sans', sans-serif;
-    color: inherit;
-    font-size: 22px;
-    font-weight: bolder;
+.navbar-nav>li>a.navbar-brand {
+    color: #80ff80;
 }
 
 .navbar-nav>li>a {
@@ -212,7 +210,6 @@ nav#support-nav div.button {
     height: 15em;
     color: #000;
     background-color: #ffebce;
-    border: 1px solid #bbb;
 }
 
 div.button a {
@@ -224,7 +221,7 @@ div.button a {
 
 div.button span.button-hd {
     font-weight: bold;
-    font-size: 120%;
+    font-size: 160%;
     color: #004080;
     background-color: #fffbf5;
     display: block;
