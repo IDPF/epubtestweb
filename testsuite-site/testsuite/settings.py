@@ -1,7 +1,7 @@
 # Django settings for testsuite project.
 
 # all locally-overridable stuff goes here
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = False
 db_file = '/home/djangoweb/epubtestweb-db/testsuite.db'
 media_root = '/home/djangoweb/epubtestweb/testsuite-site/media'

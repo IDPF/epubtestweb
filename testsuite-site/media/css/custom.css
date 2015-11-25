@@ -2,6 +2,7 @@
 
 body { 
     font-family: 'Open Sans', sans-serif;
+    background-color: #fefdfd;
 }
 
 p { 
@@ -19,12 +20,17 @@ a:hover {
 }
 
 
+/***************************************************************/
+/*           NAVIGATION BAR                                    */
+/***************************************************************/
+
 .navbar { 
     font-family: 'Open Sans', sans-serif;
-    margin-top: 40px;
-    margin-bottom: 30px;
+    margin-top: 5px;
+    margin-bottom: 0;
     background-color: #0d93cf;
     color: white;
+    border-radius: 0;
 }
 
 .navbar a:hover {
@@ -112,22 +118,107 @@ a:hover {
 }
 
 
+
+/***************************************************************/
+/*           HOME PAGE FEATURE BUTTONS                         */
+/***************************************************************/
+
+
+p.start {
+    width: 95%;
+    text-align: center;
+    font-weight: bold;
+}
+
+nav#support-nav {
+    width: 100%;
+    margin: 2em 0em;
+}
+
+nav#support-nav > div.framing {
+    max-width: 62em;
+    margin: auto;
+}
+
+nav#support-nav div.button {
+    text-align: center;
+    float:left;
+    margin-left: 2em;
+    margin-top: 1em;
+    width: 17em;
+    height: 15em;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-radius: 15px;
+}
+
+div.button a {
+    font: inherit;
+    color: inherit;
+    width: 100%;
+    text-decoration: none;
+}
+
+div.button span.button-hd {
+    font-weight: bold;
+    color: #000;
+    background-color: #b8e6ff;
+    display: block;
+    width: 100%;
+    height: 3em;
+    padding-top: 0.75em;
+    border-radius: 15px 15px 0 0;
+}
+
+div.button p {
+    height: 100%;
+    width: 100%;
+    padding: 0.3em;
+}
+
+nav#support-nav p {
+    margin-top: 0.5em;
+}
+
+div#contents > h2.pad-top {
+    margin-top: 2em;
+}
+
+
 div.front { width: 100%; }
 div.front-left { float: left; width: 45%; margin-right: 40px; height: 300px; }
 div.front-right { margin-left: 20px; }
+
+
+
+/***************************************************************/
+/*           TABLES                                            */
+/***************************************************************/
+
+th {
+    text-transform: uppercase;
+    text-align: center;
+}
+
 .table { 
     font-family: 'Open Sans', sans-serif;
-    width: 100%;
+    width: auto;
 }
+
+.table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td {
+    vertical-align: middle;
+}
+
+
+
+/***************************************************************/
+/*           BORDERED TABLES                                   */
+/***************************************************************/
 
 .table-bordered {
     border-collapse: collapse;
     border: 0;
 
-}
-
-th {
-    text-transform: uppercase;
 }
 
 .table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td {
@@ -147,15 +238,228 @@ th {
   /*  color: #9400D3;*/
 }
 
-.table-striped>tbody>tr:nth-child(odd)>td {
-    background-color: #caf2ff;
-    border: 0;
+
+/***************************************************************/
+/*           FEATURE TABLES                                    */
+/***************************************************************/
+
+.table-feature td,
+.table-feature th{
+    text-align: center;
+    width: 8em;
+    border-right: 1px solid #ddd;
+    vertical-align: middle;
 }
 
-.table-striped>tbody>tr:nth-child(even)>td {
-    background-color: #caf2ff;
-    border: 0;
+.table-feature>thead>tr>th {
+    background-color: #faf0ec;
 }
+.table-feature>tbody>tr>th {
+    font-weight: normal;
+}
+
+.table-feature>tbody>tr:nth-child(odd)>th,
+.table-feature>tbody>tr:nth-child(odd)>td {
+    background-color: #fff;
+}
+
+.table-feature>tbody>tr:nth-child(even)>th,
+.table-feature>tbody>tr:nth-child(even)>td {
+    background-color: #ecf6fa;
+}
+
+
+/***************************************************************/
+/*           RS SUMMARY TABLES                                 */
+/***************************************************************/
+
+
+.table-striped>thead>tr>th {
+    background-color: #faf0ec;
+}
+
+.table-striped td {
+    text-align: center;
+    width: 125px;
+}
+
+.table-striped td a {
+    font-weight: normal;
+    color: rgb(0,102,204);
+}
+
+.table-striped>tbody>tr:nth-child(odd)>th,
+.table-striped>tbody>tr:nth-child(odd)>td {
+    background-color: #fff;
+}
+
+.table-striped>tbody>tr:nth-child(even)>th,
+.table-striped>tbody>tr:nth-child(even)>td {
+    background-color: #ecf6fa;
+}
+
+
+/***************************************************************/
+/*           RS REPORT TABLES                                  */
+/***************************************************************/
+
+
+nav.category-list {
+    margin-top: 2em;
+    margin-left: 2em;
+}
+
+nav.category-list h2 {
+    font-size: 120%;
+    font-weight: bold;
+    text-indent: 0.5em;
+}
+
+.category-summary {
+    width: 32em;
+    border: 1px solid #ddd;
+}
+
+.category-summary>thead>tr>th {
+    text-align: left;
+    background-color: #faf0ec;
+}
+
+.category-summary th,
+.category-summary td {
+    padding: 0.3em;
+}
+
+.category-summary td a {
+    font-weight: normal;
+    color: rgb(0,102,204);
+}
+
+.category-summary>tbody>tr:nth-child(odd)>th,
+.category-summary>tbody>tr:nth-child(odd)>td {
+    background-color: #fff;
+}
+
+.category-summary>tbody>tr:nth-child(even)>th,
+.category-summary>tbody>tr:nth-child(even)>td {
+    background-color: #ecf6fa;
+}
+
+td.score {
+    font-weight: bold;
+}
+
+br {
+    clear: both;
+}
+
+div#contents > .rs-category {
+    font-size: 140%;
+    font-weight: normal;
+    text-indent: 0;
+    color: #cf490d;
+    background-color: inherit;
+    margin-top: 3em;
+    padding: 0;
+    width: 42.9em;
+    border-radius: 0;
+}
+
+div#contents > h2.rs-category{
+    font-size: 220%;
+    margin-top: 2em;
+}
+
+div#contents > dl+h3.rs-category{
+    margin-top: 0em;
+}
+
+.table-condensed th {
+    text-align: left;
+}
+
+.table-condensed th.feature-hd,
+.table-condensed th.result-hd {
+    width: 10em;
+}
+
+.table-condensed th.test-hd {
+    width: 40em;
+}
+
+.table-condensed .category .result {
+    font-size: 120%;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+}
+
+.table-condensed h3,
+.table-condensed .feature .result {
+    font-size: 110%;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+}
+
+.table-condensed>tbody>tr:nth-child(odd)>th,
+.table-condensed>tbody>tr:nth-child(odd)>td,
+.table-condensed>tbody>tr:nth-child(even)>th,
+.table-condensed>tbody>tr:nth-child(even)>td {
+    background-color: white;
+    border: none;
+}
+
+.table-condensed>thead>tr>th {
+    background-color: #faf0ec;
+}
+
+.table-condensed>tfoot>tr.score>th,
+.table-condensed>tfoot>tr.score>td {
+    background-color: #faf0ec;
+}
+
+.table-condensed>tbody>tr.feature>td {
+    background-color: #ecf6fa;
+}
+
+.table-condensed > tbody > tr >td.test {
+    border-bottom: 1px solid #ecf6fa;
+}
+
+span.top {
+    float: right;
+    margin-right: 7em;
+}
+
+span.top a {
+    font-size: 50%;
+}
+
+
+/***************************************************************/
+/*           SUPPORT CELLS                                     */
+/***************************************************************/
+
+.table-feature > tbody > tr > td.supported,
+.table-condensed > tbody > tr > td.supported {
+    background-color: green;
+    color: white;
+}
+
+.table-feature > tbody > tr > td.unsupported,
+.table-condensed > tbody > tr > td.unsupported {
+    background-color: red;
+    color: white;
+}
+
+.table-feature > tbody > tr > td.other,
+.table-condensed > tbody > tr > td.other {
+    background-color: rgb(245,245,245);
+    color: black;
+}
+
+
 
 .table-bordered>tbody>tr {
     border-bottom: 15px solid white;
@@ -403,10 +707,11 @@ form#testsuite_form .results table {
 
 
 footer {
-        padding-top: 40px;
-        padding-bottom: 30px;
-        /*margin-top: 100px;*/
-        float: left; 
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    border-top: 1px solid black;
 }
 
 footer img {
@@ -422,12 +727,39 @@ h1 {
     color: #333;
 }
 
-div#contents h1 { 
-    text-transform: uppercase;
+div#contents > h1 { 
+    background-color: #cf490d;
+    color: white;
+    text-indent: 0.5em;
+    padding: 0.3em;
+    font-weight: normal;
+    border-radius: 0 15px 15px 0;
+    margin-bottom: 0;
 }
 
 div.results h1 {
     text-transform: none !important;
+}
+
+div#contents > h2 {
+    background-color: #089de3;
+    color: white;
+    width: 95%;
+    font-size: 125%;
+    text-indent: 0.75em;
+    padding: 0.3em;
+    margin: 4em 0 0.5em 0;
+    border-radius: 0 20px 20px 0;
+}
+
+div#contents > h2.compress {
+    margin-top: 2em;
+}
+
+div#contents > h1+h2,
+div#contents > h1+h2.compress {
+    border-radius: 0 0 20px 0;
+    margin-top: 0;
 }
 
 h2 {
@@ -646,11 +978,11 @@ span.warn {
     font-size: smaller;
 }
 
-#category-list li {
+.category-list li {
     text-decoration: underline;
 }
 
-#category-list .current {
+.category-list .current {
     font-style: italic;
     text-decoration: None;
 }
@@ -719,21 +1051,33 @@ span.warn {
     display: none !important;
 }
 
-.supported {
-    color: green;
-}
-
-.not-supported {
-    color: red;
-}
-
 .features-list {
-     -webkit-column-count: 3; /* Chrome, Safari, Opera */
-    -moz-column-count: 3; /* Firefox */
-    column-count: 3;
+     -webkit-column-count: 4; /* Chrome, Safari, Opera */
+    -moz-column-count: 4; /* Firefox */
+    column-count: 4;
     -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
     -moz-column-gap: 40px; /* Firefox */
     column-gap: 40px;
+    margin-bottom: 2em;
+    list-style-type: square;
+}
+
+.features-list a {
+    font-weight: normal;
+    color: #b15543;
+    font-size: 110%;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+h1+p {
+    margin-top: 1em;
+}
+
+p {
+    width: 90%;
 }
 
 

@@ -6,12 +6,12 @@
 
 <h1>{{feature.name}}</h1>
 
-<p>The {{feature.name}} feature contains {{tests | length}} tests.</p>
+<p class="bold">The {{feature.name}} feature contains {{tests | length}} tests.</p>
 
-<table class="table table-striped">
+<table class="table table-feature">
     <thead>
         <th>Reading System</th>
-        <th>Summary</th>
+        <th>Tests Passed</th>
         {% for test in tests %}
         <th>{{test.name}}</th>
         {% endfor %}
@@ -19,27 +19,25 @@
     <tbody>
         {% for evaluation in evaluations %}
         <tr>
-            <td>{{evaluation.reading_system_version.reading_system.name}} ({{evaluation.reading_system_version.reading_system.operating_system}}) v. {{evaluation.reading_system_version.version}}
+            <th>{{evaluation.reading_system_version.reading_system.name}} ({{evaluation.reading_system_version.reading_system.operating_system}}) v. {{evaluation.reading_system_version.version}}
             <br/>
             {% get_metadata evaluation as metadata %}
             {% if metadata != None %}
             <span>{{metadata.assistive_technology}}</span>
             {% endif %}
-            </td>
+            </th>
             {% get_score evaluation feature as feature_score %}
-            <td>{{feature_score.fraction}}</td>
+            <td class="summary">{{feature_score.fraction}}</td>
             {% for test in tests %}
             {% get_result test evaluation as result %}
-            <td>
-                {% if result.result == "1" %}
-                <span class="supported">
-                {% elif result.result == "2" %}
-                <span class="not-supported">
-                {% else %}
-                <span>
-                {% endif %}
-                {{result | get_result_description}}
-                </span>
+            {% if result.result == "1" %}
+            <td class="supported">
+            {% elif result.result == "2" %}
+            <td class="unsupported">
+            {% else %}
+            <td class="other">
+            {% endif %}
+                 {{result | get_result_description}}
             </td>
             {% endfor %}
         </tr>

@@ -2,14 +2,12 @@
 
 {% block content %}
 
-<h1>EPUB Features</h1>
-
-<p>This site describes reading system support for different EPUB features.</p>
+<h1>EPUB 3 Feature Support</h1>
 
 {% for testsuite in testsuites %}
-    <h1>{{testsuite.name}}</h1>
+   <!-- <h1 id="{{testsuite.id}}">{{testsuite.name}}</h1> -->
     {% for category in testsuite.categories %}
-        <h2>{{category.name}}</h2>
+        <h2 id="{{category.id}}" class="compress">{{category.name}}</h2>
         <ul class="features-list">
         {% for feature in category.features %}
             <li><a href="/ts/{{testsuite.id}}/features/{{feature.id}}">{{feature.name}}</a></li>
