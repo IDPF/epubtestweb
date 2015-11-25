@@ -2,13 +2,13 @@
 
 body { 
     font-family: 'Open Sans', sans-serif;
-    background-color: #000;
+    background-image: url('../img/bg-5-full.jpg');
 }
 
 div#contents {
     background-color: #fffbf5;
     padding-bottom: 40px;
-    margin-top: 4em;
+    margin-top: 3.5em;
 }
 
 div#contents h1:first-child {
