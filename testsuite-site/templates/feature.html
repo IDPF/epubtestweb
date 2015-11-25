@@ -6,7 +6,7 @@
 
 <h1>{{feature.name}}</h1>
 
-<p class="bold">The {{feature.name}} feature contains {{tests | length}} tests.</p>
+<p class="bold">The {{feature.name}} feature contains {{tests | length}} test(s).</p>
 
 <table class="table table-feature">
     <thead>
@@ -19,7 +19,7 @@
     <tbody>
         {% for evaluation in evaluations %}
         <tr>
-            <th>{{evaluation.reading_system_version.reading_system.name}} ({{evaluation.reading_system_version.reading_system.operating_system}}) v. {{evaluation.reading_system_version.version}}
+            <th><a href="/grid/{{evaluation.reading_system_version.reading_system.id}}/ts/{{evaluation.testsuite.id}}">{{evaluation.reading_system_version.reading_system.name}} ({{evaluation.reading_system_version.reading_system.operating_system}}) v. {{evaluation.reading_system_version.version}}</a>
             <br/>
             {% get_metadata evaluation as metadata %}
             {% if metadata != None %}

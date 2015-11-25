@@ -14,14 +14,14 @@ div#contents {
 div#contents h1:first-child {
     margin: 0;
     padding: 1em;
-    background-color: #cf490d;
+    background-color: #aa3c0b;
     color: white;
     text-indent: 0.5em;
     font-weight: normal;
 }
 
 div#contents > h2 {
-    background-color: #f58f00;
+    background-color: #965600;
     color: white;
     font-size: 125%;
     text-indent: 0.75em;
@@ -96,7 +96,7 @@ a:hover {
 
 .navbar a:hover,
 .navbar-nav > li > a:hover {
-    color: yellow;
+    color: #eaea48;
 }
 
 .navbar-brand {
@@ -224,7 +224,7 @@ div.button a {
 div.button span.button-hd {
     font-weight: bold;
     font-size: 120%;
-    color: rgb(0,102,204);
+    color: #004080;
     background-color: #fffbf5;
     display: block;
     width: 100%;
@@ -347,7 +347,7 @@ th {
 
 .table-striped td a {
     font-weight: normal;
-    color: rgb(0,102,204);
+    color: #004080;
 }
 
 .table-striped>tbody>tr:nth-child(odd)>th,
@@ -394,7 +394,7 @@ nav.category-list h2 {
 
 .category-summary td a {
     font-weight: normal;
-    color: rgb(0,102,204);
+    color: #004080;
 }
 
 .category-summary>tbody>tr:nth-child(odd)>th,
@@ -783,6 +783,10 @@ footer img {
     margin-right: 40px; margin-bottom: 20px; 
 }
 
+footer a {
+    color: #004080;
+}
+
 h1 {
     margin-top: 40px;
     margin-bottom: 40px;
@@ -1079,6 +1083,7 @@ span.warn {
 .features-list a {
     font-weight: normal;
     font-size: 110%;
+    color: #004080;
 }
 
 .bold {
