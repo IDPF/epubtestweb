@@ -2,11 +2,69 @@
 
 body { 
     font-family: 'Open Sans', sans-serif;
-    background-color: #fefdfd;
+    background-color: #000;
+}
+
+div#contents {
+    background-color: #fffbf5;
+    padding-bottom: 40px;
+    margin-top: 4em;
+}
+
+div#contents h1:first-child {
+    margin: 0;
+    padding: 1em;
+    background-color: #cf490d;
+    color: white;
+    text-indent: 0.5em;
+    font-weight: normal;
+}
+
+div#contents > h2 {
+    background-color: #f58f00;
+    color: white;
+    font-size: 125%;
+    text-indent: 0.75em;
+    padding: 0.3em;
+    margin: 4em 0 1em 0;
+}
+
+div#contents > h2.compress {
+    margin-top: 2em;
+}
+
+div#contents > h1+h2,
+div#contents > h1+h2.compress {
+    margin-top: 0;
+}
+
+h2 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h3 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h4 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h5 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h6 {
+    font-family: 'Open Sans', sans-serif;
 }
 
 p { 
     font-family: 'Open Sans', sans-serif;
+    width: 90%;
+}
+
+div#contents > * {
+    margin-left: 1em;
 }
 
 a {
@@ -26,15 +84,19 @@ a:hover {
 
 .navbar { 
     font-family: 'Open Sans', sans-serif;
-    margin-top: 5px;
+    margin-top: 0;
     margin-bottom: 0;
-    background-color: #0d93cf;
+    background-color: #000;
     color: white;
     border-radius: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
-.navbar a:hover {
-    color: white;
+.navbar a:hover,
+.navbar-nav > li > a:hover {
+    color: yellow;
 }
 
 .navbar-brand {
@@ -147,9 +209,9 @@ nav#support-nav div.button {
     margin-top: 1em;
     width: 17em;
     height: 15em;
-    background-color: #fff;
-    border: 1px solid #999;
-    border-radius: 15px;
+    color: #000;
+    background-color: #ffebce;
+    border: 1px solid #bbb;
 }
 
 div.button a {
@@ -161,13 +223,13 @@ div.button a {
 
 div.button span.button-hd {
     font-weight: bold;
-    color: #000;
-    background-color: #b8e6ff;
+    font-size: 120%;
+    color: rgb(0,102,204);
+    background-color: #fffbf5;
     display: block;
     width: 100%;
     height: 3em;
     padding-top: 0.75em;
-    border-radius: 15px 15px 0 0;
 }
 
 div.button p {
@@ -368,6 +430,8 @@ div#contents > .rs-category {
 div#contents > h2.rs-category{
     font-size: 220%;
     margin-top: 2em;
+    margin-left: 0.5em;
+    width: auto;
 }
 
 div#contents > dl+h3.rs-category{
@@ -708,10 +772,11 @@ form#testsuite_form .results table {
 
 footer {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 0px;
     padding-top: 20px;
     padding-bottom: 30px;
     border-top: 1px solid black;
+    background-color: #fffbf5;
 }
 
 footer img {
@@ -727,59 +792,8 @@ h1 {
     color: #333;
 }
 
-div#contents > h1 { 
-    background-color: #cf490d;
-    color: white;
-    text-indent: 0.5em;
-    padding: 0.3em;
-    font-weight: normal;
-    border-radius: 0 15px 15px 0;
-    margin-bottom: 0;
-}
-
 div.results h1 {
     text-transform: none !important;
-}
-
-div#contents > h2 {
-    background-color: #089de3;
-    color: white;
-    width: 95%;
-    font-size: 125%;
-    text-indent: 0.75em;
-    padding: 0.3em;
-    margin: 4em 0 0.5em 0;
-    border-radius: 0 20px 20px 0;
-}
-
-div#contents > h2.compress {
-    margin-top: 2em;
-}
-
-div#contents > h1+h2,
-div#contents > h1+h2.compress {
-    border-radius: 0 0 20px 0;
-    margin-top: 0;
-}
-
-h2 {
-    font-family: 'Open Sans', sans-serif;
-}
-
-h3 {
-    font-family: 'Open Sans', sans-serif;
-}
-
-h4 {
-    font-family: 'Open Sans', sans-serif;
-}
-
-h5 {
-    font-family: 'Open Sans', sans-serif;
-}
-
-h6 {
-    font-family: 'Open Sans', sans-serif;
 }
 .edit-rs label {
     display: block;
@@ -1064,7 +1078,6 @@ span.warn {
 
 .features-list a {
     font-weight: normal;
-    color: #b15543;
     font-size: 110%;
 }
 
@@ -1074,10 +1087,6 @@ span.warn {
 
 h1+p {
     margin-top: 1em;
-}
-
-p {
-    width: 90%;
 }
 
 
