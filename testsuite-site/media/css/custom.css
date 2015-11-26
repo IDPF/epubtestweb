@@ -14,7 +14,7 @@ div#contents {
 div#contents h1:first-child {
     margin: 0;
     padding: 1em;
-    background-color: #C40233;
+    background-color: #c40233;
     color: white;
     text-indent: 0.5em;
     font-weight: normal;
@@ -457,7 +457,7 @@ p.top a {
 .table-condensed>thead>tr>th,
 .table-condensed>tfoot>tr.score>th,
 .table-condensed>tfoot>tr.score>td {
-    background-color: #f5e0d8;
+    background-color: #eee;
 }
 
 
@@ -476,7 +476,7 @@ p.top a {
 .table-striped>tbody>tr:nth-child(even)>td,
 .table-feature>tbody>tr:nth-child(even)>th,
 .table-feature>tbody>tr:nth-child(even)>td {
-    background-color: #faf0ec;
+    background-color: #ecfaf7;
 }
 
 
