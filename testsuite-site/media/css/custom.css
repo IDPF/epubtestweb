@@ -494,7 +494,7 @@ p.top a {
 .table-striped>tbody>tr:nth-child(even)>td,
 .table-feature>tbody>tr:nth-child(even)>th,
 .table-feature>tbody>tr:nth-child(even)>td {
-    background-color: #ecfaf7;
+    background-color: #faf0ec;
 }
 
 
