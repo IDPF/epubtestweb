@@ -103,6 +103,9 @@ footer a {
     color: #004080;
 }
 
+footer p {
+    width: 100%;
+}
 
 /***************************************************************/
 /*           NAVIGATION BAR                                    */
@@ -259,7 +262,7 @@ div.button p {
     width: 100%;
     padding: 0.5em;
     color: #000;
-    background-color: #ffecd8;
+    background-color: #e5f6f2;
     border-radius: 10px;
 }
 
@@ -473,7 +476,7 @@ p.top a {
 .table-condensed>thead>tr>th,
 .table-condensed>tfoot>tr.score>th,
 .table-condensed>tfoot>tr.score>td {
-    background-color: #eee;
+    background-color: #fdf1ec;
 }
 
 
@@ -483,7 +486,7 @@ p.top a {
 .table-striped>tbody>tr:nth-child(odd)>td,
 .table-feature>tbody>tr:nth-child(odd)>th,
 .table-feature>tbody>tr:nth-child(odd)>td {
-    background-color: #ecf6fa;
+    background-color: #fefefc;
 }
 
 .category-summary>tbody>tr:nth-child(even)>th,
@@ -492,7 +495,7 @@ p.top a {
 .table-striped>tbody>tr:nth-child(even)>td,
 .table-feature>tbody>tr:nth-child(even)>th,
 .table-feature>tbody>tr:nth-child(even)>td {
-    background-color: #faf0ec;
+    background-color: #ecf6fa;
 }
 
 
