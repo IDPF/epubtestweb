@@ -22,19 +22,19 @@ div#contents {
 /***************************************************************/
 
 div#contents h1:first-child {
-    margin: 0;
-    padding: 1rem;
-    background: linear-gradient(to right, #ab022c, #d20236);
-    color: white;
-    text-indent: 0.5rem;
     font-weight: normal;
+    text-indent: 0.5rem;
+    color: white;
+    background: linear-gradient(to right, #ab022c, #d20236);
+    padding: 1rem;
+    margin: 0;
 }
 
 div#contents > h2 {
-    background: linear-gradient(to right, #00422b, #007d48);
-    color: white;
     font-size: 125%;
     text-indent: 0.75rem;
+    color: white;
+    background: linear-gradient(to right, #003842, #008ba4);
     padding: 0.3rem;
     margin: 4em 0 1em 0;
 }
@@ -93,11 +93,11 @@ h1+p {
 
 footer {
     text-align: center;
-    margin-top: 0px;
+    background-color: #fff;
     padding-top: 20px;
     padding-bottom: 30px;
+    margin-top: 0px;
     border-top: 1px solid black;
-    background-color: #fff;
 }
 
 footer img {
@@ -118,10 +118,10 @@ footer p {
 
 .navbar { 
     font-family: 'Open Sans', sans-serif;
+    color: white;
+    background-color: #000;
     margin-top: 0;
     margin-bottom: 0;
-    background-color: #000;
-    color: white;
     border-radius: 0;
     width: 100%;
 }

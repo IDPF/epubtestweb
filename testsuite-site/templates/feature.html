@@ -6,7 +6,11 @@
 
 <h1>{{feature.name}}</h1>
 
-<p class="bold">The {{feature.name}} feature contains {{tests | length}} test(s).</p>
+{% if tests|length < 2 %}
+<p class="bold">The {{feature.name}} feature contains {{tests | length}} test.</p>
+{% else %}
+<p class="bold">The {{feature.name}} feature contains {{tests | length}} tests.</p>
+{% endif %}
 
 <div class="feature">
 <table class="table table-feature">
