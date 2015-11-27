@@ -315,6 +315,10 @@ th {
 /***************************************************************/
 
 
+table.dataTable {
+    margin: 0;
+}
+
 .table-feature {
     width: auto;
 }
