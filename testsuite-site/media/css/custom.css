@@ -6,7 +6,7 @@ html {
 
 body { 
     font-family: 'Open Sans', sans-serif;
-    background-image: url('../img/bg-5-full.jpg');
+    background: #f0f0f0;
     font-size: 1.4rem;
 }
 
@@ -21,11 +21,12 @@ div#contents {
 /*           HEADINGS                                          */
 /***************************************************************/
 
-div#contents h1:first-child {
+div#contents > h1 {
     font-weight: normal;
     text-indent: 0.5rem;
     color: white;
-    background: linear-gradient(to right, #ab022c, #d20236);
+    background-color: #808000;
+    background: linear-gradient(to right, #808000, #949400);
     padding: 1rem;
     margin: 0;
 }
@@ -34,7 +35,8 @@ div#contents > h2 {
     font-size: 125%;
     text-indent: 0.75rem;
     color: white;
-    background: linear-gradient(to right, #003842, #008ba4);
+    background-color: #008080;
+    background: linear-gradient(to right, #008080, #008ba4);
     padding: 0.3rem;
     margin: 4em 0 1em 0;
 }
@@ -119,7 +121,7 @@ footer p {
 .navbar { 
     font-family: 'Open Sans', sans-serif;
     color: white;
-    background-color: #000;
+    background-color: #004080;
     margin-top: 0;
     margin-bottom: 0;
     border-radius: 0;
@@ -227,7 +229,7 @@ p.start {
 
 nav#support-nav {
     width: 100%;
-    margin-bottom: 2rem;
+    margin-bottom: 7rem;
 }
 
 nav#support-nav > div.framing {
@@ -270,7 +272,7 @@ div.button p {
     width: 100%;
     padding: 0.5rem;
     color: #000;
-    background-color: #e5f6f2;
+    background-color: #e5f2f6;
     border-radius: 10px;
 }
 
@@ -503,7 +505,7 @@ p.top a {
 .table-condensed>thead>tr>th,
 .table-condensed>tfoot>tr.score>th,
 .table-condensed>tfoot>tr.score>td {
-    background-color: #fdf1ec;
+    background-color: #e5eaf6;
 }
 
 
