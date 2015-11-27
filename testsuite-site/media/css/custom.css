@@ -24,14 +24,14 @@ div#contents {
 div#contents h1:first-child {
     margin: 0;
     padding: 1rem;
-    background: linear-gradient(to right, #ab022c, #dd0339);
+    background: linear-gradient(to right, #ab022c, #d20236);
     color: white;
     text-indent: 0.5rem;
     font-weight: normal;
 }
 
 div#contents > h2 {
-    background: linear-gradient(to right, #00737d, #4c9da4);
+    background: linear-gradient(to right, #00422b, #007d48);
     color: white;
     font-size: 125%;
     text-indent: 0.75rem;
