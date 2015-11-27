@@ -12,8 +12,7 @@
 <p class="bold">The {{feature.name}} feature contains {{tests | length}} tests.</p>
 {% endif %}
 
-<div class="feature">
-<table class="table table-feature">
+<table id="feature" class="table table-feature">
     <thead>
         <th class="rs">Reading System</th>
         <th class="pass">Tests Passed</th>
@@ -49,6 +48,20 @@
         {% endfor %}
     </tbody>
 </table>
-</div>
+
+<script>
+    $(document).ready(function(){
+        $('#feature').DataTable({
+            "paging":   false,
+            "info": false,
+            "scrollY":        true,
+            "scrollX":        true,
+            "scrollCollapse": true,
+            "fixedColumns": {
+                "leftColumns": 1
+            }
+        });
+    });
+</script>
 
 {% endblock %}

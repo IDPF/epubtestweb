@@ -313,10 +313,6 @@ th {
 /***************************************************************/
 
 
-div.feature {
-    overflow: auto;
-}
-
 .table-feature {
     width: auto;
 }
@@ -330,15 +326,15 @@ div.feature {
 
 .table-feature>thead th.rs,
 .table-feature>tbody th.rs {
-    width: 20rem;
+    min-width: 24rem;
 }
 .table-feature>thead th.pass,
 .table-feature>tbody td.pass {
-    width: 5rem;
+    min-width: 9rem;
 }
 .table-feature>thead th,
 .table-feature>tbody td {
-    width: 11rem;
+    min-width: 11rem;
 }
 
 .table-feature>tbody>tr>th {
