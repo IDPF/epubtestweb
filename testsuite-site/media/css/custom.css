@@ -1,8 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700);
 
+html {
+    font-size: 62.5%;
+}
+
 body { 
     font-family: 'Open Sans', sans-serif;
     background-image: url('../img/bg-5-full.jpg');
+    font-size: 1.4rem;
 }
 
 div#contents {
@@ -18,10 +23,10 @@ div#contents {
 
 div#contents h1:first-child {
     margin: 0;
-    padding: 1em;
+    padding: 1rem;
     background: linear-gradient(to right, #ab022c, #dd0339);
     color: white;
-    text-indent: 0.5em;
+    text-indent: 0.5rem;
     font-weight: normal;
 }
 
@@ -29,13 +34,13 @@ div#contents > h2 {
     background: linear-gradient(to right, #00737d, #4c9da4);
     color: white;
     font-size: 125%;
-    text-indent: 0.75em;
-    padding: 0.3em;
+    text-indent: 0.75rem;
+    padding: 0.3rem;
     margin: 4em 0 1em 0;
 }
 
 div#contents > h2.compress {
-    margin-top: 2em;
+    margin-top: 2rem;
 }
 
 div#contents > h1+h2,
@@ -54,8 +59,8 @@ h2, h3, h4, h5, h6, p {
 
 
 div#contents > * {
-    margin-left: 1em;
-    margin-right: 1em;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 p { 
@@ -77,7 +82,7 @@ a:hover {
 }
 
 h1+p {
-    margin-top: 1em;
+    margin-top: 1rem;
 }
 
 
@@ -134,6 +139,7 @@ footer p {
 .navbar-nav>li>a {
     text-transform: uppercase;
     font-size: 14px;
+    font-size: 1.4rem;
     color: inherit;
     font-weight: bold;
 }
@@ -167,6 +173,7 @@ footer p {
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
     font-size: 12px;
+    font-size: 1.2rem;
     color: #333;
     font-weight: 600;
     padding-left: 10px;
@@ -202,6 +209,7 @@ footer p {
     color: #0099cc !important;
     text-transform: uppercase;
     font-size: 12px;
+    font-size: 1.2rem;
 }
 
 
@@ -219,24 +227,24 @@ p.start {
 
 nav#support-nav {
     width: 100%;
-    margin-bottom: 2em;
+    margin-bottom: 2rem;
 }
 
 nav#support-nav > div.framing {
-    max-width: 62em;
+    max-width: 80rem;
     margin: auto;
 }
 
 nav#support-nav div.button {
     text-align: center;
     float:left;
-    margin-left: 2em;
-    width: 17em;
-    height: 15em;
+    margin-left: 2rem;
+    width: 22rem;
+    height: 17rem;
 }
 
 .lower {
-    margin-top: 6em;
+    margin-top: 6rem;
 }
 
 div.button a {
@@ -253,25 +261,25 @@ div.button span.button-hd {
     background-color: #fff;
     display: block;
     width: 100%;
-    height: 2em;
-    padding-top: 0.75em;
+    height: 3.5rem;
+    padding-top: 0.75rem;
 }
 
 div.button p {
-    height: 11em;
+    height: 15rem;
     width: 100%;
-    padding: 0.5em;
+    padding: 0.5rem;
     color: #000;
     background-color: #e5f6f2;
     border-radius: 10px;
 }
 
 nav#support-nav p {
-    margin-top: 0.5em;
+    margin-top: 0.5rem;
 }
 
 div#contents > h2.pad-top {
-    margin-top: 2em;
+    margin-top: 2rem;
 }
 
 
@@ -305,12 +313,32 @@ th {
 /***************************************************************/
 
 
+div.feature {
+    overflow: auto;
+}
+
+.table-feature {
+    width: auto;
+}
+
 .table-feature td,
-.table-feature th{
+.table-feature th {
     text-align: center;
-    width: 8em;
     border-right: 1px solid #ddd;
     vertical-align: middle;
+}
+
+.table-feature>thead th.rs,
+.table-feature>tbody th.rs {
+    width: 20rem;
+}
+.table-feature>thead th.pass,
+.table-feature>tbody td.pass {
+    width: 5rem;
+}
+.table-feature>thead th,
+.table-feature>tbody td {
+    width: 11rem;
 }
 
 .table-feature>tbody>tr>th {
@@ -324,7 +352,7 @@ th {
     -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
     -moz-column-gap: 40px; /* Firefox */
     column-gap: 40px;
-    margin-bottom: 2em;
+    margin-bottom: 2rem;
     list-style-type: square;
 }
 
@@ -357,18 +385,18 @@ th {
 
 
 nav.category-list {
-    margin-top: 2em;
-    margin-left: 2em;
+    margin-top: 2rem;
+    margin-left: 2rem;
 }
 
 nav.category-list h2 {
     font-size: 120%;
     font-weight: bold;
-    text-indent: 0.5em;
+    text-indent: 0.5rem;
 }
 
 .category-summary {
-    width: 32em;
+    width: 32rem;
     border: 1px solid #ddd;
 }
 
@@ -378,7 +406,7 @@ nav.category-list h2 {
 
 .category-summary th,
 .category-summary td {
-    padding: 0.3em;
+    padding: 0.3rem;
 }
 
 .category-summary td a {
@@ -394,27 +422,30 @@ br {
     clear: both;
 }
 
-div#contents > .rs-category {
+div#contents > h2.rs-category,
+div#contents > h3.rs-category {
     font-size: 140%;
     font-weight: normal;
-    text-indent: 0;
+    text-indent: 1rem;
     color: #aa0b29;
-    background-color: inherit;
-    margin-top: 3em;
+    background: none;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
     padding: 0;
-    width: 42.9em;
-    border-radius: 0;
 }
 
 div#contents > h2.rs-category {
-    font-size: 220%;
-    margin-top: 2em;
-    margin-left: 0.5em;
-    width: auto;
+    font-size: 180%;
+    margin-top: 4rem;
+    margin-left: 0.5rem;
 }
 
 div#contents > dl+h3.rs-category{
-    margin-top: 0em;
+    margin-top: 0rem;
+}
+
+.table-condensed {
+    width: 75%;
 }
 
 .table-condensed th {
@@ -423,11 +454,11 @@ div#contents > dl+h3.rs-category{
 
 .table-condensed th.feature-hd,
 .table-condensed th.result-hd {
-    width: 10em;
+    width: 15%;
 }
 
 .table-condensed th.test-hd {
-    width: 40em;
+    width: 70%;
 }
 
 .table-condensed .category .result {
@@ -500,7 +531,7 @@ p.top a {
 
 
 /***************************************************************/
-/*           SUPPORT CELLS                                     */
+/*           FEATURE SUPPORT CELLS                             */
 /***************************************************************/
 
 .table-feature > tbody > tr > td.supported,
@@ -663,6 +694,7 @@ tr.category-h6 h6 {
 
 .ui-accordion-header {
     font-size: 18px;
+    font-size: 1.8rem;
 }
 
 td.results-test { 
@@ -1013,9 +1045,9 @@ span.warn {
 
 .dl-horizontal dt{
     text-align: left;
-    margin-bottom: 1em;
+    margin-bottom: 1rem;
     width: auto;
-    padding-right: 1em;
+    padding-right: 1rem;
     /*color: #9400D3;*/
 }
 .dl-horizontal dd{

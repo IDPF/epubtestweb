@@ -8,10 +8,11 @@
 
 <p class="bold">The {{feature.name}} feature contains {{tests | length}} test(s).</p>
 
+<div class="feature">
 <table class="table table-feature">
     <thead>
-        <th>Reading System</th>
-        <th>Tests Passed</th>
+        <th class="rs">Reading System</th>
+        <th class="pass">Tests Passed</th>
         {% for test in tests %}
         <th>{{test.name}}</th>
         {% endfor %}
@@ -19,7 +20,7 @@
     <tbody>
         {% for evaluation in evaluations %}
         <tr>
-            <th><a href="/grid/{{evaluation.reading_system_version.reading_system.id}}/ts/{{evaluation.testsuite.id}}">{{evaluation.reading_system_version.reading_system.name}} ({{evaluation.reading_system_version.reading_system.operating_system}}) v. {{evaluation.reading_system_version.version}}</a>
+            <th class="rs"><a href="/grid/{{evaluation.reading_system_version.reading_system.id}}/ts/{{evaluation.testsuite.id}}">{{evaluation.reading_system_version.reading_system.name}} ({{evaluation.reading_system_version.reading_system.operating_system}}) v. {{evaluation.reading_system_version.version}}</a>
             <br/>
             {% get_metadata evaluation as metadata %}
             {% if metadata != None %}
@@ -27,7 +28,7 @@
             {% endif %}
             </th>
             {% get_score evaluation feature as feature_score %}
-            <td class="summary">{{feature_score.fraction}}</td>
+            <td class="pass">{{feature_score.fraction}}</td>
             {% for test in tests %}
             {% get_result test evaluation as result %}
             {% if result.result == "1" %}
@@ -44,5 +45,6 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 
 {% endblock %}
