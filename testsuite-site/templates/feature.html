@@ -7,9 +7,9 @@
 <h1>{{feature.name}}</h1>
 
 {% if tests|length < 2 %}
-<p class="bold">The {{feature.name}} feature contains {{tests | length}} test.</p>
+<p>The {{feature.name}} feature contains {{tests | length}} test.</p>
 {% else %}
-<p class="bold">The {{feature.name}} feature contains {{tests | length}} tests.</p>
+<p>The {{feature.name}} feature contains {{tests | length}} tests.</p>
 {% endif %}
 
 <table id="feature" class="table table-feature">
@@ -60,6 +60,9 @@
             "scrollCollapse": false,
             "fixedColumns": {
                 "leftColumns": 1
+            },
+            "oLanguage": {
+                "sSearch": "Find Reading System: "
             }
         });
     });
