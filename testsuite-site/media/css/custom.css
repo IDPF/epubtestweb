@@ -41,7 +41,8 @@ div#contents > h2 {
     margin: 4em 0 1em 0;
 }
 
-div#contents > ul+h2 {
+div#contents > ul+h2,
+div#contents > p+h2.ts {
     margin-top: 2rem;
 }
 
