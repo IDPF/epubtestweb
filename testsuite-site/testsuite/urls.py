@@ -13,7 +13,7 @@ admin.autodiscover()
 / : landing page. list of all features for all testsuites
 /grid : reading systems view (all reading systems)
 /grid/ID/testsuiteID : reading system results for one testsuite
-/ts/ID/feature/featureID: single feature view 
+/testsuite/ID/feature/featureID: single feature view 
 (maybe for the future)
 /ts/ID/category/categoryID: single category view
 
@@ -24,8 +24,8 @@ urlpatterns = patterns('',
     (r'^features/$', FeaturesView.as_view()),
     (r'^grid/$', GridView.as_view()),
     (r'^accessibility/$', AccessibilityGridView.as_view()),
-    (r'^ts/(?P<pk>\d+)/features/(?P<feature_id>\d+)$', FeatureView.as_view()),
-    (r'^grid/(?P<pk>\d+)/ts/(?P<testsuite_id>\d+)$', ReadingSystemView.as_view()),
+    (r'^testsuite/(?P<pk>\d+)/features/(?P<feature_id>\d+)$', FeatureView.as_view()),
+    (r'^grid/(?P<pk>\d+)/testsuite/(?P<testsuite_id>\d+)$', ReadingSystemView.as_view()),
     (r'^docs/instructions-for-evaluators/$', InstructionsForEvaluatorsView.as_view()),
     (r'^docs/instructions-for-accessibility-evaluators/$', InstructionsForAccessibilityEvaluatorsView.as_view()),
     (r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),

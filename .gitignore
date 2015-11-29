@@ -45,3 +45,5 @@ testsuite-site/testsuite/testsuite.db
 .DS_Store
 
 testsuite-site/testsuite/local_settings.py
+
+env/pip-selfcheck.json

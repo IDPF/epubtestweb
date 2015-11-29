@@ -10,7 +10,7 @@ import os
 from testsuite_app.models.category import Category
 from testsuite_app.models.evaluation import Evaluation
 from testsuite_app.models.testsuite import TestSuite
-from testsuite_app.models.reading_system import ReadingSystemVersion
+from testsuite_app.models.reading_system import ReadingSystemVersion, ReadingSystem
 from testsuite_app.models.feature import Feature
 from testsuite_app.models.test import Test
 from testsuite_app.models import common
@@ -21,14 +21,18 @@ class ReadingSystemView(UpdateView):
     def get(self, request, *args, **kwargs):
 
         try:
-            reading_system_version = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            reading_system = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         try:
             testsuite = TestSuite.objects.get(id=kwargs['testsuite_id'])
         except TestSuite.DoesNotExist:
             return render(request, "404.html", {})            
+        
+        reading_system_version = reading_system.get_most_recent_version_with_evaluation(testsuite)
+        if reading_system_version == None:
+            return render(request, "404.html", {})
         
         evaluations = reading_system_version.get_evaluations(testsuite)
         categories = testsuite.get_categories()
