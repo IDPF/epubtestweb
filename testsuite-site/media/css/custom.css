@@ -41,6 +41,10 @@ div#contents > h2 {
     margin: 4em 0 1em 0;
 }
 
+div#contents > ul+h2 {
+    margin-top: 2rem;
+}
+
 div#contents > h2.compress {
     margin-top: 2rem;
 }
@@ -349,14 +353,18 @@ table.dataTable thead th {
 .table-feature>thead th.rs,
 .table-feature>tbody th.rs {
     min-width: 24rem;
+    max-width: 30rem;
 }
 .table-feature>thead th.pass,
 .table-feature>tbody td.pass {
     min-width: 9rem;
+    max-width: 12rem;
 }
 .table-feature>thead th,
 .table-feature>tbody td {
     min-width: 11rem;
+    max-width: 15rem;
+    word-wrap: break-word;
 }
 
 .table-feature>tbody>tr>th {

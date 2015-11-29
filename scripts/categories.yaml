@@ -2,7 +2,7 @@
 # at the moment, the only supported types are 'Default' and 'Accessibility'
 TestSuites: 
     -
-        Name: EPUB3 Test Suite
+        Name: EPUB 3 Test Suite
         Type: default
         Id: testsuite-default
         AllowManyEvaluations: False
