@@ -7,7 +7,7 @@ import epub_id_check
 from testsuite_app import models
 from testsuite_app.models import common
 from testsuite_app import helper_functions
-from testsuite_app import export_data
+import export_data_for_migration
 from random import randrange
 from django.contrib.sessions.models import Session
 from testsuite_app.models import UserProfile
@@ -80,7 +80,7 @@ def add_rs(name):
     return rs
 
 def export(outfile):
-    xmldoc = export_data.export_all_current_reading_systems(None)
+    xmldoc = export_data_for_migration.export_data_for_migration()
     xmldoc.write(outfile)
     print "Data exported to {0}".format(outfile)
 

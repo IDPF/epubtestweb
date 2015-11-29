@@ -76,4 +76,3 @@ TestSuites:
                 CategoryDisplayDepthLimit: Internal
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0300
-                    - com.github.epub-testsuite.epub30-test-0320
