@@ -21,6 +21,10 @@ div#contents {
 /*           HEADINGS                                          */
 /***************************************************************/
 
+h2, h3, h4, h5, h6, p {
+    font-family: 'Open Sans', sans-serif;
+}
+
 div#contents > h1 {
     font-weight: normal;
     text-indent: 0.5rem;
@@ -46,17 +50,35 @@ div#contents > p+h2.ts {
     margin-top: 2rem;
 }
 
-div#contents > h2.compress {
+div#contents > h2.features {
     margin-top: 2rem;
 }
 
 div#contents > h1+h2,
-div#contents > h1+h2.compress {
+div#contents > h1+h2.features {
     margin-top: 0;
 }
 
-h2, h3, h4, h5, h6, p {
-    font-family: 'Open Sans', sans-serif;
+div#contents > h2.rs-category,
+div#contents > h3.rs-category {
+    font-size: 140%;
+    font-weight: normal;
+    text-indent: 1rem;
+    color: #aa0b29;
+    background: none;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding: 0;
+}
+
+div#contents > h2.rs-category {
+    font-size: 180%;
+    margin-top: 4rem;
+    margin-left: 0.5rem;
+}
+
+div#contents > dl+h3.rs-category{
+    margin-top: 0rem;
 }
 
 
@@ -447,28 +469,6 @@ td.score {
 
 br {
     clear: both;
-}
-
-div#contents > h2.rs-category,
-div#contents > h3.rs-category {
-    font-size: 140%;
-    font-weight: normal;
-    text-indent: 1rem;
-    color: #aa0b29;
-    background: none;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-    padding: 0;
-}
-
-div#contents > h2.rs-category {
-    font-size: 180%;
-    margin-top: 4rem;
-    margin-left: 0.5rem;
-}
-
-div#contents > dl+h3.rs-category{
-    margin-top: 0rem;
 }
 
 .table-condensed {
@@ -1153,7 +1153,7 @@ span.warn {
 
 @media screen and (min-width: 768px) {
     .navbar {
-        max-height: 50px;
+        max-height: 5rem;
     }
 }
 
