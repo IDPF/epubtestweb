@@ -12,11 +12,18 @@ import refactor_functions
 
 from django.contrib.sessions.models import Session
 from datetime import datetime
+from import_migration_data import import_migration_data
 
 def export(outfile):
+    print ("Exporting data")
     xmldoc = export_data.export_all_current_reading_systems(None)
     xmldoc.write(outfile)
     print ("Data exported to {}".format(outfile))
+
+def import_data(infile):
+    print ("Importing from {}".format(infile))
+    import_migration_data(infile)
+    print ("Done")
 
 def main():
     import django
@@ -47,6 +54,10 @@ def main():
 
     list_logged_in_users_parser = subparsers.add_parser("list-logged-in-users", help="list logged in users")
     list_logged_in_users_parser.set_defaults(func = lambda args: list_logged_in_users())
+
+    import_data_parser = subparsers.add_parser("import-data", help="Import evaluation data in XML format")
+    import_data_parser.add_argument("file", action="store", help="XML file containing data to import")
+    import_data_parser.set_defaults(func = lambda args: import_data(args.file))
 
     args = argparser.parse_args()
     args.func(args)
