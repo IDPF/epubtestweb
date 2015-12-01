@@ -33,8 +33,9 @@ class FeatureView(UpdateView):
         evaluations = []
         for reading_system in reading_systems:
             reading_system_version = reading_system.get_most_recent_version_with_evaluation(testsuite)
-            evals = reading_system_version.get_evaluations(testsuite)
-            for ev in evals:
-                evaluations.append(ev)
+            if reading_system_version != None:
+                evals = reading_system_version.get_evaluations(testsuite)
+                for ev in evals:
+                    evaluations.append(ev)
 
         return render(request, self.template_name,{'evaluations': evaluations, 'feature': feature, 'tests': tests})

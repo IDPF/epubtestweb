@@ -66,7 +66,10 @@ def get_composite_score(evaluations, category_or_feature):
 @register.assignment_tag
 def get_evaluations(reading_system, testsuite):
     reading_system_version = reading_system.get_most_recent_version_with_evaluation(testsuite)
-    return reading_system_version.get_evaluations(testsuite)
+    if reading_system_version != None:
+        return reading_system_version.get_evaluations(testsuite)
+    else:
+        return None
 
 @register.assignment_tag
 def get_evaluation(reading_system, testsuite):
