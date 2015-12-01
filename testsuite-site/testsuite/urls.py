@@ -15,7 +15,7 @@ admin.autodiscover()
 /grid/ID/testsuiteID : reading system results for one testsuite
 /testsuite/ID/feature/featureID: single feature view 
 (maybe for the future)
-/ts/ID/category/categoryID: single category view
+/testsuite/ID/category/categoryID: single category view
 
 """
 
