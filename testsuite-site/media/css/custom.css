@@ -575,8 +575,10 @@ p.top a {
 
 .table-feature > tbody > tr > td.other,
 .table-condensed > tbody > tr > td.other {
+    font-style: italic;
+    font-size: 90%;
+    color: gray;
     background-color: rgb(245,245,245);
-    color: black;
 }
 
 

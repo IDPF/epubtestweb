@@ -48,7 +48,7 @@ def get_result_description(result):
     elif result.result == common.RESULT_NOT_APPLICABLE:
         return "N/A"
     else:
-        return "Unknown"
+        return "Not Tested"
 
 @register.filter
 def get_result_class(result, is_form):
