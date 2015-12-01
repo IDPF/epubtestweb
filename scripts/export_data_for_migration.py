@@ -32,7 +32,7 @@ def rs_to_xml(rs):
     accessibility_testsuite = TestSuite.objects.get_most_recent_accessibility_testsuite()
     
     rs_elm = RS(name=rs.name, version=rs.version, operating_system=rs.operating_system, locale=rs.locale, notes=rs.notes, \
-        user=str(rs.user.id), visibility=rs.visibility, status=rs.status)
+        user=rs.user.username, visibility=rs.visibility, status=rs.status)
     result_set = rs.get_default_result_set()
     if result_set != None:
         result_set_elm = result_set_to_xml(rs, result_set, testsuite)
@@ -52,6 +52,18 @@ def result_set_to_xml(rs, result_set, testsuite):
     if testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
         testsuite_type = "ACCESSIBILITY"
     result_set_elm = RESULT_SET(testsuite_type = testsuite_type)
+    if testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
+        atmeta = result_set.get_metadata()
+        if atmeta != None:
+            result_set_elm.attrib['assistive_technology'] = atmeta.assistive_technology
+            result_set_elm.attrib['input_type'] = atmeta.input_type
+            result_set_elm.attrib['supports_screenreader'] = str(atmeta.supports_screenreader)
+            result_set_elm.attrib['supports_braille'] = str(atmeta.supports_braille)
+            if atmeta.notes != None:
+                result_set_elm.attrib['notes'] = atmeta.notes
+            else:
+                result_set_elm.attrib['notes'] = ""
+
     results = result_set.get_results()
     for result in results:
         result_elm = result_to_xml(result)
@@ -64,7 +76,7 @@ def result_to_xml(r):
     resultstr = result_to_string(r)
     result_elm = RESULT(testid=r.test.testid, result = resultstr)
     if r.notes != None and len(r.notes) > 0:
-        notes_elm = NOTES(r.notes)
+        notes_elm = NOTES(r.notes, publish_notes=str(r.publish_notes))
         result_elm.append(notes_elm)
     return result_elm
 
