@@ -57,6 +57,7 @@ def add_evaluation(reading_system_version, result_set_elm, user):
         testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_ACCESSIBILITY)
     
     evaluation = Evaluation.objects.create_evaluation(reading_system_version, testsuite=testsuite, user = user)
+    evaluation.visibility = result_set_elm.attrib['visibility']
 
     results = evaluation.get_results()
     for result in results:
