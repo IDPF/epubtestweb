@@ -51,7 +51,7 @@ def result_set_to_xml(rs, result_set, testsuite):
     testsuite_type = "DEFAULT"
     if testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
         testsuite_type = "ACCESSIBILITY"
-    result_set_elm = RESULT_SET(testsuite_type = testsuite_type)
+    result_set_elm = RESULT_SET(testsuite_type = testsuite_type, visibility=result_set.visibility)
     if testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
         atmeta = result_set.get_metadata()
         if atmeta != None:
