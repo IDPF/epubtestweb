@@ -62,6 +62,15 @@
     {% alerts messages %}
 
 
+    {% if user.is_authenticated %}
+        <div class="navbar navbar-manage">
+            <ul class="nav navbar-nav pull-right" role="navigation">
+                <li><a href="/manage/">Manage</a></li>
+                <li><a href="/logout/">Logout</a></li>
+            </ul>
+        </div>
+    {% endif %}
+    
         <div class="navbar">
             <ul class="nav navbar-nav pull-right" role="navigation">
                 <li><a href="/">Home</a></li>
@@ -69,19 +78,9 @@
                 <li><a href="/grid/">Reading Systems</a></li>
                 <li><a href="/accessibility/">Accessibility</a></li>
                 <li><a href="/testsuite/">Test Suite</a></li>
-                {% if user.is_authenticated %}
-                    
-                        <li><a href="/manage/">Manage</a></li>
-                        <li><a href="/logout/">Logout</a></li>
-                    
-                  
-                {% else %}
-                <!--<li><a href="#">Login</a></li>-->
-                {% endif %}
-                <!-- <li><a href="/about/">About</a></li> -->
             </ul>
         </div>
-
+    
     <div class="container">
         
         <div id="contents" class="">
@@ -96,10 +95,9 @@
             <a href="http://daisy.org" target="_blank"><img src="/media/img/daisy_logo.png" alt="DAISY Consortium logo"/></a>
             </p>
 
+            <p>Please <a href="login/">log in</a> to add or manage reading system reports. See the <a href="docs/instructions-for-evaluators/">instructions for evaluators</a> for more information.</p>
             <p>EPUBTest.org development is sponsored by the <a target="_blank" href="http://daisy.org">DAISY Consortium</a> and the <a target="_blank" href="https://www.bisg.org">Book Industry Study Group</a>.</p>
             <p>Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</p>
-            
-        
         </footer>
     </div>
     {% if using_analytics %}
