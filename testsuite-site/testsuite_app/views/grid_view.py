@@ -10,7 +10,7 @@ import os
 from testsuite_app.models.category import Category
 from testsuite_app.models.evaluation import Evaluation
 from testsuite_app.models.testsuite import TestSuite
-from testsuite_app.models.reading_system import ReadingSystemVersion, ReadingSystem
+from testsuite_app.models.reading_system import ReadingSystem
 from testsuite_app.models import common
 
 class GridView(UpdateView):
@@ -22,11 +22,9 @@ class GridView(UpdateView):
         testsuite.categories = categories
         
         reading_systems = ReadingSystem.objects.all()
-        reading_systems_ = []
+        evaluations = []
         for reading_system in reading_systems:
-            # make sure there's an evaluation for this testsuite
-            reading_system_version = reading_system.get_most_recent_version_with_evaluation(testsuite)
-            if reading_system_version != None:
-                reading_systems_.append(reading_system)
+            evals = reading_system.get_evaluations(testsuite)
+            evaluations.extend(evals)    
         
-        return render(request, self.template_name,{'reading_systems': reading_systems_, 'testsuite': testsuite})
+        return render(request, self.template_name,{'evaluations': evaluations, 'testsuite': testsuite})

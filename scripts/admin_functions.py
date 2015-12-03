@@ -30,7 +30,7 @@ def list_logged_in_users():
         print(u.username)
 
 def listrs():
-    rses = models.ReadingSystemVersion.objects.all()
+    rses = models.ReadingSystem.objects.all()
     for rs in rses:
         print("{0}: {1}".format(rs.name, rs.pk))
 

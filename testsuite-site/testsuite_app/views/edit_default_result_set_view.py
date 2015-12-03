@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from testsuite_app.models import ReadingSystemVersion, TestSuite, Test, Result, common, Evaluation
+from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, Evaluation
 from testsuite_app.forms import ResultFormSet, EvaluationMetadataForm
 from testsuite import settings
 from testsuite_app import helper_functions
@@ -21,8 +21,8 @@ class EditResultSetView(UpdateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         result_set = rs.get_default_result_set()
@@ -76,8 +76,8 @@ class EditResultSetView(UpdateView):
 
     def post(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         can_edit = permissions.user_can_edit_reading_system(request.user, rs)

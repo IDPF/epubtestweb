@@ -2,13 +2,13 @@ from django.db import models
 from . import common
 
 class EvaluationManager(models.Manager):
-    def create_evaluation(self, reading_system_version, testsuite, user):
+    def create_evaluation(self, reading_system, testsuite, user):
         from .result import Result
         from .score import Score
         from testsuite_app import helper_functions
         print("Creating evaluation")
         last_updated = helper_functions.generate_timestamp()
-        evaluation = Evaluation(reading_system_version = reading_system_version, 
+        evaluation = Evaluation(reading_system = reading_system, 
             testsuite=testsuite, last_updated = last_updated, user = user)
         evaluation.save()   
         # create empty scores for each category and each feature
@@ -40,16 +40,15 @@ class Evaluation(models.Model):
     testsuite = models.ForeignKey('TestSuite')
     percent_complete = models.DecimalField(decimal_places = 2, max_digits = 5, default=0)
     last_updated = models.DateTimeField()
-    reading_system_version = models.ForeignKey('ReadingSystemVersion')
-    flagged_for_review = models.BooleanField(default = False)
+    reading_system = models.ForeignKey('ReadingSystem')
     visibility = models.CharField(max_length = 1, choices = common.VISIBILITY_TYPE, default=common.VISIBILITY_MEMBERS_ONLY)
     user = models.ForeignKey('UserProfile')
-    
+    status = models.CharField(max_length = 1, choices = common.EVALUATION_STATUS_TYPE, default=common.EVALUATION_STATUS_TYPE_CURRENT)
+    notes = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
 
     def save(self, *args, **kwargs):
         self.update_percent_complete()
         self.update_scores()
-        self.update_flagged_for_review()
         super(Evaluation, self).save(*args, **kwargs)
 
     def update_scores(self):
@@ -69,14 +68,6 @@ class Evaluation(models.Model):
         score.update()
         score = self.get_score(feature)
         score.update()
-
-    def update_flagged_for_review(self):
-        results = self.get_results()
-        for r in results:
-            if (r.test.flagged_as_new or r.test.flagged_as_changed) and r.result == None:
-                self.flagged_for_review = True
-                return
-        self.flagged_for_review = False
 
     def add_metadata(self, assistive_technology, input_type, supports_screenreader, supports_braille):
         from .atmetadata import ATMetadata

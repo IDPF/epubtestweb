@@ -8,8 +8,8 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from testsuite_app.models import ReadingSystemVersion, TestSuite, Test, Result, common, Evaluation
-from testsuite_app.forms import ReadingSystemVersionForm, ResultFormSet, EvaluationMetadataForm
+from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, Evaluation
+from testsuite_app.forms import ReadingSystemForm, ResultFormSet, EvaluationMetadataForm
 from testsuite import settings
 from testsuite_app import helper_functions
 from testsuite_app import permissions
@@ -68,7 +68,7 @@ class ManageView(TemplateView):
         if len(request.user.first_name) > 0 or len(request.user.last_name) > 0:
             display_name = "{0} {1}".format(request.user.first_name, request.user.last_name)
             display_name = display_name.strip()
-        reading_systems = ReadingSystemVersion.objects.all()
+        reading_systems = ReadingSystem.objects.all()
         return render(request, self.template_name,
             {'reading_systems': reading_systems, "testsuite_date": testsuite.version_date})
 
@@ -129,18 +129,18 @@ class EditReadingSystemView(TemplateView):
         action_url = ""
         if kwargs.has_key('pk'):
             try:
-                rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
+                rs = ReadingSystem.objects.get(id=kwargs['pk'])
             except:
                 return render(request, "404.html", {})
             can_edit = permissions.user_can_edit_reading_system(request.user, rs)
             if can_edit == False:
                 messages.add_message(request, messages.INFO, 'You do not have permission to edit that reading system.')
                 return redirect("/manage/")
-            form = ReadingSystemVersionForm(instance = rs)
+            form = ReadingSystemForm(instance = rs)
             action_url = "/rs/{0}/edit/".format(rs.id)
             title = "Edit Reading System"
         else:
-            form = ReadingSystemVersionForm()
+            form = ReadingSystemForm()
             # read the query string for initial values
             for fieldname in form.fields.keys():
                 value = request.GET.get(fieldname, '')
@@ -154,12 +154,12 @@ class EditReadingSystemView(TemplateView):
         form = None
         if kwargs.has_key('pk'):
             try:
-                rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-                form = ReadingSystemVersionForm(request.POST, instance = rs)
-            except ReadingSystemVersion.DoesNotExist:
+                rs = ReadingSystem.objects.get(id=kwargs['pk'])
+                form = ReadingSystemForm(request.POST, instance = rs)
+            except ReadingSystem.DoesNotExist:
                 return render(request, "404.html", {})
         else:
-            form = ReadingSystemVersionForm(request.POST)
+            form = ReadingSystemForm(request.POST)
 
         if form.is_valid():
             obj = form.save(commit = False)
@@ -185,7 +185,7 @@ class ProblemReportView(TemplateView):
     def get(self, request, *args, **kwargs):
         if kwargs.has_key('pk'):
             try:
-                rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
+                rs = ReadingSystem.objects.get(id=kwargs['pk'])
                 result_set = rs.get_default_result_set()
                 date = result_set.testsuite.version_date
                 results = result_set.get_not_supported_results()
@@ -197,7 +197,7 @@ class ProblemReportView(TemplateView):
                 # sort the list according to what epub they reference
                 sorted_results = sorted(result_dict_list, key=lambda k: k['source']['link']) 
                 return render(request, self.template_name, {"rs": rs, "results": sorted_results, "testsuite_date": date})
-            except ReadingSystemVersion.DoesNotExist:
+            except ReadingSystem.DoesNotExist:
                 return render(request, "404.html", {})
 
 class AccessibilityConfigurationsView(TemplateView):
@@ -206,8 +206,8 @@ class AccessibilityConfigurationsView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
@@ -233,8 +233,8 @@ class EditAccessibilityConfigurationsView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
@@ -253,8 +253,8 @@ class AccessibilityReadingSystemView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         try:
@@ -274,8 +274,8 @@ class AccessibilityReadingSystemView(TemplateView):
     def delete(self, request, *args, **kwargs):
         print("DELETING ACCESSIBILITY CONFIG")
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         try:

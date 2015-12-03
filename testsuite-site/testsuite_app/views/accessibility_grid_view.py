@@ -10,7 +10,7 @@ import os
 from testsuite_app.models.category import Category
 from testsuite_app.models.evaluation import Evaluation
 from testsuite_app.models.testsuite import TestSuite
-from testsuite_app.models.reading_system import ReadingSystemVersion, ReadingSystem
+from testsuite_app.models.reading_system import ReadingSystem
 from testsuite_app.models import common
 
 class AccessibilityGridView(UpdateView):
@@ -22,9 +22,9 @@ class AccessibilityGridView(UpdateView):
         testsuite.categories = categories
             
         reading_systems = ReadingSystem.objects.all()
-        reading_systems_ = []
+        evaluations = []
         for reading_system in reading_systems:
-            if reading_system.has_any_evaluations() == True:
-                reading_systems_.append(reading_system)    
+            evals = reading_system.get_evaluations(testsuite)
+            evaluations.extend(evals)    
         
-        return render(request, self.template_name,{'reading_systems': reading_systems_, 'testsuite': testsuite})
+        return render(request, self.template_name,{'evaluations': evaluations, 'testsuite': testsuite})

@@ -10,7 +10,7 @@ import os
 from testsuite_app.models.category import Category
 from testsuite_app.models.evaluation import Evaluation
 from testsuite_app.models.testsuite import TestSuite
-from testsuite_app.models.reading_system import ReadingSystemVersion, ReadingSystem
+from testsuite_app.models.reading_system import ReadingSystem, ReadingSystem
 from testsuite_app.models.feature import Feature
 from testsuite_app.models.test import Test
 from testsuite_app.models import common
@@ -30,11 +30,7 @@ class ReadingSystemView(UpdateView):
         except TestSuite.DoesNotExist:
             return render(request, "404.html", {})            
         
-        reading_system_version = reading_system.get_most_recent_version_with_evaluation(testsuite)
-        if reading_system_version == None:
-            return render(request, "404.html", {})
-        
-        evaluations = reading_system_version.get_evaluations(testsuite)
+        evaluations = reading_system.get_evaluations(testsuite)
         categories = testsuite.get_categories()
 
         for category in categories:
@@ -46,5 +42,4 @@ class ReadingSystemView(UpdateView):
                     if tests != None:
                         feature.tests = tests
 
-        return render(request, self.template_name,{'reading_system_version': reading_system_version, 
-            'evaluations': evaluations, 'categories': categories, 'testsuite': testsuite})
+        return render(request, self.template_name,{'reading_system': reading_system, 'evaluations': evaluations, 'categories': categories, 'testsuite': testsuite})

@@ -4,9 +4,10 @@
 
 {% block content %}
 
-<h1 id="top">{{reading_system_version.reading_system.name}} / 
-{{reading_system_version.reading_system.operating_system}} / 
-{{reading_system_version.version}}</h1>
+<h1 id="top">{{reading_system.name}} 
+{{reading_system.version}} /  
+{{reading_system.operating_system}} 
+</h1>
 
 <h2>{{testsuite.name}}</h2>
 
@@ -16,7 +17,11 @@
 <ul>
     {% for evaluation in evaluations %}
     {% get_metadata evaluation as metadata %}
-    <li><a href="#eval_{{forloop.counter}}">{{metadata.assistive_technology}}</a></li>
+    {% if metadata.assistive_technology = "" %}
+    <li><a href="#eval_{{evaluation.id}}">(Unknown)</a></li>
+    {% else %}
+    <li><a href="#eval_{{evaluation.id}}">{{metadata.assistive_technology}}</a></li>
+    {% endif %}
     {% endfor %}
 </ul>
 {% else %}
@@ -47,7 +52,7 @@
 {% for evaluation in evaluations %}
 
 {% if evaluations|length > 1 %}
-<h2 id="eval_{{forloop.counter}}">Evaluation #{{forloop.counter}}</h2>
+<h2 id="eval_{{evaluation.id}}">Evaluation #{{forloop.counter}}</h2>
 {% endif %}
 
 {% get_metadata evaluation as metadata %}
@@ -66,9 +71,9 @@
 {% get_score evaluation category as category_score %}
 
 {% if evaluations|length > 1 %}
-<h3 id="{{category.category_id}}" class="rs-category">{{category.name}}</h3>
+<h3 id="eval_{{evaluation.id}}_cat_{{category.category_id}}" class="rs-category">{{category.name}}</h3>
 {% else %}
-<h2 id="{{category.category_id}}" class="rs-category">{{category.name}}</h2>
+<h2 id="eval_{{evaluation.id}}_cat_{{category.category_id}}" class="rs-category">{{category.name}}</h2>
 {% endif %}
 
 <table class="table table-condensed">

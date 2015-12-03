@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from testsuite_app.models import ReadingSystemVersion, TestSuite, Test, Result, common, Evaluation
+from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, Evaluation
 from testsuite import settings
 from testsuite_app import helper_functions
 from testsuite_app import permissions
@@ -19,8 +19,8 @@ class ConfirmDeleteRSView(TemplateView):
     template_name = "confirm_delete.html"
     def get(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         can_delete = permissions.user_can_delete_reading_system(request.user, rs)

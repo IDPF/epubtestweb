@@ -12,7 +12,7 @@ from testsuite_app.models.category import Category
 from testsuite_app.models.feature import Feature
 from testsuite_app.models.test import Test
 from testsuite_app.models import common
-from testsuite_app.models.reading_system import ReadingSystem, ReadingSystemVersion
+from testsuite_app.models.reading_system import ReadingSystem
 from testsuite_app.models.evaluation import Evaluation
 
 class FeatureView(UpdateView):
@@ -32,10 +32,7 @@ class FeatureView(UpdateView):
         reading_systems = ReadingSystem.objects.all()
         evaluations = []
         for reading_system in reading_systems:
-            reading_system_version = reading_system.get_most_recent_version_with_evaluation(testsuite)
-            if reading_system_version != None:
-                evals = reading_system_version.get_evaluations(testsuite)
-                for ev in evals:
-                    evaluations.append(ev)
+            evals = reading_system.get_evaluations(testsuite)
+            evaluations.extend(evals)
 
         return render(request, self.template_name,{'evaluations': evaluations, 'feature': feature, 'tests': tests})

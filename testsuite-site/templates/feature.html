@@ -23,7 +23,7 @@
     <tbody>
         {% for evaluation in evaluations %}
         <tr>
-            <th class="rs"><a href="/grid/{{evaluation.reading_system_version.reading_system.id}}/testsuite/{{evaluation.testsuite.id}}">{{evaluation.reading_system_version.reading_system.name}} ({{evaluation.reading_system_version.reading_system.operating_system}}) v. {{evaluation.reading_system_version.version}}</a>
+            <th class="rs"><a href="/grid/{{evaluation.reading_system_version.reading_system.id}}/testsuite/{{evaluation.testsuite.id}}">{{evaluation.reading_system.name}} {{evaluation.reading_system.version}} ({{evaluation.reading_system.operating_system}})</a>
             <br/>
             {% get_metadata evaluation as metadata %}
             {% if metadata != None %}

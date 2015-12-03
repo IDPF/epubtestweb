@@ -18,16 +18,7 @@ class ReadingSystemForm(ModelForm):
 
     class Meta:
         model = ReadingSystem
-        fields = ('name', 'operating_system')
- 
-class ReadingSystemVersionForm(ModelForm):
-    error_css_class = 'error'
-    required_css_class = 'required'
-    
-    class Meta:
-        model = ReadingSystemVersion
-        fields = ('version', 'notes')
-
+        fields = ('name', 'version', 'operating_system', 'notes')
 
 class ResultForm(ModelForm):
     class Meta:

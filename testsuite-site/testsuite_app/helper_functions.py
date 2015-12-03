@@ -1,7 +1,7 @@
 from .models.category import Category
 from .models.score import Score
 from .models.result import Result
-from .models.reading_system import ReadingSystemVersion
+from .models.reading_system import ReadingSystem
 from .models.test import Test, TestMetadata
 from .models.testsuite import TestSuite
 import os
@@ -13,7 +13,7 @@ def get_public_scores(categories, rs_status):
     "rs_status is an enum from common.py and indicates whether we want archived or current reading systems"
     retval = []
 
-    reading_systems = ReadingSystemVersion.objects.filter(status = rs_status)
+    reading_systems = ReadingSystem.objects.filter(status = rs_status)
     for rs in reading_systems:
         if rs.visibility == common.VISIBILITY_PUBLIC:
             result_set = rs.get_default_result_set()

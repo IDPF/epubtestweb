@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from testsuite_app.models import ReadingSystemVersion, TestSuite, Test, Result, common, Evaluation, Category
+from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, Evaluation, Category
 from testsuite_app.forms import ResultFormSet, EvaluationMetadataForm
 from testsuite import settings
 from testsuite_app import export_data
@@ -43,8 +43,8 @@ def export_data_all(request):
 
 def export_data_single(request, *args, **kwargs):
     try:
-        rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-    except ReadingSystemVersion.DoesNotExist:
+        rs = ReadingSystem.objects.get(id=kwargs['pk'])
+    except ReadingSystem.DoesNotExist:
         return render(request, "404.html", {})
     
     can_view = permissions.user_can_view_reading_system(request.user, rs, 'rs')
@@ -60,8 +60,8 @@ def export_data_single(request, *args, **kwargs):
 
 def set_rs_visibility(request, *args, **kwargs):
     try:
-        rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-    except ReadingSystemVersion.DoesNotExist:
+        rs = ReadingSystem.objects.get(id=kwargs['pk'])
+    except ReadingSystem.DoesNotExist:
         return render(request, "404.html", {})
 
     visibility = request.GET.get('set', common.VISIBILITY_MEMBERS_ONLY)
@@ -84,8 +84,8 @@ def set_rs_visibility(request, *args, **kwargs):
 
 def set_accessibility_visibility(request, *args, **kwargs):
     try:
-        rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-    except ReadingSystemVersion.DoesNotExist:
+        rs = ReadingSystem.objects.get(id=kwargs['pk'])
+    except ReadingSystem.DoesNotExist:
         return render(request, "404.html", {})
 
     try:
@@ -118,8 +118,8 @@ def unarchive_rs(request, *args, **kwargs):
 
 def set_rs_status(rsid, rs_status):
     try:
-        rs = ReadingSystemVersion.objects.get(id=rsid)
-    except ReadingSystemVersion.DoesNotExist:
+        rs = ReadingSystem.objects.get(id=rsid)
+    except ReadingSystem.DoesNotExist:
         return render(request, "404.html", {})
 
     rs.status = rs_status

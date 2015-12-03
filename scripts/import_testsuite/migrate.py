@@ -1,7 +1,7 @@
 def migrate_data(previous_testsuite):
     "look for any tests that haven't changed since the last import and copy reading system results over"
     print "Looking for data to migrate"
-    reading_systems = ReadingSystemVersion.objects.all()
+    reading_systems = ReadingSystem.objects.all()
     testsuite = None
     if previous_testsuite.testsuite_type == common.TESTSUITE_TYPE_DEFAULT:
         testsuite = TestSuite.objects.get_most_recent_testsuite()

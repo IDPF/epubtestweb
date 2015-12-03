@@ -1,5 +1,5 @@
 from .category import Category
-from .reading_system import ReadingSystem, ReadingSystemVersion
+from .reading_system import ReadingSystem
 from .result import Result
 from .atmetadata import ATMetadata
 from .evaluation import Evaluation

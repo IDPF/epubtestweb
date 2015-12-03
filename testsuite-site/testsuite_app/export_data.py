@@ -1,4 +1,4 @@
-from .models import ReadingSystemVersion, Test, Result, Category, TestSuite, common
+from .models import ReadingSystem, Test, Result, Category, TestSuite, common
 from lxml.builder import ElementMaker
 from lxml import etree
 from . import helper_functions

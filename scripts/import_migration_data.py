@@ -15,10 +15,10 @@ def import_migration_data(filepath):
     doc = etree.XML(fdata.encode('utf-8'), parser = p)
     reading_system_elms = doc.xpath("//ts:readingSystem", namespaces = NSMAP)
     for reading_system_elm in reading_system_elms:
-        reading_system_version = add_reading_system(reading_system_elm, user)[1]
+        reading_system = add_reading_system(reading_system_elm, user)
         result_set_elms = reading_system_elm.xpath("ts:resultset", namespaces = NSMAP)
         for result_set_elm in result_set_elms:
-            add_evaluation(reading_system_version, result_set_elm, user)
+            add_evaluation(reading_system, result_set_elm, user)
 
 
 def create_dummy_user():
@@ -33,21 +33,17 @@ def add_reading_system(reading_system_elm, user):
     rs = ReadingSystem(
         name = reading_system_elm.attrib['name'],
         operating_system = reading_system_elm.attrib['operating_system'],
-        user = user
-    )
-    rs.save() 
-    rsv = ReadingSystemVersion(
-        version = reading_system_elm.attrib['version'],
-        notes = reading_system_elm.attrib['notes'],
         user = user,
-        status = reading_system_elm.attrib['status'],
-        reading_system = rs,
-
+        version = reading_system_elm.attrib['version'],
+        notes = reading_system_elm.attrib['notes']
     )
-    rsv.save()
-    return rs, rsv
+    rs.save()
+    # status is now stored on evaluations, not the reading system. we need to track it here temporarily by
+    # storing it with the rs object, but it won't go in the db
+    rs.status = reading_system_elm.attrib['status']
+    return rs
 
-def add_evaluation(reading_system_version, result_set_elm, user):
+def add_evaluation(reading_system, result_set_elm, user):
     # locate the corresponding testsuite 
     testsuite = None
     testsuite_type = result_set_elm.attrib['testsuite_type']
@@ -56,8 +52,12 @@ def add_evaluation(reading_system_version, result_set_elm, user):
     else:
         testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_ACCESSIBILITY)
     
-    evaluation = Evaluation.objects.create_evaluation(reading_system_version, testsuite=testsuite, user = user)
+    evaluation = Evaluation.objects.create_evaluation(reading_system, testsuite=testsuite, user = user)
     evaluation.visibility = result_set_elm.attrib['visibility']
+    evaluation.status = reading_system.status
+    if 'notes' in result_set_elm.attrib.keys():
+        evaluation.notes = result_set_elm.attrib['notes']
+    evaluation.save()
 
     results = evaluation.get_results()
     for result in results:

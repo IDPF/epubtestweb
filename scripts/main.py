@@ -6,7 +6,6 @@ from testsuite_app import export_data
 
 from admin_functions import *
 from import_testsuite import import_testsuite
-import setup_testdb
 
 import refactor_functions
 
@@ -39,9 +38,6 @@ def main():
     export_parser = subparsers.add_parser('export', help="Export evaluation data for all reading systems")
     export_parser.add_argument("file", action="store", help="store the xml file here")
     export_parser.set_defaults(func = lambda args: export(args.file))
-
-    setup_testdb_parser = subparsers.add_parser('setup-testdb', help = "Init the DB for testing. WARNING!!! This will change the database.")
-    setup_testdb_parser.set_defaults(func = lambda args: setup_testdb.init_for_testing())
 
     listrs_parser = subparsers.add_parser('listrs', help="List all reading systems and their IDs")
     listrs_parser.set_defaults(func = lambda args: listrs())

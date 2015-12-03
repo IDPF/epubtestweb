@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from testsuite_app.models import ReadingSystemVersion, TestSuite, Test, Result, common, Evaluation, ATMetadata
+from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, Evaluation, ATMetadata
 from testsuite_app.forms import ResultFormSet, EvaluationMetadataForm
 from testsuite import settings
 from testsuite_app import helper_functions
@@ -21,8 +21,8 @@ class EditAccessibilityResultSetView(UpdateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         testsuite = TestSuite.objects.get_most_recent_testsuite_of_type(common.TESTSUITE_TYPE_ACCESSIBILITY)
@@ -83,8 +83,8 @@ class EditAccessibilityResultSetView(UpdateView):
 
     def post(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystemVersion.objects.get(id=kwargs['pk'])
-        except ReadingSystemVersion.DoesNotExist:
+            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+        except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
         try:

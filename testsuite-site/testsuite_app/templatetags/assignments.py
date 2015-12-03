@@ -51,7 +51,6 @@ def is_reading_system_archived(reading_system):
 @register.assignment_tag
 def get_score(evaluation, category_or_feature):
     score = evaluation.get_score(category_or_feature) 
-    print("score: {}".format(score.percent))
     return score
 
 @register.assignment_tag
