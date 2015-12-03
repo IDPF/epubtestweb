@@ -147,9 +147,20 @@
 </div>
 {% endif %}
 <script>
-    $(function() {
-        $( "#evaluations" ).tabs({
+    if ($('#evaluations')) {
+        $(function() {
+            
+            $('#evaluations').tabs({
+            });
+            
+            if(document.location.hash){
+                var hash_id = document.location.hash;
+                var re = /(eval_\d+)_(\.+)/i;
+                var tab = hash_id.match(re);
+                $('#evaluations').tabs('option', 'active', $(tab).index());
+                $(document.location.hash)[0].scrollIntoView();
+            }
         });
-    });
+    }
 </script>
 {% endblock %}
