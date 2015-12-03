@@ -243,7 +243,27 @@ footer p {
     font-size: 1.2rem;
 }
 
+.navbar-manage { 
+    background: none;
+    background-color: #f0f0f0;
+    min-height: 3rem;
+    border-bottom: none;
+}
 
+.navbar-manage li {
+    padding-top: 0.5rem;
+}
+
+.navbar-manage li > a {
+    font-size: 80%;
+    color: #004080;
+    display: inline;
+}
+
+.navbar-manage li > a:hover {
+    color: #ff0000;
+    text-decoration: underline;
+}
 
 /***************************************************************/
 /*           HOME PAGE FEATURE BUTTONS                         */
