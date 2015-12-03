@@ -155,10 +155,13 @@
             
             if(document.location.hash){
                 var hash_id = document.location.hash;
-                var re = /(eval_\d+)_(\.+)/i;
-                var tab = hash_id.match(re);
-                $('#evaluations').tabs('option', 'active', $(tab).index());
-                $(document.location.hash)[0].scrollIntoView();
+                var re = /#(eval_[0-9]+)_/i;
+                var match = re.exec(hash_id);
+                if (match.length > 0) {
+                    var tab = match[1];
+                    $('#evaluations').tabs('option', 'active', $(tab).index());
+                    $(document.location.hash)[0].scrollIntoView();
+                }
             }
         });
     }
