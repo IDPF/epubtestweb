@@ -62,7 +62,7 @@
     {% alerts messages %}
 
 
-    {% if not user.is_authenticated %}
+    {% if user.is_authenticated %}
         <div class="navbar navbar-manage">
             <ul class="nav navbar-nav pull-right" role="navigation">
                 <li><a href="/manage/">Manage</a></li>
