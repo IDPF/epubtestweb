@@ -11,14 +11,6 @@
 <h2>{{testsuite.name}}</h2>
 
 {% if evaluations|length > 1 %}
-<p>There are {{evaluations | length}} evaluations</p>
-
-<ul>
-    {% for evaluation in evaluations %}
-    {% get_metadata evaluation as metadata %}
-    <li><a href="#eval_{{forloop.counter}}">{{metadata.assistive_technology}}</a></li>
-    {% endfor %}
-</ul>
 {% else %}
 <nav class="category-list">
     <p class="small">Click on a category to view the detailed support summary below.</p>
@@ -44,10 +36,21 @@
 </nav>
 {% endif %}
 
+{% if evaluations|length > 1 %}
+<div id="evaluations">
+<p>Select a tab to view evaluation:</p>
+<ul id="eval-nav">
+    {% for evaluation in evaluations %}
+    {% get_metadata evaluation as metadata %}
+    <li><a href="#tabs-{{forloop.counter}}">{{metadata.assistive_technology}}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 {% for evaluation in evaluations %}
 
 {% if evaluations|length > 1 %}
-<h2 id="eval_{{forloop.counter}}">Evaluation #{{forloop.counter}}</h2>
+<div id="tabs-{{forloop.counter}}">
 {% endif %}
 
 {% get_metadata evaluation as metadata %}
@@ -58,6 +61,17 @@
     
     <dt>Assistive technology features</dt>
     <dd>{{metadata | get_AT_metadata_description}}</dd>
+    
+    <dt>View results</dt>
+    <dd>
+        {% for category in categories %}
+        {% get_score evaluation category as category_score %}
+        {% if forloop.counter > 1 %}
+        |
+        {% endif %}
+        <a href="#{{category.category_id}}">{{category.name}}</a>
+        {% endfor %}
+    </dd>
 </dl>
 {% endif %}
 
@@ -119,7 +133,18 @@
 
 {% endfor %}
 {% if evaluations|length > 1 %}
-<p class="top"><a href="#top">Back to Top</a></p>
+<p class="top"><a href="#eval-nav">Back to Top</a></p>
 {% endif %}
+</div>
 {% endfor %}
+
+{% if evaluations|length > 1 %}
+</div>
+{% endif %}
+<script>
+    $(function() {
+        $( "#evaluations" ).tabs({
+        });
+    });
+</script>
 {% endblock %}
