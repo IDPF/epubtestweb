@@ -35,7 +35,7 @@ div#contents > h1 {
     margin: 0;
 }
 
-div#contents > h2 {
+div#contents h2 {
     font-size: 125%;
     text-indent: 0.75rem;
     color: white;
@@ -45,21 +45,21 @@ div#contents > h2 {
     margin: 4em 0 1em 0;
 }
 
-div#contents > ul+h2,
-div#contents > p+h2.ts {
+div#contents ul+h2,
+div#contents p+h2.ts {
     margin-top: 2rem;
 }
 
-div#contents > h2.features {
+div#contents h2.features {
     margin-top: 2rem;
 }
 
-div#contents > h1+h2,
-div#contents > h1+h2.features {
+div#contents h1+h2,
+div#contents h1+h2.features {
     margin-top: 0;
 }
 
-div#contents > h2.rs-category,
+div#contents h2.rs-category,
 div#contents h3.rs-category {
     font-size: 160%;
     font-weight: normal;
@@ -70,7 +70,7 @@ div#contents h3.rs-category {
     padding: 0;
 }
 
-div#contents > h2.rs-category {
+div#contents h2.rs-category {
     font-size: 180%;
     text-indent: 1rem;
     margin-top: 4rem;

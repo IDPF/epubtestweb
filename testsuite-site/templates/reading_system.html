@@ -11,11 +11,7 @@
 
 <h2>{{testsuite.name}}</h2>
 
-{% if evaluations|length > 1 %}
-
-<p>There are {{evaluations | length}} evaluations</p>
-
-{% else %}
+{% if not testsuite.id == 2 %}
 <nav class="category-list">
     <p class="small">Click on a category to view the detailed support summary below.</p>
     <table class="category-summary">
@@ -40,9 +36,13 @@
 </nav>
 {% endif %}
 
-{% if evaluations|length > 1 %}
+{% if testsuite.id == 2 %}
 <div id="evaluations">
+
+{% if evaluations|length > 1 %}
 <p>Select a tab to view evaluation:</p>
+{% endif %}
+    
 <ul id="eval-nav">
     {% for evaluation in evaluations %}
     {% get_metadata evaluation as metadata %}
@@ -134,7 +134,7 @@
     </tbody>
 </table>
 
-{% if evaluations|length > 1 %}
+{% if testsuite.id == 2 %}
 <p class="top"><a href="#eval-nav">Back to Top</a></p>
 {% else %}
 <p class="top"><a href="#top">Back to Top</a></p>
@@ -143,13 +143,27 @@
 </div>
 {% endfor %}
 
-{% if evaluations|length > 1 %}
+{% if testsuite.id == 2 %}
 </div>
 {% endif %}
 <script>
-    $(function() {
-        $( "#evaluations" ).tabs({
+    if ($('#evaluations')) {
+        $(function() {
+            
+            $('#evaluations').tabs({
+            });
+            
+            if(document.location.hash){
+                var hash_id = document.location.hash;
+                var re = /#(eval_[0-9]+)_/i;
+                var match = re.exec(hash_id);
+                if (match.length > 0) {
+                    var tab = match[1];
+                    $('#evaluations').tabs('option', 'active', $(tab).index());
+                    $(document.location.hash)[0].scrollIntoView();
+                }
+            }
         });
-    });
+    }
 </script>
 {% endblock %}
