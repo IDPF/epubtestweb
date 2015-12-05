@@ -12,10 +12,10 @@ admin.autodiscover()
 """
 / : landing page. list of all features for all testsuites
 /grid : reading systems view (all reading systems)
-/grid/ID/testsuiteID : reading system results for one testsuite
-/testsuite/ID/feature/featureID: single feature view 
+/grid/ID/testsuite/ID : reading system results for one testsuite
+/testsuite/ID/feature/ID: single feature view 
 (maybe for the future)
-/testsuite/ID/category/categoryID: single category view
+/testsuite/ID/category/ID: single category view
 
 """
 
@@ -24,8 +24,9 @@ urlpatterns = patterns('',
     (r'^features/$', FeaturesView.as_view()),
     (r'^grid/$', GridView.as_view()),
     (r'^accessibility/$', AccessibilityGridView.as_view()),
-    (r'^testsuite/(?P<pk>\d+)/features/(?P<feature_id>\d+)$', FeatureView.as_view()),
-    (r'^grid/(?P<pk>\d+)/testsuite/(?P<testsuite_id>\d+)$', ReadingSystemView.as_view()),
+    (r'^testsuite/(?P<testsuite_id>.*)/features/(?P<feature_id>.*)$', FeatureView.as_view()),
+    #(r'^testsuite/(?P<pk>\d+)/features/(?P<feature_id>\d+)$', FeatureView.as_view()),
+    (r'^grid/(?P<pk>\d+)/testsuite/(?P<testsuite_id>.*)$', ReadingSystemView.as_view()),
     (r'^docs/instructions-for-evaluators/$', InstructionsForEvaluatorsView.as_view()),
     (r'^docs/instructions-for-accessibility-evaluators/$', InstructionsForAccessibilityEvaluatorsView.as_view()),
     (r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),

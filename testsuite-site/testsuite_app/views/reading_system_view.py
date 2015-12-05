@@ -26,7 +26,7 @@ class ReadingSystemView(UpdateView):
             return render(request, "404.html", {})
 
         try:
-            testsuite = TestSuite.objects.get(id=kwargs['testsuite_id'])
+            testsuite = TestSuite.objects.get(testsuite_id=kwargs['testsuite_id'])
         except TestSuite.DoesNotExist:
             return render(request, "404.html", {})            
         

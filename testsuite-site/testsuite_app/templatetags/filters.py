@@ -88,7 +88,6 @@ def get_AT_metadata_notes(result_set):
     return meta.notes
 
 
-
 @register.filter
 def print_tested_not_tested(bool_value):
     if bool_value == True:
