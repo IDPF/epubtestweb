@@ -155,11 +155,12 @@
             
             if(document.location.hash){
                 var hash_id = document.location.hash;
-                var re = /#(eval_[0-9]+)_/i;
+                var re = /(#eval_[0-9]+)_/i;
                 var match = re.exec(hash_id);
                 if (match.length > 0) {
                     var tab = match[1];
-                    $('#evaluations').tabs('option', 'active', $(tab).index());
+                    var index = $('#evaluations a[href="'+tab+'"]').parent().index();;
+                    $('#evaluations').tabs('option', 'active', index);
                     $(document.location.hash)[0].scrollIntoView();
                 }
             }
