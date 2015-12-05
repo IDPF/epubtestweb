@@ -62,7 +62,7 @@
 <div id="eval_{{evaluation.id}}">
 
 {% get_metadata evaluation as metadata %}
-{% if metadata != None %}
+{% if testsuite.testsuite_type == "2" %}
 <dl>
     <dt>Assistive technology</dt>
     <dd>{{ metadata.assistive_technology }}</dd>
@@ -77,7 +77,7 @@
         {% if forloop.counter > 1 %}
         |
         {% endif %}
-        <a href="#{{category.category_id}}">{{category.name}}</a>
+        <a href="#eval_{{evaluation.id}}_cat_{{category.category_id}}">{{category.name}}</a>
         {% endfor %}
     </dd>
 </dl>
@@ -87,10 +87,10 @@
 
 {% get_score evaluation category as category_score %}
 
-{% if evaluations|length > 1 %}
+{% if testsuite.testsuite_type == "2" %}
 <h3 id="eval_{{evaluation.id}}_cat_{{category.category_id}}" class="rs-category">{{category.name}}</h3>
 {% else %}
-<h2 id="eval_{{evaluation.id}}_cat_{{category.category_id}}" class="rs-category">{{category.name}}</h2>
+<h2 id="{{category.category_id}}" class="rs-category">{{category.name}}</h2>
 {% endif %}
 
 <table class="table table-condensed">

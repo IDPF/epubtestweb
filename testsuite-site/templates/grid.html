@@ -23,12 +23,12 @@
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>
-                    <a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.id}}">{{evaluation.reading_system.name}} ({{evaluation.reading_system.operating_system}})</a>
+                    <a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.testsuite_id}}">{{evaluation.reading_system.name}} ({{evaluation.reading_system.operating_system}})</a>
                 </td>
                     {% for category in testsuite.categories %}
                         {% get_score evaluation category as category_score %}
                         <td>
-                            <a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.id}}#{{category.category_id}}">
+                            <a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.testsuite_id}}#{{category.category_id}}">
                                 {{category_score.percent | floatformat}}%
                             </a>
                         </td>

@@ -27,13 +27,13 @@
                 
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td><a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.id}}#eval_{{evaluation.id}}">{{evaluation.reading_system.name}} {{evaluation.reading_system.version}}</a></td>
+                    <td><a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.testsuite_id}}#eval_{{evaluation.id}}">{{evaluation.reading_system.name}} {{evaluation.reading_system.version}}</a></td>
                     <td>{{evaluation.reading_system.operating_system}}</td>
                     <td>{{metadata.assistive_technology}}</td>
                         {% for category in testsuite.categories %}
                             {% get_score evaluation category as category_score %}
                             <td>
-                                <a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.id}}#eval_{{evaluation.id}}_cat_{{category.category_id}}">
+                                <a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.testsuite_id}}#eval_{{evaluation.id}}_cat_{{category.category_id}}">
                                 {%if category_score.percent = 0 %}
                                 N/A
                                 {% else %}

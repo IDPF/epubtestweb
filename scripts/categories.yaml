@@ -4,7 +4,7 @@ TestSuites:
     -
         Name: EPUB 3 Test Suite
         Type: default
-        Id: testsuite-default
+        Id: epub3
         AllowManyEvaluations: False
         Categories:
             -
@@ -632,7 +632,7 @@ TestSuites:
     - 
         Name: Accessibility Test Suite
         Type: accessibility
-        Id: testsuite-accessibility-fundamental
+        Id: accessibility
         AllowManyEvaluations: True
         Categories:
             -

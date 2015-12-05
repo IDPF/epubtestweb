@@ -77,6 +77,7 @@ def get_evaluation(reading_system, testsuite):
         return evaluations[0]
     return None
 
+
 ####################
 # permissions
 @register.assignment_tag

@@ -20,9 +20,8 @@ class FeatureView(UpdateView):
     template_name = "feature.html"
 
     def get(self, request, *args, **kwargs):
-        print(kwargs['pk'])
         try:
-            feature = Feature.objects.get(id=kwargs['feature_id'])
+            feature = Feature.objects.get(feature_id=kwargs['feature_id'])
         except Feature.DoesNotExist:
             return render(request, "404.html", {})
 
