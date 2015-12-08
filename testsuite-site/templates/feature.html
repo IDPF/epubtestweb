@@ -67,7 +67,8 @@
     });
     
     function dynamicTable() {
-        if (window.matchMedia("only screen and (max-width: 760px)")) {
+        var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+        if (isMobile.matches) {
             var table = $('#feature').DataTable({
                 "paging":   false,
                 "info": false,
