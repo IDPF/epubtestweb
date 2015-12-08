@@ -388,17 +388,17 @@ table.dataTable thead th {
 
 .table-feature>thead th.rs,
 .table-feature>tbody th.rs {
-    min-width: 10rem;
+    min-width: 24rem;
     max-width: 30rem;
 }
 .table-feature>thead th.pass,
 .table-feature>tbody td.pass {
-    min-width: 5rem;
+    min-width: 9rem;
     max-width: 12rem;
 }
 .table-feature>thead th,
 .table-feature>tbody td {
-    min-width: 5rem;
+    min-width: 11rem;
     max-width: 15rem;
     word-wrap: break-word;
 }
