@@ -16,6 +16,17 @@ div#contents {
     margin-top: 0;
 }
 
+.filter {
+    font-weight: bold;
+}
+
+.tbl-view {
+    font-weight: bold;
+    width: 50%;
+    float: right;
+    text-align: right;
+    padding-right: 2.5rem;
+}
 
 /***************************************************************/
 /*           HEADINGS                                          */
@@ -377,17 +388,17 @@ table.dataTable thead th {
 
 .table-feature>thead th.rs,
 .table-feature>tbody th.rs {
-    min-width: 24rem;
+    min-width: 10rem;
     max-width: 30rem;
 }
 .table-feature>thead th.pass,
 .table-feature>tbody td.pass {
-    min-width: 9rem;
+    min-width: 5rem;
     max-width: 12rem;
 }
 .table-feature>thead th,
 .table-feature>tbody td {
-    min-width: 11rem;
+    min-width: 5rem;
     max-width: 15rem;
     word-wrap: break-word;
 }
@@ -403,6 +414,9 @@ table.dataTable thead th {
     -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
     -moz-column-gap: 40px; /* Firefox */
     column-gap: 40px;
+    -webkit-column-width: 10rem;
+    -moz-column-width: 10rem;
+    column-width: 10rem;
     margin-bottom: 2rem;
     list-style-type: square;
 }
@@ -447,7 +461,7 @@ nav.category-list h2 {
 }
 
 .category-summary {
-    width: 32rem;
+    max-width: 32rem;
     border: 1px solid #ddd;
 }
 
@@ -1199,7 +1213,6 @@ span.warn {
         float: left;
         margin: 0;
     }
-
     .container {
         width: 100% !important;
         padding: 20px !important;
@@ -1207,6 +1220,9 @@ span.warn {
     .container .front-left {
         width: 100% !important;
         height: auto !important;
+    }
+    .category-summary {
+        max-width: 25rem;
     }
 }
 

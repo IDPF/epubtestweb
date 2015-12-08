@@ -8,6 +8,14 @@
 
 <p>The following reading systems have been evaluated:</p>
 
+<!--
+<div class="filter">Filter by O/S:
+    <a href="#all" id="all" onclick="filter('all')">All</a> | 
+    <a href="#android" id="android" onclick="filter('android')">Android</a> | 
+    <a href="#ios" id="ios" onclick="filter('ios')">iOS</a> | 
+    <a href="#win" id="win" onclick="filter('win')">Windows</a>
+</div>
+-->
     <table id="rs" class="table table-striped">
         <thead>
             <tr>
@@ -63,6 +71,10 @@
                 ]
             });
         });
+        
+        function filter(os) {
+            $('#rs').DataTable().columns(1).search(os == 'all' ? '' : os).draw();
+        }
     </script>
 
 {% endblock %}
