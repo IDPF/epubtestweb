@@ -69,17 +69,18 @@
     function dynamicTable() {
         var isMobile = window.matchMedia("only screen and (max-width: 760px)");
         if (isMobile.matches) {
-            var table = $('#feature').DataTable({
+            $('#feature').DataTable({
                 "paging":   false,
                 "info": false,
-                "fixedHeader": true,
+                "responsive": {
+                    "details": {
+                        "display": $.fn.dataTable.Responsive.display.childRowImmediate,
+                        "type": ''
+                    }
+                },
                 "oLanguage": {
                     "sSearch": "Find Reading System: "
                 }
-            });
-            
-            new $.fn.dataTable.FixedHeader( table, {
-                // options
             });
         }
         else {

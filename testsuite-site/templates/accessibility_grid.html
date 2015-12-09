@@ -22,12 +22,12 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>OS</th>
-                <th>AT</th>
+                <th class="none">OS</th>
+                <th class="none">AT</th>
                     {% for category in testsuite.categories %}
-                    <th>{{category.name}}</th>
+                    <th class="none">{{category.name}}</th>
                     {% endfor %}
-                <th>Comments</th>
+                <th class="none">Comments</th>
             </tr>
         </thead>
         <tbody>
@@ -60,23 +60,41 @@
     
     <script>
         $(document).ready(function(){
-            $('#a11y').DataTable({
-                "paging":   false,
-                "info": false,
-                "fixedHeader": true,
-                "oLanguage": {
-                    "sSearch": "Find Reading System: "
-                },
-                "aoColumns": [
-                    { "asSorting": [ "asc", "desc" ] },
-                    { "asSorting": [ "asc", "desc" ] },
-                    { "asSorting": [ "asc", "desc" ] },
-                    { "asSorting": [ "asc", "desc" ] },
-                    { "asSorting": [ "desc", "asc" ] },
-                    { "asSorting": [ "desc", "asc" ] },
-                    { "asSorting": [ "asc", "desc" ] },
-                ]
-            });
+            var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+            if (isMobile) {
+                $('#a11y').DataTable({
+                   "paging":   false,
+                   "info": false,
+                   "responsive": {
+                        "details": {
+                            "display": $.fn.dataTable.Responsive.display.childRowImmediate,
+                            "type": ''
+                        }
+                   },
+                   "oLanguage": {
+                       "sSearch": "Find Reading System: "
+                   }
+               });
+            }
+            else {
+                $('#a11y').DataTable({
+                    "paging":   false,
+                    "info": false,
+                    "fixedHeader": true,
+                    "oLanguage": {
+                        "sSearch": "Find Reading System: "
+                    },
+                    "aoColumns": [
+                        { "asSorting": [ "asc", "desc" ] },
+                        { "asSorting": [ "asc", "desc" ] },
+                        { "asSorting": [ "asc", "desc" ] },
+                        { "asSorting": [ "asc", "desc" ] },
+                        { "asSorting": [ "desc", "asc" ] },
+                        { "asSorting": [ "desc", "asc" ] },
+                        { "asSorting": [ "asc", "desc" ] },
+                    ]
+                });
+            }
         });
         
         function filter(os) {
