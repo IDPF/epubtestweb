@@ -73,7 +73,7 @@ div#contents h2.rs-category,
 div#contents h3.rs-category {
     font-size: 160%;
     font-weight: normal;
-    color: #aa0b29;
+    color: #004080;
     background: none;
     margin-top: 3rem;
     margin-bottom: 1rem;
@@ -82,9 +82,8 @@ div#contents h3.rs-category {
 
 div#contents h2.rs-category {
     font-size: 180%;
-    text-indent: 1rem;
+    font-weight: bold;
     margin-top: 4rem;
-    margin-left: 0.5rem;
 }
 
 
@@ -646,7 +645,7 @@ p.top a {
 }
 
 .ui-tabs-panel dl {
-    background-color: #fbf7f7;
+    background-color: #f7f9fb;
     padding: 1rem;
     border: 1px solid #bbb;
     border-radius: 1rem;
