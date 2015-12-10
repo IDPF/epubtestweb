@@ -286,7 +286,18 @@ footer p {
     font-size: 1.2rem;
 }
 
+.navbar-manage {
+    background-color: #eee;
+    min-height: auto !important;
+}
 
+.navbar-manage .navbar-nav {
+    margin-right: 1.5rem;
+}
+
+.navbar-manage .navbar-nav>li>a {
+    padding: 0.3rem 0 0.3rem 2rem;
+}
 
 /***************************************************************/
 /*           HOME PAGE FEATURE BUTTONS                         */
