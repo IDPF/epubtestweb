@@ -7,8 +7,6 @@ from testsuite_app import helper_functions
 from admin_functions import *
 from import_testsuite import import_testsuite
 
-import refactor_functions
-
 from django.contrib.sessions.models import Session
 from datetime import datetime
 from import_migration_data import import_migration_data
@@ -62,6 +60,9 @@ def main():
 
     scores_parser = subparsers.add_parser("score", help="Refresh all scores")
     scores_parser.set_defaults(func = lambda args: refresh_scores())
+
+    copy_users_parser = subparsers.add_parser("copy-users", help="Refresh all scores")
+    copy_users_parser.set_defaults(func = lambda args: copy_users())
 
     args = argparser.parse_args()
     args.func(args)

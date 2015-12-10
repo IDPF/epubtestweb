@@ -29,20 +29,16 @@ urlpatterns = patterns('',
     (r'^grid/(?P<pk>\d+)/testsuite/(?P<testsuite_id>.*)$', ReadingSystemView.as_view()),
     (r'^docs/instructions-for-evaluators/$', InstructionsForEvaluatorsView.as_view()),
     (r'^docs/instructions-for-accessibility-evaluators/$', InstructionsForAccessibilityEvaluatorsView.as_view()),
-    (r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),
-
-    
-    
-    
+    (r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),    
     (r'^about/$', AboutView.as_view()),
     (r'^testsuite/$', TestsuiteView.as_view()),
     # (r'^results/$', CurrentResultsView.as_view()),
     # (r'^archived-results/$', ArchivedResultsView.as_view()),
     
     # (r'^testsuite-xml/$', gen_testsuite_xml),
-    # (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     # (r'^auth/$', auth_and_login),
-    # (r'^logout/$', logout_user),
+    (r'^logout/$', logout_user),
     # (r'^manage/$', login_required(function=ManageView.as_view(), login_url='/login/')),
     # (r'^export/$', login_required(function=export_data_all, login_url='/login/')),
     

@@ -1,5 +1,7 @@
 # this is specifically for importing pre-fall-2015 site data
-# user profiles are not supported yet, so all evals are credited to 'tester'
+# before you run this!
+#   1. import the testsuite
+#   2. copy the users
 
 import testsuite_app.models.common
 from testsuite_app.models import *
@@ -8,28 +10,20 @@ from lxml import etree
 NSMAP = {"ts": "http://idpf.org/ns/testsuite"}
 
 def import_migration_data(filepath):
-    user = create_dummy_user()
     p = etree.XMLParser(remove_blank_text = True)
     f = open(filepath)
     fdata = f.read()
     doc = etree.XML(fdata.encode('utf-8'), parser = p)
+    
     reading_system_elms = doc.xpath("//ts:readingSystem", namespaces = NSMAP)
     for reading_system_elm in reading_system_elms:
-        reading_system = add_reading_system(reading_system_elm, user)
+        reading_system = add_reading_system(reading_system_elm)
         result_set_elms = reading_system_elm.xpath("ts:resultset", namespaces = NSMAP)
         for result_set_elm in result_set_elms:
-            add_evaluation(reading_system, result_set_elm, user)
+            add_evaluation(reading_system, result_set_elm)
 
-
-def create_dummy_user():
-    user = UserProfile.objects.create_user("tester", "test@example.com", "password")
-    user.first_name = "tester"
-    user.last_name = ""
-    user.is_superuser = False
-    user.save()
-    return user
-
-def add_reading_system(reading_system_elm, user):
+def add_reading_system(reading_system_elm):
+    user = lookup_user(reading_system_elm.attrib['username'])
     rs = ReadingSystem(
         name = reading_system_elm.attrib['name'],
         operating_system = reading_system_elm.attrib['operating_system'],
@@ -51,6 +45,10 @@ def add_evaluation(reading_system, result_set_elm, user):
         testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_DEFAULT)
     else:
         testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_ACCESSIBILITY)
+
+    user = reading_system.user    
+    if result_set_elm.attrib.has_key("user"):
+        user = lookup_user(result_set_elm.attrib['user'])
     
     evaluation = Evaluation.objects.create_evaluation(reading_system, testsuite=testsuite, user = user)
     evaluation.visibility = result_set_elm.attrib['visibility']
@@ -82,6 +80,8 @@ def add_evaluation(reading_system, result_set_elm, user):
             str_to_bool(result_set_elm.attrib['supports_screenreader']), 
             str_to_bool(result_set_elm.attrib['supports_braille'])
         )
+
+    evaluation.update_scores()
 
 def str_to_bool(s):
     return s == "True"
