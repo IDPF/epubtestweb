@@ -66,7 +66,7 @@ div#contents h2.features-ts {
     padding-left: 0.7rem;
 }
 div#contents h3.features-category {
-    font-size: 120%;
+    font-size: 115%;
     color: #000;
     background: none;
     margin-top: 2rem;
@@ -345,6 +345,13 @@ div.front-left { float: left; width: 45%; margin-right: 40px; height: 300px; }
 div.front-right { margin-left: 20px; }
 
 
+/***************************************************************/
+/*           TABLE SEARCH                                      */
+/***************************************************************/
+
+input[type="search"] {
+    width: 28rem;
+}
 
 /***************************************************************/
 /*           TABLES                                            */

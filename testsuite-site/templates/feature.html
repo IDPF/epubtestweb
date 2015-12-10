@@ -12,16 +12,6 @@
 <p>The {{feature.name}} feature contains {{tests | length}} tests.</p>
 {% endif %}
 
-<!--
-<div class="tbl-view">Table view: <a href="#dynamic" id="dynamic" onclick="show('dynamic')">dynamic</a> | <a href="#static" id="static" onclick="show('static')">static</a></div>
-<div id="filter" class="filter">Filter by O/S:
-    <a href="#all" id="all" onclick="filter('all')">All</a> | 
-    <a href="#android" id="android" onclick="filter('android')">Android</a> | 
-    <a href="#ios" id="ios" onclick="filter('ios')">iOS</a> | 
-    <a href="#win" id="win" onclick="filter('win')">Windows</a>
-</div>
--->
-
 <div id="scroll">
 <table id="feature" class="table table-feature">
     <thead>
@@ -63,10 +53,7 @@
 
 <script>
     $(document).ready(function(){
-        dynamicTable();
-    });
     
-    function dynamicTable() {
         var isMobile = window.matchMedia("only screen and (max-width: 760px)");
         if (isMobile.matches) {
             $('#feature').DataTable({
@@ -79,7 +66,8 @@
                     }
                 },
                 "oLanguage": {
-                    "sSearch": "Find Reading System: "
+                    "sSearch": "Filter Reading System(s): ",
+                    "sSearchPlaceholder": "Enter a name or operating system"
                 }
             });
         }
@@ -95,39 +83,12 @@
                     "leftColumns": 1
                 },
                 "oLanguage": {
-                    "sSearch": "Find Reading System: "
+                    "sSearch": "Filter Reading System(s): ",
+                    "sSearchPlaceholder": "Enter a name or operating system"
                 }
             });
         }
-    }
-    
-    function staticTable() {
-        if (!$.fn.DataTable.isDataTable('#feature')) {
-            $('#feature').DataTable().destroy();
-            //$('#filter').hide();
-        }
-        $('#scroll').css('overflow', 'auto');
-        $('#scroll').css('width', '98%');
-    }
-    
-    function filter(os) {
-        $('#feature').DataTable().columns(0).search(os == 'all' ? '' : os).draw();
-    }
-    
-    function show(ttype) {
-        if (ttype == 'dynamic') {
-            if (!$.fn.DataTable.isDataTable('#feature')) {
-                dynamicTable();
-                //$('#filter').show();
-                $('#scroll').style('overflow', 'visible');
-            }
-        }
-        else {
-            if ($.fn.DataTable.isDataTable('#feature')) {
-                staticTable();
-            }
-        }
-    }
+    });
 </script>
 
 {% endblock %}

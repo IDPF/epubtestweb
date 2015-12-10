@@ -8,15 +8,6 @@
 
 <p>The following reading systems have been evaluated for accessibility:</p>
 
-<!--
-<div class="filter">Filter by O/S:
-    <a href="#all" id="all" onclick="filter('all')">All</a> | 
-    <a href="#android" id="android" onclick="filter('android')">Android</a> | 
-    <a href="#ios" id="ios" onclick="filter('ios')">iOS</a> | 
-    <a href="#win" id="win" onclick="filter('win')">Windows</a>
-</div>
--->
-
     <table id="a11y" class="table table-striped">
         <thead>
             <tr>
@@ -72,7 +63,8 @@
                         }
                    },
                    "oLanguage": {
-                       "sSearch": "Find Reading System: "
+                       "sSearch": "Filter Reading System(s): ",
+                       "sSearchPlaceholder": "Enter a name, operating system or AT"
                    }
                });
             }
@@ -82,7 +74,8 @@
                     "info": false,
                     "fixedHeader": true,
                     "oLanguage": {
-                        "sSearch": "Find Reading System: "
+                        "sSearch": "Filter Reading System(s): ",
+                        "sSearchPlaceholder": "Enter a name, operating system or AT"
                     },
                     "aoColumns": [
                         { "asSorting": [ "asc", "desc" ] },
@@ -96,10 +89,6 @@
                 });
             }
         });
-        
-        function filter(os) {
-            $('#a11y').DataTable().columns(2).search(os == 'all' ? '' : os).draw();
-        }
     </script>
 
 {% endblock %}
