@@ -46,7 +46,7 @@ div#contents > h1 {
 }
 
 div#contents h2 {
-    font-size: 110%;
+    font-size: 105%;
     font-weight: bold;
     text-indent: 0.75rem;
     color: #000;
@@ -60,17 +60,33 @@ div#contents p+h2.ts {
     margin-top: 2rem;
 }
 
-div#contents h2.features {
+div#contents h2.features-ts {
+    font-size: 120%;
+    font-weight: bold;
+    padding-left: 0.7rem;
+}
+div#contents h3.features-category {
+    font-size: 120%;
+    color: #000;
+    background: none;
+    margin-top: 2rem;
+    padding: 0.3rem 0 0.3rem 1rem;
+    border-left: 0.1rem solid #ddd;
+    border-top: 0.1rem solid #ddd;
+    background-color: #e2f4ff;
+}
+
+div#contents h2.category {
     margin-top: 2rem;
 }
 
 div#contents h1+h2,
-div#contents h1+h2.features {
+div#contents h1+h2.category {
     margin-top: 0;
 }
 
 div#contents h2.rs-category,
-div#contents h3.rs-category {
+div#contents h3.rs-category
     font-size: 160%;
     font-weight: normal;
     color: #004080;
@@ -419,7 +435,7 @@ table.dataTable thead th {
 
 .features-list a {
     font-weight: normal;
-    font-size: 110%;
+    font-size: 105%;
     color: #004080;
 }
 

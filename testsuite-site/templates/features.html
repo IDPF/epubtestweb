@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<h1>EPUB 3 Feature Support</h1>
+<h1>Feature Support</h1>
 
 {% for testsuite in testsuites %}
-   <!-- <h1 id="{{testsuite.id}}">{{testsuite.name}}</h1> -->
+   <h2 id="{{testsuite.id}}" class="features-ts">{{testsuite.name}}</h2>
     {% for category in testsuite.categories %}
-        <h2 id="{{category.id}}" class="features">{{category.name}}</h2>
+        <h3 id="{{category.id}}" class="features-category">{{category.name}}</h3>
         <ul class="features-list">
         {% for feature in category.features %}
             <li><a href="/testsuite/{{testsuite.testsuite_id}}/features/{{feature.feature_id}}">{{feature.name}}</a></li>
