@@ -25,7 +25,6 @@ def migrate_data(previous_testsuite):
                 except Test.DoesNotExist:
                     # the test may be new
                     print("No previous version of test {0} was found".format(result.test.test_id))
-                    result.test.flagged_as_new = True
                     result.test.save()
                     continue
 
@@ -37,7 +36,7 @@ def migrate_data(previous_testsuite):
                     result.save()
                 else:
                     print("Test {0} has changed from the previous test suite".format(result.test.test_id))
-                    result.test.flagged_as_changed = True
+                    result.flagged_as_new_or_changed = True
                     result.test.save()
             new_result_set.save()
 

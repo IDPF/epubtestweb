@@ -1,16 +1,12 @@
-from django import template
-from testsuite_app import permissions
-from testsuite_app.models import common
-from testsuite import settings
-from testsuite_app.models.evaluation import Evaluation
-from testsuite_app.models.score import Score
-from testsuite_app import helper_functions
 import os
 
+from django import template
+
+from testsuite_app import permissions
+from testsuite import settings
+from testsuite_app.models import *
+
 register = template.Library()
-
-
-@register.assignment_tag
 
 @register.assignment_tag
 def get_result(test, evaluation):

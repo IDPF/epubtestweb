@@ -1,5 +1,3 @@
-from django.db import models
-
 SHORT_STRING = 50
 LONG_STRING = 255
 

@@ -3,9 +3,10 @@ from . import common
 
 class ReadingSystem(models.Model):
     name = models.CharField(max_length = common.LONG_STRING, blank = False, null = False)
-    operating_system = models.CharField(max_length = common.SHORT_STRING, blank = False, null = False)
-    user = models.ForeignKey('UserProfile')
     version = models.CharField(max_length = common.SHORT_STRING, blank = False, null = False)
+    operating_system = models.CharField(max_length = common.SHORT_STRING, blank = False, null = False)
+    operating_system_version = models.CharField(max_length = common.SHORT_STRING, blank = True, null = True)
+    user = models.ForeignKey('UserProfile')
     notes = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
 
     # by default, get only the current and public evaluations

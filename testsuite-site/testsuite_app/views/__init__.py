@@ -12,3 +12,5 @@ from .reading_system_view import *
 from .accessibility_grid_view import *
 from .docs_views import *
 from .index_view import *
+from .testsuite_view import *
+from .manage_view import *
