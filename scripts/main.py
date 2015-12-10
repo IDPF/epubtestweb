@@ -1,21 +1,13 @@
 import argparse
 import os
-import yaml
-from testsuite_app import models
-from testsuite_app import export_data
+
 from testsuite_app import helper_functions
 from admin_functions import *
 from import_testsuite import import_testsuite
 
 from django.contrib.sessions.models import Session
-from datetime import datetime
-from import_migration_data import import_migration_data
 
-def export(outfile):
-    print ("Exporting data")
-    xmldoc = export_data.export_all_current_reading_systems(None)
-    xmldoc.write(outfile)
-    print ("Data exported to {}".format(outfile))
+from import_migration_data import import_migration_data
 
 def import_data(infile):
     print ("Importing from {}".format(infile))
@@ -37,11 +29,7 @@ def main():
     import_parser.add_argument("source", action="store", help="Folder containing EPUBs")
     import_parser.add_argument("config", action="store", default="categories.yaml", help="categories config file")
     import_parser.set_defaults(func = lambda args: import_testsuite.add_testsuites(args.source, args.config))
-
-    export_parser = subparsers.add_parser('export', help="Export evaluation data for all reading systems")
-    export_parser.add_argument("file", action="store", help="store the xml file here")
-    export_parser.set_defaults(func = lambda args: export(args.file))
-
+    
     listrs_parser = subparsers.add_parser('listrs', help="List all reading systems and their IDs")
     listrs_parser.set_defaults(func = lambda args: listrs())
 

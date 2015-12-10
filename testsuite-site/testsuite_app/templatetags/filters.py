@@ -1,8 +1,6 @@
 from django import template
-from testsuite_app import permissions
-from testsuite_app.models import common
-from testsuite import settings
-from testsuite_app.models.evaluation import Evaluation
+
+from testsuite_app.models import *
 
 register = template.Library()
 

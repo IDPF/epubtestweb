@@ -1,21 +1,11 @@
 from django.views.generic import TemplateView
-from django.views.generic.edit import UpdateView
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponse
-from django.core.servers.basehttp import FileWrapper
-import os
 
-from testsuite_app.models.testsuite import TestSuite
-from testsuite_app.models.category import Category
-from testsuite_app.models.feature import Feature
-from testsuite_app.models.test import Test
-from testsuite_app.models import common
-from testsuite_app.models.reading_system import ReadingSystem
-from testsuite_app.models.evaluation import Evaluation
+from testsuite_app.models import *
 
-class FeatureView(UpdateView):
+class FeatureView(TemplateView):
     "A single feature"
     template_name = "feature.html"
 

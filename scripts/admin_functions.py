@@ -1,11 +1,9 @@
 import os
-from testsuite_app import models
-from testsuite_app.models import common, UserProfile
-from testsuite_app import helper_functions
-from testsuite_app import export_data
 
 from django.contrib.sessions.models import Session
 from datetime import datetime
+
+from testsuite_app.models import *
 
 # settings.py must contain a definition for the 'previous' database in order for this to work
 def copy_users():

@@ -3,9 +3,11 @@
 #   1. import the testsuite
 #   2. copy the users
 
+from lxml import etree
+
 import testsuite_app.models.common
 from testsuite_app.models import *
-from lxml import etree
+
 
 NSMAP = {"ts": "http://idpf.org/ns/testsuite"}
 
@@ -23,7 +25,7 @@ def import_migration_data(filepath):
             add_evaluation(reading_system, result_set_elm)
 
 def add_reading_system(reading_system_elm):
-    user = lookup_user(reading_system_elm.attrib['username'])
+    user = lookup_user(reading_system_elm.attrib['user'])
     rs = ReadingSystem(
         name = reading_system_elm.attrib['name'],
         operating_system = reading_system_elm.attrib['operating_system'],
@@ -37,7 +39,7 @@ def add_reading_system(reading_system_elm):
     rs.status = reading_system_elm.attrib['status']
     return rs
 
-def add_evaluation(reading_system, result_set_elm, user):
+def add_evaluation(reading_system, result_set_elm):
     # locate the corresponding testsuite 
     testsuite = None
     testsuite_type = result_set_elm.attrib['testsuite_type']
@@ -46,9 +48,7 @@ def add_evaluation(reading_system, result_set_elm, user):
     else:
         testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_ACCESSIBILITY)
 
-    user = reading_system.user    
-    if result_set_elm.attrib.has_key("user"):
-        user = lookup_user(result_set_elm.attrib['user'])
+    user = lookup_user(result_set_elm.attrib['user'])
     
     evaluation = Evaluation.objects.create_evaluation(reading_system, testsuite=testsuite, user = user)
     evaluation.visibility = result_set_elm.attrib['visibility']
@@ -82,6 +82,11 @@ def add_evaluation(reading_system, result_set_elm, user):
         )
 
     evaluation.update_scores()
+
+def lookup_user(username):
+    user = UserProfile.objects.get(username = username)
+    return user
+
 
 def str_to_bool(s):
     return s == "True"

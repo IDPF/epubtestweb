@@ -6,18 +6,7 @@
 
 {% block title %}:: Manage{% endblock %}
 {% block script %}
-<script src="/media/js/jquery.tablesorter.min.js"></script>
-<script>
-$(document).ready(function() {
- $("table").tablesorter({
-    headers: {
-      // disable sorting on these columns
-      6: { sorter: false},
-      7: { sorter: false},
-    }});
-});
 
-</script>
 {% endblock %}
 
 {% block content %}

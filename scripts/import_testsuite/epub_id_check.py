@@ -1,8 +1,6 @@
 import os
 from lxml import etree
 import zipfile
-import tempfile
-import pdb
 
 class EpubIdCheck:
     file_id_map = {}

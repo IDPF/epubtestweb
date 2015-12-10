@@ -11,11 +11,18 @@ admin.autodiscover()
 
 """
 / : landing page. list of all features for all testsuites
-/grid : reading systems view (all reading systems)
-/grid/ID/testsuite/ID : reading system results for one testsuite
-/testsuite/ID/feature/ID: single feature view 
-(maybe for the future)
-/testsuite/ID/category/ID: single category view
+/grid : evaluations  
+/grid/archive: archived evaluations
+/grid/ID/testsuite/ID : single reading system results for one testsuite 
+/testsuite/ID/feature/ID: many reading system results for one feature
+/accessibility: accessibility evaluations
+/accessibility/archive: archived accessibility evaluations
+
+
+/manage: logged-in user starting point
+
+/docs: static pages with instructions etc
+
 
 """
 
@@ -25,26 +32,25 @@ urlpatterns = patterns('',
     (r'^grid/$', GridView.as_view()),
     (r'^accessibility/$', AccessibilityGridView.as_view()),
     (r'^testsuite/(?P<testsuite_id>.*)/features/(?P<feature_id>.*)$', FeatureView.as_view()),
-    #(r'^testsuite/(?P<pk>\d+)/features/(?P<feature_id>\d+)$', FeatureView.as_view()),
     (r'^grid/(?P<pk>\d+)/testsuite/(?P<testsuite_id>.*)$', ReadingSystemView.as_view()),
     (r'^docs/instructions-for-evaluators/$', InstructionsForEvaluatorsView.as_view()),
     (r'^docs/instructions-for-accessibility-evaluators/$', InstructionsForAccessibilityEvaluatorsView.as_view()),
     (r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),    
-    (r'^about/$', AboutView.as_view()),
+    
     (r'^testsuite/$', TestsuiteView.as_view()),
-    # (r'^results/$', CurrentResultsView.as_view()),
+
+    
     # (r'^archived-results/$', ArchivedResultsView.as_view()),
     
-    # (r'^testsuite-xml/$', gen_testsuite_xml),
+    
     (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
-    # (r'^auth/$', auth_and_login),
+    (r'^auth/$', auth_and_login),
     (r'^logout/$', logout_user),
-    # (r'^manage/$', login_required(function=ManageView.as_view(), login_url='/login/')),
-    # (r'^export/$', login_required(function=export_data_all, login_url='/login/')),
+    
+    (r'^manage/$', login_required(function=ManageView.as_view(), login_url='/login/')),
     
     # (r'^rs/(?P<pk>\d+)/accessibility/$', AccessibilityConfigurationsView.as_view()),
     # (r'^rs/(?P<pk>\d+)/accessibility/(?P<rset>\d+)$', AccessibilityReadingSystemView.as_view()),
-    # (r'^rs/(?P<pk>\d+)/export/$', login_required(function=export_data_single, login_url='/login/')),
     # (r'^rs/(?P<pk>\d+)/edit/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
     # (r'^rs/(?P<pk>\d+)/eval/$', login_required(function=EditResultSetView.as_view(), login_url='/login/')),
     # (r'^rs/(?P<pk>\d+)/eval/new$', login_required(function=EditResultSetView.as_view(), login_url='/login/')),
