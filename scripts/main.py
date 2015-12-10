@@ -3,7 +3,7 @@ import os
 import yaml
 from testsuite_app import models
 from testsuite_app import export_data
-
+from testsuite_app import helper_functions
 from admin_functions import *
 from import_testsuite import import_testsuite
 
@@ -23,6 +23,11 @@ def import_data(infile):
     print ("Importing from {}".format(infile))
     import_migration_data(infile)
     print ("Done")
+
+def refresh_scores():
+    # this shouldn't need to be called
+    print ("Refreshing scores")
+    helper_functions.force_score_refresh()
 
 def main():
     import django
@@ -54,6 +59,9 @@ def main():
     import_data_parser = subparsers.add_parser("import-data", help="Import evaluation data in XML format")
     import_data_parser.add_argument("file", action="store", help="XML file containing data to import")
     import_data_parser.set_defaults(func = lambda args: import_data(args.file))
+
+    scores_parser = subparsers.add_parser("score", help="Refresh all scores")
+    scores_parser.set_defaults(func = lambda args: refresh_scores())
 
     args = argparser.parse_args()
     args.func(args)

@@ -367,7 +367,7 @@ TestSuites:
                             - mo-audio-070
                     -
                         Name: Audio
-                        Id: audio
+                        Id: mo-audio
                         TestIds:
                             - mo-basic-040
                             - mo-basic-050
