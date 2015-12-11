@@ -94,7 +94,7 @@ div#contents h1+h2.category {
 }
 
 div#contents h2.rs-category,
-div#contents h3.rs-category
+div#contents h3.rs-category {
     font-size: 160%;
     font-weight: normal;
     color: #004080;
