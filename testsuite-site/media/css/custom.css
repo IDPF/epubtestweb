@@ -763,7 +763,10 @@ p.manage-none {
     margin: 2rem 0;
 }
 
-
+div.dataTables_wrapper+div.manage-options,
+table+div.manage-options {
+    margin-top: 2rem;
+}
 
 
 

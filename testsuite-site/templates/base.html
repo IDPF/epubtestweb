@@ -93,7 +93,9 @@
         </div>
 
         <footer>
+            {% if not user.is_authenticated %}
             <p>Please <a href="/login/">log in</a> to add or manage reading system reports.</p>
+            {% endif %}
             <p>EPUBTest.org development is sponsored by the <a target="_blank" href="http://daisy.org">DAISY Consortium</a> and the <a target="_blank" href="https://www.bisg.org">Book Industry Study Group</a>.</p>
             <p>Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</p>
         </footer>
