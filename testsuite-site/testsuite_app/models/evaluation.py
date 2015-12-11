@@ -41,9 +41,9 @@ class Evaluation(models.Model):
     percent_complete = models.DecimalField(decimal_places = 2, max_digits = 5, default=0)
     last_updated = models.DateTimeField()
     reading_system = models.ForeignKey('ReadingSystem')
-    visibility = models.CharField(max_length = 1, choices = common.VISIBILITY_TYPE, default=common.VISIBILITY_MEMBERS_ONLY)
     user = models.ForeignKey('UserProfile')
-    status = models.CharField(max_length = 1, choices = common.EVALUATION_STATUS_TYPE, default=common.EVALUATION_STATUS_TYPE_CURRENT)
+    is_archived = models.BooleanField(default = False)
+    is_published = models.BooleanField(default = False)
     notes = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
 
     def save(self, *args, **kwargs):

@@ -14,3 +14,4 @@ from .docs_views import *
 from .index_view import *
 from .testsuite_view import *
 from .manage_view import *
+from .add_edit_reading_system_view import *

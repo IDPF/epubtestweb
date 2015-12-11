@@ -33,6 +33,9 @@ def add_reading_system(reading_system_elm):
         version = reading_system_elm.attrib['version'],
         notes = reading_system_elm.attrib['notes']
     )
+    # locale is deprecated; move it to 'notes'
+    if reading_system_elm.attrib['locale'] != "":
+        rs.notes = "{}\n{}".format(rs.notes, "locale = {}".format(reading_system_elm.attrib['locale']))
     rs.save()
     # status is now stored on evaluations, not the reading system. we need to track it here temporarily by
     # storing it with the rs object, but it won't go in the db
@@ -51,8 +54,16 @@ def add_evaluation(reading_system, result_set_elm):
     user = lookup_user(result_set_elm.attrib['user'])
     
     evaluation = Evaluation.objects.create_evaluation(reading_system, testsuite=testsuite, user = user)
-    evaluation.visibility = result_set_elm.attrib['visibility']
-    evaluation.status = reading_system.status
+    visibility = result_set_elm.attrib['visibility']
+    if visibility == "2": #public
+        evaluation.is_published = True
+    else:
+        evaluation.is_published = False
+    if reading_system.status == "2": #archived
+        evaluation.is_archived = True
+    else:
+        evaluation.is_archived = False
+    
     if 'notes' in result_set_elm.attrib.keys():
         evaluation.notes = result_set_elm.attrib['notes']
     evaluation.save()
@@ -82,6 +93,7 @@ def add_evaluation(reading_system, result_set_elm):
         )
 
     evaluation.update_scores()
+    evaluation.update_percent_complete()
 
 def lookup_user(username):
     user = UserProfile.objects.get(username = username)

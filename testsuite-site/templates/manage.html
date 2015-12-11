@@ -13,34 +13,81 @@
 
 <p style="font-style: italic; padding-bottom: 15px">You are logged in as {{ user|get_display_name }}.</p>
 
-{% if reading_systems|length == 0 %}
-    <p class="well">No data available. You can start by adding a reading system.</p>
-    <p><a class="btn btn-default" href="/rs/new" role="button">Add Reading System</a></p>
-    
-{% else %}
-    <p>Reading Systems tests are based on the version of the test suite that was available on {{testsuite_date}}.</p>
+<h1>My evaluations</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Link</th>
+            <th>Type</th>
+            <th>Percent complete</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for evaluation in evaluations %}
+        <tr>
+            <td><a href="/evaluation/{{evaluation.id}}/edit">{{evaluation|get_evaluation_display_name}}</a></td>
+            <td>{{evaluation.testsuite.name}}</td>
+            <td>{{evaluation.percent_complete}}%</td>
+            <td>
+                <ul>
+                {% if evaluation.is_archived %}
+                    <li><a href="/evaluation/{{evaluation.id}}/unarchive">Unarchive</a></li>
+                {% else %}
+                    <li><a href="/evaluation/{{evaluation.id}}/archive">Archive</a></li>
+                {% endif %}
+                    <li>Delete</li>
+                    <li>
+                    {% if user.is_superuser %}
+                        {% if evaluation.is_published %}
+                            <a href="/evaluation/{{evaluation.id}}/unpublish">Unpublish</a>
+                        {% else %}
+                            <a href="/evaluation/{{evaluation.id}}/publish">Publish</a>
+                        {% endif %}
+                    {% endif %}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+{% endfor %}
+</tbody>
+</table>
 
-    {% get_users_reading_systems reading_systems user as my_reading_systems %}
+<p><a href="/evaluation/add">Add evaluation</a></p>
+<p><a href="/evaluation/all">View all evaluations</a></p>
 
-    <h1 style="font-size: medium">My Reading Systems</h1>
-    
-    {% if my_reading_systems|length == 0 %}
-        <p>You currently aren't managing any reading systems. Use the button below to add one and start testing.</p>
-    {% else %}
-        {% manage_table my_reading_systems user %}
-    {% endif %}
+<h1>My reading systems</h1>
 
-    <p><a class="btn btn-default" href="/rs/new" role="button">Add Reading System</a></p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Version</th>
+            <th>OS</th>
+            <th>OS version</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for reading_system in reading_systems %}
+        <tr>
+            <td>{{reading_system.name}}</td>
+            <td>{{reading_system.version}}</td>
+            <td>{{reading_system.operating_system}}</td>
+            <td>{{reading_system.operating_system_version}}</td>
+            <td>{{reading_system.notes}}
+            <td>
+                <ul>
+                    <li><a href="/rs/{{reading_system.id}}/edit">Edit</a></li>
+                    <li><a href="/rs/{{reading_system.id}}/delete">Delete</a></li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-    <h1 style="font-size: medium">All Reading Systems</h1>
-
-    {% manage_table reading_systems user %}
-    {% comment %}
-    <p><a class="btn btn-default" href="/export" role="button">Export all evaluation data</a></p>
-    {% endcomment %}
-{% endif %}
-
-
-
-
+<p><a href="/rs/add">Add reading system</a></p>
+<p><a href="/rs/all">View all reading systems</a></p>
 {% endblock %}

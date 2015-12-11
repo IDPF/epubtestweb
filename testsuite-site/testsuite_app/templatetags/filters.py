@@ -12,28 +12,6 @@ def get_display_name(user):
     else:
         return user.username
 
-@register.filter
-def get_visibility(rs):
-    print(rs.visibility)
-    vis = rs.visibility
-    if vis == common.VISIBILITY_MEMBERS_ONLY:
-        return "members-only"
-    elif vis == common.VISIBILITY_PUBLIC:
-        return "public"
-    elif vis == common.VISIBILITY_OWNER_ONLY:
-        return "owner-only"
-    else:
-        return "not recognized"
-
-@register.filter
-def get_parent_ids(item):
-	"get a space-separated list of parent category IDs. item is a category or test."
-	idarr = []
-	parents = item.get_parents()
-	for p in parents:
-		idarr.append("id-{0}".format(str(p.id)))
-
-	return " ".join(idarr)
 
 @register.filter
 def get_result_description(result):
@@ -81,8 +59,8 @@ def get_AT_metadata_description(meta):
     return s
 
 @register.filter
-def get_AT_metadata_notes(result_set):
-    meta = result_set.get_metadata()
+def get_AT_metadata_notes(evaluation):
+    meta = evaluation.get_metadata()
     return meta.notes
 
 
@@ -105,6 +83,11 @@ def print_input_type(metadata):
         return "Mouse"
 
 @register.filter
-def hello_world(var):
-    return "HELLO WORLD"
+def get_evaluation_display_name(evaluation):
+    s = "{0} v {1} ({2} {3})".format(evaluation.reading_system.name, evaluation.reading_system.version, \
+        evaluation.reading_system.operating_system, evaluation.reading_system.operating_system_version)
+    if evaluation.testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
+        atmeta = evaluation.get_metadata()
+        s = "{0} {1}".format(s, atmeta.assistive_technology)
 
+    return s

@@ -18,7 +18,7 @@ class ReadingSystemForm(ModelForm):
 
     class Meta:
         model = ReadingSystem
-        fields = ('name', 'version', 'operating_system', 'notes')
+        fields = ('name', 'version', 'operating_system', 'operating_system_version', 'notes')
 
 class ResultForm(ModelForm):
     class Meta:

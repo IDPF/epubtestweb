@@ -24,47 +24,43 @@ def logout_user(request):
     messages.add_message(request, messages.INFO, 'You have been logged out.')
     return redirect("/")
 
-def set_evaluation_visibility(request, *args, **kwargs):
-    try:
-        rs = ReadingSystem.objects.get(id=kwargs['pk'])
-    except ReadingSystem.DoesNotExist:
-        return render(request, "404.html", {})
+def publish_evaluation(request, *args, **kwargs):
+    return set_evaluation_published_status(request, kwargs['pk'], True)
 
+def unpublish_evaluation(request, *args, **kwargs):
+    return set_evaluation_published_status(request, kwargs['pk'], False)
+
+def archive_evaluation(request, *args, **kwargs):
+    return set_evaluation_archived_status(request, kwargs['pk'], True)
+
+def unarchive_evaluation(request, *args, **kwargs):
+    return set_evaluation_archived_status(request, kwargs['pk'], False)
+
+
+def set_evaluation_published_status(request, evaluation_id, is_archived):
     try:
-        rset = Evaluation.objects.get(id=kwargs['rset'])
+        evaluation = Evaluation.objects.get(evaluation_id)
     except Evaluation.DoesNotExist:
         return render(request, "404.html", {})
 
-    visibility = request.GET.get('set', common.VISIBILITY_MEMBERS_ONLY)
-    if visibility != common.VISIBILITY_MEMBERS_ONLY and \
-        visibility != common.VISIBILITY_PUBLIC and \
-        visibility != common.VISIBILITY_OWNER_ONLY:
-        messages.add_message(request, messages.WARNING, 'Visibility option {0} not recognized.'.format(visibility))
-        return redirect('/manage/')
-
-    can_set_vis = permissions.user_can_change_result_set_visibility(request.user, rset, visibility)
-
-    if can_set_vis == True:
-        rset.visibility = visibility
-        rset.save()
+    if permissions.user_can_publish_evaluation(request.user, evaluation):
+        evaluation.is_published = is_archived
+        evaluation.save()
     else:
-        messages.add_message(request, messages.WARNING, "You don't have permission to change the visibility for this item.")    
+        messages.add_message(request, messages.WARNING, "You don't have permission to publish/unpublish this evaluation.")
+    return redirect('/manage/') 
 
-    return redirect("/rs/{0}/eval/accessibility/".format(rs.id))
 
-def archive_evaluation(request, *args, **kwargs):
-    return set_evaluation_status(kwargs['pk'], common.EVALUATION_STATUS_TYPE_ARCHIVED)
-
-def unarchive_evaluation(request, *args, **kwargs):
-    return set_evaluation_status(kwargs['pk'], common.EVALUATION_STATUS_TYPE_CURRENT)
-
-def set_evaluation_status(evaluation_id, status):
+def set_evaluation_archived_status(request, evaluation_id, is_archived):
     try:
         evaluation = Evaluation.objects.get(id=evaluation_id)
     except Evaluation.DoesNotExist:
         return render(request, "404.html", {})
 
-    evaluation.status = status
-    evaluation.save()
+    if permissions.user_can_edit_evaluation(request.user, evaluation):
+        evaluation.is_archived = is_archived
+        evaluation.save()
+    else:
+        messages.add_message(request, messages.WARNING, "You don't have permission to archive/unarchive this evaluation.")
     return redirect('/manage/') 
 

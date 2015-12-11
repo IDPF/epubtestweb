@@ -10,13 +10,13 @@ class ReadingSystem(models.Model):
     notes = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
 
     # by default, get only the current and public evaluations
-    def get_evaluations(self, testsuite, status=common.EVALUATION_STATUS_TYPE_CURRENT, visibility=common.VISIBILITY_PUBLIC):
+    def get_evaluations(self, testsuite, is_archived = False, is_published = True):
         from .evaluation import Evaluation
         evaluations = Evaluation.objects.filter(
             reading_system = self, 
             testsuite = testsuite, 
-            status = status, 
-            visibility = visibility)
+            is_archived = is_archived,
+            is_published = is_published)
         if testsuite.allow_many_evaluations == False and evaluations.count() > 1:
             print("WARNING TOO MANY EVALS")
         return evaluations

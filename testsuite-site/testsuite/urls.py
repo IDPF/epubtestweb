@@ -10,19 +10,31 @@ admin.autodiscover()
 
 
 """
+
+URL ideas
+
 / : landing page. list of all features for all testsuites
-/grid : evaluations  
-/grid/archive: archived evaluations
-/grid/ID/testsuite/ID : single reading system results for one testsuite 
+/testsuite/ID : evaluations for testsuite (e.g. 'reading systems' page or 'accessibility' page)
+/testsuite/ID/archive: archived evaluations for testsuite
+
+/rs/ID/testsuite/ID : single reading system results for one testsuite 
 /testsuite/ID/feature/ID: many reading system results for one feature
 /accessibility: accessibility evaluations
 /accessibility/archive: archived accessibility evaluations
-
+/about: instructions and downloads
 
 /manage: logged-in user starting point
 
 /docs: static pages with instructions etc
 
+ACTIONS for logged-in users (permissions vary for each action):
+/rs/add: add new reading system
+/rs/ID/edit: edit reading system
+/rs/ID/delete: delete reading system
+/rs/ID/testsuite/ID/add: add evaluation for reading system + testsuite
+/evaluation/ID/edit: edit evaluation
+/evaluation/ID/delete: delete evaluation
+/evaluation/ID/publish: publish/unpublish evaluation
 
 """
 
@@ -32,7 +44,7 @@ urlpatterns = patterns('',
     (r'^grid/$', GridView.as_view()),
     (r'^accessibility/$', AccessibilityGridView.as_view()),
     (r'^testsuite/(?P<testsuite_id>.*)/features/(?P<feature_id>.*)$', FeatureView.as_view()),
-    (r'^grid/(?P<pk>\d+)/testsuite/(?P<testsuite_id>.*)$', ReadingSystemView.as_view()),
+    (r'^rs/(?P<pk>\d+)/testsuite/(?P<testsuite_id>.*)$', ReadingSystemView.as_view()),
     (r'^docs/instructions-for-evaluators/$', InstructionsForEvaluatorsView.as_view()),
     (r'^docs/instructions-for-accessibility-evaluators/$', InstructionsForAccessibilityEvaluatorsView.as_view()),
     (r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),    
@@ -48,6 +60,8 @@ urlpatterns = patterns('',
     (r'^logout/$', logout_user),
     
     (r'^manage/$', login_required(function=ManageView.as_view(), login_url='/login/')),
+    (r'^rs/add/$', login_required(function=AddEditReadingSystemView.as_view(), login_url='/login/')),
+    (r'^rs/(?P<pk>\d+)/edit/$', login_required(function=AddEditReadingSystemView.as_view(), login_url='/login/')),
     
     # (r'^rs/(?P<pk>\d+)/accessibility/$', AccessibilityConfigurationsView.as_view()),
     # (r'^rs/(?P<pk>\d+)/accessibility/(?P<rset>\d+)$', AccessibilityReadingSystemView.as_view()),

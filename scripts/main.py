@@ -39,9 +39,6 @@ def main():
     listusers_parser = subparsers.add_parser("listusers", help="list all users")
     listusers_parser.set_defaults(func = lambda args: listusers())
 
-    list_logged_in_users_parser = subparsers.add_parser("list-logged-in-users", help="list logged in users")
-    list_logged_in_users_parser.set_defaults(func = lambda args: list_logged_in_users())
-
     import_data_parser = subparsers.add_parser("import-data", help="Import evaluation data in XML format")
     import_data_parser.add_argument("file", action="store", help="XML file containing data to import")
     import_data_parser.set_defaults(func = lambda args: import_data(args.file))
@@ -51,6 +48,16 @@ def main():
 
     copy_users_parser = subparsers.add_parser("copy-users", help="Refresh all scores")
     copy_users_parser.set_defaults(func = lambda args: copy_users())
+
+    add_user_parser = subparsers.add_parser("add-user", help="Add a new user")
+    add_user_parser.add_argument("username", action="store", help="unique username")
+    add_user_parser.add_argument("password", action="store", help="password")
+    add_user_parser.add_argument("first_name", action="store", help="first name")
+    add_user_parser.add_argument("last_name", action="store", help="last name")
+    add_user_parser.add_argument("is_superuser", action="store", help="True/False")
+    add_user_parser.add_argument("email", action="store", help="email")
+    add_user_parser.set_defaults(func = lambda args: add_user(args.username, args.password, \
+        args.first_name, args.last_name, args.email, args.is_superuser))
 
     args = argparser.parse_args()
     args.func(args)

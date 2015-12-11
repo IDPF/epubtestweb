@@ -24,33 +24,22 @@ def copy_users():
 
 
 def listusers():
-    users = models.UserProfile.objects.all()
+    users = UserProfile.objects.all().order_by('is_superuser')
     for u in users:
-        print ("{0}\t\t\t\t{1} {2}".format(u.username, u.first_name.encode('utf-8'), u.last_name.encode('utf-8')))
+        superuser = "Regular user"
+        if u.is_superuser:
+            superuser = "Super user"
+        name = "{} {}".format(u.first_name, u.last_name)
+        print ("{0:<40s}{1:<40s}{2:<40s}".format(u.username, name, superuser))
 
-
-def list_logged_in_users():
-    # Query all non-expired sessions
-    sessions = Session.objects.filter(expire_date__gte=datetime.now())
-    uid_list = []
-
-    # Build a list of user ids from that query
-    for session in sessions:
-        data = session.get_decoded()
-        uid_list.append(data.get('_auth_user_id', None))
-
-    users = UserProfile.objects.filter(id__in=uid_list)
-
-    for u in users:
-        print(u.username)
 
 def listrs():
-    rses = models.ReadingSystem.objects.all()
+    rses = ReadingSystem.objects.all().order_by("name")
     for rs in rses:
-        print("{0}: {1}".format(rs.name, rs.pk))
+        print("{0} v. {1}, {2} v. {3} (ID={4})".format(rs.name, rs.version, rs.operating_system, rs.operating_system_version, rs.pk))
 
 def getemails():
-    users = models.UserProfile.objects.all()
+    users = UserProfile.objects.all()
     # SELECT DISTINCT on fields not supported by SQLite backend so we have to do it manually
     # luckily this is an isolated case with a small dataset, and one where we can afford to be a little slow
     distinct_emails = []
@@ -59,3 +48,10 @@ def getemails():
             distinct_emails.append(u.email.lower())
     emails = ", ".join(distinct_emails)
     print(emails)
+
+def add_user(username, password, first_name, last_name, email, is_superuser):
+    user = UserProfile.objects.create_user(username, email, password)
+    user.first_name = first_name
+    user.last_name = last_name
+    user.is_superuser = is_superuser == "True"
+    user.save()
