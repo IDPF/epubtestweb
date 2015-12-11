@@ -5,7 +5,8 @@
 
 {% block content %}
 <h1>{{title}}</h1>
-<div>
+
+<div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
 {{ reading_system_form.as_p }}
 <input type="submit" value="Save" />

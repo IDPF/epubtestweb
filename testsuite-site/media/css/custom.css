@@ -44,7 +44,7 @@ h2, h3, h4, h5, h6, p {
 }
 
 div#contents > h1 {
-    font-size: 177%;
+    font-size: 160%;
     font-weight: normal;
     text-indent: 0.5rem;
     color: #fff;
@@ -115,6 +115,14 @@ div#contents dl+h3.rs-category{
     margin-top: 0rem;
 }
 
+
+div#contents h2.eval {
+    margin: 2rem 0rem;
+}
+
+div#contents p.user+h2.eval {
+    margin-top: 1rem;
+}
 
 /***************************************************************/
 /*           MISC CONTENT DIV                                  */
@@ -717,26 +725,43 @@ p.top a {
 }
 
 
-
 /***************************************************************/
 /*           LOGIN                                             */
 /***************************************************************/
 
-div.login {
+div.form {
     text-align: right;
-    max-width: 30rem;
+    max-width: 42rem;
     margin-top: 3rem;
 }
 
-div.login input[type="submit"] {
-    margin-right: 3rem;
+div.form input[type="submit"] {
+    margin-right: 4.3rem;
+    width: 8rem;
 }
 
-div.login label {
+div.form label {
     padding-right: 1rem;
 }
 
 
+/***************************************************************/
+/*           MANAGE                                            */
+/***************************************************************/
+
+p.user {
+    font-size: 90%;
+    color: #000;
+    max-width: 30rem;
+    float: left;
+    margin: 0;
+    padding: 0.5rem 0 0 0;
+}
+
+p.manage-none {
+    font-style: italic;
+    margin: 2rem 0;
+}
 
 
 
@@ -746,6 +771,11 @@ div.login label {
 
 
 
+
+
+
+
+/* Unused styles below? */
 
 
 .table-bordered {

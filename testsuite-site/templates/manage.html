@@ -11,9 +11,13 @@
 
 {% block content %}
 
-<p style="font-style: italic; padding-bottom: 15px">You are logged in as {{ user|get_display_name }}.</p>
+<h1>Manage Evaluations</h1>
 
-<h1>My evaluations</h1>
+<h2 class="eval">My evaluations</h2>
+
+{% if evaluations|length = 0 %}
+<p class="manage-none">You have not added any evaluations.</p>
+{% else %}
 <table class="table table-striped">
     <thead>
         <tr>
@@ -52,12 +56,16 @@
 {% endfor %}
 </tbody>
 </table>
+{% endif %}
 
 <p><a href="/evaluation/add">Add evaluation</a></p>
 <p><a href="/evaluation/all">View all evaluations</a></p>
 
-<h1>My reading systems</h1>
+<h2 class="eval">My reading systems</h2>
 
+{% if reading_systems|length = 0 %}
+<p class="manage-none">You have not added any reading systems.</p>
+{% else %}
 <table class="table table-striped">
     <thead>
         <tr>
@@ -87,6 +95,7 @@
     {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
 <p><a href="/rs/add">Add reading system</a></p>
 <p><a href="/rs/all">View all reading systems</a></p>
