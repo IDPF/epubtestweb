@@ -16,18 +16,15 @@ URL ideas
 / : landing page. list of all features for all testsuites
 /testsuite/ID : evaluations for testsuite (e.g. 'reading systems' page or 'accessibility' page)
 /testsuite/ID/archive: archived evaluations for testsuite
-
 /rs/ID/testsuite/ID : single reading system results for one testsuite 
 /testsuite/ID/feature/ID: many reading system results for one feature
 /accessibility: accessibility evaluations
 /accessibility/archive: archived accessibility evaluations
-/about: instructions and downloads
-
-/manage: logged-in user starting point
-
+/testsuite: instructions and downloads
 /docs: static pages with instructions etc
 
 ACTIONS for logged-in users (permissions vary for each action):
+/manage: logged-in user starting point
 /rs/add: add new reading system
 /rs/ID/edit: edit reading system
 /rs/ID/delete: delete reading system
@@ -35,6 +32,8 @@ ACTIONS for logged-in users (permissions vary for each action):
 /evaluation/ID/edit: edit evaluation
 /evaluation/ID/delete: delete evaluation
 /evaluation/ID/publish: publish/unpublish evaluation
+/rs/all : view all reading systems
+/evaluation/all: view all evaluations
 
 """
 
