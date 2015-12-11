@@ -4,12 +4,14 @@
 
 {% block title %}:: Login{% endblock %}
 
+{% block content %}
 <h1>Login</h1>
 
-{% block content %}
-<form action="/login/" method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
-<input type="hidden" name="next" value="{{ next }}">
-</form>
+<div class="login">
+    <form action="/login/" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+</div>
 {% endblock %}

@@ -44,6 +44,7 @@ h2, h3, h4, h5, h6, p {
 }
 
 div#contents > h1 {
+    font-size: 177%;
     font-weight: normal;
     text-indent: 0.5rem;
     color: #fff;
@@ -121,8 +122,8 @@ div#contents dl+h3.rs-category{
 
 
 div#contents > * {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 
 p { 
@@ -321,25 +322,21 @@ nav#support-nav > div.framing {
     margin: auto;
 }
 
-nav#support-nav div.button {
-    text-align: center;
-    float:left;
-    margin-left: 2rem;
-    width: 22rem;
-}
-
 .lower {
     margin-top: 6rem;
 }
 
-div.button a {
+a.button {
+    text-align: center;
+    float:left;
+    margin-left: 2rem;
+    width: 22rem;
     font: inherit;
     color: inherit;
-    width: 100%;
     text-decoration: none;
 }
 
-div.button span.button-hd {
+a.button span.button-hd {
     font-weight: bold;
     font-size: 120%;
     color: #004080;
@@ -351,12 +348,15 @@ div.button span.button-hd {
     box-shadow: 0 0 0.5rem #007bf6;
 }
 
-div.button p {
+a.button span.button-label {
+    display: block;
+    width: 100%;
     font-size: 100%;
     color: #000;
     background-color: #fff;
     width: 100%;
     padding: 0.5rem;
+    margin-top: 1rem;
 }
 
 nav#support-nav p {
@@ -718,6 +718,35 @@ p.top a {
 
 
 
+/***************************************************************/
+/*           LOGIN                                             */
+/***************************************************************/
+
+div.login {
+    text-align: right;
+    max-width: 30rem;
+    margin-top: 3rem;
+}
+
+div.login input[type="submit"] {
+    margin-right: 3rem;
+}
+
+div.login label {
+    padding-right: 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .table-bordered {
     border-collapse: collapse;
@@ -975,15 +1004,6 @@ form#testsuite_form .results table {
 
 .results tr.test_descriptions>td {
 
-}
-
-h1 {
-    margin-top: 40px;
-    margin-bottom: 40px;
-    font-size: x-large;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
-    color: #333;
 }
 
 div.results h1 {
