@@ -15,29 +15,7 @@
 
 <h2>Testsuite: {{evaluation.testsuite.name}}</h2>
 
-<nav class="category-list">
-    <p class="small">Click on a category to view the detailed support summary below.</p>
-    <table class="category-summary">
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Score</th>
-            </tr>
-        </thead>
-        <tbody>
-    {% for category in categories %}
-        {% get_score evaluation category as category_score %}
-            <tr>
-                <td><a href="#{{category.category_id}}">{{category.name}}</a></td>
-                <td>{{category_score.percent | floatformat}}%</td>
-            </tr>
-    {% endfor %}
-        </tbody>
-    </table>
-</nav>
-
-
-<dl>
+<dl id="rs-id">
     <dt>Name</dt>
     <dd>{{evaluation.reading_system.name}}</dd>
     <dt>Version</dt>
@@ -46,21 +24,44 @@
     <dd>{{evaluation.reading_system.operating_system}}</dd>
     <dt>Operating System Version</dt>
     <dd>
-    {% if evaluation.reading_system.operating_system_version != None %}
-    {{evaluation.reading_system.operating_system_version}}
-    {% endif %}
+        {% if evaluation.reading_system.operating_system_version != None %}
+        {{evaluation.reading_system.operating_system_version}}
+        {% endif %}
     </dd>
-
-{% if evaluation.testsuite.testsuite_type == "2" %}
-{% get_metadata evaluation as metadata %}
-
+    
+    {% if evaluation.testsuite.testsuite_type == "2" %}
+    {% get_metadata evaluation as metadata %}
+    
     <dt>Assistive technology</dt>
     <dd>{{ metadata.assistive_technology }}</dd>
     
     <dt>Assistive technology features</dt>
     <dd>{{metadata | get_AT_metadata_description}}</dd>
-
-{% endif %}
+    
+    {% endif %}
+    
+    <dt>Support Report</dt>
+    <dd>
+        <nav class="category-list">
+            <table class="blend">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                    {% get_score evaluation category as category_score %}
+                    <tr>
+                        <td><a href="#{{category.category_id}}">{{category.name}}</a></td>
+                        <td>{{category_score.percent | floatformat}}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </nav>
+    </dd>
 </dl>
 
 {% for category in categories %}
