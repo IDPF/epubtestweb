@@ -29,18 +29,18 @@ class AddEvaluationView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         print(request.path)
-        reading_system_id = request.POST.getlist('reading_system', []) #getlist is a method of django's QueryDict object
-        testsuite_id = request.POST.getlist('testsuite', []) #getlist is a method of django's QueryDict object
+        reading_system_id = request.POST.getlist('reading_system', [])[0] #getlist is a method of django's QueryDict object
+        testsuite_id = request.POST.getlist('testsuite', [])[0] #getlist is a method of django's QueryDict object
 
         try:
             reading_system = ReadingSystem.objects.get(id=reading_system_id)
-        except:
+        except ReadingSystem.DoesNotExist:
             messages.add_message(request, messages.INFO, 'Invalid reading system (ID={})'.format(reading_system_id))
             return redirect(request.path)    
 
         try:
             testsuite = TestSuite.objects.get(id=testsuite_id)
-        except:
+        except TestSuite.DoesNotExist:
             messages.add_message(request, messages.INFO, 'Invalid testsuite (ID={})'.format(reading_system_id))
             return redirect(request.path)    
 

@@ -27,7 +27,7 @@
 <div id="evaluation_details">
     <dl>
         <dt>Link</dt>
-        <dd><a href="/evaluation/{{evaluation.id}}/" target="_blank">View</a></dd>
+        <dd><a href="/evaluation/{{evaluation.id}}/" target="_blank">{{request.get_host}}/evaluation/{{evaluation.id}}/</a></dd>
         <dt>Published?</dt>
         <dd>{{evaluation.is_published}}</dd>
         <dt>Archived?</dt>
@@ -61,7 +61,7 @@
     <!-- the notes field -->
     <p>{{ evaluation_form }}</p>
 
-    {% if testsuite.testsuite_type == "2%}
+    {% if testsuite.testsuite_type == "2" %}
     <p>{{ assistive_technology_metadata_form }}</p>
     {% endif %}
 

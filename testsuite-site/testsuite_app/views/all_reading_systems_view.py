@@ -5,13 +5,12 @@ from django.http import HttpResponse
 
 from testsuite_app.models import *
 
-class EditEvaluationView(TemplateView):
-    template_name = "edit_evaluation.html"
+class AllReadingSystemsView(TemplateView):
+    template_name = "all_reading_systems.html"
 
     def get(self, request, *args, **kwargs):
-        try:
-            evaluation = Evaluation.objects.get(id=kwargs['pk'])
-        except Evaluation.DoesNotExist:
+        if request.user.is_superuser == False:
             return render(request, "404.html", {})
-
-        return render(request, self.template_name,{"evaluation": evaluation})
+        
+        reading_systems = ReadingSystem.objects.all()
+        return render(request, self.template_name,{"reading_systems": reading_systems})
