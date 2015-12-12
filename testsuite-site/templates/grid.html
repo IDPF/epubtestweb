@@ -80,16 +80,21 @@
                     "aoColumns": [
                         { "asSorting": [ "asc", "desc" ] },
                         { "asSorting": [ "asc", "desc" ] },
+                        {% if testsuite.testsuite_type == "1" %}
+                        { "asSorting": [ "desc", "asc" ] },
+                        {% else %}
+                        { "asSorting": [ "asc", "desc" ] },
+                        {% endif %}
+                        { "asSorting": [ "desc", "asc" ] },
+                        { "asSorting": [ "desc", "asc" ] }{% if testsuite.testsuite_type == "1" %},
                         { "asSorting": [ "desc", "asc" ] },
                         { "asSorting": [ "desc", "asc" ] },
                         { "asSorting": [ "desc", "asc" ] },
                         { "asSorting": [ "desc", "asc" ] },
                         { "asSorting": [ "desc", "asc" ] },
                         { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
+                        { "asSorting": [ "desc", "asc" ] }
+                        {% endif %}
                     ]
                 });
              }

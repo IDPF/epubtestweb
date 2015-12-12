@@ -768,9 +768,13 @@ table+div.manage-options {
     margin-top: 2rem;
 }
 
+table#rs ul {
+    list-style-type: none;
+}
 
-
-
+table#rs ul {
+    text-align: left;
+}
 
 
 
