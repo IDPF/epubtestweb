@@ -738,7 +738,7 @@ select[name="reading_system"] {
 }
 
 .left {
-    text-align: left;
+    text-align: left !important;
 }
 
 
