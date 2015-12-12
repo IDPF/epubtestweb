@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
+
+{% block title %}:: All Evaluations{% endblock %}
+{% block script %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<h1>All evaluations</h1>
+
+<p>Jump to:</p>
+<ul>
+{% for testsuite in testsuites %}
+<li><a href="#{{testsuite.testsuite_id}}">{{testsuite.name}}</a></li>
+{% endfor %}
+</ul>
+
+{% for testsuite in testsuites %}
+<h2 id="{{testsuite.testsuite_id}}">Testsuite: {{testsuite.name}}</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th colspan="5">Reading System</th>
+            {% if testsuite.testsuite_type == "2" %}
+            <th colspan="6">Evaluation</th>
+            {% else %}
+            <th colspan="5">Evaluation</th>
+            {% endif %}
+            <th colspan="1">Admin</th>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>Version</th>
+            <th>OS</th>
+            <th>OS Version</th>
+            <th>Owner</th>
+            {% if testsuite.testsuite_type == "2" %}
+            <th>AT</th>
+            {% endif %}
+            <th>Link</th>
+            <th>Percent complete</th>
+            <th>Last updated</th>
+            <th>Published</th>
+            <th>Archived</th>
+            <th>Notes</th>
+            <th>Owner</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for reading_system in reading_systems %}
+        {% get_all_evaluations reading_system testsuite as evaluations %}
+        {% for evaluation in evaluations %}
+        <tr>
+            <td>{{reading_system.name}}</td>
+            <td>{{reading_system.version}}</td>
+            <td>{{reading_system.operating_system}}</td>
+            <td>{{reading_system.operating_system_version}}</td>
+            <td>{{reading_system.user.first_name}} {{reading_system.user.last_name}}</td>
+            {% if testsuite.testsuite_type == "2" %}
+            <td>
+                {%get_metadata evaluation as metadata %}
+                {{metadata.assistive_technology}}
+            </td>
+            {% endif %}
+            <td><a href="/evaluation/{{evaluation.id}}" target="_blank">View</a></td>
+            <td>{{evaluation.percent_complete}}%</td>
+            <td>{{evaluation.last_updated}}</td>
+            <td>{{evaluation.is_published}}</td>
+            <td>{{evaluation.is_archived}}</td>
+            <td>{{evaluation.notes}}</td>
+            <td>{{evaluation.user.first_name}} {{evaluation.user.last_name}}</td>
+            {% if evaluation.is_published %}
+            <td><a href="/evaluation/{{evalution.id}}/unpublish">Unpublish</a></td>
+            {% else %}
+            <td><a href="/evaluation/{{evalution.id}}/publish">Publish</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endfor %}
+{% endblock %}

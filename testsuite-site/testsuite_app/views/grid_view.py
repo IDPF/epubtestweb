@@ -9,7 +9,13 @@ class GridView(TemplateView):
     template_name = "grid.html"
 
     def get(self, request, *args, **kwargs):
-        testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_DEFAULT)
+
+        try:
+            print(kwargs['testsuite_id'])
+            testsuite = TestSuite.objects.get(testsuite_id=kwargs['testsuite_id'])
+        except TestSuite.DoesNotExist:
+            return render(request, "404.html", {})
+
         categories = Category.objects.filter(testsuite = testsuite)
         testsuite.categories = categories
         

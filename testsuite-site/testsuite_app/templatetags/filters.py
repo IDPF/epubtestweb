@@ -83,11 +83,20 @@ def print_input_type(metadata):
         return "Mouse"
 
 @register.filter
-def get_evaluation_display_name(evaluation):
-    s = "{0} v {1} ({2} {3})".format(evaluation.reading_system.name, evaluation.reading_system.version, \
-        evaluation.reading_system.operating_system, evaluation.reading_system.operating_system_version)
-    if evaluation.testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
-        atmeta = evaluation.get_metadata()
-        s = "{0} {1}".format(s, atmeta.assistive_technology)
+def get_reading_system_display_name(reading_system):
+    rsname = reading_system.name
+    rsvers = reading_system.version
+    osname = reading_system.operating_system
+    osvers = reading_system.operating_system_version
 
+    if rsname == None:
+        rsname = ""
+    if rsvers == None:
+        rsvers = ""
+    if osname == None:
+        osname = ""
+    if osvers == None:
+        osvers = ""
+    
+    s = "{0} v {1} ({2} {3})".format(rsname, rsvers, osname, osvers)
     return s

@@ -95,7 +95,6 @@ class Evaluation(models.Model):
 
     def delete_associated(self):
         from .score import Score
-        # delete results in the result set; delete metadata object
         results = self.get_results()
         for r in results:
             r.delete()

@@ -37,9 +37,6 @@ def is_test_supported(result):
     else:
         return False
 
-@register.assignment_tag
-def is_reading_system_archived(reading_system):
-    return reading_system.status == common.READING_SYSTEM_STATUS_TYPE_ARCHIVED
 
 ######################
 # new stuff
@@ -50,21 +47,15 @@ def get_score(evaluation, category_or_feature):
     return score
 
 @register.assignment_tag
-def get_composite_score(evaluations, category_or_feature):
-    for evaluation in evaluations:
-        score = evaluation.get_score(category_or_feature)
-        if score.did_any_pass == True:
-            return "See details"
-    return "Not supported"
-
+def get_evaluations(reading_system, testsuite):
+    # gets only unarchived and published
+    return reading_system.get_evaluations(testsuite)
 
 @register.assignment_tag
-def get_evaluations(reading_system, testsuite):
-    reading_system_version = reading_system.get_most_recent_version_with_evaluation(testsuite)
-    if reading_system_version != None:
-        return reading_system_version.get_evaluations(testsuite)
-    else:
-        return None
+def get_all_evaluations(reading_system, testsuite):
+    # regardless of whether they are archived/published
+    return reading_system.get_all_evaluations(testsuite)
+
 
 @register.assignment_tag
 def get_evaluation(reading_system, testsuite):

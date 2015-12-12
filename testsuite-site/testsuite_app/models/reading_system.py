@@ -17,8 +17,14 @@ class ReadingSystem(models.Model):
             testsuite = testsuite, 
             is_archived = is_archived,
             is_published = is_published)
-        if testsuite.allow_many_evaluations == False and evaluations.count() > 1:
-            print("WARNING TOO MANY EVALS")
+        return evaluations
+
+    # get all evaluations regardless of whether they are archived/published
+    def get_all_evaluations(self, testsuite):
+        from .evaluation import Evaluation
+        evaluations = Evaluation.objects.filter(
+            reading_system = self, 
+            testsuite = testsuite)
         return evaluations
 
     def delete_associated(self):

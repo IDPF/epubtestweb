@@ -13,9 +13,14 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                    {% for category in testsuite.categories %}
-                    <th class="none">{{category.name}}</th>
-                    {% endfor %}
+                
+                {% if testsuite.testsuite_type == "2" %}
+                <th class="none">AT</th>
+                {% endif %}
+                
+                {% for category in testsuite.categories %}
+                <th class="none">{{category.name}}</th>
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
@@ -23,12 +28,16 @@
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>
-                    <a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.testsuite_id}}">{{evaluation.reading_system.name}} ({{evaluation.reading_system.operating_system}})</a>
+                    <a href="/evaluation/{{evaluation.id}}">{{evaluation.reading_system | get_reading_system_display_name}}</a>
                 </td>
+                {% if testsuite.testsuite_type == "2" %}
+                    {% get_metadata evaluation as metadata %}
+                    <td>{{metadata.assistive_technology}}</td>
+                {% endif %}
                     {% for category in testsuite.categories %}
                         {% get_score evaluation category as category_score %}
                         <td>
-                            <a href="/grid/{{evaluation.reading_system.id}}/testsuite/{{testsuite.testsuite_id}}#{{category.category_id}}">
+                            <a href="/evaluation/{{evaluation.id}}#{{category.category_id}}">
                                 {{category_score.percent | floatformat}}%
                             </a>
                         </td>

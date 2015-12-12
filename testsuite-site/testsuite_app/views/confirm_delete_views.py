@@ -8,45 +8,39 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 import os
-from testsuite_app.models import ReadingSystem, TestSuite, Test, Result, common, Evaluation
+from testsuite_app.models import *
 from testsuite import settings
 from testsuite_app import helper_functions
 from testsuite_app import permissions
 from .view_helper import *
 
-# confirm deleting a reading system
-class ConfirmDeleteRSView(TemplateView):
+class ConfirmDeleteReadingSystemView(TemplateView):
     template_name = "confirm_delete.html"
     def get(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystem.objects.get(id=kwargs['pk'])
+            reading_system = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 
-        can_delete = permissions.user_can_delete_reading_system(request.user, rs)
-        if can_delete == False:
+        if permissions.user_can_edit_reading_system(request.user, reading_system) == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to delete that reading system.')
             return redirect("/manage/")
         
-        rs_desc = "{0} {1} {2} {3}".format(rs.name, rs.version, rs.locale, rs.operating_system)
+        rs_desc = "{0} {1} {2} {3}".format(reading_system.name, reading_system.version, \
+            reading_system.operating_system, reading_system.operating_system_version)
         return render(request, self.template_name,
             {"header": 'Confirm delete reading system',
             "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
-            "confirm_url": "/grid/{0}/".format(kwargs['pk']),
+            "confirm_url": "/rs/{0}/".format(kwargs['pk']),
             "redirect_url": "/manage/"
             })
 
-# confirm deleting an accessibility configuration
-class ConfirmDeleteAccessibilityConfigurationView(TemplateView):
+
+class ConfirmDeleteEvaluationView(TemplateView):
     template_name = "confirm_delete.html"
     def get(self, request, *args, **kwargs):
         try:
-            rs = ReadingSystem.objects.get(id=kwargs['pk'])
-        except ReadingSystem.DoesNotExist:
-            return render(request, "404.html", {})
-
-        try:
-            rset = Evaluation.objects.get(id=kwargs['rset'])
+            evaluation = Evaluation.objects.get(id=kwargs['rset'])
         except Evaluation.DoesNotExist:
             return render(request, "404.html", {})
 

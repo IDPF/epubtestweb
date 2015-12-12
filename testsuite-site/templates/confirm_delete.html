@@ -4,7 +4,7 @@
 
 {%block script %}
 <script>
-function delete_rs() {
+function delete_item() {
     $.ajaxSetup({
     beforeSend: function(xhr, settings) {
             // Send the token to same-origin, relative URLs only.
@@ -30,7 +30,7 @@ function delete_rs() {
 
 <p class="confirm-warning">{{ warning }}</p>
 
-<a onclick="delete_rs()" style="text-decoration: None">
+<a onclick="delete_item()" style="text-decoration: None">
     <button class="btn btn-small" type="button">Yes</button>
 </a>
 

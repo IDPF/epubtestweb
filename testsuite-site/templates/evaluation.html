@@ -4,14 +4,17 @@
 
 {% block content %}
 
-<h1 id="top">{{reading_system.name}} 
-{{reading_system.version}} /  
-{{reading_system.operating_system}} 
+<h1 id="top">{{evaluation.reading_system|get_reading_system_display_name}}
+
+{% if evaluation.testsuite.testsuite_type == "2" %}
+{% get_metadata evaluation as metadata %}
+/ {{metadata.assistive_technology}}
+{% endif %}
+
 </h1>
 
-<h2>{{testsuite.name}}</h2>
+<h2>Testsuite: {{evaluation.testsuite.name}}</h2>
 
-{% if not testsuite.id == 2 %}
 <nav class="category-list">
     <p class="small">Click on a category to view the detailed support summary below.</p>
     <table class="category-summary">
@@ -22,7 +25,6 @@
             </tr>
         </thead>
         <tbody>
-{% for evaluation in evaluations %}
     {% for category in categories %}
         {% get_score evaluation category as category_score %}
             <tr>
@@ -30,68 +32,42 @@
                 <td>{{category_score.percent | floatformat}}%</td>
             </tr>
     {% endfor %}
-{% endfor %}
         </tbody>
     </table>
 </nav>
-{% endif %}
 
-{% if testsuite.id == 2 %}
-<div id="evaluations">
 
-{% if evaluations|length > 1 %}
-<p>Select a tab to view evaluation:</p>
-{% endif %}
-    
-<ul id="eval-nav">
-    {% for evaluation in evaluations %}
-    {% get_metadata evaluation as metadata %}
-    <li><a href="#eval_{{evaluation.id}}">
-    {% if metadata.assistive_technology = "" %}
-    (Unknown)
-    {% else %}
-    {{metadata.assistive_technology}}
-    {% endif %}
-    </a></li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-{% for evaluation in evaluations %}
-
-<div id="eval_{{evaluation.id}}">
-
-{% get_metadata evaluation as metadata %}
-{% if testsuite.testsuite_type == "2" %}
 <dl>
+<dt>Name</dt>
+<dd>{{evaluation.reading_system.name}}</dd>
+<dt>Version</dt>
+<dd>{{evaluation.reading_system.version}}</dd>
+<dt>Operating System</dt>
+<dd>{{evaluation.reading_system.operating_system}}</dd>
+<dt>Operating System Version</dt>
+<dd>
+{% if evaluation.reading_system.operating_system_version != None %}
+{{evaluation.reading_system.operating_system_version}}
+{% endif %}
+</dd>
+
+{% if evaluation.testsuite.testsuite_type == "2" %}
+{% get_metadata evaluation as metadata %}
+
     <dt>Assistive technology</dt>
     <dd>{{ metadata.assistive_technology }}</dd>
     
     <dt>Assistive technology features</dt>
     <dd>{{metadata | get_AT_metadata_description}}</dd>
-    
-    <dt>View results</dt>
-    <dd>
-        {% for category in categories %}
-        {% get_score evaluation category as category_score %}
-        {% if forloop.counter > 1 %}
-        |
-        {% endif %}
-        <a href="#eval_{{evaluation.id}}_cat_{{category.category_id}}">{{category.name}}</a>
-        {% endfor %}
-    </dd>
-</dl>
+
 {% endif %}
+</dl>
 
 {% for category in categories %}
 
 {% get_score evaluation category as category_score %}
 
-{% if testsuite.testsuite_type == "2" %}
-<h3 id="eval_{{evaluation.id}}_cat_{{category.category_id}}" class="rs-category">{{category.name}}</h3>
-{% else %}
 <h2 id="{{category.category_id}}" class="rs-category">{{category.name}}</h2>
-{% endif %}
 
 <table class="table table-condensed">
     <thead>
@@ -134,37 +110,10 @@
     </tbody>
 </table>
 
-{% if testsuite.id == 2 %}
-<p class="top"><a href="#eval-nav">Back to Top</a></p>
-{% else %}
 <p class="top"><a href="#top">Back to Top</a></p>
-{% endif %}
-{% endfor %}
-</div>
 {% endfor %}
 
 {% if testsuite.id == 2 %}
 </div>
 {% endif %}
-<script>
-    if ($('#evaluations')) {
-        $(function() {
-            
-            $('#evaluations').tabs({
-            });
-            
-            if(document.location.hash){
-                var hash_id = document.location.hash;
-                var re = /(#eval_[0-9]+)_/i;
-                var match = re.exec(hash_id);
-                if (match.length > 0) {
-                    var tab = match[1];
-                    var index = $('#evaluations a[href="'+tab+'"]').parent().index();;
-                    $('#evaluations').tabs('option', 'active', index);
-                    $(document.location.hash)[0].scrollIntoView();
-                }
-            }
-        });
-    }
-</script>
 {% endblock %}
