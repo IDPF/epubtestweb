@@ -111,52 +111,8 @@
 
 <script>
     $(document).ready(function(){
-        var isMobile = window.matchMedia("only screen and (max-width: 760px)");
-        if (isMobile.matches) {
-            initMobile('eval');
-            initMobile('rs');
-        }
-        else {
-            initStandard('eval');
-            initStandard('rs');
-        }
+        initDataTable(false);
     });
-    
-    function initMobile(tid) {
-        var tbl =  document.getElementById(tid);
-        if (typeof(tbl) != 'undefined' && tbl != null) {
-            $('#' + tid).DataTable({
-                "paging":   false,
-                "info": false,
-                "searching": false,
-                "responsive": {
-                    "details": {
-                        "display": $.fn.dataTable.Responsive.display.childRowImmediate,
-                        "type": ''
-                    }
-                }
-            });
-        }
-    }
-    
-    function initStandard(tid) {
-        var tbl =  document.getElementById(tid);
-        if (typeof(tbl) != 'undefined' && tbl != null) {
-            $('#' + tid).DataTable({
-                "paging":   false,
-                "info": false,
-                "searching": false,
-                "aoColumns": [
-                    { "asSorting": [ "asc", "desc" ] },
-                    { "asSorting": [ "asc", "desc" ] },
-                    { "asSorting": [ "desc", "asc" ] },
-                    { "asSorting": [ "desc", "asc" ] },
-                    { "asSorting": [ "desc", "asc" ] },
-                    { "asSorting": [ null ]}
-                ]
-            });
-        }
-    }
 </script>
 
 {% endblock %}

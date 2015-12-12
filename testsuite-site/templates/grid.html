@@ -49,55 +49,7 @@
     
     <script>
         $(document).ready(function(){
-            var isMobile = window.matchMedia("only screen and (max-width: 760px)");
-            if (isMobile.matches) {
-                $('#rs').DataTable({
-                    "paging":   false,
-                    "info": false,
-                    "stateSave": true,
-                    "responsive": {
-                        "details": {
-                            "display": $.fn.dataTable.Responsive.display.childRowImmediate,
-                            "type": ''
-                        }
-                    },
-                    "oLanguage": {
-                        "sSearch": "Find Reading System(s): ",
-                        "sSearchPlaceholder": "Enter a name or operating system"
-                    }
-                });
-            }
-            else {
-                $('#rs').DataTable({
-                    "paging":   false,
-                    "info": false,
-                    "fixedHeader": true,
-                    "stateSave": true,
-                    "oLanguage": {
-                        "sSearch": "Find Reading System(s): ",
-                        "sSearchPlaceholder": "Enter a name or operating system"
-                    },
-                    "aoColumns": [
-                        { "asSorting": [ "asc", "desc" ] },
-                        { "asSorting": [ "asc", "desc" ] },
-                        {% if testsuite.testsuite_type == "1" %}
-                        { "asSorting": [ "desc", "asc" ] },
-                        {% else %}
-                        { "asSorting": [ "asc", "desc" ] },
-                        {% endif %}
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] }{% if testsuite.testsuite_type == "1" %},
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] }
-                        {% endif %}
-                    ]
-                });
-             }
+            initDataTable(false);
         });
     </script>
 

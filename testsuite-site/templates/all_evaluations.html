@@ -23,7 +23,7 @@
 
 {% for testsuite in testsuites %}
 <h2 id="{{testsuite.testsuite_id}}">Testsuite: {{testsuite.name}}</h2>
-<table class="table table-striped">
+<table id="tbl-{{testsuite.testsuite_id}}" class="table table-striped">
     <thead>
         <tr>
             <th colspan="5">Reading System</th>
@@ -88,4 +88,10 @@
 </table>
 
 {% endfor %}
+
+<script>
+    $(document).ready(function(){
+        initDataTable(true);
+    });
+</script>
 {% endblock %}

@@ -53,43 +53,7 @@
 
 <script>
     $(document).ready(function(){
-    
-        var isMobile = window.matchMedia("only screen and (max-width: 760px)");
-        if (isMobile.matches) {
-            $('#feature').DataTable({
-                "paging":   false,
-                "info": false,
-                "stateSave": true,
-                "responsive": {
-                    "details": {
-                        "display": $.fn.dataTable.Responsive.display.childRowImmediate,
-                        "type": ''
-                    }
-                },
-                "oLanguage": {
-                    "sSearch": "Find Reading System(s): ",
-                    "sSearchPlaceholder": "Enter a name or operating system"
-                }
-            });
-        }
-        else {
-            $('#feature').DataTable({
-                "paging":   false,
-                "info": false,
-                "stateSave": true,
-                "autoWidth": false,
-                "scrollY":        "75vh",
-                "scrollX":        true,
-                "scrollCollapse": false,
-                "fixedColumns": {
-                    "leftColumns": 1
-                },
-                "oLanguage": {
-                    "sSearch": "Find Reading System(s): ",
-                    "sSearchPlaceholder": "Enter a name or operating system"
-                }
-            });
-        }
+        initDataTable(true);
     });
 </script>
 
