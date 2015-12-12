@@ -1,4 +1,5 @@
 from testsuite_app.models import *
+import os
 from datetime import datetime
 
 def generate_version_info():
@@ -65,11 +66,12 @@ def add_feature(featureid, name, category):
     db_feature.save()
     return db_feature
 
-def add_epub(epubid, title, description, category):
+def add_epub(epubid, title, description, category, filename):
         db_epub = Epub(
             epubid = epubid,
             title = title,
             description = description,
-            category = category)
+            category = category,
+            filename = os.path.basename(filename))
         db_epub.save()
         return db_epub

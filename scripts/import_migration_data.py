@@ -91,7 +91,6 @@ def add_evaluation(reading_system, result_set_elm):
             str_to_bool(result_set_elm.attrib['supports_screenreader']), 
             str_to_bool(result_set_elm.attrib['supports_braille'])
         )
-
     evaluation.update_scores()
     evaluation.update_percent_complete()
 

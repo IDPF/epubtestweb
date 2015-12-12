@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
+{% block title %}:: Add Evaluation{% endblock %}
+
+{% block content %}
+<h1>Add Evaluation</h1>
+
+<div class="form">
+<form action="{{action_url}}" method="post">{% csrf_token %}
+<p>Select a reading system:</p>
+<select name="reading_system">
+{% for reading_system in reading_systems %}
+<option value="{{reading_system.id}}">{{reading_system | get_reading_system_display_name}}</option>
+{% endfor %}
+</select>
+
+<p>Select a testsuite:</p>
+
+<select name="testsuite">
+{% for testsuite in testsuites %}
+<option value="{{testsuite.id}}">{{testsuite.name}}</option>
+{% endfor %}
+</select>
+<br/>
+<input type="submit" value="Save" />
+</form>
+</div>
+{% endblock %}

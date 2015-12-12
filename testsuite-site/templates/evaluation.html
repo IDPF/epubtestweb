@@ -38,18 +38,18 @@
 
 
 <dl>
-<dt>Name</dt>
-<dd>{{evaluation.reading_system.name}}</dd>
-<dt>Version</dt>
-<dd>{{evaluation.reading_system.version}}</dd>
-<dt>Operating System</dt>
-<dd>{{evaluation.reading_system.operating_system}}</dd>
-<dt>Operating System Version</dt>
-<dd>
-{% if evaluation.reading_system.operating_system_version != None %}
-{{evaluation.reading_system.operating_system_version}}
-{% endif %}
-</dd>
+    <dt>Name</dt>
+    <dd>{{evaluation.reading_system.name}}</dd>
+    <dt>Version</dt>
+    <dd>{{evaluation.reading_system.version}}</dd>
+    <dt>Operating System</dt>
+    <dd>{{evaluation.reading_system.operating_system}}</dd>
+    <dt>Operating System Version</dt>
+    <dd>
+    {% if evaluation.reading_system.operating_system_version != None %}
+    {{evaluation.reading_system.operating_system_version}}
+    {% endif %}
+    </dd>
 
 {% if evaluation.testsuite.testsuite_type == "2" %}
 {% get_metadata evaluation as metadata %}

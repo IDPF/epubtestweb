@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
+{% block title %}:: Edit Evaluation{% endblock %}
+
+{% block content %}
+<h1>Edit Evaluation</h1>
+
+<div id="rs_details">
+    <dl>
+        <dt>Name</dt>
+        <dd>{{evaluation.reading_system.name}}</dd>
+        <dt>Version</dt>
+        <dd>{{evaluation.reading_system.version}}</dd>
+        <dt>Operating System</dt>
+        <dd>{{evaluation.reading_system.operating_system}}</dd>
+        <dt>Operating System Version</dt>
+        <dd>
+        {% if evaluation.reading_system.operating_system_version != None %}
+        {{evaluation.reading_system.operating_system_version}}
+        {% endif %}
+        </dd>
+    </dl>
+</div>
+<div id="evaluation_details">
+    <dl>
+        <dt>Link</dt>
+        <dd><a href="/evaluation/{{evaluation.id}}/" target="_blank">View</a></dd>
+        <dt>Published?</dt>
+        <dd>{{evaluation.is_published}}</dd>
+        <dt>Archived?</dt>
+        <dd>{{evaluation.is_archived}}</dd>
+        <dt>Percent complete</dt>
+        <dd>{{evaluation.percent_complete}}</dd>
+    </dl>
+</div>
+<!--
+<div>
+    <p>TODO put items that need attention, i.e. tests that have been updated/changed since last evaluation update</p>
+    <ul>
+        <li>Thing 1..</li>
+        <li>Thing 2..</li>
+    </ul>
+</div>
+-->
+<div>
+    <p>Sections in this evaluation form:</p>
+    <ul>
+    {% for epub in epubs %}
+        <li><a href="evaluation/{{evaluation.id}}/edit/{{epub.epubid}}/">{{epub.title}}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+
+<div class="form" id="evaluation_metadata">
+<form action="{{action_url}}" method="post">{% csrf_token %}
+
+    <!-- the notes field -->
+    <p>{{ evaluation_form }}</p>
+
+    {% if testsuite.testsuite_type == "2%}
+    <p>{{ assistive_technology_metadata_form }}</p>
+    {% endif %}
+
+    {% if next_url != '' %}
+    <input type="hidden" name="next" value="{{ next_url }}"/>
+    <input type="submit" name="save_continue" value="Save and continue to next section" />
+    {% endif %}
+    <input type="submit" name="save" value="Save and go back"/>
+</form>
+</div>
+{% endblock %}

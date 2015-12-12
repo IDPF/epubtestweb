@@ -17,3 +17,4 @@ from .manage_view import *
 from .add_edit_reading_system_view import *
 from .confirm_delete_views import *
 from .all_evaluations_view import *
+from .add_evaluation_view import *
