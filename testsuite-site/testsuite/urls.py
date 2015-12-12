@@ -65,17 +65,19 @@ urlpatterns = patterns('',
     (r'^rs/add/$', login_required(function=AddEditReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/edit/$', login_required(function=AddEditReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteReadingSystemView.as_view(), login_url='/login/')),
-    (r'^evaluation/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteEvaluationView.as_view(), login_url='/login/')),
-
-    (r'^evaluation/all/$', login_required(function=AllEvaluationsView.as_view(), login_url='/login/')),
     
+    (r'^evaluation/add/$', login_required(function=AddEvaluationView.as_view(), login_url='/login/')),
+    (r'^evaluation/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteEvaluationView.as_view(), login_url='/login/')),
+    (r'^evaluation/all/$', login_required(function=AllEvaluationsView.as_view(), login_url='/login/')),
+    (r'^rs/all/$', login_required(function=AllReadingSystemsView.as_view(), login_url='/login/')),
 
+    (r'^evaluation/(?P<pk>\d+)/publish/$', login_required(function=publish_evaluation, login_url='/login/')),
+    (r'^evaluation/(?P<pk>\d+)/unpublish/$', login_required(function=unpublish_evaluation, login_url='/login/')),
+    (r'^evaluation/(?P<pk>\d+)/archive/$', login_required(function=archive_evaluation, login_url='/login/')),
+    (r'^evaluation/(?P<pk>\d+)/unarchive/$', login_required(function=unarchive_evaluation, login_url='/login/')),
+    (r'^evaluation/(?P<pk>\d+)/edit/$', login_required(function=EditEvaluationView.as_view(), login_url='/login/')),
+    (r'^evaluation/(?P<pk>\d+)/edit/(?P<epub_id>.*)$', login_required(function=EditEvaluationView.as_view(), login_url='/login/')),
 
-    # (r'^rs/(?P<pk>\d+)/eval/$', login_required(function=EditResultSetView.as_view(), login_url='/login/')),
-    # (r'^rs/(?P<pk>\d+)/eval/new$', login_required(function=EditResultSetView.as_view(), login_url='/login/')),
-    # (r'^rs/(?P<pk>\d+)/archive/$', login_required(function=archive_rs, login_url='/login/')),
-    # (r'^rs/(?P<pk>\d+)/unarchive/$', login_required(function=unarchive_rs, login_url='/login/')),
-    # (r'^rs/(?P<pk>\d+)/visibility/$', login_required(function=set_rs_visibility, login_url='/login/')),
     (r'^admin/', include(admin.site.urls)),
 ) 
 

@@ -76,11 +76,26 @@
             <td>{{evaluation.is_archived}}</td>
             <td>{{evaluation.notes}}</td>
             <td>{{evaluation.user.first_name}} {{evaluation.user.last_name}}</td>
-            {% if evaluation.is_published %}
-            <td><a href="/evaluation/{{evalution.id}}/unpublish">Unpublish</a></td>
-            {% else %}
-            <td><a href="/evaluation/{{evalution.id}}/publish">Publish</a></td>
-            {% endif %}
+            <td>
+                <ul>
+                    <li>
+                    {% if evaluation.is_published %}
+                        <a href="/evaluation/{{evalution.id}}/unpublish/">Unpublish</a>
+                    {% else %}
+                        <a href="/evaluation/{{evalution.id}}/publish/">Publish</a>
+                    {% endif %}
+                    </li>
+                    <li>
+                    {% if evaluation.is_archived %}
+                        <a href="/evaluation/{{evaluation.id}}/unarchive/">Unarchive</a>
+                    {% else %}
+                        <a href="/evaluation/{{evaluation.id}}/archive/">Archive</a>
+                    {% endif %}
+                    </li>
+                    <li>
+                        <a href="/evaluation/{{evaluation.id}}/delete/">Delete</a>
+                    </li>
+                </ul>
         </tr>
         {% endfor %}
     {% endfor %}

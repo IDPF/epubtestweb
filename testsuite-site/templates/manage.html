@@ -17,6 +17,7 @@
 {% if user.is_superuser %}
 <h2>Admin</h2>
 <p><a href="/evaluation/all">View all evaluations</a></p>
+<p><a href="/rs/all">View all reading systems</a></p>
 {% endif %}
 
 
@@ -31,6 +32,7 @@
             <th>Link</th>
             <th>Type</th>
             <th>Percent complete</th>
+            <th>Published?</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -49,14 +51,15 @@
             </td>
             <td>{{evaluation.testsuite.name}}</td>
             <td>{{evaluation.percent_complete}}%</td>
+            <td>{{evaluation.is_published}}</td>
             <td>
                 <ul>
                 {% if evaluation.is_archived %}
-                    <li><a href="/evaluation/{{evaluation.id}}/unarchive">Unarchive</a></li>
+                    <li><a href="/evaluation/{{evaluation.id}}/unarchive/">Unarchive</a></li>
                 {% else %}
-                    <li><a href="/evaluation/{{evaluation.id}}/archive">Archive</a></li>
+                    <li><a href="/evaluation/{{evaluation.id}}/archive/">Archive</a></li>
                 {% endif %}
-                    <li>Delete</li>
+                    <li><a href="/evaluation/{{evaluation.id}}/delete/">Delete</li>
                 </ul>
             </td>
         </tr>
@@ -66,7 +69,7 @@
 {% endif %}
 
 <div class="manage-options">
-<p><a href="/evaluation/add">Add evaluation</a></p>
+<p><a href="/evaluation/add/">Add evaluation</a></p>
 </div>
 
 <h2 class="eval">My reading systems</h2>
@@ -106,7 +109,7 @@
 {% endif %}
 
 <div class="manage-options">
-    <p><a href="/rs/add">Add reading system</a></p>
+    <p><a href="/rs/add/">Add reading system</a></p>
 </div>
 
 <script>

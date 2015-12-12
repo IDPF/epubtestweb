@@ -17,3 +17,7 @@ from .manage_view import *
 from .add_edit_reading_system_view import *
 from .confirm_delete_views import *
 from .all_evaluations_view import *
+from .all_reading_systems_view import *
+from .add_evaluation_view import *
+from .edit_evaluation_view import *
+from .edit_evaluation_single_epub_view import *

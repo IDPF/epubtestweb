@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load assignments %}
+{% load filters %}
+{% load inclusions %}
+
+
+{% block title %}:: All Reading Systems{% endblock %}
+{% block script %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<h1>All reading systems</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Version</th>
+            <th>OS</th>
+            <th>OS Version</th>
+            <th>Notes</th>
+            <th>Owner</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for reading_system in reading_systems %}
+        <tr>
+            <td>{{reading_system.name}}</td>
+            <td>{{reading_system.version}}</td>
+            <td>{{reading_system.operating_system}}</td>
+            <td>{{reading_system.operating_system_version}}</td>
+            <td>{{reading_system.notes}}</td>
+            <td>{{reading_system.user.first_name}} {{reading_system.user.last_name}}</td>
+            <td><a href="/rs/{{reading_system.id}}/delete/">Delete</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

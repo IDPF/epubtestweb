@@ -5,8 +5,8 @@ from django.http import HttpResponse
 
 from testsuite_app.models import *
 
-class EditEvaluationView(TemplateView):
-    template_name = "edit_evaluation.html"
+class EditEvaluationSingleEpubView(TemplateView):
+    template_name = "edit_evaluation_single_epub.html"
 
     def get(self, request, *args, **kwargs):
         try:
@@ -14,4 +14,4 @@ class EditEvaluationView(TemplateView):
         except Evaluation.DoesNotExist:
             return render(request, "404.html", {})
 
-        return render(request, self.template_name,{"evaluation": evaluation})
+        return render(request, self.template_name,{})

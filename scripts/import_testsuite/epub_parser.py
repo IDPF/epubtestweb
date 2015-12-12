@@ -45,7 +45,7 @@ class EpubParser:
         self.testsuite = testsuite
         self.category = category
         opfpath = self.parse_container()
-        self.epub = db_helper.add_epub(self.epubid, self.title, self.description, category)
+        self.epub = db_helper.add_epub(self.epubid, self.title, self.description, category, filename)
         navpath = self.parse_opf(opfpath)
         
         self.parse_nav(navpath)

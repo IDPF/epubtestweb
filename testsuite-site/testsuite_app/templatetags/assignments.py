@@ -38,9 +38,6 @@ def is_test_supported(result):
         return False
 
 
-######################
-# new stuff
-
 @register.assignment_tag
 def get_score(evaluation, category_or_feature):
     score = evaluation.get_score(category_or_feature) 
@@ -57,39 +54,6 @@ def get_all_evaluations(reading_system, testsuite):
     return reading_system.get_all_evaluations(testsuite)
 
 
-@register.assignment_tag
-def get_evaluation(reading_system, testsuite):
-    evaluations = get_evaluations(reading_system, testsuite)
-    if evaluations.count() > 0:
-        return evaluations[0]
-    return None
-
-
-####################
-# permissions
-@register.assignment_tag
-def user_can_edit(user, reading_system):
-    return permissions.user_can_edit_reading_system(user, reading_system)
-
-@register.assignment_tag
-def user_can_view(user, reading_system, context):
-    return permissions.user_can_view_reading_system(user, reading_system, context)
-
-@register.assignment_tag
-def user_can_change_rs_visibility(user, rs, new_visibility):
-    return permissions.user_can_change_reading_system_visibility(user, rs, new_visibility)
-
-@register.assignment_tag
-def user_can_change_result_set_visibility(user, result_set, new_visibility):
-    return permissions.user_can_change_result_set_visibility(user, result_set, new_visibility)
-
-@register.assignment_tag
-def user_can_manage_accessibility(user, reading_system):
-    return permissions.user_can_create_accessibility_result_set(user, reading_system)
-
-@register.assignment_tag
-def user_can_edit_accessibility_eval(user, result_set):
-    return permissions.user_can_edit_accessibility_result_set(user, result_set)
 
 #######################
 # for analytics
