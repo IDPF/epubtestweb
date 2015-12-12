@@ -696,6 +696,7 @@ div.form label {
 /*           MANAGE                                            */
 /***************************************************************/
 
+
 p.user {
     font-size: 90%;
     color: #000;
@@ -720,6 +721,23 @@ table#rs ul {
 }
 
 table#rs ul {
+    text-align: left;
+}
+
+
+/***************************************************************/
+/*           MANAGE                                            */
+/***************************************************************/
+
+select[name="reading_system"] {
+    max-width: 42rem;
+}
+
+.right {
+    text-align: right;
+}
+
+.left {
     text-align: left;
 }
 

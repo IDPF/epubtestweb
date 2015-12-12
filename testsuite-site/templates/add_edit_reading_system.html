@@ -12,6 +12,32 @@
 <form action="{{action_url}}" method="post">{% csrf_token %}
 {{ reading_system_form.as_p }}
 <input type="submit" value="Save" />
+<input type="hidden" name="next" id="next"/>
 </form>
 </div>
+
+<script>
+    var getUrlParameter = function getUrlParameter(sParam) {
+        
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)), sURLVariables = sPageURL.split('&'), sParameterName, i;
+        
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+            
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+    
+    var referrer = getUrlParameter('next');
+    
+    if (referrer) {
+        document.getElementById('next').value = referrer;
+    }
+    else {
+        $('#next').remove();
+    }
+</script>
+
 {% endblock %}

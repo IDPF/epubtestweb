@@ -12,8 +12,8 @@ class AddEvaluationView(TemplateView):
         testsuites = TestSuite.objects.get_most_recent_testsuites()
 
         # put the user's own reading systems first in the list, followed by an alphabetical list of all others
-        my_reading_systems = ReadingSystem.objects.filter(user = request.user).order_by("name")
-        other_reading_systems = ReadingSystem.objects.exclude(user = request.user).order_by("name")
+        my_reading_systems = ReadingSystem.objects.filter(user = request.user).extra(select={'lower_name':'lower(name)'}).order_by('lower_name')
+        other_reading_systems = ReadingSystem.objects.exclude(user = request.user).extra(select={'lower_name':'lower(name)'}).order_by('lower_name')
         # it would be nice to use the queryset join operator here but it alphabetizes the final list and doesn't maintain
         # separation by user
         reading_systems = []

@@ -55,7 +55,7 @@ class AddEditReadingSystemView(TemplateView):
             if hasattr(obj, 'user') == False:
                 obj.user = request.user
             obj.save()
-            return redirect("/manage/")
+            return redirect(request.POST.get('next', '/manage/'))
         else:
             messages.add_message(request, messages.INFO, 'Please complete all required fields.')
             clean_data = form.clean()
