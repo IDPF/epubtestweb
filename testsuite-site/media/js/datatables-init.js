@@ -1,5 +1,5 @@
 
-    function initDataTable(fixed) {
+    function initDataTable(fixed,searchable) {
         var tables = document.getElementsByTagName('table');
         
         // add table ids to a non-dynamic list (datatables will grow the # of tables as they're made dynamic)
@@ -9,11 +9,11 @@
         }
         
         for (var j = 0; j < ids.length; j++) {
-            makeDynamic(ids[j], fixed);
+            makeDynamic(ids[j], fixed,searchable);
         }
     }
         
-    function makeDynamic(tblID, fixed) {
+    function makeDynamic(tblID, fixed, searchable) {
     
         var isMobile = window.matchMedia("only screen and (max-width: 760px)");
         
@@ -38,6 +38,7 @@
             $('#'+tblID).DataTable({
                 "paging":   false,
                 "info": false,
+                "searching": searchable,
                 "fixedHeader": !fixed,
                 "stateSave": true,
                 "autoWidth": false,
