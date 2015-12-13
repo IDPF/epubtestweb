@@ -1,9 +1,6 @@
 
 from .confirm_delete_views import *
-from .edit_accessibility_result_set_view import *
-from .edit_default_result_set_view import *
 from .view_helper import *
-from .simple_views import *
 
 from .features_view import *
 from .grid_view import *
@@ -21,3 +18,4 @@ from .all_reading_systems_view import *
 from .add_evaluation_view import *
 from .edit_evaluation_view import *
 from .edit_evaluation_single_epub_view import *
+from .archive_grid_view import *

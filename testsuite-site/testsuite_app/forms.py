@@ -38,8 +38,17 @@ class ResultForm(ModelForm):
         super(ResultForm, self).__init__(*args, **kwargs)
         if self.instance.test.allow_na == False:
             self.fields['result'] = forms.ChoiceField(choices=BLANK_CHOICE_DASH + list(common.RESULT_TYPE), required=False)
-    
-class EvaluationMetadataForm(ModelForm):
+
+class EvaluationForm(ModelForm):
+    class Meta:
+        model = Evaluation
+        fields = ('is_archived', 'notes')
+        labels = {
+            'is_archived': 'Archived',
+            'notes': 'Notes'
+        }
+
+class ATMetadataForm(ModelForm):
     class Meta:
         model = ATMetadata
         fields = ('assistive_technology', 'input_type', 'supports_braille', 'supports_screenreader')

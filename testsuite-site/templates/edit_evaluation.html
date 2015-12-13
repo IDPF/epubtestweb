@@ -26,8 +26,6 @@
 </div>
 <div id="evaluation_details">
     <dl>
-        <dt>Link</dt>
-        <dd><a href="/evaluation/{{evaluation.id}}/" target="_blank">{{request.get_host}}/evaluation/{{evaluation.id}}/</a></dd>
         <dt>Published?</dt>
         <dd>{{evaluation.is_published}}</dd>
         <dt>Archived?</dt>
@@ -49,24 +47,24 @@
     <p>Sections in this evaluation form:</p>
     <ul>
     {% for epub in epubs %}
-        <li><a href="evaluation/{{evaluation.id}}/edit/{{epub.epubid}}/">{{epub.title}}</a></li>
+        <li><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a></li>
     {% endfor %}
     </ul>
 </div>
 
 
+<h2>Evaluation information</h2>
 <div class="form" id="evaluation_metadata">
 <form action="{{action_url}}" method="post">{% csrf_token %}
-
     <!-- the notes field -->
-    <p>{{ evaluation_form }}</p>
+    <p>{{ evaluation_form.as_p }}</p>
 
     {% if testsuite.testsuite_type == "2" %}
-    <p>{{ assistive_technology_metadata_form }}</p>
+    <p>{{ assistive_technology_metadata_form.as_p }}</p>
     {% endif %}
 
     {% if next_url != '' %}
-    <input type="hidden" name="next" value="{{ next_url }}"/>
+    <input type="hidden" name="next_url" value="{{ next_url }}"/>
     <input type="submit" name="save_continue" value="Save and continue to next section" />
     {% endif %}
     <input type="submit" name="save" value="Save and go back"/>

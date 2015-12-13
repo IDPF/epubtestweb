@@ -108,7 +108,7 @@ TestSuites:
                             - svg-010
                             - svg-020
                     - 
-                        Id: styling
+                        Id: svg-styling
                         Name: Styling
                         TestIds:
                             - svg-110
@@ -439,7 +439,7 @@ TestSuites:
                             - pagination-rtl-040
                     -
                         Name: Styling
-                        Id: styling
+                        Id: gls-styling
                         TestIds:
                             - headings-rtl-010
                             - headings-rtl-020

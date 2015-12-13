@@ -4,24 +4,14 @@
 {% load inclusions %}
 
 {% block title %}:: Edit Evaluation :: {{epub.title}}{% endblock %}
-
-epub
-action_url
-results
-results_form
-next_url
-evaluation
-epub_downloads_url
 {% block content %}
-
-
 
 <h1>Edit Evaluation</h1>
 
 <div id="rs_details">
 </div>
 
-<p>This page contains all the tests in <a href="{{epub_downloads_url}}/{{epub.filename}}" target="_blank">{{epub.title}}</a>.</p>
+<p>This page contains all the tests in <a href="{{epub_downloads_url}}{{epub.filename}}" target="_blank">{{epub.title}}</a>.</p>
 
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
@@ -38,7 +28,7 @@ epub_downloads_url
     <tbody>
         {% for result in results %}
         <tr>
-            {% get_form_for_result results results_form as result_form %}
+            {% get_form_for_result result results_formset as result_form %}
             <td>{{ result.test.test_id }}</td>
             <td>{{ result.test.description }}</td>
             <td>
@@ -48,13 +38,13 @@ epub_downloads_url
                     Optional
                 {% endif %}
             </td>
-            <td>{{ form.as_p }}</td>
+            <td>{{ result_form.as_p }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 {% if next_url != '' %}
-<input type="hidden" name="next" value="{{ next_url }}"/>
+<input type="hidden" name="next_url" value="{{ next_url }}"/>
 <input type="submit" name="save_continue" value="Save and continue to next section" />
 {% endif %}
 <input type="submit" name="save" value="Save and go back"/>

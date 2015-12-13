@@ -29,7 +29,9 @@
 <table id="eval" class="table table-striped">
     <thead>
         <tr>
-            <th>Link</th>
+            <th>Description</th>
+            <th>Edit</th>
+            <th>View</th>
             <th>Type</th>
             <th>Percent complete</th>
             <th>Published?</th>
@@ -40,15 +42,16 @@
 {% for evaluation in evaluations %}
         <tr>
             <td>
-                <a href="/evaluation/{{evaluation.id}}/edit">
-                    {{evaluation.reading_system|get_reading_system_display_name}}
-                    {% if evaluation.testsuite.testsuite_type == "2" %}
-                    <br/>
-                    {%get_metadata evaluation as metadata %}
-                    {{metadata.assistive_technology}}
-                    {% endif %}
-                </a>
+                {{evaluation.reading_system|get_reading_system_display_name}}
+                {% if evaluation.testsuite.testsuite_type == "2" %}
+                <br/>
+                {%get_metadata evaluation as metadata %}
+                {{metadata.assistive_technology}}
+                {% endif %}
             </td>
+            <td><a href="/evaluation/{{evaluation.id}}/edit/">link to edit</a></td>
+            <td><a href="/evaluation/{{evaluation.id}}/" target="_blank">link to view</a></td>
+        
             <td>{{evaluation.testsuite.name}}</td>
             <td>{{evaluation.percent_complete}}%</td>
             <td>{{evaluation.is_published}}</td>

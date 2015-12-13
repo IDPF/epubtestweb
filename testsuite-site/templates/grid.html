@@ -4,10 +4,18 @@
 
 {% block content %}
 
-<h1>Reading System Evaluations</h1>
+<h1>Reading System Evaluations
 
+{% if is_archive_view %}
+: Archive View
+{% endif %}
+</h1>
+
+{% if is_archive_view %}
+<p>The following reading system evaluations have been archived but are still available to view. For the latest, please visit the <a href="/">home page</a>.</p>
+{% else %}
 <p>The following reading systems have been evaluated:</p>
-
+{% endif %}
     <table id="rs" class="table table-striped">
         <thead>
             <tr>
@@ -46,6 +54,10 @@
             {% endfor %}
         </tbody>
     </table>
+
+    {% if is_archive_view == False %}
+    <p><a href="archive/">View Archives</a></p>
+    {% endif %}
     
     <script>
         $(document).ready(function(){

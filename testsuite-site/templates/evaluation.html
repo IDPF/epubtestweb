@@ -76,6 +76,7 @@
             <th class="feature-hd">Feature</th>
             <th class="test-hd">Test</th>
             <th class="result-hd">Result</th>
+            <th>Notes</th>
         </tr>
     </thead>
     <tfoot>
@@ -104,6 +105,11 @@
     <td>
     {% endif %}
     {{test_result | get_result_description}}
+    </td>
+    <td>
+        {% if test_result.publish_notes %}
+        <span>{{test_result.notes}}</span>
+        {% endif %}
     </td>
 </tr>
     {% endfor %}

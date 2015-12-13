@@ -53,5 +53,5 @@ def add_user(username, password, first_name, last_name, email, is_superuser):
     user = UserProfile.objects.create_user(username, email, password)
     user.first_name = first_name
     user.last_name = last_name
-    user.is_superuser = is_superuser == "True"
+    user.is_superuser = is_superuser
     user.save()
