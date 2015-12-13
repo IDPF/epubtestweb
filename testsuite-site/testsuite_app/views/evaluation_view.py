@@ -38,7 +38,7 @@ class EvaluationView(TemplateView):
         except Evaluation.DoesNotExist:
             return render(request, "404.html", {})
 
-        if permissions.user_can_edit_evaluation(request.user, reading_system) == False:
+        if permissions.user_can_edit_evaluation(request.user, evaluation) == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to delete that evaluation.')
             return redirect("/manage/")
         

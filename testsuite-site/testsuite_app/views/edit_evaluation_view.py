@@ -28,7 +28,13 @@ class EditEvaluationView(UpdateView):
 
         atmeta_form = None
         if evaluation.testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
-            atmeta_form = ATMetadataForm(instance = evaluation.get_metadata())
+            atmeta = evaluation.get_metadata()
+            if atmeta == None:
+                print('creating meta')
+                atmeta = evaluation.add_metadata("", common.INPUT_TYPE_KEYBOARD, False, False)
+            else:
+                print(atmeta)
+            atmeta_form = ATMetadataForm(instance = atmeta)
 
         # after this form, the next page is the evaluation form for the first epub
         next_url = "{}section/{}/".format(request.path, epubs[0].epubid)

@@ -31,7 +31,7 @@ class ConfirmDeleteReadingSystemView(TemplateView):
         return render(request, self.template_name,
             {"header": 'Confirm delete reading system',
             "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
-            "confirm_url": "/rs/{0}/".format(kwargs['pk']),
+            "confirm_url": "/rs/{}/".format(kwargs['pk']),
             "redirect_url": "/manage/"
             })
 
@@ -40,25 +40,23 @@ class ConfirmDeleteEvaluationView(TemplateView):
     template_name = "confirm_delete.html"
     def get(self, request, *args, **kwargs):
         try:
-            evaluation = Evaluation.objects.get(id=kwargs['rset'])
+            evaluation = Evaluation.objects.get(id=kwargs['pk'])
         except Evaluation.DoesNotExist:
             return render(request, "404.html", {})
 
-        can_delete = permissions.user_can_delete_accessibility_result_set(request.user, rset)
+        can_delete = permissions.user_can_edit_evaluation(request.user, evaluation)
         if can_delete == False:
-            messages.add_message(request, messages.INFO, 'You do not have permission to delete that accessibility evaluation.')
+            messages.add_message(request, messages.INFO, 'You do not have permission to delete this evaluation.')
             return redirect("/manage/")
-        
-        metadata = rset.get_metadata()
-        if metadata != None:
-            rs_desc = "{0} for {1}".format(metadata.assistive_technology, rs.name)
-        else:
-            rs_desc = "Accessibility configuration for {0}".format(rs.name)
 
+        reading_system = evaluation.reading_system
+        rs_desc = "{0} {1} {2} {3}".format(reading_system.name, reading_system.version, \
+            reading_system.operating_system, reading_system.operating_system_version)
+        
         return render(request, self.template_name,
-            {"header": 'Confirm delete accessibility evaluation',
-            "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
-            "confirm_url": "/grid/{0}/accessibility/{1}".format(kwargs['pk'], kwargs['rset']),
-            "redirect_url": "/grid/{0}/eval/accessibility".format(kwargs['pk'])
+            {"header": 'Confirm delete evaluation',
+            "warning": "You are about to delete an evaluation for '{}'. Proceed?".format(rs_desc),
+            "confirm_url": "/evaluation/{}/".format(evaluation.id),
+            "redirect_url": "/manage/"
             })
 
