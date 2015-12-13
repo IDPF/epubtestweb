@@ -53,6 +53,12 @@ def get_all_evaluations(reading_system, testsuite):
     # regardless of whether they are archived/published
     return reading_system.get_all_evaluations(testsuite)
 
+@register.assignment_tag
+def get_form_for_result(result, result_formset):
+    for f in result_formset.forms:
+        if f.instance == result:
+            return f
+    return None
 
 
 #######################

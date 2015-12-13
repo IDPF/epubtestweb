@@ -66,12 +66,17 @@ def add_feature(featureid, name, category):
     db_feature.save()
     return db_feature
 
-def add_epub(epubid, title, description, category, filename):
-        db_epub = Epub(
-            epubid = epubid,
-            title = title,
-            description = description,
-            category = category,
-            filename = os.path.basename(filename))
-        db_epub.save()
-        return db_epub
+def add_epub(epubid, title, description, testsuite, filename):
+    # see if it exists already
+    epub = Epub.objects.filter(epubid = epubid, testsuite = testsuite)
+    if len(epub) > 0:
+        return epub[0]
+
+    db_epub = Epub(
+        epubid = epubid,
+        title = title,
+        description = description,
+        testsuite = testsuite,
+        filename = os.path.basename(filename))
+    db_epub.save()
+    return db_epub

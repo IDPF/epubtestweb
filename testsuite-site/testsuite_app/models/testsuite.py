@@ -12,7 +12,6 @@ class TestSuiteManager(models.Manager):
         # returns all types
         testsuites = []
         for testsuite_type in common.TESTSUITE_TYPE:
-            print("checking {}".format(testsuite_type[0]))
             testsuite = self.get_most_recent_testsuite(testsuite_type[0])
             if testsuite != None:
                 testsuites.append(testsuite)

@@ -10,7 +10,7 @@
         <h3 id="{{category.id}}" class="features-category">{{category.name}}</h3>
         <ul class="features-list">
         {% for feature in category.features %}
-            <li><a href="/testsuite/{{testsuite.testsuite_id}}/features/{{feature.feature_id}}">{{feature.name}}</a></li>
+            <li><a href="/testsuite/{{testsuite.testsuite_id}}/feature/{{feature.feature_id}}/">{{feature.name}}</a></li>
         {% endfor %}
         </ul>
     {% endfor %}

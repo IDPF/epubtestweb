@@ -34,7 +34,6 @@ class EvaluationManager(models.Manager):
     
 
 class Evaluation(models.Model):
-    "A result set is pointed to by result objects and identifies them as belonging together"
     objects = EvaluationManager()
 
     testsuite = models.ForeignKey('TestSuite')
@@ -78,7 +77,6 @@ class Evaluation(models.Model):
             evaluation = self)
 
         m.save()
-        print("((( {0}".format(m.assistive_technology))
 
     def copy_metadata(self, evaluation):
         # copy metadata from one result set to another
@@ -125,6 +123,13 @@ class Evaluation(models.Model):
     def get_not_supported_results():
         from .result import Result
         return Result.objects.filter(evaluation = self, result = common.RESULT_NOT_SUPPORTED)
+
+    def get_results_for_epub(self, epub):
+        from .result import Result
+        from .epub import Epub
+        from .test import Test
+        tests = Test.objects.filter(epub = epub)
+        return self.get_results_for_tests(tests)
 
     def get_results_for_category(self, category): 
         "get a queryset of all the results for the given category"

@@ -11,7 +11,12 @@ class FeatureView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         try:
-            feature = Feature.objects.get(feature_id=kwargs['feature_id'])
+            testsuite = TestSuite.objects.get(testsuite_id=kwargs['testsuite_id'])
+        except TestSuite.DoesNotExist:
+            return render(request, "404.html", {})
+        
+        try:
+            feature = Feature.objects.get(feature_id=kwargs['feature_id'], category__testsuite = testsuite)
         except Feature.DoesNotExist:
             return render(request, "404.html", {})
 

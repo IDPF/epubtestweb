@@ -5,5 +5,5 @@ class Epub (models.Model):
     epubid = models.TextField()
     description = models.TextField()
     title = models.TextField()
-    category = models.ForeignKey('Category')
+    testsuite = models.ForeignKey('TestSuite')
     filename = models.CharField(max_length = common.LONG_STRING, blank = False, null = False)

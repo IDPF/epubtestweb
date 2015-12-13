@@ -28,7 +28,6 @@ class AddEvaluationView(TemplateView):
 
 
     def post(self, request, *args, **kwargs):
-        print(request.path)
         reading_system_id = request.POST.getlist('reading_system', [])[0] #getlist is a method of django's QueryDict object
         testsuite_id = request.POST.getlist('testsuite', [])[0] #getlist is a method of django's QueryDict object
 

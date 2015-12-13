@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 from testsuite_app.models import *
 
-class GridView(TemplateView):
+class ArchiveGridView(TemplateView):
     template_name = "grid.html"
 
     def get(self, request, *args, **kwargs):
@@ -21,7 +21,7 @@ class GridView(TemplateView):
         reading_systems = ReadingSystem.objects.all()
         evaluations = []
         for reading_system in reading_systems:
-            evals = reading_system.get_evaluations(testsuite)
+            evals = reading_system.get_evaluations(testsuite, is_archived = True)
             evaluations.extend(evals)    
         
-        return render(request, self.template_name,{'evaluations': evaluations, 'testsuite': testsuite, "is_archive_view": False})
+        return render(request, self.template_name,{'evaluations': evaluations, 'testsuite': testsuite, "is_archive_view": True})

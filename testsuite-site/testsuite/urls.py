@@ -11,29 +11,33 @@ admin.autodiscover()
 
 """
 
-URL ideas
+scheme
+
+note that in some cases, IDs are numbers and in other cases, human-readable identifiers.
 
 / : landing page
 
-/testsuite/ID : evaluations for testsuite (e.g. 'reading systems' page or 'accessibility' page)
-/testsuite/ID/archive: archived evaluations for testsuite
+/testsuite/<id>/ : evaluations for testsuite (e.g. 'reading systems' page or 'accessibility' page)
+/testsuite/<id>/archive/: archived evaluations for testsuite
 
-/evaluation/ID : single reading system results for one testsuite 
-/testsuite/ID/feature/ID: many reading system results for one feature
-/testsuite: instructions and downloads
-/docs: static pages with instructions etc
+/evaluation/<id>/ : single reading system results for one testsuite 
+/testsuite/<id>/feature/<id>: many reading system results for one feature
+/testsuite/: instructions and downloads
+/docs/*: static pages with instructions etc
 
 ACTIONS for logged-in users (permissions vary for each action):
-/manage: logged-in user starting point
-/rs/add: add new reading system
-/rs/ID/edit: edit reading system
-/rs/ID/delete: delete reading system
-/rs/ID/testsuite/ID/add: add evaluation for reading system + testsuite
-/evaluation/ID/edit: edit evaluation
-/evaluation/ID/delete: delete evaluation
-/evaluation/ID/publish: publish/unpublish evaluation
-/rs/all : view all reading systems
-/evaluation/all: view all evaluations
+/manage/: logged-in user starting point
+/rs/add/: add new reading system
+/rs/<id>/edit/: edit reading system
+/rs/<id>/delete/: delete reading system
+/rs/<id>/testsuite/<id>/add/: add evaluation for reading system + testsuite
+/evaluation/<id>/edit/: edit evaluation overview
+/evaluation/<id>/edit/section/<id>/: edit evaluation section
+/evaluation/<id>/delete/: delete evaluation
+/evaluation/<id>/(un)publish/: publish/unpublish evaluation
+/evaluation/<id>/(un)archive/: archive/unarchive evaluation
+/rs/all/ : view all reading systems
+/evaluation/all/: view all evaluations
 
 """
 
@@ -47,8 +51,12 @@ urlpatterns = patterns('',
     
     # public reports
     (r'^features/$', FeaturesView.as_view()),
-    (r'^testsuite/(?P<testsuite_id>.*)/$', GridView.as_view()),
-    (r'^testsuite/(?P<testsuite_id>.*)/features/(?P<feature_id>.*)$', FeatureView.as_view()),
+    # url order is important because of the human-readable IDs (i.e any character allowed, any length)
+    (r'^testsuite/(?P<testsuite_id>.+)/feature/(?P<feature_id>.+)/$', FeatureView.as_view()),
+    (r'^testsuite/(?P<testsuite_id>.+)/archive/$', ArchiveGridView.as_view()),
+    (r'^testsuite/(?P<testsuite_id>.+)/$', GridView.as_view()),
+    
+    
     (r'^evaluation/(?P<pk>\d+)/$', EvaluationView.as_view()),
 
     
@@ -76,7 +84,8 @@ urlpatterns = patterns('',
     (r'^evaluation/(?P<pk>\d+)/archive/$', login_required(function=archive_evaluation, login_url='/login/')),
     (r'^evaluation/(?P<pk>\d+)/unarchive/$', login_required(function=unarchive_evaluation, login_url='/login/')),
     (r'^evaluation/(?P<pk>\d+)/edit/$', login_required(function=EditEvaluationView.as_view(), login_url='/login/')),
-    (r'^evaluation/(?P<pk>\d+)/edit/(?P<epub_id>.*)$', login_required(function=EditEvaluationView.as_view(), login_url='/login/')),
+    (r'^evaluation/(?P<pk>\d+)/edit/section/(?P<epub_id>.*)/$', login_required(function=EditEvaluationSingleEpubView.as_view(), login_url='/login/')),
+
 
     (r'^admin/', include(admin.site.urls)),
 ) 

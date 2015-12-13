@@ -20,10 +20,9 @@
 </ul>
 
 <h2 id="testsuite-documents">Test Suite documents</h2>
-<p>Temporarily unavailable</p>
 <ul>
-{% for download in downloads %}
-<li><a href="{{download.link}}">{{download.label}}</a></li>
+{% for epub in epubs %}
+<li><a href="{{epub_downloads_url}}{{epub.filename}}">{{epub.title}}: {{epub.description}}</a></li>
 {% endfor %}
 </ul>
 <p><a href="#top">Back to top</a></p>
