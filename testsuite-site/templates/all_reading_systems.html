@@ -35,7 +35,12 @@
             <td>{{reading_system.operating_system_version}}</td>
             <td>{{reading_system.notes}}</td>
             <td>{{reading_system.user.first_name}} {{reading_system.user.last_name}}</td>
-            <td><a href="/rs/{{reading_system.id}}/delete/">Delete</a></td>
+            <td>
+                <ul>
+                    <li><a href="/rs/{{reading_system.id}}/delete/">Delete</a></li>
+                    <li><a href="/rs/{{reading_system.id}}/edit/">Edit</a></li>
+                </ul>
+            </td>
         </tr>
     {% endfor %}
     </tbody>
