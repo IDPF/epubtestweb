@@ -67,11 +67,8 @@ class EditEvaluationSingleEpubView(TemplateView):
             return render(request, "404.html", {})
 
         results = evaluation.get_results_for_epub(epub)
-        results_formset = ResultFormSet(instance = evaluation, queryset=results)
+        results_formset = ResultFormSet(request.POST, instance = evaluation, queryset=results)
         
-        if evaluation.testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
-            atmeta_form = ATMetadataForm(request.POST, instance = evaluation.get_metadata())
-            atmeta_form.save()
         
         if 'save_continue' in request.POST.keys() and 'next_url' in request.POST.keys():
             next_url = request.POST['next_url']

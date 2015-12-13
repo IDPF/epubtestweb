@@ -35,6 +35,7 @@ class EditEvaluationView(UpdateView):
             else:
                 print(atmeta)
             atmeta_form = ATMetadataForm(instance = atmeta)
+            print (atmeta_form.as_p())
 
         # after this form, the next page is the evaluation form for the first epub
         next_url = "{}section/{}/".format(request.path, epubs[0].epubid)
@@ -59,6 +60,7 @@ class EditEvaluationView(UpdateView):
         
         if evaluation.testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
             atmeta_form = ATMetadataForm(request.POST, instance = evaluation.get_metadata())
+            print(atmeta_form.errors)
             atmeta_form.save()
         
         if 'save_continue' in request.POST.keys() and 'next_url' in request.POST.keys():
