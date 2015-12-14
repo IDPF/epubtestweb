@@ -513,6 +513,7 @@ nav.category-list h2 {
 .blend th,
 .blend td {
     padding: 0.3rem;
+    border-bottom: 1px solid #eee;
 }
 
 .blend td a {
