@@ -305,15 +305,14 @@ footer p {
 
 
 p.start {
-    width: 95%;
-    max-width: 100rem;
+    max-width: 128rem;
     text-align: center;
     font-weight: bold;
 }
 
 nav#support-nav {
     width: 100%;
-    max-width: 110rem;
+    max-width: 128rem;
     margin: 3rem 0 2rem 0;
 }
 
