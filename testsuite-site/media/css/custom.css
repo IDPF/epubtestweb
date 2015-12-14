@@ -305,14 +305,12 @@ footer p {
 
 
 p.start {
-    max-width: 128rem;
     text-align: center;
     font-weight: bold;
 }
 
 nav#support-nav {
     width: 100%;
-    max-width: 128rem;
     margin: 3rem 0 2rem 0;
 }
 
@@ -767,4 +765,8 @@ div.eval-info-container+h2 {
     text-indent: 2rem;
     font-weight: bold;
     margin-top: 2rem;
+}
+
+.nomargin {
+    padding: 0;
 }
