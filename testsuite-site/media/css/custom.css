@@ -405,7 +405,27 @@ th {
 
 p.small {
     font-size: 90%;
+}
+
+.italic {
     font-style: italic;
+}
+
+.normal {
+    font-weight: normal;
+}
+
+.normal:hover {
+    font-weight: normal;
+}
+
+.inactiveLink {
+    color: gray;
+}
+
+.inactiveLink:hover {
+    color: gray;
+    text-decoration: none;
 }
 
 table.dataTable {

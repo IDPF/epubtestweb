@@ -7,10 +7,10 @@
 <h1>{{feature.name}}</h1>
 
 <div id="tblChange" style="margin-top: 1rem;">
-    <p>
-        <span class="bold">Table view:</span>
-        <a href="#col" id="col" onclick="changeView('col'); return false">Static Column</a> | 
-        <a href="#col" id="col" onclick="changeView('header'); return false">Static Headers</a>
+    <p class="small">
+        <span style="padding-right: 1rem;">Table view:</span>
+        <a class="normal" href="#col" id="col" onclick="changeView('col'); return false">Static Column</a> | 
+        <a class="normal" href="#hd" id="hd" onclick="changeView('hd'); return false">Static Headers</a>
     </p>
     
     <p class="small italic">Note: The static headers view provides better accessibility for users of assistive technologies.</p>
@@ -60,9 +60,11 @@
         
         if (tblType == null || tblType == '' || tblType == 'col') {
             initDataTable(false,true,true,true,'','');
+            setTableViewLinks('col','hd');
         }
         else {
             initDataTable(true,false,true,true,'','');
+            setTableViewLinks('hd','col');
         }
         
         var isMobile = window.matchMedia("only screen and (max-width: 760px)");
@@ -77,12 +79,20 @@
         
         if (type == 'col') {
             initDataTable(false,true,true,true,'','');
-            Cookies.set('tblType', 'col', { expires: 365 });
+            setTableViewLinks('col','hd');
         }
         else {
             initDataTable(true,false,true,true,'','');
-            Cookies.set('tblType', 'header', { expires: 365 });
+            Cookies.set('tblType', 'hd', { expires: 365 });
+            setTableViewLinks('hd','col');
         }
+    }
+    
+    function setTableViewLinks(active, inactive) {
+        $('#'+active).unbind('click');
+        $('#'+active).addClass('inactiveLink');
+        $('#'+inactive).bind('click');
+        $('#'+inactive).removeClass('inactiveLink');
     }
 </script>
 
