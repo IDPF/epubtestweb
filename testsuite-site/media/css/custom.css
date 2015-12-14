@@ -403,6 +403,11 @@ th {
 
 /* first three defs are overrides on datatables to shrink and remove bottom border */
 
+p.small {
+    font-size: 90%;
+    font-style: italic;
+}
+
 table.dataTable {
     margin: 0;
     width: auto;

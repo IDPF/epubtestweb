@@ -11,7 +11,7 @@
         for (var j = 0; j < ids.length; j++) {
             makeDynamic(ids[j], fixedHeader, fixedCol, searchable, srchLabel, srchPlaceholder);
             if (changeDefaultSort) {
-               chanageSort(ids[j]);
+               changeSort(ids[j]);
             }
         }
     }
@@ -43,23 +43,38 @@
             });
         }
         else {
-            table = $('#'+tblID).DataTable({
-                "paging": false,
-                "info": false,
-                "searching": searchable,
-                "stateSave": true,
-                "autoWidth": false,
-                "scrollY": fixedCol ? "75vh" : false,
-                "scrollX": fixedCol,
-                "scrollCollapse": !fixedCol,
-                "fixedColumns": fixedCol ? {
-                    "leftColumns": 1
-                } : null,
-                "oLanguage": {
-                    "sSearch": sLabel,
-                    "sSearchPlaceholder": sPlaceholder
-                }
-            });
+            if (fixedCol) {
+                table = $('#'+tblID).DataTable({
+                    "paging": false,
+                    "info": false,
+                    "searching": searchable,
+                    "stateSave": true,
+                    "autoWidth": false,
+                    "scrollY": '75vh',
+                    "scrollX": true,
+                    "scrollCollapse": false,
+                    "fixedColumns": {
+                        "leftColumns": 1
+                    },
+                    "oLanguage": {
+                        "sSearch": sLabel,
+                        "sSearchPlaceholder": sPlaceholder
+                    }
+                });
+            }
+            else {
+                table = $('#'+tblID).DataTable({
+                    "paging": false,
+                    "info": false,
+                    "searching": searchable,
+                    "stateSave": true,
+                    "autoWidth": false,
+                    "oLanguage": {
+                        "sSearch": sLabel,
+                        "sSearchPlaceholder": sPlaceholder
+                    }
+                });
+            }
         }
         
         if (!isMobile.matches && fixedHeader) {

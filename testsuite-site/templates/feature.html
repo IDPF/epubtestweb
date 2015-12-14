@@ -6,11 +6,15 @@
 
 <h1>{{feature.name}}</h1>
 
-{% if tests|length < 2 %}
-<p>The {{feature.name}} feature contains {{tests | length}} test.</p>
-{% else %}
-<p>The {{feature.name}} feature contains {{tests | length}} tests.</p>
-{% endif %}
+<div id="tblChange" style="margin-top: 1rem;">
+    <p>
+        <span class="bold">Table view:</span>
+        <a href="#col" id="col" onclick="changeView('col'); return false">Static Column</a> | 
+        <a href="#col" id="col" onclick="changeView('header'); return false">Static Headers</a>
+    </p>
+    
+    <p class="small italic">Note: The static headers view provides better accessibility for users of assistive technologies.</p>
+</div>
 
 <table id="feature" class="table table-feature">
     <thead>
@@ -52,8 +56,34 @@
 
 <script>
     $(document).ready(function(){
-        initDataTable(false,true,true,true,'','');
+        var tblType = Cookies.get('tblType'); ;
+        
+        if (tblType == null || tblType == '' || tblType == 'col') {
+            initDataTable(false,true,true,true,'','');
+        }
+        else {
+            initDataTable(true,false,true,true,'','');
+        }
+        
+        var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+        if (isMobile.matches) {
+            $('#tblChange').hide();
+        }
     });
+    
+    function changeView(type) {
+        var table = $('#feature').DataTable();
+        table.destroy();
+        
+        if (type == 'col') {
+            initDataTable(false,true,true,true,'','');
+            Cookies.set('tblType', 'col', { expires: 365 });
+        }
+        else {
+            initDataTable(true,false,true,true,'','');
+            Cookies.set('tblType', 'header', { expires: 365 });
+        }
+    }
 </script>
 
 {% endblock %}
