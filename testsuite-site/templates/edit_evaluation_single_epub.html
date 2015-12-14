@@ -16,13 +16,13 @@
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
 
-<table class="table striped-table">
+<table id="eval" class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>
             <th>Description</th>
             <th>Required</th>
-            <th>Result</th>
+            <th class="result">Result</th>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
         <tr>
             {% get_form_for_result result results_formset as result_form %}
             <td>{{ result.test.test_id }}</td>
-            <td>{{ result.test.description }}</td>
+            <td class="desc">{{ result.test.description }}</td>
             <td>
                 {% if result.test.required == True %}
                     Required
@@ -38,7 +38,7 @@
                     Optional
                 {% endif %}
             </td>
-            <td>{{ result_form.as_p }}</td>
+            <td class="result">{{ result_form.as_p }}</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -50,4 +50,11 @@
 <input type="submit" name="save" value="Save and go back"/>
 </form>
 </div>
+
+<script>
+    $(document).ready(function(){
+        initDataTable(true, false, true, false, 'Find a test', 'Enter the id or part of the description');
+    });
+</script>
+
 {% endblock %}

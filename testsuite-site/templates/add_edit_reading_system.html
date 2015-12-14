@@ -10,8 +10,10 @@
 
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
+<div class="fields">
 {{ reading_system_form.as_p }}
 <input type="submit" value="Save" />
+</div>
 <input type="hidden" name="next" id="next"/>
 </form>
 </div>

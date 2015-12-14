@@ -1,5 +1,5 @@
 
-    function initDataTable(fixed,searchable) {
+    function initDataTable(fixedHeader,fixedCol,searchable,changeDefaultSort,srchLabel,srchPlaceholder) {
         var tables = document.getElementsByTagName('table');
         
         // add table ids to a non-dynamic list (datatables will grow the # of tables as they're made dynamic)
@@ -9,17 +9,25 @@
         }
         
         for (var j = 0; j < ids.length; j++) {
-            makeDynamic(ids[j], fixed,searchable);
+            makeDynamic(ids[j], fixedHeader, fixedCol, searchable, srchLabel, srchPlaceholder);
+            if (changeDefaultSort) {
+               chanageSort(ids[j]);
+            }
         }
     }
         
-    function makeDynamic(tblID, fixed, searchable) {
+    function makeDynamic(tblID, fixedHeader, fixedCol, searchable, srchLabel, srchPlaceholder) {
     
+        var sLabel = srchLabel == '' ? 'Find Reading System(s) ' : srchLabel;
+        var sPlaceholder = srchPlaceholder == '' ? 'Enter a name or operating system' : srchPlaceholder;
+        
         var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+        
+        var table;
         
         if (isMobile.matches) {
             $('#'+tblID).DataTable({
-                "paging":   false,
+                "paging": false,
                 "info": false,
                 "stateSave": true,
                 "responsive": {
@@ -29,34 +37,39 @@
                     }
                 },
                 "oLanguage": {
-                    "sSearch": "Find Reading System(s): ",
-                    "sSearchPlaceholder": "Enter a name or operating system"
+                    "sSearch": sLabel,
+                    "sSearchPlaceholder": sPlaceholder
                 }
             });
         }
         else {
-            $('#'+tblID).DataTable({
-                "paging":   false,
+            table = $('#'+tblID).DataTable({
+                "paging": false,
                 "info": false,
                 "searching": searchable,
-                "fixedHeader": !fixed,
                 "stateSave": true,
                 "autoWidth": false,
-                "scrollY": fixed ? "75vh" : false,
-                "scrollX": fixed,
-                "scrollCollapse": !fixed,
-                "fixedColumns": fixed ? {
+                "scrollY": fixedCol ? "75vh" : false,
+                "scrollX": fixedCol,
+                "scrollCollapse": !fixedCol,
+                "fixedColumns": fixedCol ? {
                     "leftColumns": 1
                 } : null,
                 "oLanguage": {
-                    "sSearch": "Find Reading System(s): ",
-                    "sSearchPlaceholder": "Enter a name or operating system"
+                    "sSearch": sLabel,
+                    "sSearchPlaceholder": sPlaceholder
                 }
             });
         }
         
-        // dynamically change sorting order so numeric fields are ordered from highest score first
-        
+        if (!isMobile.matches && fixedHeader) {
+            new $.fn.dataTable.FixedHeader( table, {
+                // options
+            });
+        }
+    }
+    
+    function changeSort(tblID) {
         var oTable = $('#'+tblID).dataTable();
         var oSettings = oTable.fnSettings();
         var iColumns = oSettings.aoColumns.length - 1;

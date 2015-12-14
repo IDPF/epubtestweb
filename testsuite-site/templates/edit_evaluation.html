@@ -6,33 +6,35 @@
 {% block title %}:: Edit Evaluation{% endblock %}
 
 {% block content %}
-<h1>Edit Evaluation</h1>
+<h1>Reading System Evaluation</h1>
 
-<div id="rs_details">
-    <dl>
-        <dt>Name</dt>
-        <dd>{{evaluation.reading_system.name}}</dd>
-        <dt>Version</dt>
-        <dd>{{evaluation.reading_system.version}}</dd>
-        <dt>Operating System</dt>
-        <dd>{{evaluation.reading_system.operating_system}}</dd>
-        <dt>Operating System Version</dt>
-        <dd>
-        {% if evaluation.reading_system.operating_system_version != None %}
-        {{evaluation.reading_system.operating_system_version}}
-        {% endif %}
-        </dd>
-    </dl>
-</div>
-<div id="evaluation_details">
-    <dl>
-        <dt>Published?</dt>
-        <dd>{{evaluation.is_published}}</dd>
-        <dt>Archived?</dt>
-        <dd>{{evaluation.is_archived}}</dd>
-        <dt>Percent complete</dt>
-        <dd>{{evaluation.percent_complete}}</dd>
-    </dl>
+<div class="eval-info-container">
+    <div id="rs_details">
+        <ul id="rs" class="nomark lfloat">
+            <li><strong>Name:</strong><br/>{{evaluation.reading_system.name}}</li>
+            <li><strong>Version:</strong><br/>{{evaluation.reading_system.version}}</li>
+            <li><strong>Operating System:</strong><br/>{{evaluation.reading_system.operating_system}}</li>
+            <li><strong>Operating System Version:</strong><br/>
+                {% if evaluation.reading_system.operating_system_version != None and evaluation.reading_system.operating_system_version != '' %}
+                {{evaluation.reading_system.operating_system_version}}
+                {% else %}
+                [not specified]
+                {% endif %}
+            </li>
+            <li><strong>Status:</strong><br/>
+                {% if evaluation.is_published %}
+                Published
+                {% else %}
+                Not Published
+                {% endif %}
+                {% if evaluation.is_archived %}
+                - Archived
+                {% endif %}
+            </li>
+            <li><strong>Completed:</strong><br/>{{evaluation.percent_complete}}%</li>
+        </ul>
+        <br/>
+    </div>
 </div>
 <!--
 <div>
@@ -43,14 +45,12 @@
     </ul>
 </div>
 -->
-<div>
-    <p>Sections in this evaluation form:</p>
-    <ul>
-    {% for epub in epubs %}
-        <li><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a></li>
-    {% endfor %}
-    </ul>
-</div>
+<h2 class="eval">Tests to complete</h2>
+<ul class="nomark">
+{% for epub in epubs %}
+    <li><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a></li>
+{% endfor %}
+</ul>
 
 
 <h2>Evaluation information</h2>
