@@ -8,7 +8,7 @@ from testsuite_app.models import *
 class ReadingSystemView(UpdateView):
     def delete(self, request, *args, **kwargs):
         try:
-            evaluation = ReadingSystem.objects.get(id=kwargs['pk'])
+            reading_system = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:
             return render(request, "404.html", {})
 

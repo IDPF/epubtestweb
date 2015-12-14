@@ -59,7 +59,7 @@
     <!-- the notes field -->
     <p>{{ evaluation_form.as_p }}</p>
 
-    {% if testsuite.testsuite_type == "2" %}
+    {% if evaluation.testsuite.testsuite_type == "2" %}
     <p>{{ assistive_technology_metadata_form.as_p }}</p>
     {% endif %}
 
