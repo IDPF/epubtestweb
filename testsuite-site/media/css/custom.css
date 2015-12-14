@@ -744,15 +744,16 @@ ul.lfloat {
 
 ul.lfloat li {
     float: left;
-    margin-left: 4rem;
-}
-
-ul.lfloat li:first-child {
-    margin-left: 0;
+    margin-right: 4rem;
+    margin-top: 1rem;
 }
 
 div.eval-info-container {
-    margin: 2rem 0 1rem 0;
+    margin: 1rem 0;
+}
+
+div.eval-info-container+h2 {
+    margin-top: 3rem !important;
 }
 
 .nomark {
