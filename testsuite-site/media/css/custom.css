@@ -98,11 +98,11 @@ div#contents h1+h2.category {
 }
 
 div#contents h2.rs-category {
-    font-size: 180%;
+    font-size: 160%;
     font-weight: normal;
     color: #004080;
     background: none;
-    margin: 5rem 0 1rem 1rem;
+    margin: 5rem 0 1rem 1.5rem;
     padding: 0;
 }
 
@@ -496,9 +496,6 @@ table.dataTable thead th {
 /***************************************************************/
 
 
-nav.category-list {
-}
-
 nav.category-list h2 {
     font-size: 120%;
     font-weight: bold;
@@ -511,14 +508,9 @@ nav.category-list h2 {
     border: none;
 }
 
-.blend>thead {
-    position: absolute !important;
-    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-    clip: rect(1px, 1px, 1px, 1px);
-}
-
 .blend>thead>tr>th {
     text-align: left;
+    text-transform: none;
 }
 
 .blend th,
@@ -535,37 +527,13 @@ td.score {
     font-weight: bold;
 }
 
+td.no-note {
+    background-color: inherit !important;
+}
+
 br {
     clear: both;
 }
-
-
-dl#rs-id {
-    background-color: #f7f9fb;
-    padding: 1rem;
-    border: 1px solid #bbb;
-    border-radius: 1rem;
-    max-width: 50rem;
-}
-
-dt {
-    padding-bottom: 0.8rem;
-}
-
-dd+dt {
-    padding-top: 1rem;
-}
-
-dd {
-    margin-left: 1rem;
-}
-
-dd a {
-    font-weight: normal;
-    color: #004080;
-}
-
-
 
 .table-condensed {
     width: 75%;

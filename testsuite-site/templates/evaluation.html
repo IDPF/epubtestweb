@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h1 id="top">{{evaluation.reading_system|get_reading_system_display_name}}
+<h1>{{evaluation.reading_system|get_reading_system_display_name}}
 
 {% if evaluation.testsuite.testsuite_type == "2" %}
 {% get_metadata evaluation as metadata %}
@@ -15,54 +15,52 @@
 
 <h2>Testsuite: {{evaluation.testsuite.name}}</h2>
 
-<dl id="rs-id">
-    <dt>Name</dt>
-    <dd>{{evaluation.reading_system.name}}</dd>
-    <dt>Version</dt>
-    <dd>{{evaluation.reading_system.version}}</dd>
-    <dt>Operating System</dt>
-    <dd>{{evaluation.reading_system.operating_system}}</dd>
-    <dt>Operating System Version</dt>
-    <dd>
-        {% if evaluation.reading_system.operating_system_version != None %}
-        {{evaluation.reading_system.operating_system_version}}
+<div class="eval-info-container">
+    <ul id="rs" class="nomark lfloat">
+        <li><strong>Name</strong><br/>{{evaluation.reading_system.name}}</li>
+        <li><strong>Version</strong><br/>{{evaluation.reading_system.version}}</li>
+        <li><strong>Operating System</strong><br/>{{evaluation.reading_system.operating_system}}</li>
+        <li><strong>Operating System Version</strong><br/>
+            {% if evaluation.reading_system.operating_system_version != None %}
+            {{evaluation.reading_system.operating_system_version}}
+            {% else %}
+            [not specified]
+            {% endif %}
+        </li>
+        
+        {% if evaluation.testsuite.testsuite_type == "2" %}
+        {% get_metadata evaluation as metadata %}
+        
+        <li><strong>Assistive technology</strong><br/>{{ metadata.assistive_technology }}</li>
+        
+        <li><strong>Assistive technology features</strong><br/>{{metadata | get_AT_metadata_description}}</li>
+
         {% endif %}
-    </dd>
-    
-    {% if evaluation.testsuite.testsuite_type == "2" %}
-    {% get_metadata evaluation as metadata %}
-    
-    <dt>Assistive technology</dt>
-    <dd>{{ metadata.assistive_technology }}</dd>
-    
-    <dt>Assistive technology features</dt>
-    <dd>{{metadata | get_AT_metadata_description}}</dd>
-    
-    {% endif %}
-    
-    <dt>Support Report</dt>
-    <dd>
-        <nav class="category-list">
-            <table class="blend">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for category in categories %}
-                    {% get_score evaluation category as category_score %}
-                    <tr>
-                        <td><a href="#{{category.category_id}}">{{category.name}}</a></td>
-                        <td>{{category_score.percent | floatformat}}%</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </nav>
-    </dd>
-</dl>
+    </ul>
+    <br/>
+</div>
+
+<h2 id="top">Support Results</h2>
+<nav class="category-list">
+    <p>Select a category heading to view the detailed results below.</p>
+    <table class="blend">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            {% get_score evaluation category as category_score %}
+            <tr>
+                <td><a href="#{{category.category_id}}">{{category.name}}</a></td>
+                <td>{{category_score.percent | floatformat}}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</nav>
 
 {% for category in categories %}
 
@@ -83,6 +81,7 @@
         <tr class="score">
             <th colspan="2">Cumulative Score</th>
             <td class="score">{{category_score.percent | floatformat}}%</td>
+            <td></td>
         </tr>
     </tfoot>
     <tbody>
@@ -91,6 +90,7 @@
 <tr class="feature">
     <td id="{{feature.feature_id}}" colspan="2"><h3>{{feature.name}}</h3></td>
     <td class="result">{{feature_score.fraction}}</td>
+    <td class="no-note"></td>
 </tr>
     {% for test in feature.tests %}
     {% get_result test evaluation as test_result%}

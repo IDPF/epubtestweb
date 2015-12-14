@@ -9,32 +9,30 @@
 <h1>Reading System Evaluation</h1>
 
 <div class="eval-info-container">
-    <div id="rs_details">
-        <ul id="rs" class="nomark lfloat">
-            <li><strong>Name:</strong><br/>{{evaluation.reading_system.name}}</li>
-            <li><strong>Version:</strong><br/>{{evaluation.reading_system.version}}</li>
-            <li><strong>Operating System:</strong><br/>{{evaluation.reading_system.operating_system}}</li>
-            <li><strong>Operating System Version:</strong><br/>
-                {% if evaluation.reading_system.operating_system_version != None and evaluation.reading_system.operating_system_version != '' %}
-                {{evaluation.reading_system.operating_system_version}}
-                {% else %}
-                [not specified]
-                {% endif %}
-            </li>
-            <li><strong>Status:</strong><br/>
-                {% if evaluation.is_published %}
-                Published
-                {% else %}
-                Not Published
-                {% endif %}
-                {% if evaluation.is_archived %}
-                - Archived
-                {% endif %}
-            </li>
-            <li><strong>Completed:</strong><br/>{{evaluation.percent_complete}}%</li>
-        </ul>
-        <br/>
-    </div>
+    <ul id="rs" class="nomark lfloat">
+        <li><strong>Name:</strong><br/>{{evaluation.reading_system.name}}</li>
+        <li><strong>Version:</strong><br/>{{evaluation.reading_system.version}}</li>
+        <li><strong>Operating System:</strong><br/>{{evaluation.reading_system.operating_system}}</li>
+        <li><strong>Operating System Version:</strong><br/>
+            {% if evaluation.reading_system.operating_system_version != None and evaluation.reading_system.operating_system_version != '' %}
+            {{evaluation.reading_system.operating_system_version}}
+            {% else %}
+            [not specified]
+            {% endif %}
+        </li>
+        <li><strong>Status:</strong><br/>
+            {% if evaluation.is_published %}
+            Published
+            {% else %}
+            Not Published
+            {% endif %}
+            {% if evaluation.is_archived %}
+            - Archived
+            {% endif %}
+        </li>
+        <li><strong>Completed:</strong><br/>{{evaluation.percent_complete}}%</li>
+    </ul>
+    <br/>
 </div>
 <!--
 <div>
