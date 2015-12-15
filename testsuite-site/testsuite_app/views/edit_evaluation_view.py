@@ -19,7 +19,7 @@ class EditEvaluationView(UpdateView):
 
         if permissions.user_can_edit_evaluation(request.user, evaluation) == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit this evaluation.')
-            return redirect(request.path)
+            return redirect('/')
         
         # epubs in this testsuite
         epubs = Epub.objects.filter(testsuite = evaluation.testsuite).order_by("epubid")
