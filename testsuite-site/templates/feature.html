@@ -58,7 +58,11 @@
     $(document).ready(function(){
         var tblType = Cookies.get('tblType'); ;
         
-        if (tblType == null || tblType == '' || tblType == 'col') {
+        if (typeof(tblType) == 'undefined' || tblType == null || tblType == '') {
+            Cookies.set('tblType', 'col', { expires: 365 });
+        }
+        
+        if (tblType == 'col') {
             initDataTable(false,true,true,true,'','');
             setTableViewLinks('col','hd');
         }
