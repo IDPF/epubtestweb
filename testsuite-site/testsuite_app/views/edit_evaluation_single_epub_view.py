@@ -67,8 +67,9 @@ class EditEvaluationSingleEpubView(TemplateView):
             return render(request, "404.html", {})
 
         results = evaluation.get_results_for_epub(epub)
-        results_formset = ResultFormSet(request.POST, instance = evaluation, queryset=results)
-        
+        results_formset = ResultFormSet(request.POST,  instance = evaluation, queryset=results)
+        results_formset.save()
+        evaluation.save()
         
         if 'save_continue' in request.POST.keys() and 'next_url' in request.POST.keys():
             next_url = request.POST['next_url']

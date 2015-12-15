@@ -30,7 +30,7 @@ ACTIONS for logged-in users (permissions vary for each action):
 /rs/add/: add new reading system
 /rs/<id>/edit/: edit reading system
 /rs/<id>/delete/: delete reading system
-/rs/<id>/testsuite/<id>/add/: add evaluation for reading system + testsuite
+/evaluation/add/: add evaluation for reading system + testsuite
 /evaluation/<id>/edit/: edit evaluation overview
 /evaluation/<id>/edit/section/<id>/: edit evaluation section
 /evaluation/<id>/delete/: delete evaluation

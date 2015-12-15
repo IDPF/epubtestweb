@@ -114,6 +114,7 @@ class Evaluation(models.Model):
             self.percent_complete = pct_complete #self.float_to_decimal(pct_complete)
         else:
             self.percent_complete = 0.0 #self.float_to_decimal(0.0)
+        
 
     def get_results(self):
         "get a queryset of all the results for the given testsuite"

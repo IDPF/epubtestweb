@@ -11,7 +11,7 @@
 <div id="rs_details">
 </div>
 
-<p>This page contains all the tests in <a href="{{epub_downloads_url}}{{epub.filename}}" target="_blank">{{epub.title}}</a>.</p>
+<p>This page contains all the tests in <em>{{epub.title}} (<a href="{{epub_downloads_url}}{{epub.filename}}" target="_blank">download</a>).</em></p>
 
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
@@ -43,6 +43,9 @@
         {% endfor %}
     </tbody>
 </table>
+
+{{ results_formset.management_form }}
+
 {% if next_url != '' %}
 <input type="hidden" name="next_url" value="{{ next_url }}"/>
 <input type="submit" name="save_continue" value="Save and continue to next section" />
