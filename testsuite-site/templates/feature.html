@@ -79,6 +79,7 @@
         
         if (type == 'col') {
             initDataTable(false,true,true,true,'','');
+            Cookies.set('tblType', 'col', { expires: 365 });
             setTableViewLinks('col','hd');
         }
         else {
