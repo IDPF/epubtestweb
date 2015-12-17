@@ -50,7 +50,7 @@
                     "searching": searchable,
                     "stateSave": true,
                     "autoWidth": false,
-                    "scrollY": '75vh',
+                    "scrollY": '50vh',
                     "scrollX": true,
                     "scrollCollapse": false,
                     "fixedColumns": {

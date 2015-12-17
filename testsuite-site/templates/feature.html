@@ -9,11 +9,11 @@
 <div id="tblChange" style="margin-top: 1rem;">
     <p class="small">
         <span style="padding-right: 1rem;">Table view:</span>
-        <a class="normal" href="#col" id="col" onclick="changeView('col'); return false">Static Column</a> | 
-        <a class="normal" href="#hd" id="hd" onclick="changeView('hd'); return false">Static Headers</a>
+        <a class="normal" href="#hd" id="hd" onclick="changeView('hd'); return false">Fixed Header</a> |
+        <a class="normal" href="#col" id="col" onclick="changeView('col'); return false">Scrolled</a>
     </p>
     
-    <p class="small italic">Note: The static headers view provides better accessibility for users of assistive technologies.</p>
+    <p class="small italic">Note: The scrolled view is best for wide tables, but is less accessible for users of assistive technologies.</p>
 </div>
 
 <table id="feature" class="table table-feature">
@@ -59,7 +59,7 @@
         var tblType = Cookies.get('tblType'); ;
         
         if (typeof(tblType) == 'undefined' || tblType == null || tblType == '') {
-            Cookies.set('tblType', 'col', { expires: 365 });
+            Cookies.set('tblType', 'hd', { expires: 365 });
         }
         
         if (tblType == 'col') {
