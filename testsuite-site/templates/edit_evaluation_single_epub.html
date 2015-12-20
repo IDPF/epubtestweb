@@ -6,12 +6,10 @@
 {% block title %}:: Edit Evaluation :: {{epub.title}}{% endblock %}
 {% block content %}
 
-<h1>Edit Evaluation</h1>
-
-<div id="rs_details">
-</div>
+<h1>Edit Evaluation Section</h1>
 
 <p>This page contains all the tests in <em>{{epub.title}} (<a href="{{epub_downloads_url}}{{epub.filename}}" target="_blank">download</a>).</em></p>
+<p>There are {{results | length}} tests. You are {{epub.percent_complete | floatformat:2}}% complete with this section.</p>
 
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}

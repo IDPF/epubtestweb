@@ -190,6 +190,15 @@ class Evaluation(models.Model):
             return None
         return metadata
 
+    # this gives the pct complete for all the tests in one epub
+    def get_epub_percent_complete(self, epub):
+        from .test import Test
+        tests = Test.objects.filter(epub = epub)
+        all_results = self.get_results_for_tests(tests)
+        completed_results = all_results.exclude(result = None)
+        pct_complete = (completed_results.count() * 1.0) / (all_results.count() * 1.0) * 100.0
+        return pct_complete
+
 
 
     

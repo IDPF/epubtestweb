@@ -58,7 +58,7 @@
 <h2 class="eval">Sections to complete</h2>
 <ul class="nomark">
 {% for epub in epubs %}
-    <li><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a></li>
+    <li><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a> ({{epub.percent_complete | floatformat:2}}% complete)</li>
 {% endfor %}
 </ul>
 

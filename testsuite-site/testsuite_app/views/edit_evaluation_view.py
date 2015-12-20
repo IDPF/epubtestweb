@@ -23,6 +23,8 @@ class EditEvaluationView(UpdateView):
         
         # epubs in this testsuite
         epubs = Epub.objects.filter(testsuite = evaluation.testsuite).order_by("epubid")
+        for epub in epubs:
+            epub.percent_complete = evaluation.get_epub_percent_complete(epub)
 
         evaluation_form = EvaluationForm(instance = evaluation)
 
