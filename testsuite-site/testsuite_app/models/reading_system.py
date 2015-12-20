@@ -28,6 +28,7 @@ class ReadingSystem(models.Model):
         return evaluations
 
     def delete_associated(self):
+        from .evaluation import Evaluation
         evaluations = Evaluation.objects.filter(reading_system = self)
         for evaluation in evaluations:
             evaluation.delete_associated()
