@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.http import HttpResponse
 
 from testsuite_app.models import *
+from testsuite_app import permissions
 
 class ReadingSystemView(TemplateView):
     def delete(self, request, *args, **kwargs):
-        print("HELLO")
         try:
             reading_system = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:

@@ -69,7 +69,8 @@ urlpatterns = patterns('',
     
     # pages for logged-in users
     (r'^manage/$', login_required(function=ManageView.as_view(), login_url='/login/')),
-
+    # this is only used to send DELETE to /rs/ID/. there are no other actions on RS views.
+    (r'^rs/(?P<pk>\d+)/$', login_required(function=ReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/add/$', login_required(function=AddEditReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/edit/$', login_required(function=AddEditReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteReadingSystemView.as_view(), login_url='/login/')),
