@@ -22,8 +22,10 @@ class EditEvaluationSingleEpubView(TemplateView):
         except Epub.DoesNotExist:
             return render(request, "404.html", {})
 
+        epub.percent_complete = evaluation.get_epub_percent_complete(epub)
 
-        results = evaluation.get_results_for_epub(epub)
+
+        results = evaluation.get_results_for_epub(epub).order_by('test__order_in_book')
         results_formset = ResultFormSet(instance = evaluation, queryset=results)
         
         action_url = request.path

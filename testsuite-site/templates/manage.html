@@ -30,11 +30,10 @@
     <thead>
         <tr>
             <th>Description</th>
-            <th>Edit</th>
             <th>View</th>
             <th>Type</th>
             <th>Percent complete</th>
-            <th>Published?</th>
+            <th>Published</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -49,20 +48,20 @@
                 {{metadata.assistive_technology}}
                 {% endif %}
             </td>
-            <td><a href="/evaluation/{{evaluation.id}}/edit/">link to edit</a></td>
-            <td><a href="/evaluation/{{evaluation.id}}/" target="_blank">link to view</a></td>
+            <td><a href="/evaluation/{{evaluation.id}}/" target="_blank">Link</a></td>
         
             <td>{{evaluation.testsuite.name}}</td>
             <td>{{evaluation.percent_complete}}%</td>
-            <td>{{evaluation.is_published}}</td>
+            <td>{{evaluation.is_published | print_yes_no}}</td>
             <td>
                 <ul>
+                    <li><a href="/evaluation/{{evaluation.id}}/edit/?return=/manage/">Edit</a></li>
                 {% if evaluation.is_archived %}
-                    <li><a href="/evaluation/{{evaluation.id}}/unarchive/">Unarchive</a></li>
+                    <li><a href="/evaluation/{{evaluation.id}}/unarchive/?return=/manage/">Unarchive</a></li>
                 {% else %}
-                    <li><a href="/evaluation/{{evaluation.id}}/archive/">Archive</a></li>
+                    <li><a href="/evaluation/{{evaluation.id}}/archive/?return=/manage/">Archive</a></li>
                 {% endif %}
-                    <li><a href="/evaluation/{{evaluation.id}}/delete/">Delete</li>
+                    <li><a href="/evaluation/{{evaluation.id}}/delete/?return=/manage/">Delete</li>
                 </ul>
             </td>
         </tr>
@@ -101,8 +100,8 @@
             <td>{{reading_system.notes}}
             <td>
                 <ul>
-                    <li><a href="/rs/{{reading_system.id}}/edit">Edit</a></li>
-                    <li><a href="/rs/{{reading_system.id}}/delete">Delete</a></li>
+                    <li><a href="/rs/{{reading_system.id}}/edit/?return=/manage/">Edit</a></li>
+                    <li><a href="/rs/{{reading_system.id}}/delete/?return=/manage/">Delete</a></li>
                 </ul>
             </td>
         </tr>

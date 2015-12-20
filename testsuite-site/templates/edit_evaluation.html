@@ -22,18 +22,30 @@
         </li>
         <li><strong>Status:</strong><br/>
             {% if evaluation.is_published %}
-            Published
+            <span>Published</span>
             {% else %}
-            Not Published
+            <span>Not Published</span>
             {% endif %}
             {% if evaluation.is_archived %}
-            - Archived
+            <br/><span>Archived</span>
+            {% else %}
+            <br/><span>Not Archived</span>
             {% endif %}
         </li>
         <li><strong>Completed:</strong><br/>{{evaluation.percent_complete}}%</li>
     </ul>
     <br/>
 </div>
+
+<div class="form" id="evaluation_metadata">
+<form action="{{action_url}}" method="post">{% csrf_token %}
+    <h2>Evaluation information</h2>
+    <!-- the notes field -->
+    <p>{{ evaluation_form.as_p }}</p>
+
+    {% if evaluation.testsuite.testsuite_type == "2" %}
+    <p>{{ assistive_technology_metadata_form.as_p }}</p>
+    {% endif %}
 <!--
 <div>
     <p>TODO put items that need attention, i.e. tests that have been updated/changed since last evaluation update</p>
@@ -46,22 +58,15 @@
 <h2 class="eval">Sections to complete</h2>
 <ul class="nomark">
 {% for epub in epubs %}
-    <li><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a></li>
+    <li><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a> ({{epub.percent_complete | floatformat:2}}% complete)</li>
 {% endfor %}
 </ul>
 
 
-<h2>Evaluation information</h2>
-<div class="form" id="evaluation_metadata">
-<form action="{{action_url}}" method="post">{% csrf_token %}
-    <!-- the notes field -->
-    <p>{{ evaluation_form.as_p }}</p>
 
-    {% if evaluation.testsuite.testsuite_type == "2" %}
-    <p>{{ assistive_technology_metadata_form.as_p }}</p>
-    {% endif %}
 
     {% if next_url != '' %}
+    <input type="hidden" name="return_url" value="{{ return_url }}"/>
     <input type="hidden" name="next_url" value="{{ next_url }}"/>
     <input type="submit" name="save_continue" value="Save and continue to next section" />
     {% endif %}

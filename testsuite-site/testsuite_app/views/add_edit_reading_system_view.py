@@ -26,7 +26,7 @@ class AddEditReadingSystemView(TemplateView):
                 messages.add_message(request, messages.INFO, 'You do not have permission to edit that reading system.')
                 return redirect("/manage/")
             form = ReadingSystemForm(instance = reading_system)
-            action_url = request.path #"/rs/{0}/edit/".format(rs.id)
+            action_url = request.path 
             title = "Edit Reading System"
         else:
             form = ReadingSystemForm()
@@ -34,14 +34,17 @@ class AddEditReadingSystemView(TemplateView):
             for fieldname in form.fields.keys():
                 value = request.GET.get(fieldname, '')
                 form.initial[fieldname] = value
-            action_url = request.path #"/rs/new/"
+            action_url = request.path 
             title = "Add Reading System"
+
+        return_url = request.GET.get('return', '/manage/')
+        
         return render(request, self.template_name, {'reading_system_form': form,
-            "title": title, "action_url": action_url})
+            "title": title, "action_url": action_url, "return_url": return_url})
 
     def post(self, request, *args, **kwargs):
         form = None
-        if "pk" in kwargs.keys(): #kwargs.has_key('pk'):
+        if "pk" in kwargs.keys(): 
             try:
                 reading_system = ReadingSystem.objects.get(id=kwargs['pk'])
                 form = ReadingSystemForm(request.POST, instance = reading_system)
@@ -55,7 +58,7 @@ class AddEditReadingSystemView(TemplateView):
             if hasattr(obj, 'user') == False:
                 obj.user = request.user
             obj.save()
-            return redirect(request.POST.get('next', '/manage/'))
+            return redirect(request.POST.get('return_url', '/manage/'))
         else:
             messages.add_message(request, messages.INFO, 'Please complete all required fields.')
             clean_data = form.clean()
