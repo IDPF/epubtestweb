@@ -7,6 +7,7 @@ function DT(options) {
     this.changeDefaultSort = options.changeDefaultSort !== undefined ? Boolean(options.changeDefaultSort) : true;
     this.srchLabel = (options.srchLabel == undefined || options.srchLabel == null || options.srchLabel == '') ? 'Find Reading System(s) ' : options.srchLabel;
     this.srchPlaceholder = (options.srchPlaceholder == undefined || options.srchLabel == null || options.srchPlaceholder == '') ? 'Enter a name or operating system' : options.srchPlaceholder;
+    this.isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 }
 
 DT.prototype.initTables = function() {
@@ -28,11 +29,10 @@ DT.prototype.initTables = function() {
 
 DT.prototype.makeDynamic = function(tblID) {
 
-    var isMobile = window.matchMedia("only screen and (max-width: 760px)");
     
     var table;
     
-    if (isMobile.matches) {
+    if (this.isMobile) {
         $('#'+tblID).DataTable({
             "paging": false,
             "info": false,
@@ -85,7 +85,7 @@ DT.prototype.makeDynamic = function(tblID) {
         }
     }
     
-    if (!isMobile.matches && this.fixedHeader) {
+    if (!this.isMobile && this.fixedHeader) {
         new $.fn.dataTable.FixedHeader( table, {
             // options
         });
