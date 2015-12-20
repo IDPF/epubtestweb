@@ -56,7 +56,15 @@
 
 <script>
     $(document).ready(function(){
-        initDataTable(true, false, true, false, 'Find a test', 'Enter the id or part of the description');
+        var dataTable = new DT({
+            fixedHeader: true,
+            fixedColumn: false,
+            serachable: true,
+            setDefaultSort: false,
+            changeDefaultSort: false,
+        });
+        
+        dataTable.initTables();
     });
 </script>
 

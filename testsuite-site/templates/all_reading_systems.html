@@ -48,8 +48,15 @@
 
 <script>
     $(document).ready(function(){
-        initDataTable(true,false,true,false,'','');
-        setDescending('rs');
+        var dataTable = new DT({
+            fixedHeader: true,
+            fixedColumn: false,
+            serachable: true,
+            setDefaultSort: true,
+            changeDefaultSort: false,
+        });
+        
+        dataTable.initTables();
     });
 </script>
 

@@ -117,7 +117,14 @@
 
 <script>
     $(document).ready(function(){
-        initDataTable(true,false,false,false,'','');
+        var dataTable = new DT({
+            fixedHeader: true,
+            fixedColumn: false,
+            serachable: false,
+            setDefaultSort: true,
+            changeDefaultSort: false,
+        });
+        dataTable.initTables();
     });
 </script>
 
