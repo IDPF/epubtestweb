@@ -100,3 +100,11 @@ def get_reading_system_display_name(reading_system):
     
     s = "{0} v {1} ({2} {3})".format(rsname, rsvers, osname, osvers)
     return s
+
+@register.filter
+def print_yes_no(value):
+    if value:
+        return "Yes"
+    else:
+        return "No"
+

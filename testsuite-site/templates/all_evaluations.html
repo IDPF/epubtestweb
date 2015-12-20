@@ -69,34 +69,34 @@
                 {{metadata.assistive_technology}}
             </td>
             {% endif %}
-            <td><a href="/evaluation/{{evaluation.id}}" target="_blank">View</a></td>
+            <td><a href="/evaluation/{{evaluation.id}}/" target="_blank">View</a></td>
             <td>{{evaluation.percent_complete}}%</td>
             <td>{{evaluation.last_updated}}</td>
-            <td>{{evaluation.is_published}}</td>
-            <td>{{evaluation.is_archived}}</td>
+            <td>{{evaluation.is_published | print_yes_no}}</td>
+            <td>{{evaluation.is_archived | print_yes_no}}</td>
             <td>{{evaluation.notes}}</td>
             <td>{{evaluation.user.first_name}} {{evaluation.user.last_name}}</td>
             <td>
                 <ul>
                     <li>
                     {% if evaluation.is_published %}
-                        <a href="/evaluation/{{evalution.id}}/unpublish/">Unpublish</a>
+                        <a href="/evaluation/{{evaluation.id}}/unpublish/">Unpublish</a>
                     {% else %}
-                        <a href="/evaluation/{{evalution.id}}/publish/">Publish</a>
+                        <a href="/evaluation/{{evaluation.id}}/publish/">Publish</a>
                     {% endif %}
                     </li>
                     <li>
                     {% if evaluation.is_archived %}
-                        <a href="/evaluation/{{evaluation.id}}/unarchive/">Unarchive</a>
+                        <a href="/evaluation/{{evaluation.id}}/unarchive/?return=/evaluation/all/">Unarchive</a>
                     {% else %}
-                        <a href="/evaluation/{{evaluation.id}}/archive/">Archive</a>
+                        <a href="/evaluation/{{evaluation.id}}/archive/?return=/evaluation/all/">Archive</a>
                     {% endif %}
                     </li>
                     <li>
-                        <a href="/evaluation/{{evaluation.id}}/edit/">Edit</a>
+                        <a href="/evaluation/{{evaluation.id}}/edit/?return=/evaluation/all/">Edit</a>
                     </li>
                     <li>
-                        <a href="/evaluation/{{evaluation.id}}/delete/">Delete</a>
+                        <a href="/evaluation/{{evaluation.id}}/delete/?return=/evaluation/all/">Delete</a>
                     </li>
                 </ul>
         </tr>
@@ -109,7 +109,7 @@
 
 <script>
     $(document).ready(function(){
-        initDataTable(true,false,true,false,'','');
+        initDataTable(true,false,true,false,'Find in table','');
     });
 </script>
 {% endblock %}

@@ -17,7 +17,7 @@ function delete_item() {
         url: '{{ confirm_url }}',
         type: 'DELETE',
         success: function(){
-            window.location.href = "{{redirect_url}}";
+            window.location.href = "{{return_url}}";
         }
     });
 }
@@ -34,7 +34,7 @@ function delete_item() {
     <button class="btn btn-small" type="button">Yes</button>
 </a>
 
-<a href="/manage/" style="text-decoration: None">
+<a href="{{return_url}}" style="text-decoration: None">
     <button class="btn btn-small" type="button">No</button>
 </a>
 

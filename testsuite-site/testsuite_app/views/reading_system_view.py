@@ -1,15 +1,17 @@
-from django.views.generic import UpdateView
+from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
 
 from testsuite_app.models import *
 
-class ReadingSystemView(UpdateView):
+class ReadingSystemView(TemplateView):
     def delete(self, request, *args, **kwargs):
+        print("HELLO")
         try:
             reading_system = ReadingSystem.objects.get(id=kwargs['pk'])
         except ReadingSystem.DoesNotExist:
+            print("not found")
             return render(request, "404.html", {})
 
         if permissions.user_can_edit_reading_system(request.user, reading_system) == False:

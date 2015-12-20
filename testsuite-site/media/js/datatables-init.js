@@ -17,8 +17,7 @@
     }
         
     function makeDynamic(tblID, fixedHeader, fixedCol, searchable, srchLabel, srchPlaceholder) {
-    
-        var sLabel = srchLabel == '' ? 'Find Reading System(s) ' : srchLabel;
+        var sLabel = srchLabel == '' ? 'Find in table ' : srchLabel;
         var sPlaceholder = srchPlaceholder == '' ? 'Enter a name or operating system' : srchPlaceholder;
         
         var isMobile = window.matchMedia("only screen and (max-width: 760px)");
