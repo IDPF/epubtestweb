@@ -21,8 +21,11 @@
 {% endfor %}
 </ul>
 
+{% include 'table_view_links.html' %}
+
 {% for testsuite in testsuites %}
 <h2 id="{{testsuite.testsuite_id}}">Testsuite: {{testsuite.name}}</h2>
+
 <table id="tbl-{{testsuite.testsuite_id}}" class="table table-striped">
     <thead>
         <tr>
@@ -108,18 +111,24 @@
 {% endfor %}
 
 <script>
+    var dt = new DT();
+    
     $(document).ready(function(){
-        var dataTable = new DT({
-            fixedHeader: true,
-            fixedColumn: false,
-            serachable: true,
-            setDefaultSort: true,
-            changeDefaultSort: false,
-            srchLabel: 'Find evaluation:',
-            srchPlaceholder: 'Enter criteria to match'
-        });
-        
-        dataTable.initTables();
+        setView(dt.getTableType());
     });
+    
+    function setView(tblType) {
+        var options = {
+                fixedHeader: !(tblType == 'col'),
+                fixedColumn: (tblType == 'col'),
+                serachable: true,
+                setDefaultSort: true,
+                changeDefaultSort: false,
+                tableType: tblType,
+                srchLabel: 'Find evaluation:',
+                srchPlaceholder: 'Enter criteria to match'
+            }
+        dt.initialize(options);
+    }
 </script>
 {% endblock %}

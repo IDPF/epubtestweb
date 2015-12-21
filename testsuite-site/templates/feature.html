@@ -6,15 +6,7 @@
 
 <h1>{{feature.name}}</h1>
 
-<div id="tblChange" style="margin-top: 1rem;">
-    <p class="small">
-        <span style="padding-right: 1rem;">Table view:</span>
-        <a class="normal" href="#hd" id="hd" onclick="changeView('hd'); return false">Fixed Header</a> |
-        <a class="normal" href="#col" id="col" onclick="changeView('col'); return false">Scrolled</a>
-    </p>
-    
-    <p class="small italic">Note: The scrolled view is best for wide tables, but is less accessible for users of assistive technologies.</p>
-</div>
+{% include 'table_view_links.html' %}
 
 <table id="feature" class="table table-feature">
     <thead>
@@ -55,77 +47,23 @@
 </table>
 
 <script>
+    
+    var dt = new DT();
+    
     $(document).ready(function(){
-        var tblType = Cookies.get('tblType'); ;
-        
-        if (typeof(tblType) == 'undefined' || tblType == null || tblType == '') {
-            Cookies.set('tblType', 'hd', { expires: 365 });
-        }
-        
-        if (tblType == 'col') {
-            var dataTable = new DT({
-                fixedHeader: false,
-                fixedColumn: true,
-                serachable: true,
-                setDefaultSort: true,
-                changeDefaultSort: true,
-            });
-            dataTable.initTables();
-            setTableViewLinks('col','hd');
-        }
-        else {
-            var dataTable = new DT({
-                fixedHeader: true,
-                fixedColumn: false,
-                serachable: true,
-                setDefaultSort: true,
-                changeDefaultSort: true,
-            });
-            dataTable.initTables();
-            setTableViewLinks('hd','col');
-        }
-        
-        var isMobile = window.matchMedia("only screen and (max-width: 760px)");
-        if (isMobile.matches) {
-            $('#tblChange').hide();
-        }
+        setView(dt.getTableType());
     });
     
-    function changeView(type) {
-        var table = $('#feature').DataTable();
-        table.destroy();
-        
-        if (type == 'col') {
-            var dataTable = new DT({
-                fixedHeader: false,
-                fixedColumn: true,
+    function setView(tblType) {
+        var options = {
+                fixedHeader: !(tblType == 'col'),
+                fixedColumn: (tblType == 'col'),
                 serachable: true,
                 setDefaultSort: true,
                 changeDefaultSort: true,
-            });
-            dataTable.initTables();
-            Cookies.set('tblType', 'col', { expires: 365 });
-            setTableViewLinks('col','hd');
-        }
-        else {
-            var dataTable = new DT({
-                fixedHeader: true,
-                fixedColumn: false,
-                serachable: true,
-                setDefaultSort: true,
-                changeDefaultSort: true,
-            });
-            dataTable.initTables();
-            Cookies.set('tblType', 'hd', { expires: 365 });
-            setTableViewLinks('hd','col');
-        }
-    }
-    
-    function setTableViewLinks(active, inactive) {
-        $('#'+active).unbind('click');
-        $('#'+active).addClass('inactiveLink');
-        $('#'+inactive).bind('click');
-        $('#'+inactive).removeClass('inactiveLink');
+                tableType: tblType
+            }
+        dt.initialize(options);
     }
 </script>
 

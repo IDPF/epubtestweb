@@ -14,6 +14,7 @@
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
 
+{% include 'table_view_links.html' %}
 <table id="eval" class="table table-striped">
     <thead>
         <tr>
@@ -53,17 +54,23 @@
 </div>
 
 <script>
+    var dt = new DT();
+    
     $(document).ready(function(){
-        var dataTable = new DT({
-            fixedHeader: true,
-            fixedColumn: false,
-            serachable: true,
-            setDefaultSort: false,
-            changeDefaultSort: false,
-        });
-        
-        dataTable.initTables();
+        setView(dt.getTableType());
     });
+    
+    function setView(tblType) {
+        var options = {
+                fixedHeader: !(tblType == 'col'),
+                fixedColumn: (tblType == 'col'),
+                serachable: true,
+                setDefaultSort: false,
+                changeDefaultSort: false,
+                tableType: tblType
+            }
+        dt.initialize(options);
+    }
 </script>
 
 {% endblock %}

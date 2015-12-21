@@ -14,6 +14,7 @@
 
 <h1>All Reading Systems</h1>
 
+{% include 'table_view_links.html' %}
 <table id="rs" class="table table-striped">
     <thead>
         <tr>
@@ -47,17 +48,23 @@
 </table>
 
 <script>
+    var dt = new DT();
+    
     $(document).ready(function(){
-        var dataTable = new DT({
-            fixedHeader: true,
-            fixedColumn: false,
-            serachable: true,
-            setDefaultSort: true,
-            changeDefaultSort: false,
-        });
-        
-        dataTable.initTables();
+        setView(dt.getTableType());
     });
+    
+    function setView(tblType) {
+        var options = {
+                fixedHeader: !(tblType == 'col'),
+                fixedColumn: (tblType == 'col'),
+                serachable: true,
+                setDefaultSort: true,
+                changeDefaultSort: false,
+                tableType: tblType
+            }
+        dt.initialize(options);
+    }
 </script>
 
 {% endblock %}

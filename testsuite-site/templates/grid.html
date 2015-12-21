@@ -16,6 +16,8 @@
 {% else %}
 <p>The following reading systems have been evaluated:</p>
 {% endif %}
+
+{% include 'table_view_links.html' %}
     <table id="rs" class="table table-striped">
         <thead>
             <tr>
@@ -60,16 +62,23 @@
     {% endif %}
     
     <script>
+        var dt = new DT();
+        
         $(document).ready(function(){
-            var dataTable = new DT({
-                fixedHeader: true,
-                fixedColumn: false,
-                serachable: true,
-                setDefaultSort: true,
-                changeDefaultSort: true,
-            });
-            dataTable.initTables();
+            setView(dt.getTableType());
         });
+        
+        function setView(tblType) {
+            var options = {
+                    fixedHeader: !(tblType == 'col'),
+                    fixedColumn: (tblType == 'col'),
+                    serachable: true,
+                    setDefaultSort: true,
+                    changeDefaultSort: true,
+                    tableType: tblType
+                }
+            dt.initialize(options);
+        }
     </script>
 
 {% endblock %}
