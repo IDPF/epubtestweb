@@ -2,15 +2,12 @@
 function DT() { }
 
 DT.prototype.initialize = function(options) {
-    this.fixedHeader = options.fixedHeader !== undefined ? Boolean(options.fixedHeader) : true;
-    this.fixedCol = options.fixedColumn !== undefined ? Boolean(options.fixedColumn) : false;
     this.searchable = options.searchable !== undefined ? Boolean(options.searchable) : true;
     this.setDefaultSort = options.setDefaultSort !== undefined ? Boolean(options.setDefaultSort) : true;
     this.changeDefaultSort = options.changeDefaultSort !== undefined ? Boolean(options.changeDefaultSort) : true;
     this.srchLabel = (options.srchLabel == undefined || options.srchLabel == null || options.srchLabel == '') ? 'Find Reading System(s) ' : options.srchLabel;
     this.srchPlaceholder = (options.srchPlaceholder == undefined || options.srchLabel == null || options.srchPlaceholder == '') ? 'Enter a name or operating system' : options.srchPlaceholder;
     this.isMobile = window.matchMedia("only screen and (max-device-width: 760px)").matches;
-    this.tableType = options.tableType;
     
     this.enhance();
 }
@@ -118,12 +115,15 @@ DT.prototype.setTableViewLinks = function(active, inactive) {
     $('#'+inactive).removeClass('inactiveLink');
 }
 
-DT.prototype.getTableType = function() {
+DT.prototype.setTableType = function() {
     var tblType = Cookies.get('tblType'); ;
     
     if (typeof(tblType) == 'undefined' || tblType == null || tblType == '') {
         Cookies.set('tblType', 'hd', { expires: 365 });
+        tblType = 'hd';
     }
     
-    return tblType;
+    this.tableType = tblType;
+    this.fixedHeader = !(tblType == 'col');
+    this.fixedCol = (tblType == 'col');
 }

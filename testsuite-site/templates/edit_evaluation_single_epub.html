@@ -57,13 +57,12 @@
     var dt = new DT();
     
     $(document).ready(function(){
-        setView(dt.getTableType());
+        dt.setTableType();
+        setView();
     });
     
     function setView(tblType) {
         var options = {
-                fixedHeader: !(tblType == 'col'),
-                fixedColumn: (tblType == 'col'),
                 serachable: true,
                 setDefaultSort: false,
                 changeDefaultSort: false,
