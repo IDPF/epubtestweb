@@ -40,8 +40,13 @@ class AddEvaluationView(TemplateView):
         try:
             testsuite = TestSuite.objects.get(id=testsuite_id)
         except TestSuite.DoesNotExist:
-            messages.add_message(request, messages.INFO, 'Invalid testsuite (ID={})'.format(reading_system_id))
+            messages.add_message(request, messages.INFO, 'Invalid testsuite (ID={})'.format(testsuite_id))
             return redirect(request.path)    
+
+        if testsuite.allow_many_evaluations == False and \
+         Evaluation.objects.filter(reading_system=reading_system, testsuite=testsuite).exists():
+             messages.add_message(request, messages.INFO, 'An evaluation already exists for this testsuite and reading system combination, and only one is allowed.')
+             return redirect(request.path)    
 
         evaluation = Evaluation.objects.create_evaluation(reading_system, testsuite, request.user)
 
