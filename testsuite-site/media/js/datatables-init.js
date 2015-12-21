@@ -115,12 +115,14 @@ DT.prototype.setTableViewLinks = function(active, inactive) {
     $('#'+inactive).removeClass('inactiveLink');
 }
 
-DT.prototype.setTableType = function() {
-    var tblType = Cookies.get('tblType'); ;
+DT.prototype.setTableType = function(tblType) {
     
     if (typeof(tblType) == 'undefined' || tblType == null || tblType == '') {
-        Cookies.set('tblType', 'hd', { expires: 365 });
-        tblType = 'hd';
+        tblType = Cookies.get('tblType');
+        if (typeof(tblType) == 'undefined' || tblType == null || tblType == '') {
+            Cookies.set('tblType', 'hd', { expires: 365 });
+            tblType = 'hd';
+        }
     }
     
     this.tableType = tblType;

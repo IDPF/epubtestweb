@@ -114,11 +114,11 @@
     var dt = new DT();
     
     $(document).ready(function(){
-        dt.setTableType();
         setView();
     });
     
     function setView(tblType) {
+        dt.setTableType(tblType);
         var options = {
                 serachable: true,
                 setDefaultSort: true,
