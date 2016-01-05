@@ -7,7 +7,6 @@ DT.prototype.initialize = function(options) {
     this.changeDefaultSort = options.changeDefaultSort !== undefined ? Boolean(options.changeDefaultSort) : true;
     this.srchLabel = (options.srchLabel == undefined || options.srchLabel == null || options.srchLabel == '') ? 'Find Reading System(s) ' : options.srchLabel;
     this.srchPlaceholder = (options.srchPlaceholder == undefined || options.srchLabel == null || options.srchPlaceholder == '') ? 'Enter a name or operating system' : options.srchPlaceholder;
-    this.isMobile = window.matchMedia("only screen and (max-device-width: 760px)").matches;
     
     this.enhance();
 }
@@ -37,50 +36,66 @@ DT.prototype.enhance = function() {
 
 DT.prototype.makeDynamic = function(tblID) {
 
+    var tblRef = '#'+tblID;
+    
     if ( $.fn.DataTable.isDataTable('#'+tblID) ) {
-        $('#'+tblID).DataTable().destroy();
+        $(tblRef).DataTable().destroy();
     }
     
-    var table;
-    
-    if (this.fixedCol) {
-        table = $('#'+tblID).DataTable({
-            "paging": false,
-            "info": false,
-            "searching": this.searchable,
-            "stateSave": true,
-            "autoWidth": false,
-            "scrollY": '50vh',
-            "scrollX": true,
-            "scrollCollapse": false,
-            "fixedColumns": {
-                "leftColumns": 1
-            },
-            "oLanguage": {
-                "sSearch": this.srchLabel,
-                "sSearchPlaceholder": this.srchPlaceholder
-            }
-        });
+    if (this.tableType == 'basic') {
+        // destroy leaves thead after tbody if switching from fixed header so hack to reverse
+        $(tblRef+' > thead').after($(tblRef+' > tbody'));
+        $(tblRef).DataTable({
+                "paging": false,
+                "info": false,
+                "searching": true,
+                "oLanguage": {
+                    "sSearch": this.srchLabel,
+                    "sSearchPlaceholder": this.srchPlaceholder
+                }
+            });
     }
+    
     else {
-        table = $('#'+tblID).DataTable({
-            "paging": false,
-            "info": false,
-            "searching": this.searchable,
-            "stateSave": true,
-            "autoWidth": false,
-            "aaSorting": this.setDefaultSort ? [0,'asc'] : [],
-            "oLanguage": {
-                "sSearch": this.srchLabel,
-                "sSearchPlaceholder": this.srchPlaceholder
-            }
-        });
-    }
-    
-    if (this.fixedHeader) {
-        new $.fn.dataTable.FixedHeader( table, {
-            // options
-        });
+        var table;
+        
+        if (this.fixedCol) {
+            table = $(tblRef).DataTable({
+                "paging": false,
+                "info": false,
+                "searching": this.searchable,
+                "stateSave": true,
+                "autoWidth": false,
+                "scrollY": '50vh',
+                "scrollX": true,
+                "scrollCollapse": false,
+                "fixedColumns": {
+                    "leftColumns": 1
+                },
+                "oLanguage": {
+                    "sSearch": this.srchLabel,
+                    "sSearchPlaceholder": this.srchPlaceholder
+                }
+            });
+        }
+        else {
+            table = $(tblRef).DataTable({
+                "paging": false,
+                "info": false,
+                "searching": this.searchable,
+                "stateSave": true,
+                "autoWidth": false,
+                "aaSorting": this.setDefaultSort ? [0,'asc'] : [],
+                "oLanguage": {
+                    "sSearch": this.srchLabel,
+                    "sSearchPlaceholder": this.srchPlaceholder
+                }
+            });
+        }
+        
+        if (this.fixedHeader) {
+            new $.fn.dataTable.FixedHeader( table, { });
+        }
     }
 }
 
@@ -100,19 +115,25 @@ DT.prototype.changeSort = function(tblID) {
 DT.prototype.setUserView = function() {    
     if (this.tableType == 'col') {
         Cookies.set('tblType', 'col', { expires: 365 });
-        this.setTableViewLinks('col','hd');
+        this.setTableViewLinks('col','hd','basic');
+    }
+    else if (this.tableType == 'hd') {
+        Cookies.set('tblType', 'hd', { expires: 365 });
+        this.setTableViewLinks('hd','col','basic');
     }
     else {
-        Cookies.set('tblType', 'hd', { expires: 365 });
-        this.setTableViewLinks('hd','col');
+        Cookies.set('tblType', 'basic', { expires: 365 });
+        this.setTableViewLinks('basic','col','hd');
     }
 }
 
-DT.prototype.setTableViewLinks = function(active, inactive) {
+DT.prototype.setTableViewLinks = function(active, inactive, inactive2) {
     $('#'+active).unbind('click');
     $('#'+active).addClass('inactiveLink');
     $('#'+inactive).bind('click');
     $('#'+inactive).removeClass('inactiveLink');
+    $('#'+inactive2).bind('click');
+    $('#'+inactive2).removeClass('inactiveLink');
 }
 
 DT.prototype.setTableType = function(tblType) {
@@ -120,8 +141,8 @@ DT.prototype.setTableType = function(tblType) {
     if (typeof(tblType) == 'undefined' || tblType == null || tblType == '') {
         tblType = Cookies.get('tblType');
         if (typeof(tblType) == 'undefined' || tblType == null || tblType == '') {
-            Cookies.set('tblType', 'hd', { expires: 365 });
-            tblType = 'hd';
+            Cookies.set('tblType', 'basic', { expires: 365 });
+            tblType = 'basic';
         }
     }
     
