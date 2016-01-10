@@ -32,9 +32,8 @@ class EpubParser:
         self.filename = ""
         self.epub = None # the database object representing this epub
         self.epubid = ""
-        self.category = None
 
-    def parse(self, filename, category, testsuite):
+    def parse(self, filename, testsuite):
         # first, extract the file to a temp folder
         zip = zipfile.ZipFile(filename)
         tempdir = tempfile.mkdtemp()
@@ -43,7 +42,6 @@ class EpubParser:
         self.filename = os.path.basename(filename)
         self.folder = tempdir
         self.testsuite = testsuite
-        self.category = category
         opfpath = self.parse_container()
         navpath = self.parse_opf(opfpath)
         self.epub = db_helper.add_epub(self.epubid, self.title, self.description, testsuite, filename)
@@ -71,7 +69,7 @@ class EpubParser:
         self.dirname = os.path.dirname(navpath)
         navdoc = parse_xml(navpath)
         toc_elm = navdoc.xpath("//xhtml:nav[@epub:type='toc']/xhtml:ol", namespaces = NSMAP)[0]
-        self.process_toc(toc_elm, self.category)
+        self.process_toc(toc_elm)
 
     """read the Nav document into a database
     approach:
@@ -80,7 +78,7 @@ class EpubParser:
     3. if it is a test, add it to the database
 
     elm: <ol>"""
-    def process_toc(self, elm, epub):
+    def process_toc(self, elm):
         order_in_book = 0
         for li in elm.xpath("//xhtml:nav[@epub:type='toc']//xhtml:li", namespaces = NSMAP):
             xpathres = li.xpath("xhtml:a/@href", namespaces = NSMAP)
@@ -96,10 +94,8 @@ class EpubParser:
                     testid = uri.fragment
                     required = test_section.attrib['class'].find('ctest') != -1
                     foldername = os.path.basename(self.folder)
-                    adv = test_section.attrib['class'].find('atest') != -1
-                    allow_na = test_section.attrib['class'].find('allow-na') != -1
-                    db_helper.add_test(name, desc, self.category, required, 
-                        testid, self.testsuite, xhtml, self.epub, adv, allow_na, order_in_book)
+                    db_helper.add_test(name, desc, required, 
+                        testid, self.testsuite, xhtml, self.epub, order_in_book)
                     order_in_book += 1
 
     # if the URI points to a test: return the test's section element

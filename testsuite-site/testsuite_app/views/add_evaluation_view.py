@@ -9,7 +9,7 @@ class AddEvaluationView(TemplateView):
     template_name = "add_evaluation.html"
 
     def get(self, request, *args, **kwargs):
-        testsuites = TestSuite.objects.get_most_recent_testsuites()
+        testsuites = TestSuite.objects.get_testsuites()
 
         # put the user's own reading systems first in the list, followed by an alphabetical list of all others
         my_reading_systems = ReadingSystem.objects.filter(user = request.user).extra(select={'lower_name':'lower(name)'}).order_by('lower_name')

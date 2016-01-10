@@ -3,32 +3,14 @@ from . import common
 
 class EvaluationManager(models.Manager):
     def create_evaluation(self, reading_system, testsuite, user):
-        from .result import Result
-        from .score import Score
         from testsuite_app import helper_functions
         print("Creating evaluation")
         last_updated = helper_functions.generate_timestamp()
         evaluation = Evaluation(reading_system = reading_system, 
             testsuite=testsuite, last_updated = last_updated, user = user)
-        evaluation.save()   
-        # create empty scores for each category and each feature
-        categories = testsuite.get_categories()
-        for category in categories:
-            category_score = Score(content_object = category, evaluation = evaluation)
-            category_score.save()
-
-            features = category.get_features()
-            for feature in features:
-                feature_score = Score(content_object = feature, evaluation = evaluation)
-                feature_score.save()
-        
-        # create empty results for each test
-        tests = testsuite.get_tests()
-        for test in tests:
-            result = Result(evaluation = evaluation, test = test)
-            result.result = common.RESULT_NOT_ANSWERED
-            result.save()
-        
+        evaluation.save()  
+        evaluation.create_score_objects() 
+        evaluation.create_result_objects()
         return evaluation
 
     
@@ -133,7 +115,7 @@ class Evaluation(models.Model):
         return self.get_results_for_tests(tests)
 
     def get_results_for_category(self, category): 
-        "get a queryset of all the results for the given category"
+        "get a queryset of all the results for the given category/feature"
         tests = category.get_tests()
         return self.get_results_for_tests(tests)
 
@@ -198,6 +180,30 @@ class Evaluation(models.Model):
         completed_results = all_results.exclude(result = None)
         pct_complete = (completed_results.count() * 1.0) / (all_results.count() * 1.0) * 100.0
         return pct_complete
+
+    # create empty scores for each category and each feature
+    def create_score_objects(self):
+        from .score import Score
+        categories = self.testsuite.get_categories()
+        for category in categories:
+            category_score = Score(content_object = category, evaluation = self)
+            category_score.save()
+            features = category.get_features()
+            for feature in features:
+                feature_score = Score(content_object = feature, evaluation = self)
+                feature_score.save()
+
+    def create_result_objects(self):
+        from .result import Result
+        # create empty results for each test
+        tests = self.testsuite.get_tests()
+        for test in tests:
+            result = Result(evaluation = self, test = test)
+            result.result = common.RESULT_NOT_ANSWERED
+            result.save()
+
+        
+
 
 
 

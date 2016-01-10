@@ -11,7 +11,7 @@ class ManageView(TemplateView):
     template_name = "manage.html"
 
     def get(self, request, *args, **kwargs):
-        testsuites = TestSuite.objects.get_most_recent_testsuites()
+        testsuites = TestSuite.objects.get_testsuites()
         reading_systems = ReadingSystem.objects.filter(user = request.user)
         evaluations = Evaluation.objects.filter(user = request.user)
         return render(request, self.template_name,

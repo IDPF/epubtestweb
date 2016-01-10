@@ -11,7 +11,7 @@ class FeaturesView(TemplateView):
 
     def get(self, request, *args, **kwargs):
 
-        testsuites = TestSuite.objects.get_most_recent_testsuites()
+        testsuites = TestSuite.objects.get_testsuites()
         for testsuite in testsuites:
             categories = testsuite.get_categories()
             testsuite.categories = categories

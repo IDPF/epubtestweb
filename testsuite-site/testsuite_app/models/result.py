@@ -8,8 +8,8 @@ class Result(models.Model):
     test = models.ForeignKey('Test')
     publish_notes = models.BooleanField(default=False)
     evaluation = models.ForeignKey('Evaluation')
-    # the test is new or has changed, so the result might not be up to date
-    flagged_as_new_or_changed = models.BooleanField(default = False) 
+    # the test for this result has changed so the result needs to be updated
+    flagged = models.BooleanField(default = False) 
     
     def save(self, *args, **kwargs):
         self.evaluation.update_category_and_feature_score(self)

@@ -4,6 +4,7 @@ class Feature (models.Model):
     feature_id = models.TextField()
     name = models.TextField()
     category = models.ForeignKey('Category')
+    testsuite = models.ForeignKey('TestSuite')
 
     def get_tests(self):
         from .test import Test

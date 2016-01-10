@@ -13,18 +13,15 @@ class Score(models.Model):
     evaluation = models.ForeignKey('Evaluation')
     percent = models.DecimalField(decimal_places = 2, max_digits = 5, default = 0)
     fraction = models.CharField(max_length = common.SHORT_STRING)
-    did_any_pass = models.BooleanField(default = False)
     
     def update(self):
         results = self.evaluation.get_results_for_category(self.content_object)
+        total_applicable = results.count()
         num_passed = 0
-        total_applicable = 0
         for result in results:
             if result.result == common.RESULT_SUPPORTED:
                 num_passed += 1
-            if result.result != common.RESULT_NOT_APPLICABLE:
-                total_applicable += 1
-
+        
         if total_applicable > 0:
             self.percent = num_passed / total_applicable
         else:

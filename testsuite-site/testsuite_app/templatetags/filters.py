@@ -21,8 +21,6 @@ def get_result_description(result):
         return "Supported"
     elif result.result == common.RESULT_NOT_SUPPORTED:
         return "Not Supported"
-    elif result.result == common.RESULT_NOT_APPLICABLE:
-        return "N/A"
     else:
         return "Not Tested"
 

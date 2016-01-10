@@ -2,17 +2,18 @@ from django.db import models
 from . import common
 
 class TestSuiteManager(models.Manager):
-    def get_most_recent_testsuite(self, testsuite_type):
-        recent = TestSuite.objects.filter(testsuite_type = testsuite_type).order_by("-version_date", "-version_revision")
-        if recent.count() == 0:
+    def get_testsuite(self, testsuite_type):
+        try:
+            testsuite = TestSuite.objects.get(testsuite_type = testsuite_type)
+        except TestSuite.DoesNotExist:
             return None
-        return recent[0]
+        return testsuite
 
-    def get_most_recent_testsuites(self):
+    def get_testsuites(self):
         # returns all types
         testsuites = []
         for testsuite_type in common.TESTSUITE_TYPE:
-            testsuite = self.get_most_recent_testsuite(testsuite_type[0])
+            testsuite = self.get_testsuite(testsuite_type[0])
             if testsuite != None:
                 testsuites.append(testsuite)
         return testsuites
@@ -20,9 +21,7 @@ class TestSuiteManager(models.Manager):
 class TestSuite(models.Model):
     objects = TestSuiteManager()
 
-    # version is formatted as date-revision; e.g. 2013-01-01-5
     version_date = models.DateField(max_length = common.SHORT_STRING)
-    version_revision = models.IntegerField()
     testsuite_type = models.CharField(max_length = 1, choices = common.TESTSUITE_TYPE, default=common.TESTSUITE_TYPE_DEFAULT)
     allow_many_evaluations = models.BooleanField(default = False)
     name = models.CharField(max_length = common.SHORT_STRING)
@@ -53,4 +52,7 @@ class TestSuite(models.Model):
         from .category import Category
         return Category.objects.get(testsuite = self, category_id = categoryid)
 
+    
+
+    
 

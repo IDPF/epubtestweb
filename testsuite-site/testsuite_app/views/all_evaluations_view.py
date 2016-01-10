@@ -12,6 +12,6 @@ class AllEvaluationsView(TemplateView):
         if request.user.is_superuser == False:
             return render(request, "404.html", {})
         
-        testsuites = TestSuite.objects.get_most_recent_testsuites()
+        testsuites = TestSuite.objects.get_testsuites()
         reading_systems = ReadingSystem.objects.all()
         return render(request, self.template_name,{"testsuites": testsuites, "reading_systems": reading_systems})

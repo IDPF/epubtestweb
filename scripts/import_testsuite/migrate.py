@@ -1,43 +1,56 @@
-def migrate_data(previous_testsuite):
-    "look for any tests that haven't changed since the last import and copy reading system results over"
-    print "Looking for data to migrate"
-    reading_systems = ReadingSystem.objects.all()
-    testsuite = None
-    if previous_testsuite.testsuite_type == common.TESTSUITE_TYPE_DEFAULT:
-        testsuite = TestSuite.objects.get_most_recent_testsuite()
-    else:
-        testsuite = TestSuite.objects.get_most_recent_accessibility_testsuite()
+from testsuite_app.models import *
+
+class MigrateData:
+    results = None
+    evaluations = None
     
-    for rs in reading_systems:
-        old_result_sets = rs.get_result_sets_for_testsuite(previous_testsuite)
-        for old_rset in old_result_sets:
-            new_result_set = Evaluation.objects.create_evaluation(rs, testsuite, old_rset.user)
-            new_result_set.copy_metadata(old_rset)
+    def pre_migrate(self, old_testsuite):
+        print("Pre Migrate")
+        
+        self.results = Result.objects.filter(evaluation__testsuite = old_testsuite)
+        for result in self.results:
+            result.test_id = result.test.test_id
+            result.test_xhtml = result.test.xhtml
+        
+        self.evaluations = Evaluation.objects.filter(testsuite = old_testsuite)
+    
+    def update_testsuite(self, testsuite):
+        for evaluation in self.evaluations:
+            evaluation.testsuite = testsuite
+            evaluation.save()
 
-            
-            print "Migrating data for {0} {1} {2}".format(rs.name.encode('utf-8'), rs.version.encode('utf-8'), rs.operating_system.encode('utf-8'))
-            results = new_result_set.get_results()
-            print "Processing {0} results".format(results.count())
-            
-            for result in results:
-                try:
-                    old_test_version = Test.objects.get(testsuite = previous_testsuite, test_id = result.test.test_id)
-                except Test.DoesNotExist:
-                    # the test may be new
-                    print("No previous version of test {0} was found".format(result.test.test_id))
-                    result.test.save()
-                    continue
 
-                # if the ID (checked above) and xhtml for the test matches, then copy over the old result
-                if result.test.xhtml == old_test_version.xhtml:
-                    previous_result = old_rset.get_result_for_test_by_id(result.test.test_id)
-                    result.result = previous_result.result
-                    result.notes = previous_result.notes
+    def migrate(self):
+        print("Migrating data")
+
+        for evaluation in self.evaluations:
+            scores = Score.objects.filter(evaluation = evaluation)
+            scores.delete()
+            evaluation.create_score_objects()
+
+        for result in self.results:
+            try:
+                test = Test.objects.get(test_id = result.test_id)
+                result.test = test
+                if test.xhtml != result.test_xhtml:
+                    result.flagged = True
+                result.save()
+            # a test may have been removed
+            except Test.DoesNotExist:
+                result.delete()
+        
+        for evaluation in self.evaluations:
+            tests = evaluation.testsuite.get_tests()
+            for test in tests:
+                result = evaluation.get_result_for_test(test)
+                if result == None:
+                    # create a result if a test is new
+                    result = Result(evaluation = evaluation, test = test)
+                    result.result = common.RESULT_NOT_ANSWERED
+                    result.flagged = True
                     result.save()
-                else:
-                    print("Test {0} has changed from the previous test suite".format(result.test.test_id))
-                    result.flagged_as_new_or_changed = True
-                    result.test.save()
-            new_result_set.save()
+                
 
-
+            evaluation.update_scores()
+        
+    

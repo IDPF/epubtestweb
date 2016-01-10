@@ -5,7 +5,6 @@ from .atmetadata import ATMetadata
 from .evaluation import Evaluation
 from .score import Score
 from .test import Test
-from .test import TestMetadata
 from .testsuite import TestSuite
 from .user_profile import UserProfile
 from .epub import Epub

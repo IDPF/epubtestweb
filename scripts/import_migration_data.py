@@ -47,9 +47,9 @@ def add_evaluation(reading_system, result_set_elm):
     testsuite = None
     testsuite_type = result_set_elm.attrib['testsuite_type']
     if testsuite_type == "DEFAULT":
-        testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_DEFAULT)
+        testsuite = TestSuite.objects.get_testsuite(common.TESTSUITE_TYPE_DEFAULT)
     else:
-        testsuite = TestSuite.objects.get_most_recent_testsuite(common.TESTSUITE_TYPE_ACCESSIBILITY)
+        testsuite = TestSuite.objects.get_testsuite(common.TESTSUITE_TYPE_ACCESSIBILITY)
 
     user = lookup_user(result_set_elm.attrib['user'])
     
