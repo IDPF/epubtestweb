@@ -27,6 +27,13 @@ class EditEvaluationSingleEpubView(TemplateView):
 
         results = evaluation.get_results_for_epub(epub).order_by('test__order_in_book')
         results_formset = ResultFormSet(instance = evaluation, queryset=results)
+
+        contains_flagged_results = False
+        for result in results:
+            if result.flagged == True:
+                contains_flagged_results = True
+                break
+        results.contains_flagged_results = contains_flagged_results
         
         action_url = request.path
         
@@ -69,6 +76,7 @@ class EditEvaluationSingleEpubView(TemplateView):
             return render(request, "404.html", {})
 
         results = evaluation.get_results_for_epub(epub)
+
         results_formset = ResultFormSet(request.POST,  instance = evaluation, queryset=results)
         results_formset.save()
         evaluation.save()

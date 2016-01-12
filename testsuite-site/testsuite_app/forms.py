@@ -34,11 +34,7 @@ class ResultForm(ModelForm):
         widgets = {
             'notes': forms.Textarea(attrs={'cols': 40, 'rows': 3, 'title': 'Notes'}),
         }
-    def __init__(self, *args, **kwargs):
-        super(ResultForm, self).__init__(*args, **kwargs)
-        if self.instance.test.allow_na == False:
-            self.fields['result'] = forms.ChoiceField(choices=BLANK_CHOICE_DASH + list(common.RESULT_TYPE), required=False)
-
+    
 class EvaluationForm(ModelForm):
     class Meta:
         model = Evaluation

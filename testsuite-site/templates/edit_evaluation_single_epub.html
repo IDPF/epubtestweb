@@ -10,6 +10,15 @@
 
 <p>This page contains all the tests in <em>{{epub.title}} (<a href="{{epub_downloads_url}}{{epub.filename}}" target="_blank">download</a>).</em></p>
 <p>There are {{results | length}} tests. You are {{epub.percent_complete | floatformat:2}}% complete with this section.</p>
+{% if results.contains_flagged_results %}
+<p>The following tests require review because they are new or have changed:</p>
+<ul>
+{% for result in results %}
+    {% if result.flagged %}
+    <li><a href="#{{result.test.test_id}}">{{result.test.test_id}}</a></li>
+    {% endif %}
+{% endfor %}
+{% endif %}
 
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
@@ -26,7 +35,7 @@
     </thead>
     <tbody>
         {% for result in results %}
-        <tr>
+        <tr id="{{result.test.test_id}}">
             {% get_form_for_result result results_formset as result_form %}
             <td>{{ result.test.test_id }}</td>
             <td class="desc">{{ result.test.description }}</td>

@@ -12,5 +12,9 @@ class Result(models.Model):
     flagged = models.BooleanField(default = False) 
     
     def save(self, *args, **kwargs):
+        # if this result was flagged (meaning the test changed or is new), clear the flag
+        # if there's an answer
+        if self.flagged == True and self.result != common.RESULT_NOT_ANSWERED:
+            self.flagged = False
         self.evaluation.update_category_and_feature_score(self)
         super(Result, self).save(*args, **kwargs)

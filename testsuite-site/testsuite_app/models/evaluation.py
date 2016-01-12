@@ -1,5 +1,6 @@
 from django.db import models
 from . import common
+from testsuite_app import helper_functions
 
 class EvaluationManager(models.Manager):
     def create_evaluation(self, reading_system, testsuite, user):
@@ -30,6 +31,7 @@ class Evaluation(models.Model):
     def save(self, *args, **kwargs):
         self.update_percent_complete()
         self.update_scores()
+        self.last_updated = helper_functions.generate_timestamp()
         super(Evaluation, self).save(*args, **kwargs)
 
     def update_scores(self):
@@ -202,6 +204,23 @@ class Evaluation(models.Model):
             result.result = common.RESULT_NOT_ANSWERED
             result.save()
 
+    def get_flagged_results_for_epub(self, epub):
+        from .result import Result
+        from .epub import Epub
+        from .test import Test
+        tests = Test.objects.filter(epub = epub)
+        return Result.objects.filter(test__in=tests, evaluation = self, flagged = True)
+
+    def does_epub_have_flagged_results(self, epub):
+        from .result import Result
+        from .epub import Epub
+        from .test import Test
+        tests = Test.objects.filter(epub = epub)
+        return Result.objects.filter(test__in=tests, evaluation = self, flagged = True).exists()
+
+    def has_flagged_results(self):
+        from .result import Result
+        return Result.objects.filter(evaluation = self, flagged = True).exists()
         
 
 

@@ -46,21 +46,30 @@
     {% if evaluation.testsuite.testsuite_type == "2" %}
     <p>{{ assistive_technology_metadata_form.as_p }}</p>
     {% endif %}
-<!--
-<div>
-    <p>TODO put items that need attention, i.e. tests that have been updated/changed since last evaluation update</p>
-    <ul>
-        <li>Thing 1..</li>
-        <li>Thing 2..</li>
-    </ul>
-</div>
--->
 <h2 class="eval">Sections to complete</h2>
 <ul class="nomark">
+<table class="table striped-table">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Percent complete</th>
+        <th>Notes</th>
+    </tr>
+</thead>
+<tbody>
 {% for epub in epubs %}
-    <li><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a> ({{epub.percent_complete | floatformat:2}}% complete)</li>
+    <tr>
+        <td><a href="/evaluation/{{evaluation.id}}/edit/section/{{epub.epubid}}/">{{epub.title}}</a></td>
+        <td>{{epub.percent_complete | floatformat:2}}%</td>
+        <td>
+            {% if epub.flagged %}
+            <span>Tests have been updated. Please review.</span>
+            {% endif %}
+        </td>
+    </tr>
 {% endfor %}
-</ul>
+</tbody>
+</table>
 
 
 

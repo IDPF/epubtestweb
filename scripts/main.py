@@ -19,6 +19,24 @@ def refresh_scores():
     print ("Refreshing scores")
     helper_functions.force_score_refresh()
 
+def flag_items():
+    import random
+    # set result.flagged to true on some result objects
+    results = Result.objects.all().order_by('?')[:100]
+    for result in results:
+        result.flagged = True
+        result.save()
+
+
+def clear_flags():
+    from testsuite_app.models import Result
+    # reset result.flagged to false on all result objects
+    results = Result.objects.all()
+    for result in results:
+        result.flagged = False
+        result.save()
+
+
 def main():
     import django
     django.setup()
@@ -58,6 +76,12 @@ def main():
     add_user_parser.add_argument("email", action="store", help="email")
     add_user_parser.set_defaults(func = lambda args: add_user(args.username, args.password, \
         args.first_name, args.last_name, args.email, args.is_superuser))
+
+    flag_items_parser = subparsers.add_parser("flag", help="For testing only. Randomly flag results.")
+    flag_items_parser.set_defaults(func = lambda args: flag_items())
+
+    unflag_items_parser = subparsers.add_parser("unflag", help="Reset all flags to false.")
+    unflag_items_parser.set_defaults(func = lambda args: clear_flags())
 
     args = argparser.parse_args()
     args.func(args)

@@ -7,3 +7,4 @@ class Epub (models.Model):
     title = models.TextField()
     testsuite = models.ForeignKey('TestSuite')
     filename = models.CharField(max_length = common.LONG_STRING, blank = False, null = False)
+

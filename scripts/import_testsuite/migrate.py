@@ -33,6 +33,8 @@ class MigrateData:
                 test = Test.objects.get(test_id = result.test_id)
                 result.test = test
                 if test.xhtml != result.test_xhtml:
+                    # clear the current answer because the test has changed
+                    result.result = common.RESULT_NOT_ANSWERED
                     result.flagged = True
                 result.save()
             # a test may have been removed

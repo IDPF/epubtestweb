@@ -14,6 +14,10 @@ class ManageView(TemplateView):
         testsuites = TestSuite.objects.get_testsuites()
         reading_systems = ReadingSystem.objects.filter(user = request.user)
         evaluations = Evaluation.objects.filter(user = request.user)
+        for evaluation in evaluations:
+            if evaluation.has_flagged_results() == True:
+                print("FLAG")
+                evaluation.flagged = True
         return render(request, self.template_name,
             {'evaluations': evaluations, 'reading_systems': reading_systems, 'testsuites': testsuites})
 
