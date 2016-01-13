@@ -20,6 +20,11 @@
 </ul>
 
 <h2 id="testsuite-documents">Test Suite documents</h2>
+
+{% if most_recent_update != None %}
+<p>Last updated: {{most_recent_update}}</p>
+{% endif %}
+
 <ul class="nomark nomargin">
 {% for epub in epubs %}
 <li><a href="{{epub_downloads_url}}{{epub.filename}}">{{epub.title}}:</a> {{epub.description}}</li>

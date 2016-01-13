@@ -106,3 +106,11 @@ def print_yes_no(value):
     else:
         return "No"
 
+@register.filter
+def dont_say_none(value):
+    if value == None:
+        return ""
+    else:
+        return value
+
+

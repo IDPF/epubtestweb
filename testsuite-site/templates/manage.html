@@ -37,6 +37,7 @@
             <th>Published</th>
             <th>Actions</th>
             <th>Notes</th>
+            <th>Alerts</th>
         </tr>
     </thead>
     <tbody>
@@ -67,9 +68,10 @@
                     <li><a href="/evaluation/{{evaluation.id}}/delete/?return=/manage/">Delete</li>
                 </ul>
             </td>
+            <td>{{evaluation.notes}}</td>
             <td>
-            {% if evaluation.flagged %}
-            Please update your evaluation
+            {% if evaluation.has_flagged_results %}
+            Update required
             {% endif %}
             </td>
         </tr>

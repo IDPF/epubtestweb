@@ -33,7 +33,7 @@
             {% if testsuite.testsuite_type == "2" %}
             <th colspan="8">Evaluation</th>
             {% else %}
-            <th colspan="7">Evaluation</th>
+            <th colspan="8">Evaluation</th>
             {% endif %}
             <th colspan="1">Admin</th>
         </tr>
@@ -53,6 +53,7 @@
             <th>Archived</th>
             <th>Notes</th>
             <th>Owner</th>
+            <th>Alerts</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -77,8 +78,12 @@
             <td>{{evaluation.last_updated}}</td>
             <td>{{evaluation.is_published | print_yes_no}}</td>
             <td>{{evaluation.is_archived | print_yes_no}}</td>
-            <td>{{evaluation.notes}}</td>
+            <td>{{evaluation.notes | dont_say_none}}</td>
             <td>{{evaluation.user.first_name}} {{evaluation.user.last_name}}</td>
+            <td>{%if evaluation.has_flagged_results %}
+                Update required
+                {% endif %}
+            </td>
             <td>
                 <ul>
                     <li>
@@ -102,6 +107,7 @@
                         <a href="/evaluation/{{evaluation.id}}/delete/?return=/evaluation/all/">Delete</a>
                     </li>
                 </ul>
+            </td>
         </tr>
         {% endfor %}
     {% endfor %}

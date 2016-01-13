@@ -37,6 +37,10 @@
 
         {% endif %}
         <li><strong>Last updated:</strong><br/>{{evaluation.last_updated}}</li>
+        <li><strong>Notes:</strong><br/>{{evaluation.notes | dont_say_none}}</li>
+        {%if evaluation.has_flagged_items %}
+        <li>This evaluation may not be up-to-date with the latest testsuite.</li>
+        {% endif %}
     </ul>
     <br/>
 </div>
