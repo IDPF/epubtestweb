@@ -11,7 +11,7 @@ from testsuite_app.models import *
 
 NSMAP = {"ts": "http://idpf.org/ns/testsuite"}
 
-def import_migration_data(filepath):
+def import_evaluation_data(filepath):
     p = etree.XMLParser(remove_blank_text = True)
     f = open(filepath)
     fdata = f.read()
@@ -63,6 +63,8 @@ def add_evaluation(reading_system, result_set_elm):
         evaluation.is_archived = True
     else:
         evaluation.is_archived = False
+
+    evaluation.last_updated = result_set_elm.attrib['last-updated']
     
     if 'notes' in result_set_elm.attrib.keys():
         evaluation.notes = result_set_elm.attrib['notes']

@@ -7,11 +7,11 @@ from import_testsuite import import_testsuite
 
 from django.contrib.sessions.models import Session
 
-from import_migration_data import import_migration_data
+from import_evaluation_data import import_evaluation_data
 
 def import_data(infile):
     print ("Importing from {}".format(infile))
-    import_migration_data(infile)
+    import_evaluation_data(infile)
     print ("Done")
 
 def refresh_scores():
