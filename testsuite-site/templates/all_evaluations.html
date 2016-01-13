@@ -40,12 +40,12 @@
         <tr>
             <th>Name</th>
             <th>Version</th>
-            <th>OS</th>
-            <th>OS Version</th>
-            <th>Owner</th>
             {% if testsuite.testsuite_type == "2" %}
             <th>AT</th>
             {% endif %}
+            <th>OS</th>
+            <th>OS Version</th>
+            <th>Owner</th>
             <th>Link</th>
             <th>Percent complete</th>
             <th>Last updated</th>
@@ -63,15 +63,15 @@
         <tr>
             <td>{{reading_system.name}}</td>
             <td>{{reading_system.version}}</td>
-            <td>{{reading_system.operating_system}}</td>
-            <td>{{reading_system.operating_system_version}}</td>
-            <td>{{reading_system.user.first_name}} {{reading_system.user.last_name}}</td>
             {% if testsuite.testsuite_type == "2" %}
             <td>
                 {%get_metadata evaluation as metadata %}
                 {{metadata.assistive_technology}}
             </td>
             {% endif %}
+            <td>{{reading_system.operating_system}}</td>
+            <td>{{reading_system.operating_system_version}}</td>
+            <td>{{reading_system.user.first_name}} {{reading_system.user.last_name}}</td>
             <td><a href="/evaluation/{{evaluation.id}}/" target="_blank">View</a></td>
             <td>{{evaluation.percent_complete}}%</td>
             <td>{{evaluation.last_updated}}</td>

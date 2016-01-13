@@ -64,11 +64,11 @@ def add_evaluation(reading_system, result_set_elm):
     else:
         evaluation.is_archived = False
 
-    evaluation.last_updated = result_set_elm.attrib['last-updated']
+    evaluation.last_updated = result_set_elm.attrib['last_updated']
     
     if 'notes' in result_set_elm.attrib.keys():
         evaluation.notes = result_set_elm.attrib['notes']
-    evaluation.save()
+    evaluation.save(generate_timestamp = False)
 
     results = evaluation.get_results()
     for result in results:

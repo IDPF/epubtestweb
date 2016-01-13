@@ -28,10 +28,11 @@ class Evaluation(models.Model):
     is_published = models.BooleanField(default = False)
     notes = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
 
-    def save(self, *args, **kwargs):
+    def save(self, generate_timestamp = True, *args, **kwargs):
         self.update_percent_complete()
         self.update_scores()
-        self.last_updated = helper_functions.generate_timestamp()
+        if generate_timestamp == True:
+            self.last_updated = helper_functions.generate_timestamp()
         super(Evaluation, self).save(*args, **kwargs)
 
     def update_scores(self):
