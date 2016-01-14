@@ -4,7 +4,7 @@
 {% load inclusions %}
 
 
-{% block title %}:: Manage{% endblock %}
+{% block title %}: Manage{% endblock %}
 {% block script %}
 
 {% endblock %}
@@ -71,7 +71,7 @@
             <td>{{evaluation.notes}}</td>
             <td>
             {% if evaluation.has_flagged_results %}
-            Update required
+            <span class="text-danger">Update required</span>
             {% endif %}
             </td>
         </tr>

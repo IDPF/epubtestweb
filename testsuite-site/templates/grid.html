@@ -2,14 +2,16 @@
 {% load assignments %}
 {% load filters %}
 
+{% block title %}: Reading System Evaluations
+{% if is_archive_view %}
+(Archives)
+{% endif %}
+
+{% endblock %}
+
 {% block content %}
 
-<h1>Reading System Evaluations
-
-{% if is_archive_view %}
-: Archives
-{% endif %}
-</h1>
+<h1>Reading System Evaluations {% if is_archive_view %}(Archives){% endif %}</h1>
 
 {% if is_archive_view %}
 <p>The following reading system evaluations have been archived but are still available to view. For the latest, please visit the <a href="/">home page</a>.</p>
@@ -17,7 +19,7 @@
 <p>The following reading systems have been evaluated:</p>
 {% endif %}
 
-{% include 'table_view_links.html' %}
+{% include '_table_view_links.html' %}
     <table id="rs" class="table table-striped">
         <thead>
             <tr>

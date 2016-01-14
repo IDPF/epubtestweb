@@ -2,11 +2,13 @@
 {% load assignments %}
 {% load filters %}
 
+{% block title %}: {{feature.name}} Feature{% endblock %}
+
 {% block content %}
 
 <h1>{{feature.name}}</h1>
 
-{% include 'table_view_links.html' %}
+{% include '_table_view_links.html' %}
 
 <table id="feature" class="table table-feature">
     <thead>

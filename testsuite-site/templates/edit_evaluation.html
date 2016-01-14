@@ -3,24 +3,24 @@
 {% load filters %}
 {% load inclusions %}
 
-{% block title %}:: Edit Evaluation{% endblock %}
+{% block title %}: Edit Evaluation{% endblock %}
 
 {% block content %}
 <h1>Reading System Evaluation</h1>
 
 <div class="eval-info-container">
     <ul id="rs" class="nomark lfloat">
-        <li><strong>Name:</strong><br/>{{evaluation.reading_system.name}}</li>
-        <li><strong>Version:</strong><br/>{{evaluation.reading_system.version}}</li>
-        <li><strong>Operating System:</strong><br/>{{evaluation.reading_system.operating_system}}</li>
-        <li><strong>Operating System Version:</strong><br/>
+        <li><strong>Name</strong><br/>{{evaluation.reading_system.name}}</li>
+        <li><strong>Version</strong><br/>{{evaluation.reading_system.version}}</li>
+        <li><strong>Operating System</strong><br/>{{evaluation.reading_system.operating_system}}</li>
+        <li><strong>Operating System Version</strong><br/>
             {% if evaluation.reading_system.operating_system_version != None and evaluation.reading_system.operating_system_version != '' %}
             {{evaluation.reading_system.operating_system_version}}
             {% else %}
             [not specified]
             {% endif %}
         </li>
-        <li><strong>Status:</strong><br/>
+        <li><strong>Status</strong><br/>
             {% if evaluation.is_published %}
             <span>Published</span>
             {% else %}
@@ -32,8 +32,8 @@
             <br/><span>Not Archived</span>
             {% endif %}
         </li>
-        <li><strong>Completed:</strong><br/>{{evaluation.percent_complete}}%</li>
-        <li><strong>Last updated:</strong><br/>{{evaluation.last_updated}}</li>
+        <li><strong>Percent Complete</strong><br/>{{evaluation.percent_complete}}%</li>
+        <li><strong>Last Updated</strong><br/>{{evaluation.last_updated}}</li>
     </ul>
     <br/>
 </div>

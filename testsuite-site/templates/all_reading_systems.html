@@ -4,7 +4,7 @@
 {% load inclusions %}
 
 
-{% block title %}:: All Reading Systems{% endblock %}
+{% block title %}: All Reading Systems{% endblock %}
 {% block script %}
 
 {% endblock %}
@@ -14,7 +14,7 @@
 
 <h1>All Reading Systems</h1>
 
-{% include 'table_view_links.html' %}
+{% include '_table_view_links.html' %}
 <table id="rs" class="table table-striped">
     <thead>
         <tr>
@@ -35,7 +35,7 @@
             <td>{{reading_system.operating_system}}</td>
             <td>{{reading_system.operating_system_version}}</td>
             <td>{{reading_system.notes}}</td>
-            <td>{{reading_system.user.first_name}} {{reading_system.user.last_name}}</td>
+            <td>{{reading_system.user | get_user_display_name}}</td>
             <td>
                 <ul>
                     <li><a href="/rs/{{reading_system.id}}/edit/?return=/rs/all/">Edit</a></li>

@@ -3,27 +3,30 @@
 {% load filters %}
 {% load inclusions %}
 
-{% block title %}:: Edit Evaluation :: {{epub.title}}{% endblock %}
+{% block title %}: Edit Evaluation : {{epub.title}}{% endblock %}
 {% block content %}
 
 <h1>Edit Evaluation Section</h1>
 
-<p>This page contains all the tests in <em>{{epub.title}} (<a href="{{epub_downloads_url}}{{epub.filename}}" target="_blank">download</a>).</em></p>
+<p>This page refers to tests in <em>{{epub.title}} (<a href="{{epub_downloads_url}}{{epub.filename}}" target="_blank">download</a>).</em></p>
 <p>There are {{results | length}} tests. You are {{epub.percent_complete | floatformat:2}}% complete with this section.</p>
 {% if results.contains_flagged_results %}
-<p>The following tests require review because they are new or have changed:</p>
-<ul>
+<p class="text-danger">The following answers require review because the tests are new or have changed:</p>
+<ul class="colwrap-list">
 {% for result in results %}
     {% if result.flagged %}
     <li><a href="#{{result.test.test_id}}">{{result.test.test_id}}</a></li>
     {% endif %}
+    
+
 {% endfor %}
+</ul>
 {% endif %}
 
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
 
-{% include 'table_view_links.html' %}
+{% include '_table_view_links.html' %}
 <table id="eval" class="table table-striped">
     <thead>
         <tr>

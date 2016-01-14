@@ -476,7 +476,7 @@ table.dataTable thead th {
     font-weight: normal;
 }
 
-.features-list {
+.colwrap-list {
      -webkit-column-count: 4; /* Chrome, Safari, Opera */
     -moz-column-count: 4; /* Firefox */
     column-count: 4;
@@ -490,7 +490,7 @@ table.dataTable thead th {
     list-style-type: square;
 }
 
-.features-list a {
+.colwrap-list a {
     font-weight: normal;
     font-size: 105%;
     color: #004080;

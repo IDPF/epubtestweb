@@ -31,7 +31,7 @@ class ConfirmDeleteReadingSystemView(TemplateView):
         rs_desc = "{0} {1} {2} {3}".format(reading_system.name, reading_system.version, \
             reading_system.operating_system, reading_system.operating_system_version)
         return render(request, self.template_name,
-            {"header": 'Confirm delete reading system',
+            {"header": 'Confirm Delete Reading System',
             "warning": "You are about to delete '{0}'. Proceed?".format(rs_desc),
             "confirm_url": "/rs/{}/".format(kwargs['pk']),
             "return_url": return_url
@@ -59,7 +59,7 @@ class ConfirmDeleteEvaluationView(TemplateView):
             reading_system.operating_system, reading_system.operating_system_version)
         
         return render(request, self.template_name,
-            {"header": 'Confirm delete evaluation',
+            {"header": 'Confirm Delete Evaluation',
             "warning": "You are about to delete an evaluation for '{}'. Proceed?".format(rs_desc),
             "confirm_url": "/evaluation/{}/".format(evaluation.id),
             "return_url": return_url

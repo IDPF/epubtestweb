@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block title %}: Feature Support {% endblock %}
 {% block content %}
 
 <h1>Feature Support</h1>
@@ -8,7 +8,7 @@
    <h2 id="{{testsuite.id}}" class="features-ts">{{testsuite.name}}</h2>
     {% for category in testsuite.categories %}
         <h3 id="{{category.id}}" class="features-category">{{category.name}}</h3>
-        <ul class="features-list">
+        <ul class="colwrap-list">
         {% for feature in category.features %}
             <li><a href="/testsuite/{{testsuite.testsuite_id}}/feature/{{feature.feature_id}}/">{{feature.name}}</a></li>
         {% endfor %}
