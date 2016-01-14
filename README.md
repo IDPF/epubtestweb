@@ -43,6 +43,8 @@ Run these commands from `scripts/`:
 `./runmain.sh import PATH/TO/epub-testsuite/content/30 categories.yaml`
 `./runmain.sh copy-users`
 
+(Where the old database containing user profile info is in the same directory as the current database, but is named `testsuite-old.db`.)
+
 Now you have a database that works with the website but is empty. If you need to import evaluation and reading system data, use the `import-data` command to load from XML.
 
 Adding users
@@ -56,7 +58,7 @@ Updating the test suite
 When there is a new version of the testsuite available, just run the import command again:
 `./runmain.sh import PATH/TO/epub-testsuite/content/30`
 
-All current evaluations will get ported over.
+All current evaluations will get ported over. Results will be cleared for any new or changed tests, and when users log in, they will see an alert informing them to update their evaluation(s).
 
 Overview of user permissions
 -------------
@@ -71,7 +73,7 @@ The rules
 * follow the existing formatting of the epubs
 * organize into categories/features by using `categories.yaml`
 * one epub may appear in more than one category, but not across testsuites
-* feature IDs must be unique within its testsuite
+* a feature's ID must be unique within its testsuite
 
 
 
