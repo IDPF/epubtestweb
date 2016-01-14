@@ -48,7 +48,8 @@ DT.prototype.makeDynamic = function(tblID) {
         $(tblRef).DataTable({
                 "paging": false,
                 "info": false,
-                "searching": true,
+                "searching": this.searchable,
+                "aaSorting": this.setDefaultSort ? [0,'asc'] : [],
                 "oLanguage": {
                     "sSearch": this.srchLabel,
                     "sSearchPlaceholder": this.srchPlaceholder
@@ -66,6 +67,7 @@ DT.prototype.makeDynamic = function(tblID) {
                 "searching": this.searchable,
                 "stateSave": true,
                 "autoWidth": false,
+                "aaSorting": this.setDefaultSort ? [0,'asc'] : [],
                 "scrollY": '50vh',
                 "scrollX": true,
                 "scrollCollapse": false,
