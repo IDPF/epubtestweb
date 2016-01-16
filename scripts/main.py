@@ -45,7 +45,7 @@ def main():
     subparsers = argparser.add_subparsers(help='commands')
     import_parser = subparsers.add_parser('import', help='Import a testsuite into the database')
     import_parser.add_argument("source", action="store", help="Folder containing EPUBs")
-    import_parser.add_argument("config", action="store", default="categories.yaml", help="categories config file")
+    import_parser.add_argument("config", action="store", default="testsuite.yaml", help="structure config file")
     import_parser.set_defaults(func = lambda args: import_testsuite.add_testsuites(args.source, args.config))
     
     listrs_parser = subparsers.add_parser('listrs', help="List all reading systems and their IDs")

@@ -49,7 +49,7 @@ class TestSuite(models.Model):
         except Test.DoesNotExist:
             return None
 
-    # use the ID assigned in categories.yaml
+    # use the ID assigned in testsuite.yaml
     def get_category_by_id(self, categoryid):
         from .category import Category
         return Category.objects.get(testsuite = self, category_id = categoryid)

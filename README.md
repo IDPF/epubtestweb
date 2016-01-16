@@ -40,7 +40,7 @@ Run these commands from `testsuite.site/`:
 
 Run these commands from `scripts/`:
 
-`./runmain.sh import PATH/TO/epub-testsuite/content/30 categories.yaml`
+`./runmain.sh import PATH/TO/epub-testsuite/content/30 testsuite.yaml`
 `./runmain.sh copy-users`
 
 (Where the old database containing user profile info is in the same directory as the current database, but is named `testsuite-old.db`.)
@@ -71,7 +71,7 @@ Testsuite categorization
 -------------
 The rules
 * follow the existing formatting of the epubs
-* organize into categories/features by using `categories.yaml`
+* organize into categories/features by using `testsuite.yaml`
 * one epub may appear in more than one category, but not across testsuites
 * a feature's ID must be unique within its testsuite
 
