@@ -45,9 +45,12 @@ def get_site_last_updated():
     else:
         return most_recent_testsuite_date
 
+@register.assignment_tag
+def is_readonly():
+    return settings.readonly
 
 #######################
 # for analytics
 @register.assignment_tag
-def get_enable_analytics():
+def is_using_analytics():
     return settings.enable_analytics

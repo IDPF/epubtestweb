@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponse
-from django.core.servers.basehttp import FileWrapper
+
 import os
 from testsuite_app.models import *
 from testsuite import settings

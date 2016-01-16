@@ -2,17 +2,23 @@
 {% load filters %}
 {% load inclusions %}
 
-{% get_enable_analytics as using_analytics %}
+{% comment %}
+{% is_using_analytics as using_analytics %}
 
 {% if using_analytics %}
 {% load analytical %}
 {% endif %}
+
+{% endcomment %}
+
 <!doctype html>
 <html lang="en">
 <head>
+    {% comment %}
     {% if using_analytics %}
     {% analytical_head_top %}
     {% endif %}
+    {% endcomment %}
     <title>EPUBTest{% block title %}{% endblock %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,15 +58,19 @@
     {%block style %}
     {% endblock %}
     
+    {% comment %}
     {% if using_analytics %}
     {% analytical_head_bottom %}
     {% endif %}
+    {% endcomment %}
 </head>
 
 <body>
+{% comment %}
     {% if using_analytics %}
     {% analytical_body_top %}
     {% endif %}
+    {% endcomment %}
     {% alerts messages %}
 
 
@@ -96,7 +106,8 @@
         </div>
 
         <footer>
-            {% if not user.is_authenticated %}
+            {% is_readonly as readonly %}
+            {% if not user.is_authenticated and readonly == False %}
             <p>Please <a href="/login/">log in</a> to add or manage reading system reports.</p>
             {% endif %}
             <p>EPUBTest.org development is sponsored by the <a target="_blank" href="http://www.daisy.org">DAISY Consortium</a> and the <a target="_blank" href="https://www.bisg.org">Book Industry Study Group</a>.</p>
@@ -105,8 +116,10 @@
             <p><em>Last updated {{last_updated}}.</em></p>
         </footer>
     </div>
+    {% comment %}
     {% if using_analytics %}
     {% analytical_body_bottom %}
     {% endif %}
+    {% endcomment %}
 </body>
 </html>

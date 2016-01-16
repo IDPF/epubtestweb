@@ -4,7 +4,6 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.contrib import messages
 from django.http import HttpResponse
-from django.core.servers.basehttp import FileWrapper
 
 from testsuite_app.models import *
 
