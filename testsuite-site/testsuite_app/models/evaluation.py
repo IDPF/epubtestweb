@@ -63,19 +63,6 @@ class Evaluation(models.Model):
 
         m.save()
 
-    def copy_metadata(self, evaluation):
-        # copy metadata from one result set to another
-        metadata = evaluation.get_metadata()
-        if metadata == None:
-            return
-        # make a new copy of the metadata
-        # if somehow the originating evaluation gets deleted, our delete_associated would
-        # dump its metadata too
-        self.add_metadata(metadata.assistive_technology, 
-            metadata.input_type,
-            metadata.supports_screenreader, 
-            metadata.supports_braille)
-
     def delete_associated(self):
         from .score import Score
         results = self.get_results()
@@ -106,10 +93,6 @@ class Evaluation(models.Model):
         from .result import Result
         return Result.objects.filter(evaluation = self)
 
-    def get_not_supported_results():
-        from .result import Result
-        return Result.objects.filter(evaluation = self, result = common.RESULT_NOT_SUPPORTED)
-
     def get_results_for_epub(self, epub):
         from .result import Result
         from .epub import Epub
@@ -136,15 +119,6 @@ class Evaluation(models.Model):
         except Result.DoesNotExist:
             return None
     
-    def get_result_for_test_by_id(self, testid):
-        "get the result for a test with the given ID"
-        from .result import Result
-        try:
-            result_obj = Result.objects.get(test__test_id = testid, evaluation = self)
-            return result_obj
-        except Result.DoesNotExist:
-            return None
-
     def get_score(self, category_or_feature):
         "return the score for a single category/feature"
         from .score import Score
@@ -160,13 +134,6 @@ class Evaluation(models.Model):
             print("WARNING: no score found for {}".format(category_or_feature))
             return None
         
-    def is_category_complete(self, evaluation):
-        results = self.get_results_for_category(category)
-        for r in results:
-            if r.result == None:
-                return False
-        return True
-
     def get_metadata(self):
         from .atmetadata import ATMetadata
         try:

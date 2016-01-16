@@ -14,39 +14,14 @@ def get_result(test, evaluation):
         return None
     return evaluation.get_result_for_test(test)
 
-# @register.filter
-# def is_test_supported(result_set, test):
-#     result = result_set.get_result_for_test(test)
-#     if result == None:
-#         return False
-#     if result.result == common.RESULT_SUPPORTED:
-#         return True
-#     else:
-#         return False
-
 @register.assignment_tag
 def get_metadata(evaluation):
     return evaluation.get_metadata()
-
-# @register.assignment_tag
-# def is_test_supported(result):
-#     if result == None:
-#         return False
-#     if result.result == common.RESULT_SUPPORTED:
-#         return True
-#     else:
-#         return False
-
 
 @register.assignment_tag
 def get_score(evaluation, category_or_feature):
     score = evaluation.get_score(category_or_feature) 
     return score
-
-# @register.assignment_tag
-# def get_evaluations(reading_system, testsuite):
-#     # gets only unarchived and published
-#     return reading_system.get_evaluations(testsuite)
 
 @register.assignment_tag
 def get_all_evaluations(reading_system, testsuite):

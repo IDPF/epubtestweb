@@ -24,21 +24,6 @@ def get_result_description(result):
     else:
         return "Not Tested"
 
-# @register.filter
-# def get_result_class(result, is_form):
-#     if result == None:
-#         return ""
-#     if is_form:
-#         if result.result == common.RESULT_NOT_ANSWERED:
-#             return "warning"
-#     else:
-#         if result.result == common.RESULT_SUPPORTED:
-#             return "success"
-#         elif result.result == common.RESULT_NOT_SUPPORTED:
-#             return "danger"
-#     return "" # default
-
-
 @register.filter
 def get_AT_metadata_description(meta):
     modalities = []
@@ -60,25 +45,6 @@ def get_AT_metadata_description(meta):
 def get_AT_metadata_notes(evaluation):
     meta = evaluation.get_metadata()
     return meta.notes
-
-
-# @register.filter
-# def print_tested_not_tested(bool_value):
-#     if bool_value == True:
-#         return "Tested"
-#     else:
-#         return "Not tested"
-
-# @register.filter
-# def print_input_type(metadata):
-#     if metadata == None:
-#         return ""
-#     if metadata.input_type == common.INPUT_TYPE_TOUCH:
-#         return "Touch/Gestures"
-#     if metadata.input_type == common.INPUT_TYPE_KEYBOARD:
-#         return "Keyboard"
-#     if metadata.input_type == common.INPUT_TYPE_MOUSE:
-#         return "Mouse"
 
 @register.filter
 def get_reading_system_display_name(reading_system):

@@ -41,6 +41,7 @@ class TestSuite(models.Model):
         tests = Test.objects.filter(testsuite = self)
         return tests
 
+    # use the xml ID (e.g. "svg-020")
     def get_test_by_id(self, testid):
         from .test import Test
         try:
@@ -48,6 +49,7 @@ class TestSuite(models.Model):
         except Test.DoesNotExist:
             return None
 
+    # use the ID assigned in categories.yaml
     def get_category_by_id(self, categoryid):
         from .category import Category
         return Category.objects.get(testsuite = self, category_id = categoryid)

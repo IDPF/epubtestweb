@@ -26,7 +26,3 @@ INPUT_TYPE = (
     (INPUT_TYPE_TOUCH, "Touch/Gestures"),
 )
 
-CONTEXT_INDEX = "index"
-CONTEXT_MANAGE = "manage"
-CONTEXT_RS = "rs"
-
