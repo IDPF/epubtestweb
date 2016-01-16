@@ -16,6 +16,7 @@ secret_key = 'utq699x(arx2auy=fnmotm^_7g2d^fa4n+kefz%fev1)noiv1e' # change or ov
 allowed_hosts = [] 
 enable_analytics = True
 allow_robots = True
+readonly = False
 # end of overrides
 
 try:

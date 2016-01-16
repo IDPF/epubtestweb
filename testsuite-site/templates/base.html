@@ -76,7 +76,10 @@
                     
                   
                 {% else %}
+                {% is_readonly as readonly %}
+                {% if readonly == False %}
                 <li><a href="/login/">Login</a></li>
+                {% endif %}
                 {% endif %}
                 <li><a href="/about/">About</a></li>
             </ul>

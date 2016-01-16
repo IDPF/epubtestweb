@@ -118,6 +118,9 @@ def is_test_supported(result):
 def is_reading_system_archived(reading_system):
     return reading_system.status == common.READING_SYSTEM_STATUS_TYPE_ARCHIVED
 
+@register.assignment_tag
+def is_readonly():
+    return settings.readonly
 
 ####################
 # permissions

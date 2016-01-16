@@ -18,14 +18,17 @@ urlpatterns = patterns('',
     (r'^archived-results/$', ArchivedResultsView.as_view()),
     (r'^call-for-moderators/$', CallForModeratorsView.as_view()),
     (r'^testsuite-xml/$', gen_testsuite_xml),
+    (r'^rs/(?P<pk>\d+)/$', ReadingSystemView.as_view()),
+    (r'^rs/(?P<pk>\d+)/accessibility/$', AccessibilityConfigurationsView.as_view()),
+    (r'^rs/(?P<pk>\d+)/accessibility/(?P<rset>\d+)$', AccessibilityReadingSystemView.as_view()),
+)
+
+urlpatterns_login_required = patterns('',
     (r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     (r'^auth/$', auth_and_login),
     (r'^logout/$', logout_user),
     (r'^manage/$', login_required(function=ManageView.as_view(), login_url='/login/')),
     (r'^export/$', login_required(function=export_data_all, login_url='/login/')),
-    (r'^rs/(?P<pk>\d+)/$', ReadingSystemView.as_view()),
-    (r'^rs/(?P<pk>\d+)/accessibility/$', AccessibilityConfigurationsView.as_view()),
-    (r'^rs/(?P<pk>\d+)/accessibility/(?P<rset>\d+)$', AccessibilityReadingSystemView.as_view()),
     (r'^rs/(?P<pk>\d+)/export/$', login_required(function=export_data_single, login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/edit/$', login_required(function=EditReadingSystemView.as_view(), login_url='/login/')),
     (r'^rs/(?P<pk>\d+)/eval/$', login_required(function=EditResultSetView.as_view(), login_url='/login/')),
@@ -44,6 +47,9 @@ urlpatterns = patterns('',
     (r'^rs/(?P<pk>\d+)/accessibility/(?P<rset>\d+)/visibility/$', login_required(function=set_accessibility_visibility, login_url='/login/')),
     (r'^admin/', include(admin.site.urls)),
 ) 
+
+if settings.readonly == False:
+    urlpatterns += urlpatterns_login_required
 
 additional_settings = patterns('',)
 
