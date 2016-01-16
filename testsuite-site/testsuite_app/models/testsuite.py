@@ -52,6 +52,10 @@ class TestSuite(models.Model):
         from .category import Category
         return Category.objects.get(testsuite = self, category_id = categoryid)
 
+    def get_epubs(self):
+        from .epub import Epub
+        return Epub.objects.filter(testsuite = self)
+
     
 
     

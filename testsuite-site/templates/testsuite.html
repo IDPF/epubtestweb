@@ -11,24 +11,27 @@
 <p>Please refer to these instructions, depending on which type of evaluation you are performing:</p>
 
 <ul class="nomark nomargin">
-<li><a href="/docs/instructions-for-evaluators">Instructions for evaluators</a></li>
-<li><a href="/docs/instructions-for-accessibility-evaluators">Instructions for accessibility evaluators</a></li>
+<li><a href="/docs/instructions-for-evaluators">Instructions for EPUB 3 evaluators</a></li>
+<li><a href="/docs/instructions-for-accessibility-evaluators">Instructions for Accessibility evaluators</a></li>
 </ul>
 
 <h2 id="testsuite-documents">Test Suite documents</h2>
 
-<p>The Test Suite is a freely-available collection of material created specifically for the purpose of testing reading systems. Direct download links are below. The source from which these downloadable publications are built can be found <a href="https://github.com/IDPF/epub-testsuite" target="_blank">on github</a>.</p>
-
+<p>Test Suites are freely-available collections of materials created specifically for the purpose of testing reading systems. Direct download links are below. The source from which these downloadable publications are built can be found in these repositories: <a href="https://github.com/IDPF/epub-testsuite" target="_blank">EPUB 3</a> and <a href="https://github.com/daisy/epub-accessibility-tests/">Accessibility</a>.</p>
 
 {% if most_recent_update != None %}
 <p><em>Last updated: {{most_recent_update}}</em></p>
 {% endif %}
 
-<ul class="nomark nomargin">
-{% for epub in epubs %}
-<li><a href="{{epub_downloads_url}}{{epub.filename}}">{{epub.title}}:</a> {{epub.description}}</li>
+{% for testsuite in testsuites %}
+<h3>Test Suite: {{testsuite.name}}</h3>
+<p>Contains {{testsuite.epubs.count}} publication(s).</p>
+    <ul class="nomark nomargin">
+        {% for epub in testsuite.epubs %}
+        <li><a href="{{epub_downloads_url}}{{epub.filename}}">{{epub.title}}:</a> {{epub.description}}</li>
+        {% endfor %}
+    </ul>
 {% endfor %}
-</ul>
 <p><a href="#top">Back to top</a></p>
 
 

@@ -16,11 +16,13 @@ class TestsuiteView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         downloads = []
-        epubs = Epub.objects.all()
         testsuites = TestSuite.objects.order_by("-version_date")
         most_recent_update = None
         if testsuites.count() > 0:
             most_recent_update = testsuites[0].version_date
-        return render(request, self.template_name, {"epubs": epubs, 
+        for testsuite in testsuites:
+            testsuite.epubs = testsuite.get_epubs()
+        
+        return render(request, self.template_name, {"testsuites": testsuites,
             "epub_downloads_url": settings.epub_downloads_url, "most_recent_update": most_recent_update})
 
