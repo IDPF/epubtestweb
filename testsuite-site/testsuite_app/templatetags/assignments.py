@@ -60,6 +60,16 @@ def get_form_for_result(result, result_formset):
             return f
     return None
 
+@register.assignment_tag
+def get_site_last_updated():
+    most_recent_evaluation_date = Evaluation.objects.all().order_by("-last_updated").first().last_updated
+    most_recent_testsuite_date = TestSuite.objects.all().order_by("-version_date").first().version_date
+    
+    if most_recent_evaluation_date > most_recent_testsuite_date:
+        return most_recent_evaluation_date
+    else:
+        return most_recent_testsuite_date
+
 
 #######################
 # for analytics

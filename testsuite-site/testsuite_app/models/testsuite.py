@@ -21,7 +21,7 @@ class TestSuiteManager(models.Manager):
 class TestSuite(models.Model):
     objects = TestSuiteManager()
 
-    version_date = models.DateField(max_length = common.SHORT_STRING)
+    version_date = models.DateTimeField(max_length = common.SHORT_STRING)
     testsuite_type = models.CharField(max_length = 1, choices = common.TESTSUITE_TYPE, default=common.TESTSUITE_TYPE_DEFAULT)
     allow_many_evaluations = models.BooleanField(default = False)
     name = models.CharField(max_length = common.SHORT_STRING)

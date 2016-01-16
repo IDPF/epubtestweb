@@ -91,7 +91,7 @@
     <div class="container">
         <div id="contents" class="">
         {% block content %}
-            <p>CONTENTS GO HERE</p>
+            
         {% endblock %}
         </div>
 
@@ -101,6 +101,8 @@
             {% endif %}
             <p>EPUBTest.org development is sponsored by the <a target="_blank" href="http://www.daisy.org">DAISY Consortium</a> and the <a target="_blank" href="https://www.bisg.org">Book Industry Study Group</a>.</p>
             <p>Copyright 2013 <a target="_blank" href="http://idpf.org">International Digital Publishing Forum.</a> All rights reserved.</p>
+            {% get_site_last_updated as last_updated %}
+            <p><em>Last updated {{last_updated}}.</em></p>
         </footer>
     </div>
     {% if using_analytics %}

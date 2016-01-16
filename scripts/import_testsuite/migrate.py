@@ -1,5 +1,7 @@
 from testsuite_app.models import *
 
+# migrate all evaluations to the new testsuite
+
 class MigrateData:
     results = None
     evaluations = None
@@ -21,13 +23,15 @@ class MigrateData:
 
 
     def migrate(self):
-        print("Migrating data")
+        print("Migrating data for {} evaluations".format(self.evaluations.count()))
 
+        # clear and recreate all score objects
         for evaluation in self.evaluations:
             scores = Score.objects.filter(evaluation = evaluation)
             scores.delete()
             evaluation.create_score_objects()
 
+        # clear the answers for any changed tests
         for result in self.results:
             try:
                 test = Test.objects.get(test_id = result.test_id)
@@ -41,6 +45,7 @@ class MigrateData:
             except Test.DoesNotExist:
                 result.delete()
         
+        # add results for new tests and update all scores
         for evaluation in self.evaluations:
             tests = evaluation.testsuite.get_tests()
             for test in tests:
