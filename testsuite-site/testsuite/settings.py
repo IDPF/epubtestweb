@@ -52,8 +52,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'testsuite_app',
-    #'analytical',
 ]
+
+if enable_analytics == True:
+    INSTALLED_APPS.append("analytical")
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,7 +136,6 @@ DATABASES = {
     },
 }
 
-ALLOWED_HOSTS = allowed_hosts
 SITE_ID = 1
 
 # List of finder classes that know how to find static files in
