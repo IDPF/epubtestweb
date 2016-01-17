@@ -3,20 +3,20 @@
 # all locally-overridable stuff goes here
 DEBUG = False
 TEMPLATE_DEBUG = False
-db_file = '/home/djangoweb/epubtestweb-db/testsuite.db'
-media_root = '/home/djangoweb/epubtestweb/testsuite-site/media'
+db_file = '/home/djangoweb/epubtest.org-version1/epubtestweb-db/testsuite.db'
+media_root = '/home/djangoweb/epubtest.org-version1/epubtestweb/testsuite-site/media'
 media_url = '/media/'
-template_dir = '/home/djangoweb/epubtestweb/testsuite-site/templates'
+template_dir = '/home/djangoweb/epubtest.org-version1/epubtestweb/testsuite-site/templates'
 static_url = '/static/'
-static_root = '/home/djangoweb/epubtestweb/testsuite-site/static'
-epub_downloads_root = '/home/djangoweb/epub-testsuite/build'
+static_root = '/home/djangoweb/epubtest.org-version1/epubtestweb/testsuite-site/static'
+epub_downloads_root = '/home/djangoweb/testsuites/epub-testsuite/build'
 epub_downloads_url = '/epubs/' #symlinked to epub_downloads_root
-previous_db = '/home/djangoweb/epubtestweb-db/testsuite-demo.db'
+previous_db = '/home/djangoweb/epubtest.org-version1/epubtestweb-db/old-testsuite.db'
 secret_key = 'utq699x(arx2auy=fnmotm^_7g2d^fa4n+kefz%fev1)noiv1e' # change or override this
 allowed_hosts = [] 
 enable_analytics = True
 allow_robots = True
-readonly = False
+readonly = True
 # end of overrides
 
 try:
