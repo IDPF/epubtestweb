@@ -155,7 +155,7 @@ GOOGLE_ANALYTICS_SITE_SPEED = True
 GOOGLE_ANALYTICS_INTERNAL_IPS = '142.136.168.189'
 GOOGLE_ANALYTICS_ANONYMIZE_IP = True
 
-
-
-
+# I don't know why this needs to go here, but it fixes problems
+import django
+django.setup()
 

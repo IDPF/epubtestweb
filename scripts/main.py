@@ -38,8 +38,6 @@ def clear_flags():
 
 
 def main():
-    import django
-    django.setup()
     
     argparser = argparse.ArgumentParser(description="epubtest.org command line")
     subparsers = argparser.add_subparsers(help='commands')

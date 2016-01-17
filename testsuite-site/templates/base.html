@@ -5,18 +5,15 @@
 {% is_using_analytics as using_analytics %}
 
 {% if using_analytics %}
-{% load analytical %}
+{% load google_analytics %}
 {% endif %}
+
 
 
 <!doctype html>
 <html lang="en">
 <head>
-    
-    {% if using_analytics %}
-    {% analytical_head_top %}
-    {% endif %}
-    
+
     <title>EPUBTest{% block title %}{% endblock %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,18 +52,12 @@
 
     {%block style %}
     {% endblock %}
-    
-    {% if using_analytics %}
-    {% analytical_head_bottom %}
-    {% endif %}
+
+    {% google_analytics %}    
 </head>
 
 <body>
 
-    {% if using_analytics %}
-    {% analytical_body_top %}
-    {% endif %}
-    
     {% alerts messages %}
 
 
@@ -112,10 +103,6 @@
             <p><em>Last updated {{last_updated}}.</em></p>
         </footer>
     </div>
-    
-    {% if using_analytics %}
-    {% analytical_body_bottom %}
-    {% endif %}
     
 </body>
 </html>

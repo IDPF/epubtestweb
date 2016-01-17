@@ -1,6 +1,4 @@
 import os
-
-from django.contrib.sessions.models import Session
 from datetime import datetime
 
 from testsuite_app.models import *
