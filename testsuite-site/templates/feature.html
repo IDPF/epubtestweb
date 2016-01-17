@@ -24,9 +24,11 @@
             <th class="rs">
                 <a href="/evaluation/{{evaluation.id}}">{{evaluation.reading_system | get_reading_system_display_name}}</a>
             <br/>
-            {% get_metadata evaluation as metadata %}
-            {% if metadata != None %}
-            <span>{{metadata.assistive_technology}}</span>
+            {% if feature.testsuite.testsuite_type == "2" %}
+                {% get_metadata evaluation as metadata %}
+                {% if metadata != None %}
+                    <span>{{metadata.assistive_technology}}</span>
+                {% endif %}
             {% endif %}
             </th>
             {% get_score evaluation feature as feature_score %}

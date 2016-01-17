@@ -52,10 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'testsuite_app',
+    'analytical',
 ]
-
-if enable_analytics == True:
-    INSTALLED_APPS.append("analytical")
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
