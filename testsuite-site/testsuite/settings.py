@@ -4,15 +4,15 @@ import os
 # all locally-overridable stuff goes here
 DEBUG = False
 template_debug = False
-db_file = '/home/djangoweb/epubtestweb-db/testsuite.db'
-template_dir = '/home/djangoweb/epubtestweb/testsuite-site/templates'
-media_root = '/home/djangoweb/epubtestweb/testsuite-site/media'
+db_file = '/home/djangoweb/epubtest.org/epubtestweb-db/testsuite.db'
+template_dir = '/home/djangoweb/epubtest.org/epubtestweb/testsuite-site/templates'
+media_root = '/home/djangoweb/epubtest.org/epubtestweb/testsuite-site/media'
 media_url = '/media/'
 static_url = '/static/'
-static_root = '/home/djangoweb/epubtestweb/testsuite-site/static'
+static_root = '/home/djangoweb/epubtest.org/epubtestweb/testsuite-site/static'
 epub_downloads_root = '/home/djangoweb/epub-testsuite/build'
 epub_downloads_url = '/epubs/' #symlinked to epub_downloads_root
-previous_db = '/home/djangoweb/epubtestweb-db/testsuite-demo.db'
+previous_db = '/home/djangoweb/epubtest.org/epubtestweb-db/testsuite-old.db'
 secret_key = 'utq699x(arx2auy=fnmotm^_7g2d^fa4n+kefz%fev1)noiv1e' # change or override this
 allowed_hosts = [] 
 enable_analytics = True
