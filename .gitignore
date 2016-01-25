@@ -49,3 +49,5 @@ testsuite-site/testsuite/local_settings.py
 env/pip-selfcheck.json 
 
 env/
+
+env/include/python3.4m
