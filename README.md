@@ -23,7 +23,7 @@ For admins
 
 Installing the website
 ----------------
-Requirements: Python 3, Django 1.8
+Requirements: Python 3, Django 1.9
 
 These are good instructions for getting it running on AWS:
 http://pragmaticstartup.wordpress.com/2011/04/02/non-techie-guide-to-setting-up-django-apache-mysql-on-amazon-ec2/

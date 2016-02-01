@@ -86,6 +86,7 @@ class Evaluation(models.Model):
             self.percent_complete = pct_complete #self.float_to_decimal(pct_complete)
         else:
             self.percent_complete = 0.0 #self.float_to_decimal(0.0)
+        # this doesn't save because save() calls this function
         
 
     def get_results(self):

@@ -19,6 +19,10 @@ def refresh_scores():
     print ("Refreshing scores")
     helper_functions.force_score_refresh()
 
+def refresh_percent_complete():
+    print("Refreshing percent complete")
+    helper_functions.force_percent_complete_refresh()
+
 def flag_items():
     import random
     # set result.flagged to true on some result objects
@@ -61,6 +65,9 @@ def main():
 
     scores_parser = subparsers.add_parser("score", help="Refresh all scores")
     scores_parser.set_defaults(func = lambda args: refresh_scores())
+
+    percent_complete_parser = subparsers.add_parser("percent-complete", help="Refresh percent complete")
+    percent_complete_parser.set_defaults(func = lambda args: refresh_percent_complete())
 
     copy_users_parser = subparsers.add_parser("copy-users", help="Refresh all scores")
     copy_users_parser.set_defaults(func = lambda args: copy_users())

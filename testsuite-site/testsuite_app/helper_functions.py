@@ -10,3 +10,8 @@ def force_score_refresh():
         evaluation.update_scores()
 
 
+def force_percent_complete_refresh():
+    from testsuite_app.models.evaluation import Evaluation
+    evaluations = Evaluation.objects.all()
+    for evaluation in evaluations:
+        evaluation.save() #save triggers update_percent_complete
