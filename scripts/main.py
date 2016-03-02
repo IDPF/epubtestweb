@@ -88,6 +88,11 @@ def main():
     unflag_items_parser = subparsers.add_parser("unflag", help="Reset all flags to false.")
     unflag_items_parser.set_defaults(func = lambda args: clear_flags())
 
+    superuser_parser = subparsers.add_parser("superuser", help="Make users super, or take away their superuser powers.")
+    superuser_parser.add_argument("username", action="store", help="username")
+    superuser_parser.add_argument("is_superuser", action="store", help="True/False")
+    superuser_parser.set_defaults(func = lambda args: set_superuser(args.username, args.is_superuser == 'True'))
+
     args = argparser.parse_args()
     args.func(args)
 

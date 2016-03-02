@@ -53,3 +53,16 @@ def add_user(username, password, first_name, last_name, email, is_superuser):
     user.last_name = last_name
     user.is_superuser = is_superuser == 'True'
     user.save()
+
+def set_superuser(username, is_superuser):
+    user = UserProfile.objects.get(username=username)
+    if user != None:
+        user.is_superuser = is_superuser
+        user.save()
+        if is_superuser:
+            print("User {} is now a superuser.".format(username))
+        else:
+            print("User {} is not a superuser anymore.".format(username))
+    else:
+        print("User {} not found.".format(username))
+
