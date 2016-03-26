@@ -59,5 +59,6 @@ class MigrateData:
                 
 
             evaluation.update_scores()
+            print("migrated evaluation ID {}".format(evaluation.id))
         
     
