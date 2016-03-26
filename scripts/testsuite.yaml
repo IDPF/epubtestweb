@@ -620,8 +620,12 @@ TestSuites:
                         TestIds:
                             - fxl-060
                             - fxl-070
-                            - fxl-080
                             - fxl-090
+                    -
+                        Name: Spine Override
+                        Id: spine-override
+                        TestIds:
+                            - fxl-080
                             - fxl-100
                     -
                         Name: Right-to-left Page Progression Direction
@@ -699,4 +703,33 @@ TestSuites:
                             - visual-510
                             - visual-610
                             - visual-710
+            -
+                Name: Media Overlays
+                Id: media-overlays-a11y
+                EpubIds:
+                  - com.github.epub-testsuite.epub30-test-0320
+                Features:
+                  - 
+                      Name: Basic Tests
+                      Id: mo-basic-tests
+                      TestIds:
+                          - MOA-BASIC-010
+                          - MOA-BASIC-020
+                          - MOA-BASIC-030
+                  -
+                      Name: Navigation Tests
+                      Id: mo-nav-tests
+                      TestIds:
+                          - MOA-NAV-010
+                          - MOA-NAV-020
+                          - MOA-NAV-030
+                          - MOA-NAV-040
+                          - MOA-NAV-050
+                          - MOA-NAV-060
+                          - MOA-NAV-070
+                          - MOA-NAV-080
+                          - MOA-NAV-090
+                          - MOA-NAV-100
+
+
 

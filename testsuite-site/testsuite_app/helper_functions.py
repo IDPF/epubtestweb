@@ -14,4 +14,4 @@ def force_percent_complete_refresh():
     from testsuite_app.models.evaluation import Evaluation
     evaluations = Evaluation.objects.all()
     for evaluation in evaluations:
-        evaluation.save() #save triggers update_percent_complete
+        evaluation.save(generate_timestamp = False) #save triggers update_percent_complete

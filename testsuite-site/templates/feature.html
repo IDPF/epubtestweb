@@ -15,7 +15,7 @@
         <th class="rs">Reading System</th>
         <th class="pass">Tests Passed</th>
         {% for test in tests %}
-        <th>{{test.name}}</th>
+        <th title="{{test.test_id}}">{{test.name}}</th>
         {% endfor %}
     </thead>
     <tbody>

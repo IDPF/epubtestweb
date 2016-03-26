@@ -48,10 +48,12 @@ class Evaluation(models.Model):
         from .category import Category
         category = result.test.category
         feature = result.test.feature
-        score = self.get_score(category)
-        score.update()
-        score = self.get_score(feature)
-        score.update()
+        if category != None:
+            score = self.get_score(category)
+            score.update()
+        if feature != None:
+            score = self.get_score(feature)
+            score.update()
 
     def add_metadata(self, assistive_technology, input_type, supports_screenreader, supports_braille):
         from .atmetadata import ATMetadata

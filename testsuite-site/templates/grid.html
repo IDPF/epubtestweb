@@ -50,7 +50,7 @@
                         {% get_score evaluation category as category_score %}
                         <td>
                             <a href="/evaluation/{{evaluation.id}}#{{category.category_id}}">
-                                {{category_score.percent | floatformat}}%
+                                {{category_score | score_as_percent}}
                             </a>
                         </td>
                     {% endfor %}

@@ -80,4 +80,11 @@ def dont_say_none(value):
     else:
         return value
 
-
+@register.filter
+def score_as_percent(score):
+    if score.nothing_tested == True:
+        return "Not Tested"
+    else:
+        retval = "{:.1f}".format(score.percent).rstrip('0').rstrip('.')
+        return "{}%".format(retval)
+        

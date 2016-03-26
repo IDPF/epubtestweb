@@ -62,7 +62,7 @@
             {% get_score evaluation category as category_score %}
             <tr>
                 <td><a href="#{{category.category_id}}">{{category.name}}</a></td>
-                <td>{{category_score.percent | floatformat}}%</td>
+                <td>{{category_score | score_as_percent}}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -87,7 +87,7 @@
     <tfoot>
         <tr class="score">
             <th colspan="2">Cumulative Score</th>
-            <td class="score">{{category_score.percent | floatformat}}%</td>
+            <td class="score">{{category_score | score_as_percent}}</td>
             <td></td>
         </tr>
     </tfoot>
@@ -103,7 +103,7 @@
     {% get_result test evaluation as test_result%}
 <tr>
     <td/>
-    <td id="{{test.test_id}}" class="test">{{test.name}}</td>
+    <td id="{{test.test_id}}" class="test" title="{{test.test_id}}">{{test.name}}</td>
     {% if test_result.result == "1" %}
     <td class="supported">
     {% elif test_result.result == "2" %}
