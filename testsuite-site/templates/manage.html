@@ -63,7 +63,9 @@
                 <ul>
                     <li><a title="Edit the evaluation" href="/evaluation/{{evaluation.id}}/edit/?return=/manage/">Edit</a></li>
                 {% if evaluation.is_published == False %}
+                    {% comment %}
                     <li><a title="Submit a request to publish" href="/evaluation/{{evaluation.id}}/request_publish/?return=/manage/">Request to publish</a></li>
+                    {% endcomment %}
                 {% endif %}
                 {% if evaluation.is_archived %}
                     <li><a title="Move out of the archives" href="/evaluation/{{evaluation.id}}/unarchive/?return=/manage/">Unarchive</a></li>
