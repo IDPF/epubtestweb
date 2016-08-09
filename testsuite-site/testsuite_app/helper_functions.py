@@ -29,7 +29,7 @@ def send_email_to_admins(subject, body):
             subject,
             body,
             marisa.email,
-            [marisa.email, prashant.email],
+            [marisa.email],
             fail_silently=True,
         )
     except ConnectionRefusedError:
@@ -42,7 +42,7 @@ def send_email_evaluation_created(evaluation):
     msgbody += generate_evaluation_description(evaluation)
     msgbody += "for the reading system\n"
     msgbody += generate_reading_system_description(evaluation.reading_system)
-    send_email_to_admins("Evaluation created on epubtest.org", msgbody)
+    return send_email_to_admins("Evaluation created on epubtest.org", msgbody)
 
 def send_email_request_to_publish_evaluation(evaluation):
     from testsuite_app.models.evaluation import Evaluation
@@ -50,7 +50,7 @@ def send_email_request_to_publish_evaluation(evaluation):
     msgbody += generate_evaluation_description(evaluation)
     msgbody += "for the reading system\n"
     msgbody += generate_reading_system_description(evaluation.reading_system)
-    send_email_to_admins("Request to publish evaluation on epubtest.org", msgbody)
+    return send_email_to_admins("Request to publish evaluation on epubtest.org", msgbody)
 
 def generate_evaluation_description(evaluation):
     from testsuite_app.models.evaluation import Evaluation
