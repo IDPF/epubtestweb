@@ -1,4 +1,4 @@
-from testsuite_app.models.common import *
+import testsuite_app.models.common
 
 def generate_timestamp():
     from datetime import datetime
@@ -75,7 +75,7 @@ def generate_evaluation_description(evaluation):
         user_last = evaluation.user.last_name,
         eval_id = evaluation.id,
         # this just finds the corresponding string label in TESTSUITE_TYPE
-        eval_type = TESTSUITE_TYPE[[i for i, v in enumerate(TESTSUITE_TYPE) if v[0] == evaluation.testsuite.testsuite_type][0]][1]
+        eval_type = common.TESTSUITE_TYPE[[i for i, v in enumerate(common.TESTSUITE_TYPE) if v[0] == evaluation.testsuite.testsuite_type][0]][1]
     )
     return desc
 

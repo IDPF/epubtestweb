@@ -1,7 +1,6 @@
 import argparse
 import os
 
-from testsuite_app import helper_functions
 from admin_functions import *
 from import_testsuite import import_testsuite
 
@@ -15,11 +14,13 @@ def import_data(infile):
     print ("Done")
 
 def refresh_scores():
+    from testsuite_app import helper_functions
     # this shouldn't need to be called
     print ("Refreshing scores")
     helper_functions.force_score_refresh()
 
 def refresh_percent_complete():
+    from testsuite_app import helper_functions
     print("Refreshing percent complete")
     helper_functions.force_percent_complete_refresh()
 
@@ -98,9 +99,9 @@ def main():
     superuser_parser.add_argument("is_superuser", action="store", help="True/False")
     superuser_parser.set_defaults(func = lambda args: set_superuser(args.username, args.is_superuser == 'True'))
 
-    testemail_parser.subparsers.add_parser("testemail", help="test email feature")
+    testemail_parser = subparsers.add_parser("testemail", help="test email feature")
     testemail_parser.set_defaults(func = lambda args: test_email_send())
-    
+
     args = argparser.parse_args()
     args.func(args)
 
