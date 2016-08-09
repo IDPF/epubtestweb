@@ -23,30 +23,19 @@ def send_email_to_admins(subject, body):
     from django.core.mail import send_mail
     from django.contrib import messages
 
-    admins = UserProfile.objects.filter(is_superuser = True)
-    addresses = []
-    for admin in admins:
-        addresses.append(admin.email)
-
-    # we don't want to email all admins yet, just use prashant's email
-    prashant = UserProfile.objects.get(username='prashantverma')
-    marisa = UserProfile.objects.get(username='marisademeglio')
-
-    # print("EMAILS: {0}".format(addresses))
-    # print(subject)
-    # print(body)
-    # print("\n\n")
-    # return
-    try:
-        send_mail(
-            subject,
-            body,
-            marisa.email,
-            [prashant.email, marisa.email],
-            fail_silently=True,
-        )
-    except ConnectionRefusedError:
-        return -1
+    marisa = UserProfile.objects.get(username = 'marisademeglio')
+    send_mail(subject, body, marisa.email, [marisa.email])
+    
+    # try:
+    #     send_mail(
+    #         subject,
+    #         body,
+    #         marisa.email,
+    #         [marisa.email],
+    #         fail_silently=True,
+    #     )
+    # except ConnectionRefusedError:
+    #     return -1
 
     return 0
 
