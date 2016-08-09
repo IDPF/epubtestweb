@@ -40,6 +40,11 @@ def clear_flags():
         result.flagged = False
         result.save()
 
+def test_email_send():
+    from django.core.mail import send_mail
+    from testsuite_app.models.user_profile import UserProfile
+    marisa = UserProfile.objects.get(username = 'marisademeglio')
+    send_mail("subject", "body", marisa.email, [marisa.email])
 
 def main():
     
@@ -93,6 +98,9 @@ def main():
     superuser_parser.add_argument("is_superuser", action="store", help="True/False")
     superuser_parser.set_defaults(func = lambda args: set_superuser(args.username, args.is_superuser == 'True'))
 
+    testemail_parser.subparsers.add_parser("testemail", help="test email feature")
+    testemail_parser.set_defaults(func = lambda args: test_email_send())
+    
     args = argparser.parse_args()
     args.func(args)
 
