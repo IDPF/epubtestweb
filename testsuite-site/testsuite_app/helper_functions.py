@@ -42,7 +42,7 @@ def send_email_to_admins(subject, body):
             subject,
             body,
             marisa.email,
-            [prashant.email],
+            [prashant.email, marisa.email],
             fail_silently=True,
         )
     except ConnectionRefusedError:
