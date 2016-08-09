@@ -29,12 +29,12 @@
 <table id="tbl-{{testsuite.testsuite_id}}" class="table table-striped">
     <thead>
         <tr>
+        {% if testsuite.testsuite_type == "2" %}
+            <th colspan="6">Reading System</th>
+        {% else %}
             <th colspan="5">Reading System</th>
-            {% if testsuite.testsuite_type == "2" %}
-            <th colspan="8">Evaluation</th>
-            {% else %}
-            <th colspan="8">Evaluation</th>
-            {% endif %}
+        {% endif %}
+            <th colspan="9">Evaluation</th>
             <th colspan="1">Admin</th>
         </tr>
         <tr>
@@ -46,6 +46,7 @@
             <th>OS</th>
             <th>OS Version</th>
             <th>Owner</th>
+            <th>ID</th>
             <th>Link</th>
             <th>Percent complete</th>
             <th>Last updated</th>
@@ -73,9 +74,10 @@
             <td>{{reading_system.operating_system}}</td>
             <td>{{reading_system.operating_system_version}}</td>
             <td>{{reading_system.user | get_user_display_name}}</td>
+            <td>{{evaluation.id}}</td>
             <td><a href="/evaluation/{{evaluation.id}}/" target="_blank">View</a></td>
             <td>{{evaluation.percent_complete}}%</td>
-            <td>{{evaluation.last_updated}}</td>
+            <td>{{evaluation.last_updated|date:"Y-m-d H:i"}}</td>
             <td>{{evaluation.is_published | print_yes_no}}</td>
             <td>{{evaluation.is_archived | print_yes_no}}</td>
             <td>{{evaluation.notes | dont_say_none}}</td>

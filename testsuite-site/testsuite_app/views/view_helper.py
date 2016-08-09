@@ -7,6 +7,7 @@ from testsuite_app.models import *
 from testsuite_app.forms import *
 from testsuite import settings
 from testsuite_app import permissions
+from testsuite_app.helper_functions import *
 
 
 def auth_and_login(request, onfail='/login/'):
@@ -23,6 +24,24 @@ def logout_user(request):
     logout(request)
     messages.add_message(request, messages.INFO, 'You have been logged out.')
     return redirect("/")
+
+def request_publish_evaluation(request, *args, **kwargs):
+    evaluation_id = kwargs['pk']
+    try:
+        evaluation = Evaluation.objects.get(id=evaluation_id)
+    except Evaluation.DoesNotExist:
+        return render(request, "404.html", {})
+
+    retval = send_email_request_to_publish_evaluation(evaluation)
+    if retval == 0:
+        messages.add_message(request, messages.INFO, "Request submitted to publish evaluation.")
+    else:
+        messages.add_message(request, messages.INFO, "Could not send request to publish. Please contact your admin.")
+
+    return_url = "/manage/"
+    if 'return' in request.GET:
+        return_url = request.GET.get('return', '') 
+    return redirect(return_url) 
 
 def publish_evaluation(request, *args, **kwargs):
     return set_evaluation_published_status(request, kwargs['pk'], True)

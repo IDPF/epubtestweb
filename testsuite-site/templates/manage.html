@@ -29,6 +29,7 @@
 <table id="eval" class="table table-striped">
     <thead>
         <tr>
+            <th>ID</th>
             <th>Description</th>
             <th>View</th>
             <th>Type</th>
@@ -43,6 +44,7 @@
     <tbody>
 {% for evaluation in evaluations %}
         <tr>
+            <td>{{evaluation.id}}</td>
             <td>
                 {{evaluation.reading_system|get_reading_system_display_name}}
                 {% if evaluation.testsuite.testsuite_type == "2" %}
@@ -55,17 +57,20 @@
         
             <td>{{evaluation.testsuite.name}}</td>
             <td>{{evaluation.percent_complete}}%</td>
-            <td>{{evaluation.last_updated}}</td>
+            <td>{{evaluation.last_updated|date:"Y-m-d H:i"}}</td>
             <td>{{evaluation.is_published | print_yes_no}}</td>
             <td>
                 <ul>
-                    <li><a href="/evaluation/{{evaluation.id}}/edit/?return=/manage/">Edit</a></li>
-                {% if evaluation.is_archived %}
-                    <li><a href="/evaluation/{{evaluation.id}}/unarchive/?return=/manage/">Unarchive</a></li>
-                {% else %}
-                    <li><a href="/evaluation/{{evaluation.id}}/archive/?return=/manage/">Archive</a></li>
+                    <li><a title="Edit the evaluation" href="/evaluation/{{evaluation.id}}/edit/?return=/manage/">Edit</a></li>
+                {% if evaluation.is_published == False %}
+                    <li><a title="Submit a request to publish" href="/evaluation/{{evaluation.id}}/request_publish/?return=/manage/">Request to publish</a></li>
                 {% endif %}
-                    <li><a href="/evaluation/{{evaluation.id}}/delete/?return=/manage/">Delete</a></li>
+                {% if evaluation.is_archived %}
+                    <li><a title="Move out of the archives" href="/evaluation/{{evaluation.id}}/unarchive/?return=/manage/">Unarchive</a></li>
+                {% else %}
+                    <li><a title="Move into the archives" href="/evaluation/{{evaluation.id}}/archive/?return=/manage/">Archive</a></li>
+                {% endif %}
+                    <li><a title="Delete this evaluation" href="/evaluation/{{evaluation.id}}/delete/?return=/manage/">Delete</a></li>
                 </ul>
             </td>
             <td>{{evaluation.notes}}</td>

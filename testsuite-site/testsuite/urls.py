@@ -41,7 +41,7 @@ ACTIONS for logged-in users (permissions vary for each action):
 /evaluation/<id>/(un)archive/: archive/unarchive evaluation
 /rs/all/ : view all reading systems
 /evaluation/all/: view all evaluations
-
+/evaluation/<id>/request_publish: email an admin asking to publish this eval
 """
 
 urlpatterns = [
@@ -86,7 +86,7 @@ urlpatterns_login_required = [
     url(r'^evaluation/(?P<pk>\d+)/unarchive/$', login_required(function=unarchive_evaluation, login_url='/login/')),
     url(r'^evaluation/(?P<pk>\d+)/edit/$', login_required(function=EditEvaluationView.as_view(), login_url='/login/')),
     url(r'^evaluation/(?P<pk>\d+)/edit/section/(?P<epub_id>.*)/$', login_required(function=EditEvaluationSingleEpubView.as_view(), login_url='/login/')),
-
+    url(r'^evaluation/(?P<pk>\d+)/request_publish/$', login_required(function=request_publish_evaluation, login_url='/login/')),
     url(r'^admin/', include(admin.site.urls)),
 ]
 

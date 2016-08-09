@@ -12,6 +12,7 @@ class EvaluationManager(models.Manager):
         evaluation.save()  
         evaluation.create_score_objects() 
         evaluation.create_result_objects()
+        helper_functions.send_email_evaluation_created(evaluation)
         return evaluation
 
     
