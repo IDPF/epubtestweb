@@ -35,7 +35,7 @@ def send_email_to_admins(subject, body):
             subject,
             body,
             settings.email_notifications_from,
-            settings.receive_email_notifications,
+            receive_email_notifications,
             fail_silently=True,
         )
     except ConnectionRefusedError:
