@@ -20,16 +20,22 @@ def send_email_to_admins(subject, body):
     from testsuite_app.models.user_profile import UserProfile
     from django.core.mail import send_mail
     from django.contrib import messages
+    from testsuite import settings
 
-    marisa = UserProfile.objects.get(username = 'marisademeglio')
-    prashant = UserProfile.objects.get(username = 'prashantverma')
-    
+    receive_email_notifications = []
+    for username in settings.receive_email_notifications:
+        try:
+            user = UserProfile.objects.get(username=username)
+            receive_email_notifications.append(user.email)
+        except UserProfile.DoesNotExist:
+            continue
+
     try:
         send_mail(
             subject,
             body,
-            marisa.email,
-            [marisa.email, prashant.email],
+            settings.email_notifications_from,
+            settings.receive_email_notifications,
             fail_silently=True,
         )
     except ConnectionRefusedError:

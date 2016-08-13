@@ -18,6 +18,8 @@ allowed_hosts = []
 enable_analytics = True
 allow_robots = True
 readonly = False # disable pages that require a login
+receive_email_notifications = []
+email_notifications_from = ''
 # end of overrides
 
 try:
