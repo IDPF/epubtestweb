@@ -1,0 +1,126 @@
+# there can be more than one testsuite but each has to have a unique type
+# at the moment, the only supported types are 'Default' and 'Accessibility'
+TestSuites:
+    -
+        Name: Accessibility
+        Type: accessibility
+        Id: accessibility
+        AllowManyEvaluations: True
+        Categories:
+            -
+                Name: Essentials
+                #SuperCategory is a higher-level table header
+                SuperCategory: Basic
+                Id: essential-accessibility-tests
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0300
+                Features:
+                    -
+                        Name: Basic Functionality
+                        Id: basic-functionality
+                        TestIds:
+                            - file-010
+                            - file-110
+                            - file-210
+                            - file-310
+                    -
+                        Name: Navigation
+                        Id: a11y-navigation
+                        TestIds:
+                            - nav-010
+                            - nav-110
+                            - nav-210
+                            - nav-310
+                            - nav-410
+                    -
+                        Name: Highlights, Notes, and Bookmarks
+                        Id: annotation
+                        TestIds:
+                            - anno-010
+                            - anno-110
+                            - anno-210
+                            - anno-310
+
+                    -
+                        Name: Non Visual Reading
+                        Id: reading
+                        TestIds:
+                            - reading-010
+                            - reading-110
+                            - reading-210
+                            - reading-310
+                            - reading-410
+                            - reading-510
+                            - reading-610
+                            - reading-710
+                            - reading-810
+                            - reading-910
+                            - reading-1010
+                            - reading-1110
+                            - reading-1210
+            -
+                Name: Visual Adjustment Tests
+                SuperCategory: Basic
+                Id: visual-adjustment-tests
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0300
+                Features:
+                    -
+                        Name: Visual Adjustment
+                        Id: visual-adjustment
+                        TestIds:
+                            - visual-010
+                            - visual-110
+                            - visual-210
+                            - visual-310
+                            - visual-410
+                            - visual-510
+                            - visual-610
+                            - visual-710
+            -
+                Name: Media Overlays
+                SuperCategory: Advanced
+                Id: media-overlays-a11y
+                EpubIds:
+                  - com.github.epub-testsuite.epub30-test-0320
+                Features:
+                  -
+                      Name: Basic Tests
+                      Id: mo-basic-tests
+                      TestIds:
+                          - MOA-BASIC-010
+                          - MOA-BASIC-020
+                          - MOA-BASIC-030
+                  -
+                      Name: Navigation Tests
+                      Id: mo-nav-tests
+                      TestIds:
+                          - MOA-NAV-010
+                          - MOA-NAV-020
+                          - MOA-NAV-030
+                          - MOA-NAV-040
+                          - MOA-NAV-050
+                          - MOA-NAV-060
+                          - MOA-NAV-070
+                          - MOA-NAV-080
+                          - MOA-NAV-090
+                          - MOA-NAV-100
+            -
+                Name: Read Aloud
+                SuperCategory: Advanced
+                Id: read-aloud-a11y
+                EpubIds:
+                  - com.github.epub-testsuite.epub30-test-0300
+                Features:
+                  -
+                      Name: Read Aloud
+                      Id: read-aloud-tests
+                      TestIds:
+                          - ReadAloud-010
+                          - ReadAloud-110
+                          - ReadAloud-210
+                          - ReadAloud-310
+                          - ReadAloud-410
+                          - ReadAloud-510
+                          - ReadAloud-610
+                          - ReadAloud-710

@@ -36,7 +36,8 @@ class MigrateData:
             try:
                 test = Test.objects.get(test_id = result.test_id)
                 result.test = test
-                if test.xhtml != result.test_xhtml:
+                if self.compare_xhtml(test.xhtml, result.test_xhtml) == False:
+                #if test.xhtml != result.test_xhtml:
                     # clear the current answer because the test has changed
                     result.result = common.RESULT_NOT_ANSWERED
                     result.flagged = True
@@ -60,3 +61,18 @@ class MigrateData:
 
             evaluation.update_scores()
             print("migrated evaluation ID {}".format(evaluation.id))
+
+    def compare_xhtml(self, comp1, comp2):
+        # filter the strings a bit before comparing them
+        comp1 = comp1 \
+            .replace(" class=\"ftest\"", "") \
+            .replace(" class=\"ctest\"", "") \
+            .replace(" xmlns=\"http://www.w3.org/1999/xhtml\"", "") \
+            .replace(" xmlns:epub=\"http://www.idpf.org/2007/ops\"", "")
+        comp2 = comp2 \
+            .replace(" class=\"ftest\"", "") \
+            .replace(" class=\"ctest\"", "") \
+            .replace(" xmlns=\"http://www.w3.org/1999/xhtml\"", "") \
+            .replace(" xmlns:epub=\"http://www.idpf.org/2007/ops\"", "")
+
+        return comp1 == comp2
