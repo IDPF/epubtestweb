@@ -8,10 +8,10 @@ TestSuites:
         AllowManyEvaluations: True
         Categories:
             -
-                Name: Essentials
+                Name: Basic Functionality
                 #SuperCategory is a higher-level table header
-                SuperCategory: Basic
-                Id: essential-accessibility-tests
+                SuperCategory: Essential
+                Id: basic-functionality-cat
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0300
                 Features:
@@ -40,10 +40,16 @@ TestSuites:
                             - anno-110
                             - anno-210
                             - anno-310
-
+            -
+                Name: Non-Visual Reading
+                SuperCategory: Essential
+                Id: non-visual-reading-cat
+                EpubIds:
+                    - com.github.epub-testsuite.epub30-test-0300
+                Features:
                     -
-                        Name: Non Visual Reading
-                        Id: reading
+                        Name: Non-Visual Reading
+                        Id: non-visual-reading
                         TestIds:
                             - reading-010
                             - reading-110
@@ -60,8 +66,8 @@ TestSuites:
                             - reading-1210
             -
                 Name: Visual Adjustment Tests
-                SuperCategory: Basic
-                Id: visual-adjustment-tests
+                SuperCategory: Essential
+                Id: visual-adjustment-cat
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0300
                 Features:
@@ -78,9 +84,29 @@ TestSuites:
                             - visual-610
                             - visual-710
             -
+                Name: Read Aloud
+                SuperCategory: Essential
+                Id: read-aloud-cat
+                EpubIds:
+                  - com.github.epub-testsuite.epub30-test-0300
+                Features:
+                  -
+                      Name: Read Aloud
+                      Id: read-aloud
+                      TestIds:
+                          - ReadAloud-010
+                          - ReadAloud-110
+                          - ReadAloud-210
+                          - ReadAloud-310
+                          - ReadAloud-410
+                          - ReadAloud-510
+                          - ReadAloud-610
+                          - ReadAloud-710
+
+            -
                 Name: Media Overlays
                 SuperCategory: Advanced
-                Id: media-overlays-a11y
+                Id: media-overlays-a11y-tests
                 EpubIds:
                   - com.github.epub-testsuite.epub30-test-0320
                 Features:
@@ -105,22 +131,3 @@ TestSuites:
                           - MOA-NAV-080
                           - MOA-NAV-090
                           - MOA-NAV-100
-            -
-                Name: Read Aloud
-                SuperCategory: Advanced
-                Id: read-aloud-a11y
-                EpubIds:
-                  - com.github.epub-testsuite.epub30-test-0300
-                Features:
-                  -
-                      Name: Read Aloud
-                      Id: read-aloud-tests
-                      TestIds:
-                          - ReadAloud-010
-                          - ReadAloud-110
-                          - ReadAloud-210
-                          - ReadAloud-310
-                          - ReadAloud-410
-                          - ReadAloud-510
-                          - ReadAloud-610
-                          - ReadAloud-710

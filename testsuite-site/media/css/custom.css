@@ -4,7 +4,7 @@ html {
     font-size: 62.5%;
 }
 
-body { 
+body {
     font-family: 'Open Sans', sans-serif;
     background: #fff;
     font-size: 1.4rem;
@@ -124,7 +124,7 @@ div#contents > * {
     margin-right: 2rem;
 }
 
-p { 
+p {
     width: 90%;
 }
 
@@ -162,7 +162,7 @@ footer {
 }
 
 footer img {
-    margin-right: 40px; margin-bottom: 20px; 
+    margin-right: 40px; margin-bottom: 20px;
 }
 
 footer a {
@@ -177,7 +177,7 @@ footer p {
 /*           NAVIGATION BAR                                    */
 /***************************************************************/
 
-.navbar { 
+.navbar {
     font-family: 'Open Sans', sans-serif;
     color: #004080;
     background-color: #fff;
@@ -267,8 +267,8 @@ footer p {
   opacity: 0;
   visibility: hidden;
 }
-.navbar ul li ul li { 
-  display: block; 
+.navbar ul li ul li {
+  display: block;
   width: 150px;
 }
 .navbar ul li ul li:hover { background: #fff; }
@@ -278,7 +278,7 @@ footer p {
   visibility: visible;
 }
 
-.nav-active { 
+.nav-active {
     color: #0099cc !important;
     text-transform: uppercase;
     font-size: 12px;
@@ -387,7 +387,7 @@ th {
     text-align: center;
 }
 
-.table { 
+.table {
     font-family: 'Open Sans', sans-serif;
     width: auto;
 }
@@ -496,6 +496,7 @@ table.dataTable thead th {
     color: #004080;
 }
 
+/* sort arrows */
 
 /***************************************************************/
 /*           RS SUMMARY TABLES                                 */
