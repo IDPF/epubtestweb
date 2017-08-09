@@ -23,7 +23,7 @@
 
 <h2 class="eval">My evaluations</h2>
 
-{% if evaluations|length = 0 %}
+{% if evaluations|length == 0 %}
 <p class="manage-none">You have not added any evaluations.</p>
 {% else %}
 <table id="eval" class="table table-striped">
@@ -54,7 +54,7 @@
                 {% endif %}
             </td>
             <td><a href="/evaluation/{{evaluation.id}}/" target="_blank">Link</a></td>
-        
+
             <td>{{evaluation.testsuite.name}}</td>
             <td>{{evaluation.percent_complete}}%</td>
             <td>{{evaluation.last_updated|date:"Y-m-d H:i"}}</td>
@@ -91,7 +91,7 @@
 
 <h2 class="eval">My reading systems</h2>
 
-{% if reading_systems|length = 0 %}
+{% if reading_systems|length == 0 %}
 <p class="manage-none">You have not added any reading systems.</p>
 {% else %}
 <table id="rs" class="table table-striped">
@@ -131,11 +131,11 @@
 
 <script>
     var dt = new DT();
-    
+
     $(document).ready(function(){
         setView('');
     });
-    
+
     function setView(tblType) {
         dt.setTableType(tblType);
         var options = {

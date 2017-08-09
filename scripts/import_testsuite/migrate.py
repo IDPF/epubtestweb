@@ -5,21 +5,21 @@ from testsuite_app.models import *
 class MigrateData:
     results = None
     evaluations = None
-    
+
     def pre_migrate(self, old_testsuite):
         print("Pre Migrate")
-        
+
         self.results = Result.objects.filter(evaluation__testsuite = old_testsuite)
         for result in self.results:
             result.test_id = result.test.test_id
             result.test_xhtml = result.test.xhtml
-        
+
         self.evaluations = Evaluation.objects.filter(testsuite = old_testsuite)
-    
+
     def update_testsuite(self, testsuite):
         for evaluation in self.evaluations:
             evaluation.testsuite = testsuite
-            evaluation.save()
+            evaluation.save(False)
 
 
     def migrate(self):
@@ -44,7 +44,7 @@ class MigrateData:
             # a test may have been removed
             except Test.DoesNotExist:
                 result.delete()
-        
+
         # add results for new tests and update all scores
         for evaluation in self.evaluations:
             tests = evaluation.testsuite.get_tests()
@@ -56,9 +56,7 @@ class MigrateData:
                     result.result = common.RESULT_NOT_ANSWERED
                     result.flagged = True
                     result.save()
-                
+
 
             evaluation.update_scores()
             print("migrated evaluation ID {}".format(evaluation.id))
-        
-    

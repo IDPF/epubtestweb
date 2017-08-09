@@ -23,7 +23,7 @@ def add_testsuite(config_section, sourcedir):
     testsuite_type = common.TESTSUITE_TYPE_DEFAULT
     if config_section['Type'] == "accessibility":
         testsuite_type = common.TESTSUITE_TYPE_ACCESSIBILITY
-    
+
     migrator = None
 
     # remove the old testsuite, categories, features
@@ -56,7 +56,7 @@ def add_testsuite(config_section, sourcedir):
     print("This testsuite contains {0} tests".format(num_tests))
     if migrator != None:
         migrator.migrate()
-    
+
     print("Done importing testsuite.")
 
     return testsuite
@@ -74,8 +74,10 @@ def create_testsuite(config_section):
 def import_features_and_categories(config_section, testsuite):
     categories = config_section['Categories']
     for category in categories:
-        db_category = db_helper.add_category(category['Name'], category['Id'], testsuite)
-
+        if 'SuperCategory' in category:
+            db_category = db_helper.add_category(category['Name'], category['Id'], category['SuperCategory'], testsuite)
+        else:
+            db_category = db_helper.add_category(category['Name'], category['Id'], "", testsuite)
         for feature in category['Features']:
             db_feature = db_helper.add_feature(feature['Id'], feature['Name'], db_category, testsuite)
 
@@ -111,5 +113,3 @@ def print_testsuite_structure(testsuite):
             tests = feat.get_tests()
             print("Tests: {}".format(tests))
     print("*******************")
-
-

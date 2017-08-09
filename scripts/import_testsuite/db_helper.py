@@ -7,7 +7,7 @@ def add_testsuite(testsuite_type, testsuite_id, name, allow_many_evaluations):
     todays_date = datetime.today()
     version_date = "{0}-{1}-{2}".format(str(todays_date.year), str(todays_date.month).zfill(2), str(todays_date.day).zfill(2))
     print("Creating Test Suite version {}, type: {}".format(version_date, testsuite_type))
-    db_testsuite = TestSuite(version_date = version_date, 
+    db_testsuite = TestSuite(version_date = version_date,
         testsuite_type = testsuite_type,
         testsuite_id = testsuite_id,
         name = name,
@@ -15,11 +15,12 @@ def add_testsuite(testsuite_type, testsuite_id, name, allow_many_evaluations):
     db_testsuite.save()
     return db_testsuite
 
-def add_category(name, category_id, testsuite):
+def add_category(name, category_id, super_category, testsuite):
     db_category = Category(
         name = name,
         testsuite = testsuite,
         category_id = category_id,
+        super_category = super_category
     )
     db_category.save()
     return db_category
@@ -42,7 +43,7 @@ def add_test(name, description, required, test_id, testsuite, xhtml, epub, order
 def add_feature(featureid, name, category, testsuite):
     db_feature = Feature(
         feature_id = featureid,
-        name = name, 
+        name = name,
         category = category,
         testsuite = testsuite)
     db_feature.save()

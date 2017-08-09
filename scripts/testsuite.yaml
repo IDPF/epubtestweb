@@ -1,6 +1,6 @@
 # there can be more than one testsuite but each has to have a unique type
 # at the moment, the only supported types are 'Default' and 'Accessibility'
-TestSuites: 
+TestSuites:
     -
         Name: EPUB 3
         Type: default
@@ -16,12 +16,12 @@ TestSuites:
                     - com.github.epub-testsuite.epub30-test-0111
                     - com.github.epub-testsuite.epub30-test-0112
                 Features:
-                    - 
+                    -
                         Id: inline-frames
                         Name: Inline Frames
                         TestIds:
                             - iframe-010
-                    - 
+                    -
                         Id: image-formats
                         Name: Image Formats
                         TestIds:
@@ -95,19 +95,19 @@ TestSuites:
                             - flow-010
                             - flow-015
                             - flow-020
-            - 
+            -
                 Name: SVG
                 Id: svg
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0100
                 Features:
-                    - 
+                    -
                         Id: shapes
                         Name: Shapes
                         TestIds:
                             - svg-010
                             - svg-020
-                    - 
+                    -
                         Id: svg-styling
                         Name: Styling
                         TestIds:
@@ -138,7 +138,7 @@ TestSuites:
                             - svg-410
                             - svg-420
                             - svg-430
-                    - 
+                    -
                         Id: image-embedding
                         Name: Image Embedding
                         TestIds:
@@ -147,7 +147,7 @@ TestSuites:
                         Id: svg-in-spine
                         Name: SVG Support in Spine
                         TestIds:
-                            - svg-doc-001                        
+                            - svg-doc-001
 
             -
                 Name: EPUB Style Sheets
@@ -155,12 +155,12 @@ TestSuites:
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0101
                 Features:
-                    - 
+                    -
                         Id: multicolumn-layouts
                         Name: Multi-Column Layouts
                         TestIds:
                             - style-110
-                    - 
+                    -
                         Id: css-namespaces
                         Name: CSS Namespaces
                         TestIds:
@@ -229,7 +229,7 @@ TestSuites:
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0102
                 Features:
-                    - 
+                    -
                         Name: epubReadingSystem
                         Id: epub-reading-system
                         TestIds:
@@ -396,7 +396,7 @@ TestSuites:
                             - mo-esc-030
                     -
                         Name: Navigation
-                        Id: navigation
+                        Id: mo-navigation
                         TestIds:
                             - mo-nav-010
                             - mo-nav-020
@@ -614,7 +614,7 @@ TestSuites:
                             - fxl-130
                             - fxl-140
                             - fxl-150
-                    - 
+                    -
                         Name: Orientation
                         Id: orientation
                         TestIds:
@@ -633,7 +633,7 @@ TestSuites:
                         TestIds:
                             - fxl-120
 
-    - 
+    -
         Name: Accessibility
         Type: accessibility
         Id: accessibility
@@ -641,20 +641,40 @@ TestSuites:
         Categories:
             -
                 Name: Essentials
+                #SuperCategory is a higher-level table header
+                SuperCategory: Basic
                 Id: essential-accessibility-tests
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0300
                 Features:
-                    - 
-                        Name: File Management
-                        Id: file-management
+                    -
+                        Name: Basic Functionality
+                        Id: basic-functionality
                         TestIds:
                             - file-010
                             - file-110
+                            - file-210
                             - file-310
-                            - file-410
-                    - 
-                        Name: Reading
+                    -
+                        Name: Navigation
+                        Id: a11y-navigation
+                        TestIds:
+                            - nav-010
+                            - nav-110
+                            - nav-210
+                            - nav-310
+                            - nav-410
+                    -
+                        Name: Highlights, Notes, and Bookmarks
+                        Id: annotation
+                        TestIds:
+                            - anno-010
+                            - anno-110
+                            - anno-210
+                            - anno-310
+
+                    -
+                        Name: Non Visual Reading
                         Id: reading
                         TestIds:
                             - reading-010
@@ -664,52 +684,39 @@ TestSuites:
                             - reading-410
                             - reading-510
                             - reading-610
-                    - 
-                        Name: Navigation
-                        Id: navigation
-                        TestIds:
-                            - nav-010
-                            - nav-110
-                            - nav-210
-                            - nav-310
-                            - nav-410
-                            - nav-510
-                            - nav-610
-                            - nav-710
-                            - nav-810
-                            - nav-910
-                            - nav-1010
-                            - nav-1110
-                    -
-                        Name: Annotation
-                        Id: annotation
-                        TestIds:
-                            - anno-010
-                            - anno-110
-                            - anno-210
-                            - anno-310
+                            - reading-710
+                            - reading-810
+                            - reading-910
+                            - reading-1010
+                            - reading-1110
+                            - reading-1210
             -
                 Name: Visual Adjustment Tests
+                SuperCategory: Basic
                 Id: visual-adjustment-tests
                 EpubIds:
                     - com.github.epub-testsuite.epub30-test-0300
                 Features:
-                    - 
+                    -
                         Name: Visual Adjustment
                         Id: visual-adjustment
                         TestIds:
                             - visual-010
+                            - visual-110
                             - visual-210
+                            - visual-310
+                            - visual-410
                             - visual-510
                             - visual-610
                             - visual-710
             -
                 Name: Media Overlays
+                SuperCategory: Advanced
                 Id: media-overlays-a11y
                 EpubIds:
                   - com.github.epub-testsuite.epub30-test-0320
                 Features:
-                  - 
+                  -
                       Name: Basic Tests
                       Id: mo-basic-tests
                       TestIds:
@@ -730,6 +737,22 @@ TestSuites:
                           - MOA-NAV-080
                           - MOA-NAV-090
                           - MOA-NAV-100
-
-
-
+            -
+                Name: Read Aloud
+                SuperCategory: Advanced
+                Id: read-aloud-a11y
+                EpubIds:
+                  - com.github.epub-testsuite.epub30-test-0300
+                Features:
+                  -
+                      Name: Read Aloud
+                      Id: read-aloud-tests
+                      TestIds:
+                          - ReadAloud-010
+                          - ReadAloud-110
+                          - ReadAloud-210
+                          - ReadAloud-310
+                          - ReadAloud-410
+                          - ReadAloud-510
+                          - ReadAloud-610
+                          - ReadAloud-710
