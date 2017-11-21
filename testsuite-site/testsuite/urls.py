@@ -23,10 +23,11 @@ note that in some cases, IDs are numbers and in other cases, human-readable iden
 /testsuite/<id>/ : evaluations for testsuite (e.g. 'reading systems' page or 'accessibility' page)
 /testsuite/<id>/archive/: archived evaluations for testsuite
 
-/evaluation/<id>/ : single reading system results for one testsuite 
+/evaluation/<id>/ : single reading system results for one testsuite
 /testsuite/<id>/feature/<id>: many reading system results for one feature
 /testsuite/: instructions and downloads
 /docs/*: static pages with instructions etc
+/participate/*: pages about getting involved
 
 ACTIONS for logged-in users (permissions vary for each action):
 /manage/: logged-in user starting point
@@ -49,24 +50,26 @@ urlpatterns = [
     url(r'^$', IndexView.as_view()),
     url(r'^docs/instructions-for-evaluators/$', InstructionsForEvaluatorsView.as_view()),
     url(r'^docs/instructions-for-accessibility-evaluators/$', InstructionsForAccessibilityEvaluatorsView.as_view()),
-    url(r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),    
+    url(r'^docs/call-for-moderators/$', CallForModeratorsView.as_view()),
     url(r'^testsuite/$', TestsuiteView.as_view()),
-    
+    url(r'^participate/$', ParticipateView.as_view()),
+    url(r'^participate/signup/$', SignUpView.as_view()),
+
     # public reports
     url(r'^features/$', FeaturesView.as_view()),
     # url order is important because of the human-readable IDs (i.e any character allowed, any length)
     url(r'^testsuite/(?P<testsuite_id>.+)/feature/(?P<feature_id>.+)/$', FeatureView.as_view()),
     url(r'^testsuite/(?P<testsuite_id>.+)/archive/$', ArchiveGridView.as_view()),
     url(r'^testsuite/(?P<testsuite_id>.+)/$', GridView.as_view()),
-    url(r'^evaluation/(?P<pk>\d+)/$', EvaluationView.as_view()),
+    url(r'^evaluation/(?P<pk>\d+)/$', EvaluationView.as_view())
 ]
 
 urlpatterns_login_required = [
-    # authorization    
+    # authorization
     url(r'^login/$', views.login, {'template_name': 'login.html'}),
     url(r'^auth/$', auth_and_login),
     url(r'^logout/$', logout_user),
-    
+
     # pages for logged-in users
     url(r'^manage/$', login_required(function=ManageView.as_view(), login_url='/login/')),
     # this is only used to send DELETE to /rs/ID/. there are no other actions on RS views.
@@ -74,7 +77,7 @@ urlpatterns_login_required = [
     url(r'^rs/add/$', login_required(function=AddEditReadingSystemView.as_view(), login_url='/login/')),
     url(r'^rs/(?P<pk>\d+)/edit/$', login_required(function=AddEditReadingSystemView.as_view(), login_url='/login/')),
     url(r'^rs/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteReadingSystemView.as_view(), login_url='/login/')),
-    
+
     url(r'^evaluation/add/$', login_required(function=AddEvaluationView.as_view(), login_url='/login/')),
     url(r'^evaluation/(?P<pk>\d+)/delete/$', login_required(function=ConfirmDeleteEvaluationView.as_view(), login_url='/login/')),
     url(r'^evaluation/all/$', login_required(function=AllEvaluationsView.as_view(), login_url='/login/')),
@@ -92,7 +95,7 @@ urlpatterns_login_required = [
 
 if settings.readonly == False:
     urlpatterns += urlpatterns_login_required
- 
+
 additional_settings = []
 
 if settings.allow_robots == False:
@@ -101,6 +104,6 @@ if settings.allow_robots == False:
     ]
 
 urlpatterns += additional_settings
-    
+
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.EPUB_URL, document_root = settings.EPUB_ROOT)

@@ -7,15 +7,15 @@ class EvaluationManager(models.Manager):
         from testsuite_app import helper_functions
         print("Creating evaluation")
         last_updated = helper_functions.generate_timestamp()
-        evaluation = Evaluation(reading_system = reading_system, 
+        evaluation = Evaluation(reading_system = reading_system,
             testsuite=testsuite, last_updated = last_updated, user = user)
-        evaluation.save()  
-        evaluation.create_score_objects() 
+        evaluation.save()
+        evaluation.create_score_objects()
         evaluation.create_result_objects()
         helper_functions.send_email_evaluation_created(evaluation)
         return evaluation
 
-    
+
 
 class Evaluation(models.Model):
     objects = EvaluationManager()
@@ -27,7 +27,8 @@ class Evaluation(models.Model):
     user = models.ForeignKey('UserProfile')
     is_archived = models.BooleanField(default = False)
     is_published = models.BooleanField(default = False)
-    notes = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
+    notes = models.CharField(max_length = common.LONG_STRING, null = True, blank = True)
+    summary = models.CharField(max_length = 2000, null = True, blank = True)
 
     def save(self, generate_timestamp = True, *args, **kwargs):
         self.update_percent_complete()
@@ -73,7 +74,7 @@ class Evaluation(models.Model):
             r.delete()
 
         scores = Score.objects.filter(evaluation = self)
-        
+
         for s in scores:
             s.delete()
 
@@ -90,7 +91,7 @@ class Evaluation(models.Model):
         else:
             self.percent_complete = 0.0 #self.float_to_decimal(0.0)
         # this doesn't save because save() calls this function
-        
+
 
     def get_results(self):
         "get a queryset of all the results for the given testsuite"
@@ -104,7 +105,7 @@ class Evaluation(models.Model):
         tests = Test.objects.filter(epub = epub)
         return self.get_results_for_tests(tests)
 
-    def get_results_for_category(self, category): 
+    def get_results_for_category(self, category):
         "get a queryset of all the results for the given category/feature"
         tests = category.get_tests()
         return self.get_results_for_tests(tests)
@@ -114,7 +115,7 @@ class Evaluation(models.Model):
         from .result import Result
         results = Result.objects.filter(test__in=tests, evaluation = self)
         return results
-    
+
     def get_result_for_test(self, test):
         from .result import Result
         try:
@@ -122,7 +123,7 @@ class Evaluation(models.Model):
             return result
         except Result.DoesNotExist:
             return None
-    
+
     def get_score(self, category_or_feature):
         "return the score for a single category/feature"
         from .score import Score
@@ -130,14 +131,14 @@ class Evaluation(models.Model):
 
         try:
             score = Score.objects.get(
-                evaluation = self, 
+                evaluation = self,
                 content_type = ContentType.objects.get_for_model(category_or_feature),
                 object_id = category_or_feature.id)
             return score
         except Score.DoesNotExist:
             print("WARNING: no score found for {}".format(category_or_feature))
             return None
-        
+
     def get_metadata(self):
         from .atmetadata import ATMetadata
         try:
@@ -193,14 +194,3 @@ class Evaluation(models.Model):
     def has_flagged_results(self):
         from .result import Result
         return Result.objects.filter(evaluation = self, flagged = True).exists()
-        
-
-
-
-
-    
-    
-
-
-
-

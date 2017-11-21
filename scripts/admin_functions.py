@@ -28,7 +28,7 @@ def listusers():
         if u.is_superuser:
             superuser = "Super user"
         name = "{} {}".format(u.first_name, u.last_name)
-        print ("{0:<40s}{1:<40s}{2:<40s}".format(u.username, name, superuser))
+        print ("{0:<40s}{1:<40s}{2:<40s}{3:<40s}".format(u.username, u.email, name, superuser))
 
 
 def listrs():
@@ -65,4 +65,3 @@ def set_superuser(username, is_superuser):
             print("User {} is not a superuser anymore.".format(username))
     else:
         print("User {} not found.".format(username))
-

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}: Sign Up for Accessibility Testing{% endblock %}
+{% block content %}
+
+<h1>Sign Up for Accessibility Testing</h1>
+
+<div id="signup">
+<form action="" method="post">
+  {% csrf_token %}
+  <label for="name">Name</label>
+  <input id="name" type="text" name="name" required/>
+  <br/>
+  <label for="phone">Phone</label>
+  <input id="phone" name="phone" type="tel" />
+  <br/>
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email" required/>
+
+<p>Select the platform(s) you are interested in testing:</p>
+<label for="ios">iOS</label>
+<input name="os" type="checkbox" value="iOS" id="ios" />
+
+<label for="android">Android</label>
+<input name="os" type="checkbox" value="Android" id="android" />
+
+<label for="windows">Windows</label>
+<input name="os" type="checkbox" value="Windows" id="windows"/>
+
+<label for="macos">macOS</label>
+<input name="os" type="checkbox" value="macOS" id="macos"/>
+<br/>
+<input type="submit" name="submit" value="Submit"/>
+
+</form>
+</div>
+{% endblock %}

@@ -19,41 +19,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
     <!-- DataTables -->
     <link rel="stylesheet" type="text/css" href="/media/datatables/datatables.min.css"/>
-        
+
     <!-- Bootstrap -->
     <link href="/media/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
     <!-- custom css -->
     <link href="/media/css/custom.css" rel="stylesheet" media="screen">
-    
+
 
     <!-- JavaScript plugins (requires jQuery) -->
     <script src="http://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/media/js/bootstrap.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    
+
     <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
     <script src="/media/js/respond.min.js"></script>
-    
+
     <!-- DataTables -->
-    <script type="text/javascript" src="/media/datatables/datatables.min.js"></script>        
-    <script type="text/javascript" src="/media/js/datatables-init.js"></script>        
-    
-    <script type="text/javascript" src="/media/js/js.cookie.js"></script>        
-    
+    <script type="text/javascript" src="/media/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="/media/js/datatables-init.js"></script>
+
+    <script type="text/javascript" src="/media/js/js.cookie.js"></script>
+
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-        
+
     {%block script %}
     {% endblock %}
 
     {%block style %}
     {% endblock %}
 
-    {% google_analytics %}    
+    {% google_analytics %}
 </head>
 
 <body>
@@ -70,7 +70,7 @@
             </ul>
         </div>
     {% endif %}
-    
+
         <div class="navbar">
             <p class="logos"><img src="/media/img/bisg_logo.gif" height="30px" alt="BISG logo"/>
                 <img src="/media/img/idpf_logo.jpg" height="30px" alt="IDPF logo"/>
@@ -82,13 +82,14 @@
                 <li><a href="/testsuite/epub3/">Reading Systems</a></li>
                 <li><a href="/testsuite/accessibility/">Accessibility</a></li>
                 <li><a href="/testsuite/">Test Suite</a></li>
+                <!--<li><a href="/participate">Participate</a></li>-->
             </ul>
         </div>
-    
+
     <div class="container">
         <div id="contents" class="">
         {% block content %}
-            
+
         {% endblock %}
         </div>
 
@@ -103,6 +104,6 @@
             <p><em>Last updated {{last_updated}}.</em></p>
         </footer>
     </div>
-    
+
 </body>
 </html>
