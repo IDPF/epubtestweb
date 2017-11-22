@@ -19,39 +19,30 @@
 <p>The following reading systems have been evaluated:</p>
 {% endif %}
 
-{% has_supercategories testsuite.categories as has_supercats %}
 {% get_supercategories testsuite.categories as supercats %}
 
 {% include '_table_view_links.html' %}
     <table id="rs" class="table table-striped table-bordered">
-        {% if has_supercats %}
+      {% if testsuite.testsuite_type == "2" %}
         <col>
-          {% if testsuite.testsuite_type == "2" %}
-          {% comment %}accessibility grid takes an extra column for AT {% endcomment %}
           <colgroup span="3"></colgroup>
-          {% else %}
-          <colgroup span="2"></colgroup>
-          {% endif %}
 
           {% for supercat in supercats %}
           <colgroup span="{{supercat.value}}"></colgroup>
           {% endfor %}
         </col>
-        {% endif %}
+      {% endif %}
 
         <thead>
-          {% if has_supercats %}
+          {% if testsuite.testsuite_type == "2" %}
           <tr class="table-header-row">
-            {% if testsuite.testsuite_type == "2" %}
-            {% comment %}accessibility grid takes an extra column for AT {% endcomment %}
             <th colspan="3" scope="colgroup">Reading System</th>
-            {% else %}
-            <th colspan="2" scope="colgroup">Reading System</th>
-            {% endif %}
-
             {% for supercat in supercats %}
-            <th colspan="{{supercat.value}}" scope="colgroup">{{supercat.name}}</th>
+            {% if supercat.name != None %}
+              <th colspan="{{supercat.value}}" scope="colgroup">{{supercat.name}}</th>
+            {% endif %}
             {% endfor %}
+            <th colspan="2" scope="colgroup">Summaries</th>
           </tr>
           {% endif %}
 
@@ -66,6 +57,12 @@
               {% for category in testsuite.categories %}
               <th scope="col" class="none">{{category.name}}</th>
               {% endfor %}
+
+              {% if testsuite.testsuite_type == "2" %}
+              <th scope="col" class="none">Short Summary</th>
+              <th scope="col" class="none">Long Summary</th>
+              {% endif %}
+
           </tr>
         </thead>
         <tbody>
@@ -87,6 +84,10 @@
                             </a>
                         </td>
                     {% endfor %}
+                    {% if testsuite.testsuite_type == "2" %}
+                    <td>{{evaluation.short_summary | dont_say_none}}</td>
+                    <td><a href="/evaluation/{{evaluation.id}}#long_summary">Read more</a></td>
+                    {% endif %}
             </tr>
             {% endfor %}
         </tbody>

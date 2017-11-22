@@ -29,12 +29,12 @@
             [not specified]
             {% endif %}
         </li>
-        
+
         {% if evaluation.testsuite.testsuite_type == "2" %}
         {% get_metadata evaluation as metadata %}
-        
+
         <li><strong>Assistive technology</strong><br/>{{ metadata.assistive_technology }}</li>
-        
+
         <li><strong>Assistive technology features</strong><br/>{{metadata | get_AT_metadata_description}}</li>
 
         {% endif %}
@@ -46,6 +46,14 @@
     </ul>
     <br/>
 </div>
+
+{% if evaluation.testsuite.testsuite_type == "2" %}
+<h2 id="summaries">Summaries</h2>
+<h3 id="short_summary">Short summary</h3>
+<p>{{evaluation.short_summary | dont_say_none | linebreaks}}</p>
+<h3 id="long_summary">Long summary</h3>
+<p>{{evaluation.long_summary | dont_say_none | linebreaks}}</p>
+{% endif %}
 
 <h2 id="top">Support Results</h2>
 <nav class="category-list">

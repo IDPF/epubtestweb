@@ -6,7 +6,6 @@ secret_key = 'PICK SOMETHING GOOD!'
 
 # example of local overrides
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 db_file = '/Users/marisa/Projects/epubtestweb-db/testsuite.db'
 media_root = '/Users/marisa/Projects/epubtestweb/testsuite-site/media'
 media_url = '/media/'
@@ -16,4 +15,3 @@ static_url = '/static/'
 epub_downloads_root = '/Users/marisa/Projects/epub-testsuite/build'
 previous_db = '/Users/marisa/Projects/epubtestweb-db/testsuite.db.last'
 allowed_hosts = []
-

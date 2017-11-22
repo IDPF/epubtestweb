@@ -20,7 +20,7 @@ class EditEvaluationView(UpdateView):
         if permissions.user_can_edit_evaluation(request.user, evaluation) == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit this evaluation.')
             return redirect('/')
-        
+
         # epubs in this testsuite
         epubs = Epub.objects.filter(testsuite = evaluation.testsuite).order_by("epubid")
         for epub in epubs:
@@ -37,7 +37,7 @@ class EditEvaluationView(UpdateView):
             else:
                 print(atmeta)
             atmeta_form = ATMetadataForm(instance = atmeta)
-            
+
 
         # after this form, the next page is the evaluation form for the first epub
         next_url = "{}section/{}/".format(request.path, epubs[0].epubid)
@@ -57,8 +57,9 @@ class EditEvaluationView(UpdateView):
         if permissions.user_can_edit_evaluation(request.user, evaluation) == False:
             messages.add_message(request, messages.INFO, 'You do not have permission to edit this evaluation.')
             return redirect('/manage/')
-        
+
         evaluation_form = EvaluationForm(request.POST, instance = evaluation)
+
         evaluation_form.save()
         
         if evaluation.testsuite.testsuite_type == common.TESTSUITE_TYPE_ACCESSIBILITY:
@@ -70,4 +71,3 @@ class EditEvaluationView(UpdateView):
             return redirect(next_url)
         else:
             return redirect(request.POST.get('return_url', '/manage/'))
-

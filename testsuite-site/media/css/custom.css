@@ -707,6 +707,24 @@ div.form label {
     padding-right: 1rem;
 }
 
+/* TODO align these properly */
+div.form input#id_is_archived {
+  margin-left: 5em;
+}
+
+div.form input#id_notes {
+  margin-left: 6.5em;
+}
+
+div.form textarea#id_short_summary {
+  margin-left: 1.8em;
+}
+
+div.form textarea#id_long_summary {
+  margin-left: 2.1em;
+}
+
+
 
 /***************************************************************/
 /*           MANAGE                                            */

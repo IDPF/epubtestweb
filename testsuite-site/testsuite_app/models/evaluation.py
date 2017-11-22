@@ -27,8 +27,9 @@ class Evaluation(models.Model):
     user = models.ForeignKey('UserProfile')
     is_archived = models.BooleanField(default = False)
     is_published = models.BooleanField(default = False)
-    notes = models.CharField(max_length = common.LONG_STRING, null = True, blank = True)
-    summary = models.CharField(max_length = 2000, null = True, blank = True)
+    notes = models.CharField(max_length = common.SHORT_STRING, null = True, blank = True)
+    short_summary = models.CharField(max_length = common.LONG_STRING, null = True, blank = True)
+    long_summary = models.CharField(max_length = 2000, null = True, blank = True)
 
     def save(self, generate_timestamp = True, *args, **kwargs):
         self.update_percent_complete()
