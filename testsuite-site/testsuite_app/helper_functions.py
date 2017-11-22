@@ -41,6 +41,7 @@ def send_email(subject, body, recipient_emails):
     return 0
 
 def send_email_evaluation_created(evaluation):
+    from testsuite import settings
     msgbody = "An evaluation has been created on epubtest.org. The details are:\n"
     msgbody += generate_evaluation_description(evaluation)
     msgbody += "for the reading system\n"
@@ -48,6 +49,7 @@ def send_email_evaluation_created(evaluation):
     return send_email("Evaluation created on epubtest.org", msgbody, settings.email_notifications_to["NewEvalCreated"])
 
 def send_email_request_to_publish_evaluation(evaluation):
+    from testsuite import settings
     from testsuite_app.models.evaluation import Evaluation
     msgbody = "A user has requested to publish their evaluation. The details are:\n"
     msgbody += generate_evaluation_description(evaluation)
