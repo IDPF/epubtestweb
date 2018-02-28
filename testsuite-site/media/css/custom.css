@@ -67,15 +67,6 @@ div#contents h2 {
     margin: 4em 0 1em 0;
 }
 
-div#contents h3 {
-    font-size: 100%;
-    font-weight: bold;
-    text-indent: 0.75rem;
-    color: #000;
-    padding: 0.5rem;
-    margin: 1em 0 1em 0;
-}
-
 div#contents ul+h2,
 div#contents p+h2.ts {
     margin-top: 2rem;
@@ -155,12 +146,6 @@ h1+p {
     margin-top: 1rem;
 }
 
-div#contents div#signup {
-  padding: 4em;
-}
-div#contents div#signup form * {
-  margin: 1em;
-}
 
 /***************************************************************/
 /*           FOOTER                                            */
@@ -706,24 +691,6 @@ div.form input[type="submit"] {
 div.form label {
     padding-right: 1rem;
 }
-
-/* TODO align these properly */
-div.form input#id_is_archived {
-  margin-left: 5em;
-}
-
-div.form input#id_notes {
-  margin-left: 6.5em;
-}
-
-div.form textarea#id_short_summary {
-  margin-left: 1.8em;
-}
-
-div.form textarea#id_long_summary {
-  margin-left: 2.1em;
-}
-
 
 
 /***************************************************************/

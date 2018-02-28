@@ -40,8 +40,8 @@ def request_publish_evaluation(request, *args, **kwargs):
 
     return_url = "/manage/"
     if 'return' in request.GET:
-        return_url = request.GET.get('return', '') 
-    return redirect(return_url) 
+        return_url = request.GET.get('return', '')
+    return redirect(return_url)
 
 def publish_evaluation(request, *args, **kwargs):
     return set_evaluation_published_status(request, kwargs['pk'], True)
@@ -66,12 +66,12 @@ def set_evaluation_published_status(request, evaluation_id, is_published):
         evaluation.is_published = is_published
         evaluation.save()
         status = "unpublished"
-        if is_published: 
+        if is_published:
             status = "published"
         messages.add_message(request, messages.INFO, "Evaluation {}.".format(status))
     else:
         messages.add_message(request, messages.WARNING, "You don't have permission to publish/unpublish this evaluation.")
-    return redirect("/evaluation/all/") 
+    return redirect("/evaluation/all/")
 
 
 def set_evaluation_archived_status(request, evaluation_id, is_archived):
@@ -82,17 +82,15 @@ def set_evaluation_archived_status(request, evaluation_id, is_archived):
 
     return_url = "/manage/"
     if 'return' in request.GET:
-        return_url = request.GET.get('return', '')    
+        return_url = request.GET.get('return', '')
 
     if permissions.user_can_edit_evaluation(request.user, evaluation):
         evaluation.is_archived = is_archived
         evaluation.save()
         status = "unarchived"
-        if is_archived: 
+        if is_archived:
             status = "archived"
         messages.add_message(request, messages.INFO, "Evaluation {}.".format(status))
     else:
         messages.add_message(request, messages.WARNING, "You don't have permission to archive/unarchive this evaluation.")
-    return redirect(return_url) 
-
-
+    return redirect(return_url)

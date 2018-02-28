@@ -11,24 +11,34 @@
 <div class="form">
 <form action="{{action_url}}" method="post">{% csrf_token %}
     <p>Select reading system:</p>
-    
+
     <select name="reading_system">
     {% for reading_system in reading_systems %}
     <option value="{{reading_system.id}}">{{reading_system | get_reading_system_display_name}}</option>
     {% endfor %}
     </select>
-    
+
     <p>or <a href="/rs/add/?next=/evaluation/add">add a new reading system</a></p>
-        
+
     <p>Select test suite:</p>
-    
+
     <select name="testsuite">
     {% for testsuite in testsuites %}
     <option value="{{testsuite.id}}">{{testsuite.name}}</option>
     {% endfor %}
     </select>
-    
+
     <br/><br/>
+
+
+    {% if user.is_superuser %}
+    <p>Assign to:</p>
+    <select name="user">
+      {% for u in users %}
+      <option value="{{u.id}}">{{u.first_name}} {{u.last_name}}</option>
+      {% endfor %}
+    </select>
+    {% endif %}
     <input type="submit" value="Save" />
 </form>
 </div>

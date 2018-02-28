@@ -22,36 +22,48 @@ class AddEvaluationView(TemplateView):
         for rs in other_reading_systems:
             reading_systems.append(rs)
 
-        
-        return render(request, self.template_name,{"testsuites": testsuites, "reading_systems": reading_systems,
+        return render(request, self.template_name,{"testsuites": testsuites, "reading_systems": reading_systems, "users": UserProfile.objects.all(),
             "action_url": request.path})
 
 
     def post(self, request, *args, **kwargs):
         reading_system_id = request.POST.getlist('reading_system', [])[0] #getlist is a method of django's QueryDict object
         testsuite_id = request.POST.getlist('testsuite', [])[0] #getlist is a method of django's QueryDict object
+        user_id = ""
+        print(request.POST.getlist('user', []))
+        
+        # default to the current user, if no other user was assigned (if they aren't admin, they don't see the assignment field)
+        if len(request.POST.getlist('user')) == 0:
+            print("Using request user")
+            user_id = request.user.id
+        else:
+            user_id = request.POST.getlist('user', [])[0]
+
 
         try:
             reading_system = ReadingSystem.objects.get(id=reading_system_id)
         except ReadingSystem.DoesNotExist:
             messages.add_message(request, messages.INFO, 'Invalid reading system (ID={})'.format(reading_system_id))
-            return redirect(request.path)    
+            return redirect(request.path)
 
         try:
             testsuite = TestSuite.objects.get(id=testsuite_id)
         except TestSuite.DoesNotExist:
             messages.add_message(request, messages.INFO, 'Invalid testsuite (ID={})'.format(testsuite_id))
-            return redirect(request.path)    
+            return redirect(request.path)
+
+        try:
+            assigned_user = UserProfile.objects.get(id=user_id)
+        except UserProfile.DoesNotExist:
+            messages.add_message(request, messages.INFO, 'Invalid user (ID={})'.format(user_id))
+            return redirect(request.path)
 
         if testsuite.allow_many_evaluations == False and \
          Evaluation.objects.filter(reading_system=reading_system, testsuite=testsuite).exists():
              messages.add_message(request, messages.INFO, 'An evaluation already exists for this testsuite and reading system combination, and only one is allowed.')
-             return redirect(request.path)    
+             return redirect(request.path)
 
-        evaluation = Evaluation.objects.create_evaluation(reading_system, testsuite, request.user)
+        print("Evaluation added for user {}{} (ID={})".format(assigned_user.first_name, assigned_user.last_name, assigned_user.id))
+        evaluation = Evaluation.objects.create_evaluation(reading_system, testsuite, assigned_user)
 
         return redirect("/evaluation/{}/edit".format(evaluation.id))
-    
-
-
-    
