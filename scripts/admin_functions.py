@@ -76,6 +76,8 @@ Marisa DeMeglio
 DAISY Consortium
 """.format(first_name, last_name, username, password)
     print("EMAIL TO USER")
+    print("To:\n{}".format(email))
+    print("Subj:\n{}".format("Reading App testing website information (epubtest.org)"))
     print(email_text)
     print("END EMAIL TO USER")
 
