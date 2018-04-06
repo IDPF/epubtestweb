@@ -53,6 +53,31 @@ def add_user(username, password, first_name, last_name, email, is_superuser):
     user.last_name = last_name
     user.is_superuser = is_superuser == 'True'
     user.save()
+    email_text = """
+Dear {} {},
+
+Welcome to the Reading App testing website, epubtest.org! Here’s your account information:
+
+username: {}
+pwd: {}
+
+Login here: http://epubtest.org/login/
+
+You’ll find instructions here for getting the testsuite documents and filling out an accessibility evaluation:
+http://epubtest.org/docs/instructions-for-accessibility-evaluators/
+
+Note that you may have not been assigned an evaluation to fill out yet, as our moderators are still in the process of confirming the system(s) you will be testing. In the meantime, please feel free to use your login to familiarize yourself with the site and read the instructions.
+
+The public front page of the site will be populated with data as evaluations are completed and made public. Your evaluation will not be public until you tell us it's ready, so feel free to experiment with the site, and let me know if you have any questions.
+
+Best regards,
+
+Marisa DeMeglio
+DAISY Consortium
+""".format(first_name, last_name, username, password)
+    print("EMAIL TO USER")
+    print(email_text)
+    print("END EMAIL TO USER")
 
 def set_superuser(username, is_superuser):
     user = UserProfile.objects.get(username=username)
