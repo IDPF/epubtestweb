@@ -16,11 +16,13 @@ class EpubIdCheck:
             if ext == ".epub":
                 print("Checking EPUB IDs {0}".format(f))
                 zip = zipfile.ZipFile(os.path.join(folder, f))
-                opf = zip.read('EPUB/package.opf')
+                container = zip.read('META-INF/container.xml')
+                containerdom = etree.fromstring(container)
+                opfpath = containerdom.xpath("*/*/@full-path")
+                opf = zip.read(opfpath[0])
                 dom = etree.fromstring(opf)
                 idelm = dom.xpath("*/*[@id='uid']")[0]
                 self.file_id_map[idelm.text] = os.path.join(folder, f)
 
         # for k in self.file_id_map.keys():
         #     print "{0} : {1}".format(k, self.file_id_map[k])
-

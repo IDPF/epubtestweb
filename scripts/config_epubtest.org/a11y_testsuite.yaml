@@ -131,3 +131,54 @@ TestSuites:
                           - MOA-NAV-080
                           - MOA-NAV-090
                           - MOA-NAV-100
+
+            -
+                Name: Math
+                SuperCategory: Advanced
+                Id: math-a11y
+                EpubIds:
+                  - com.github.epub-testsuite.epub30-test-0330
+                Features:
+                  -
+                      Name: MathML
+                      Id: mathml-a11y-tests
+                      TestIds:
+                        - math-010
+                        - math-020
+                        - math-030
+                        - math-040
+                        - math-050
+                        - math-060
+            -
+                Name: Extended Descriptions
+                SuperCategory: Advanced
+                Id: extended-descriptions
+                EpubIds:
+                  - com.github.epub-testsuite.epub30-test-0340
+                Features:
+                  -
+                      Name: Extended descriptions
+                      Id: exteded-descriptions-a11y-tests
+                      TestIds:
+                        - extdesc-010
+                        - extdesc-020
+                        - extdesc-030
+                        - extdesc-040
+                        - extdesc-050
+                        - extdesc-060
+                        - extdesc-070
+                        - extdesc-080
+                        - extdesc-090
+                        - extdesc-100
+                        - extdesc-110
+                        - extdesc-120
+                        - extdesc-130
+                        - extdesc-140
+                        - extdesc-150
+                        - extdesc-160
+                        - extdesc-170
+                        - extdesc-180
+                        - extdesc-190
+                        - extdesc-200
+                        - extdesc-210
+                        - extdesc-220
