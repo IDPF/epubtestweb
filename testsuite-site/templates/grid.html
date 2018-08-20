@@ -44,19 +44,23 @@
           <tr class="table-header-row">
             {% if testsuite.testsuite_type == "2" %}
             {% comment %}accessibility grid takes an extra column for AT {% endcomment %}
-            <th colspan="3" scope="colgroup">Reading System</th>
-            {% else %}
             <th colspan="2" scope="colgroup">Reading System</th>
+            {% else %}
+            <th colspan="1" scope="colgroup">Reading System</th>
             {% endif %}
 
             {% for supercat in supercats %}
+            {% if supercat.name != None %}
             <th colspan="{{supercat.value}}" scope="colgroup">{{supercat.name}}</th>
+            {% else %}
+            <th colspan="{{supercat.value}}" scope="colgroup"></th>
+            {% endif %}
             {% endfor %}
           </tr>
           {% endif %}
 
           <tr class="table-header-row">
-              <th scope="col">#</th>
+              <!--<th scope="col">#</th>-->
               <th scope="col">Name</th>
 
               {% if testsuite.testsuite_type == "2" %}
@@ -71,7 +75,7 @@
         <tbody>
             {% for evaluation in evaluations %}
             <tr>
-                <td>{{forloop.counter}}</td>
+                <!--<td>{{forloop.counter}}</td>-->
                 <th scope="row">
                     <a href="/evaluation/{{evaluation.id}}">{{evaluation.reading_system | get_reading_system_display_name}}</a>
                 </td>
