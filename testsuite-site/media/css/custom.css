@@ -397,6 +397,42 @@ th {
 }
 
 
+/* override the default sort arrows so that we can choose accessible colors */
+table.dataTable thead th {
+    position: relative;
+    background-image: none !important;
+}
+
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    display: block;
+    font-family: FontAwesome;
+}
+table.dataTable thead th.sorting:after {
+    content: "\f0dc";
+    color: #686868;
+    font-size: 1em;
+    padding-top: 0.12em;
+}
+table.dataTable thead th.sorting_asc:after {
+    content: "\f0de";
+    color: #000;
+}
+table.dataTable thead th.sorting_desc:after {
+    content: "\f0dd";
+    color: #000;
+}
+
+/* override border color */
+.table-bordered, .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+  border-color: rgba(175, 175, 175, 0.7);
+  border-width: 2px;
+  box-shadow: rgba(0,0,0,0.1) 0px 2px 2px, inset rgba(0,0,0,0.1) 0px -1px 2px;
+}
 /***************************************************************/
 /*           FEATURE TABLES                                    */
 /***************************************************************/
@@ -495,8 +531,6 @@ table.dataTable thead th {
     font-size: 105%;
     color: #004080;
 }
-
-/* sort arrows */
 
 /***************************************************************/
 /*           RS SUMMARY TABLES                                 */
