@@ -381,10 +381,26 @@ input[type="search"] {
 /***************************************************************/
 /*           TABLES                                            */
 /***************************************************************/
-
+/* description before a11y grid */
+.grid-desc {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.grid-desc-2 {
+  margin-bottom: 30px;
+}
 th {
     text-transform: uppercase;
     text-align: center;
+}
+th.rsname {
+  text-transform: none;
+  text-align: left;
+}
+td.rsat {
+  font-weight: bolder;
+  color: rgb(0, 64, 128);
+  text-align: left;
 }
 
 .table {

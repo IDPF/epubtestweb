@@ -13,11 +13,30 @@
 
 <h1>Reading System Evaluations {% if is_archive_view %}(Archives){% endif %}</h1>
 
+{% if testsuite.testsuite_type == "2" %}
+<div class="grid-desc">
+<h2>Information About Test Materials</h2>
+
+<p><em>Essential</em> and <em>Advanced</em> results are presented in this table. The <em>Essential</em> column has several subcategories presented. We believe that reading systems should strive to score as high as possible in these essential tests.</p>
+
+
+<p>The <em>Advanced</em> titles are quite unique and help us in several ways:</p>
+<ul>
+	<li>They show us what features are supported in the Reading Systems. Based on these results, we may provide recommendations to application developers.</li>
+  <li>We learn which Assistive Technologies support various features being tested. We may provide guidance to AT developers based on these results.</li>
+	<li>We can make “best practice” recommendations to authors and publishers based on these results. We will evaluate the results so that we can attain the best reading experience and avoid recommending the lowest common supported implementations.</li>
+</ul>
+</div>
+{% endif %}
+
+<div class="grid-desc-2">
 {% if is_archive_view %}
 <p>The following reading system evaluations have been archived but are still available to view. For the latest, please visit the <a href="/">home page</a>.</p>
 {% else %}
 <p>The following reading systems have been evaluated:</p>
 {% endif %}
+</div>
+
 
 {% has_supercategories testsuite.categories as has_supercats %}
 {% get_supercategories testsuite.categories as supercats %}
@@ -76,12 +95,12 @@
             {% for evaluation in evaluations %}
             <tr>
                 <!--<td>{{forloop.counter}}</td>-->
-                <th scope="row">
+                <th scope="row" class="rsname">
                     <a href="/evaluation/{{evaluation.id}}">{{evaluation.reading_system | get_reading_system_display_name}}</a>
                 </td>
                 {% if testsuite.testsuite_type == "2" %}
                     {% get_metadata evaluation as metadata %}
-                    <td>{{metadata.assistive_technology}}</td>
+                    <td class="rsat">{{metadata.assistive_technology}}</td>
                 {% endif %}
                     {% for category in testsuite.categories %}
                         {% get_score evaluation category as category_score %}
