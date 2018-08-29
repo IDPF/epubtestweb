@@ -48,9 +48,9 @@
         <col>
           {% if testsuite.testsuite_type == "2" %}
           {% comment %}accessibility grid takes an extra column for AT {% endcomment %}
-          <colgroup span="3"></colgroup>
-          {% else %}
           <colgroup span="2"></colgroup>
+          {% else %}
+          <colgroup span="1"></colgroup>
           {% endif %}
 
           {% for supercat in supercats %}
