@@ -9,6 +9,10 @@ from django.contrib.auth.decorators import login_required
 from . import settings
 
 from django.contrib.auth import views
+from django.shortcuts import redirect
+
+from django.views.generic import RedirectView
+
 admin.autodiscover()
 
 
@@ -61,7 +65,9 @@ urlpatterns = [
     url(r'^testsuite/(?P<testsuite_id>.+)/feature/(?P<feature_id>.+)/$', FeatureView.as_view()),
     url(r'^testsuite/(?P<testsuite_id>.+)/archive/$', ArchiveGridView.as_view()),
     url(r'^testsuite/(?P<testsuite_id>.+)/$', GridView.as_view()),
-    url(r'^evaluation/(?P<pk>\d+)/$', EvaluationView.as_view())
+    url(r'^evaluation/(?P<pk>\d+)/$', EvaluationView.as_view()),
+
+    url(r'^instructions/$', RedirectView.as_view(url=settings.instructions_page))
 ]
 
 urlpatterns_login_required = [
@@ -104,6 +110,5 @@ if settings.allow_robots == False:
     ]
 
 urlpatterns += additional_settings
-
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.EPUB_URL, document_root = settings.EPUB_ROOT)
