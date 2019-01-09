@@ -17,7 +17,7 @@
     {% if result.flagged %}
     <li><a href="#{{result.test.test_id}}">{{result.test.test_id}}</a></li>
     {% endif %}
-    
+
 
 {% endfor %}
 </ul>
@@ -32,7 +32,6 @@
         <tr>
             <th>ID</th>
             <th>Description</th>
-            <th>Required</th>
             <th class="result">Result</th>
         </tr>
     </thead>
@@ -42,13 +41,6 @@
             {% get_form_for_result result results_formset as result_form %}
             <td>{{ result.test.test_id }}</td>
             <td class="desc">{{ result.test.description }}</td>
-            <td>
-                {% if result.test.required == True %}
-                    Required
-                {% else %}
-                    Optional
-                {% endif %}
-            </td>
             <td class="result">{{ result_form.as_p }}</td>
         </tr>
         {% endfor %}
@@ -67,11 +59,11 @@
 
 <script>
     var dt = new DT();
-    
+
     $(document).ready(function(){
         setView('');
     });
-    
+
     function setView(tblType) {
         dt.setTableType(tblType);
         var options = {
