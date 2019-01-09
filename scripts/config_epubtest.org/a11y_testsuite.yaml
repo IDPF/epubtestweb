@@ -27,11 +27,13 @@ TestSuites:
                         Name: Navigation
                         Id: a11y-navigation
                         TestIds:
+                            - nav-005
                             - nav-010
                             - nav-110
                             - nav-210
                             - nav-310
                             - nav-410
+                            - nav-510
                     -
                         Name: Highlights, Notes, and Bookmarks
                         Id: annotation
@@ -64,6 +66,7 @@ TestSuites:
                             - reading-1010
                             - reading-1110
                             - reading-1210
+                            - reading-1310
             -
                 Name: Visual Adjustment Tests
                 SuperCategory: Essential
@@ -163,17 +166,13 @@ TestSuites:
                         - extdesc-010
                         - extdesc-020
                         - extdesc-030
-                        - extdesc-040
                         - extdesc-050
                         - extdesc-060
                         - extdesc-070
-                        - extdesc-080
                         - extdesc-090
                         - extdesc-100
                         - extdesc-110
                         - extdesc-120
-                        - extdesc-130
-                        - extdesc-140
                         - extdesc-150
                         - extdesc-160
                         - extdesc-170
