@@ -31,7 +31,7 @@ email_notifications_to = {
         "macOS": []
     }
 }
-
+instructions_page = 'http://dl.daisy.org/Notes_on_Testing_EPUB_reading_systems.docx'
 # end of overrides
 
 try:

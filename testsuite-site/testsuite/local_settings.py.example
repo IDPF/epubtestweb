@@ -15,3 +15,18 @@ static_url = '/static/'
 epub_downloads_root = '/Users/marisa/Projects/epub-testsuite/build'
 previous_db = '/Users/marisa/Projects/epubtestweb-db/testsuite.db.last'
 allowed_hosts = []
+readonly = False
+email_notifications_from = 'noreply@epubtest.org'
+
+# these email addresses would receive notifications
+email_notifications_to = {
+    "NewEvalCreated": [],
+    "RequestToPublishEval": [],
+    "A11yTesterSignUps": {
+        "iOS": [],
+        "Windows": [],
+        "Android": [],
+        "macOS": []
+    }
+}
+instructions_page = 'http://dl.daisy.org/Notes_on_Testing_EPUB_reading_systems.docx'
