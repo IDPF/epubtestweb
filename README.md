@@ -1,6 +1,9 @@
 epubtestweb
 ========
 
+This repository contains the code for the old epubtest.org site. This site has changed substantially and this codebase is no longer relevant. The archives for the old site can be found at https://daisy.github.io/old-epub3-support-grid.
+
+
 For end-users
 ==============
 
