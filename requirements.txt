@@ -1,4 +1,4 @@
-Django==1.9.1
+Django==1.11.29
 django-analytical==2.0.0
 lxml==3.4.4
 PyYAML==3.11
